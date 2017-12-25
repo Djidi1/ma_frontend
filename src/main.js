@@ -54,9 +54,32 @@ new Vue({
   },
     data: {
         list : [
-            '1',
-            '2',
-            '3'
+            {
+                name:'Object1',
+                status:'new',
+                color:'red'
+            },
+            {
+                name:'Object2',
+                status:'new',
+                color:'green'
+            },
+            {
+                name:'Object3',
+                status:'old',
+                color:'blue'
+            },
+            {
+                name:'Object4',
+                status:'',
+                color:'red'
+            },
+            {
+                name:'Object5',
+                status:'ready',
+                color:'red'
+            }
+
         ],
         auth:false
     },
@@ -68,6 +91,7 @@ new Vue({
               return false;
           }
         }
+
     }
 
 })
