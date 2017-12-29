@@ -1,7 +1,7 @@
 #center_body {
 	position: relative;
 	top:50%;
-	transform: translateY(50%);
+	transform: translateY(35%);
 	min-height: 300px ;
 }
 
@@ -31,4 +31,19 @@
 }
 .submit_item{
 	margin-top: 15px;
+}
+
+.left-panel-header{
+	padding:20px 5% 0 5%;
+	text-align: center;
+}
+.user_img{
+	width:81px;
+	height: 81px;
+}
+.navbar{
+	box-shadow:unset!important;
+}
+.list-block{
+	margin-top: 15px!important;
 }

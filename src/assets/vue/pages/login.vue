@@ -44,10 +44,9 @@
                     this.$f7.alert('Login or Passsword are empty!', 'Warning')
                 } else {
                     if (this.form_login.login == "Kon" && this.form_login.password == "password") {
-                        //Change auth status
-                        this.$root.auth=true;
-                        //Place in local  storage
-                        localStorage.setItem('auth_token','somecode')
+
+                        let user_info={name:'Konik Nikita',auth:true};
+                        this.$root.auth_info=user_info;
                        this.$f7.views.main.router.load({url:'/page/'});
                     } else {
                         this.$f7.alert('Login or Passsword are wrong!', 'Warning');

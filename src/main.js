@@ -21,16 +21,21 @@ import AppStylesCustom from './assets/sass/custom.scss'
 
 import  FAicon from 'font-awesome/css/font-awesome.css';
 
+//Vue-localstorage
+import VueLocalStorage from 'vue-ls'
+
 // Import Routes
 import Routes from './routes.js'
 
 // Import App Component
 import App from './main.vue'
-import Login from './assets/vue/pages/login.vue'
+
 
 
 // Init F7 Vue Plugin
-Vue.use(Framework7Vue)
+Vue.use(Framework7Vue);
+// Init Vue-ls
+Vue.use(VueLocalStorage);
 
 
 // Init App
@@ -45,14 +50,12 @@ new Vue({
     material: true,
     routes: Routes
   },
-
   // Register App Component
   components: {
     app: App,
-      login:Login
-
   },
-    data: {
+
+  data: {
         list : [
             {
                 name:'Object1',
@@ -81,15 +84,31 @@ new Vue({
             }
 
         ],
-        auth:false
+      auth_info:{
+            name:'',
+            auth:false
+        }
     },
-    methods:{
+
+   watch:{
+        auth_info: function(val){
+          this.$ls.set('auth_info',val);
+      }
+    },
+
+  created: function(){
+        this.auth_info =this.$ls.get('auth_info',{name:'',auth:false});
+        var _this=this;
+        this.$ls.on('auth_info',function(val){
+            _this.auth_info=val;
+        });
+    },
+
+  methods:{
         check_user_auth:function(){
-          if  (localStorage.hasOwnProperty('auth_token')) {
-              return true;
-          } else{
-              return false;
-          }
+            if (this.auth_info.auth)
+                return true;
+            return false;
         }
 
     }
