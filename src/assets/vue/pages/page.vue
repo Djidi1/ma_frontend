@@ -10,24 +10,21 @@
 
         </f7-navbar>
 
-            <f7-block-title><p>Here is list of Object to audit!</p></f7-block-title>
-            <f7-block-title> List of object</f7-block-title>
-            <f7-list >
-                <f7-list-item swipeout  v-for="item in this.$root.list" :key="item.id" link="#" :title="item.name" :badge="item.status" :badge-color="item.color" >
-                    <f7-swipeout-actions>
-                        <f7-swipeout-button delete>Delete</f7-swipeout-button>
-                    </f7-swipeout-actions>
-                </f7-list-item>
 
-        </f7-list>
+            <list :data_storage="this.$root.list"></list>
+
 
 
     </f7-page>
 </template>
 
 <script>
+    import List from '../../Components/list_audit.vue'
     export default {
         name: "page",
+        components:{
+          list:List
+        },
         methods:{
             onRefresh: function (event, done) {
                 var self = this;

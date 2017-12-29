@@ -1,0 +1,134 @@
+[
+  {
+    "name":"Завод",
+    "adres":"Какой-то перееулок 51",
+    "id":1,
+    "status":"inProgres",
+    "created_date":"15/11/2017",
+    "audits":[
+      {
+        "name":"Первый цех",
+        "status":"",
+        "id":"345-A",
+        "create_date":"18/11/2017 10:00:00",
+        "check_list":{
+          "name":"Проверка первого цеха",
+          "list_to_check":[
+            {
+              "discription":"Оборудование",
+              "status":false
+            },
+            {
+              "discription":"Стены",
+              "status":false
+            },
+            {
+              "discription":"Потолок",
+              "status":false
+            }
+          ]
+        },
+        "comments":[
+          {
+            "create_date":"22/12/2017 11:00:00",
+            "from":"User_1",
+            "title":"Проверка связи",
+            "text":"Проверяем работоспособность коментариев в приложении",
+            "attachments":[]
+          },
+          {
+            "create_date":"23/12/2017 11:30:00",
+            "from":"User_2",
+            "title":"Состояние проверки",
+            "text":"Все ли объекты проверены? Есть ли какие-нибудь замечаний",
+            "attachments":[]
+          },
+          {
+            "create_date":"22/12/2017 11:00:00",
+            "from":"User_3",
+            "title":"Проблема с оборудование",
+            "text":"Оборудование не очень. Все на ладон дышит!",
+            "attachments":[
+              "./static/depositphotos_99061296-stock-illustration-safety-at-work-icon-design.jpg"
+            ]
+          }
+        ]
+      },
+      {
+        "name":"Второй цех",
+        "status":"",
+        "uniq_id":"345-B",
+        "create_date":"18/11/2017 10:01:00",
+        "check_list":{
+          "name":"Проверка второго цеха",
+          "list_to_check":[
+            {
+              "discription":"Оборудование",
+              "status":true
+            },
+            {
+              "discription":"Стены",
+              "status":true
+            },
+            {
+              "discription":"Потолок",
+              "status":true
+            }
+          ]
+        },
+        "comments":[
+          {
+            "create_date":"22/12/2017 11:00:00",
+            "from":"User_3",
+            "title":"Все в порядке",
+            "text":"Второй цех проверен. Никаких нареканий",
+            "attachments":[]
+          }
+        ]
+      },
+      {
+        "name":"Третий цех",
+        "status":"",
+        "uniq_id":"345-C",
+        "create_date":"18/11/2017 10:02:00",
+        "check_list":{
+          "name":"Проверка третьего цеха",
+          "list_to_check":[
+            {
+              "discription":"Оборудование",
+              "status":false
+            },
+            {
+              "discription":"Стены",
+              "status":true
+            },
+            {
+              "discription":"Потолок",
+              "status":true
+            }
+          ]
+        },
+        "comments":[
+          {
+            "create_date":"23/12/2017 11:30:00",
+            "from":"User_2",
+            "title":"Оставшаяся работа",
+            "text":"Не успели закончить проверку. Прошу помочь",
+            "attachments":[
+
+            ]
+          },
+          {
+            "create_date":"22/12/2017 11:00:00",
+            "from":"User_3",
+            "title":"Проблема с оборудование",
+            "text":"Хорошо сделаем",
+            "attachments":[
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
+

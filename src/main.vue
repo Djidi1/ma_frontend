@@ -38,6 +38,7 @@
 <script>
     import Avatar from './assets/Components/avatar.vue'
     import User_name from './assets/Components/user_name.vue'
+
     export default {
         components:{
             avatar: Avatar,

@@ -30,7 +30,8 @@ import Routes from './routes.js'
 // Import App Component
 import App from './main.vue'
 
-
+//Test zone inmport json
+import data_json from './static/Objects.json'
 
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue);
@@ -52,38 +53,11 @@ new Vue({
   },
   // Register App Component
   components: {
-    app: App,
+    app: App
   },
 
   data: {
-        list : [
-            {
-                name:'Object1',
-                status:'new',
-                color:'red'
-            },
-            {
-                name:'Object2',
-                status:'new',
-                color:'green'
-            },
-            {
-                name:'Object3',
-                status:'old',
-                color:'blue'
-            },
-            {
-                name:'Object4',
-                status:'',
-                color:'red'
-            },
-            {
-                name:'Object5',
-                status:'ready',
-                color:'red'
-            }
-
-        ],
+        list : data_json,
       auth_info:{
             name:'',
             auth:false
@@ -97,6 +71,7 @@ new Vue({
     },
 
   created: function(){
+
         this.auth_info =this.$ls.get('auth_info',{name:'',auth:false});
         var _this=this;
         this.$ls.on('auth_info',function(val){
