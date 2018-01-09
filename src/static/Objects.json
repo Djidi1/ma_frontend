@@ -15,6 +15,7 @@
         {
         "status":"new",
         "name":"Проверка первого цеха",
+          "id":0,
         "list_to_check":[
           {
             "discription":"Оборудование",
@@ -32,7 +33,8 @@
       },
         {
           "status":"new",
-          "name":"Проверка первого цеха",
+          "name":"Проверка ds цеха",
+          "id":1,
           "list_to_check":[
             {
               "discription":"Оборудование",
@@ -50,6 +52,7 @@
         }],
       "comments":[
         {
+          "id":"3434",
           "create_date":"22/12/2017 11:00:00",
           "from":"User_1",
           "title":"Проверка связи",
@@ -57,6 +60,7 @@
           "attachments":[]
         },
         {
+          "id":"3435",
           "create_date":"23/12/2017 11:30:00",
           "from":"User_2",
           "title":"Состояние проверки",
@@ -64,6 +68,7 @@
           "attachments":[]
         },
         {
+          "id":"3436",
           "create_date":"22/12/2017 11:00:00",
           "from":"User_3",
           "title":"Проблема с оборудование",
@@ -79,81 +84,8 @@
           ]
         }
       ]
-    },
-    {
-      "name":"Второй цех",
-      "status":"wrong",
-      "id":"345-B",
-      "create_date":"18/11/2017 10:01:00",
-      "check_list":[{
-        "name":"Проверка второго цеха",
-        "list_to_check":[
-          {
-            "discription":"Оборудование",
-            "status":true
-          },
-          {
-            "discription":"Стены",
-            "status":true
-          },
-          {
-            "discription":"Потолок",
-            "status":true
-          }
-        ]
-      }],
-      "comments":[
-        {
-          "create_date":"22/12/2017 11:00:00",
-          "from":"User_3",
-          "title":"Все в порядке",
-          "text":"Второй цех проверен. Никаких нареканий",
-          "attachments":[]
-        }
-      ]
-    },
-    {
-      "name":"Третий цех",
-      "status":"error",
-      "id":"345-C",
-      "create_date":"18/11/2017 10:02:00",
-      "check_list":{
-        "name":"Проверка третьего цеха",
-        "list_to_check":[
-          {
-            "discription":"Оборудование",
-            "status":false
-          },
-          {
-            "discription":"Стены",
-            "status":true
-          },
-          {
-            "discription":"Потолок",
-            "status":true
-          }
-        ]
-      },
-      "comments":[
-        {
-          "create_date":"23/12/2017 11:30:00",
-          "from":"User_2",
-          "title":"Оставшаяся работа",
-          "text":"Не успели закончить проверку. Прошу помочь",
-          "attachments":[
-
-          ]
-        },
-        {
-          "create_date":"22/12/2017 11:00:00",
-          "from":"User_3",
-          "title":"Проблема с оборудование",
-          "text":"Хорошо сделаем",
-          "attachments":[
-          ]
-        }
-      ]
     }
+
   ]
 }
 

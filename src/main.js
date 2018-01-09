@@ -49,7 +49,9 @@ new Vue({
     root: '#app',
     /* Uncomment to enable Material theme: */
     material: true,
-    routes: Routes
+    routes: Routes,
+    scrollTopOnNavbarClick:true,
+      hideNavbarOnPageScroll:true
 
   },
     
@@ -59,26 +61,33 @@ new Vue({
   },
 
   data: {
-        list : data_json,
-      auth_info:{
+        list : {},
+        auth_info:{
             name:'',
             auth:false
-        }
+        },
+
     },
 
    watch:{
         auth_info: function(val){
           this.$ls.set('auth_info',val);
-      }
+      },
+        list:function(val){
+            this.$ls.set('list',val);
+       }
     },
 
   created: function(){
-
         this.auth_info =this.$ls.get('auth_info',{name:'',auth:false});
         var _this=this;
         this.$ls.on('auth_info',function(val){
             _this.auth_info=val;
         });
+        this.list=this.$ls.get('list',data_json);
+        this.$ls.on('list',function(val){
+          _this.list=val;
+      });
     },
 
   methods:{

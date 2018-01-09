@@ -14,7 +14,6 @@
 						<f7-list>
 							<f7-list-item link="/page/" title="Audit" link-view="#main-view" link-close-panel media="<i class='fa fa-calendar-check-o ' aria-hidden='true'></i>"></f7-list-item>
 							<f7-list-item link="/page/" title="Objects" link-view="#main-view" link-close-panel media="<i class='fa fa-building-o' aria-hidden='true'></i>"></f7-list-item>
-
 							<f7-list-item link="/page/" title="Settings" link-view="#main-view" link-close-panel media="<i class='fa fa-cog ' aria-hidden='true'></i>"></f7-list-item>
 							<f7-list-item link="/login/"  @click="exit" title="Exit" link-view="#main-view" link-close-panel media="<i class='fa fa-sign-out' aria-hidden='true'></i>"></f7-list-item>
 						</f7-list>

@@ -56,6 +56,7 @@
 }
 .audit_wrong{
 	color:#ddd;
+	width:28px;
 }
 .blck_info .card{
 	margin:3% 0 0 0 ;
@@ -116,7 +117,90 @@
 	padding-top:0px!important;
 	padding-bottom: 0px!important;
 }
-.comments .content-block-inner:before,
-.comments .content-block-inner:after {
+
+.comments .content-block-inner:before
+ {
 	display:none;
+}
+.comments .content-block-inner,
+.comment_text_zone .content-block-inner{
+	background-color: #fff;
+}
+.comments{
+	padding-top:10px;
+	background: linear-gradient(-50deg, #e9e9e9, #eeeeee, #f6f6f6)!important;
+}
+.comment_text_zone{
+	padding-top:10px;
+	background: linear-gradient(-50deg, #e9e9e9, #eeeeee, #f6f6f6)!important;
+}
+.comment_text_zone .list-block{
+	margin-top:0!important;
+}
+.comment_text_zone .inputs-list .item-content:after{
+	display:none!important;
+}
+.comment_text_zone .item-content{
+	padding-left:0px;
+}
+.comment_text_zone .item-inner{
+	padding-right: 0px;
+}
+.accordion-item{
+	margin-bottom: 15px;
+}
+.comment_text_zone ul{
+	margin-top:5px;
+}
+.comment_text_zone textarea,
+.comment_text_zone  .title_input input{
+	 border-radius:7px;
+	 border:1px solid #ddd;
+	 padding-left:7px;
+	 padding-rigth:7px;
+	transition: all 0.2s;
+	box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.1);
+ }
+.comment_text_zone textarea:focus,
+.comment_text_zone  .title_input input:focus{
+	border-color:#2196F3;
+
+}
+.comment_text_zone.input-field:after, .item-input-field:after{
+	display:none;
+}
+.comment_text_zone .item-content:after,
+.comment_text_zone .item-inner:after{
+	display:none;
+}
+.comment_text_zone .content-block{
+	padding:0;
+}
+.attach{
+	border:1px solid #ddd;
+	display: inline-block;
+	background-color: transparent;
+	color: white;
+	width: 60px;
+	height: 60px;
+	font-size: 12px;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: none;
+	margin:0 5px 0 5px;
+	overflow: hidden;
+}
+.img_top_back{
+	background-color: #222222;
+	height: 15px;
+	opacity: 0.5;
+	top:0;
+	padding-left: 3px;
+}
+.img_bot_back{
+	background-color: #222222;
+	height: 15px;
+	opacity: 0.5;
+	margin-top:30px;
 }
