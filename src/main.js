@@ -50,7 +50,9 @@ new Vue({
     /* Uncomment to enable Material theme: */
     material: true,
     routes: Routes
+
   },
+    
   // Register App Component
   components: {
     app: App

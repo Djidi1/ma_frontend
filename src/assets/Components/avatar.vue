@@ -36,7 +36,7 @@
             initials () {
                 var words = this.fullname.split(/[\s-]+/)
                 var intls = ''
-                for (var i = 0; i < words.length; i++) {
+                for (var i = 0; i < words.length-1; i++) {
                     intls += words[i].substr(0, 1).toUpperCase()
                 }
                 if (intls.length > 3) {

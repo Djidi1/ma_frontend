@@ -1,27 +1,21 @@
 <template>
     <div class="blck_info">
-        <f7-card v-for=" item in data_storage" :key="item.id">
+        <f7-card v-for="item in data_storage" :key="item.id">
             <f7-card-header >
-                <div class="obj_info">
-                    <div class="row  no-gutter">
-                        <div class="col-50"> {{item.name}}</div>
-                        <div class="col-50 id_info">id:{{item.id}}</div>
-                        <div class="col-50 adrs_info">{{item.adres}}</div>
+                    <div class="obj_info">
+                        <div class="row  no-gutter">
+                            <div class="col-70"> {{item.name}}</div>
+
+                            <div class="col-70  dop_info">{{item.adres}}</div>
+                        </div>
                     </div>
-                </div>
             </f7-card-header>
-            <f7-list media-list>
-                <f7-list-item v-for="acrd in item.audits" :key="acrd.id" link="#" :title="acrd.name"  :text="acrd.create_date" :badge="acrd.status" after="" ></f7-list-item>
-            </f7-list>
-            <f7-list accordion>
-                <f7-list-item accordion-item title="Comments"  media="<i class='fa fa-commenting-o ' aria-hidden='true'></i>">
-                    <f7-accordion-content>
-                       <div v-for="acrd in item.audits" :key="acrd.id">
-                           <f7-block inner v-for="msg in acrd.comments" :key="msg.id">{{msg.text}}</f7-block>
-                       </div>
-                    </f7-accordion-content>
-                </f7-list-item>
-            </f7-list>
+            <f7-card-content>
+                <f7-list media-list>
+                    <f7-list-item v-for="acrd in item.audits" :key="acrd.id" :link="'/audit/'+acrd.id" :title="acrd.name" :subtitle="acrd.id"  :text="acrd.create_date"  :media="realStatus(acrd.status)"></f7-list-item>
+                </f7-list>
+            </f7-card-content>
+
         </f7-card>
     </div>
 </template>
@@ -32,24 +26,36 @@
         props:{
             data_storage:{ type: Array, default: '[]' }
         },
-        computed:{
-
-
-
+        methods:{
+            realStatus(str){
+              let result="";
+                switch (str){
+                    case '':
+                        result="";
+                        break;
+                    case 'new':
+                        result="<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>";
+                        break;
+                    case 'ok':
+                        result="<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>";
+                        break;
+                    case 'error':
+                        result="<i class='fa fa-chain-broken fa-2x audit_error' aria-hidden='true'></i>";
+                        break;
+                    case 'wrong':
+                        result="<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
+                    break;
+              }
+              return result;
+            }
         }
     }
 </script>
 
 <style scoped>
-    .obj_info{
-        display:block;
-        width:100%;
-        margin:5px 0 5px 0;
-    }
-    .id_info{
-        text-align: center;
-    }
-    .adrs_info{
+
+
+    .dop_info{
         font-size:15px;
         color:#757575;
     }

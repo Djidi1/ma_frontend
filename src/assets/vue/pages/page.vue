@@ -6,15 +6,10 @@
             <f7-nav-left>
                 <f7-link icon="icon-bars" open-panel="left"></f7-link>
             </f7-nav-left>
-            <f7-nav-center sliding>ACCR</f7-nav-center>
+            <f7-nav-center sliding>Audit</f7-nav-center>
 
         </f7-navbar>
-
-
             <list :data_storage="this.$root.list"></list>
-
-
-
     </f7-page>
 </template>
 

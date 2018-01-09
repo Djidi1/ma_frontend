@@ -1,5 +1,5 @@
 <template>
-        <f7-page>
+        <f7-page >
         <div id="login-form">
             <!-- Login Screen -->
             <f7-card id="center_body">

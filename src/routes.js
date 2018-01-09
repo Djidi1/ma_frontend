@@ -5,6 +5,11 @@ export default [
   },
     {
       path:'/page/',
-        component: require('./assets/vue/pages/page.vue')
+      component: require('./assets/vue/pages/page.vue')
+    },
+
+    {
+      path:'/audit/:id',
+      component:require('./assets/vue/pages/audit.vue')
     }
 ]
