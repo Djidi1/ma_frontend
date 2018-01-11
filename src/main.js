@@ -30,6 +30,10 @@ import Routes from './routes.js'
 // Import App Component
 import App from './main.vue'
 
+//Import Localization
+import local_ru from "./static/local_ru"
+import local_en from "./static/local_en"
+
 //Test zone inmport json
 import data_json from './static/Objects.json'
 
@@ -51,7 +55,7 @@ new Vue({
     material: true,
     routes: Routes,
     scrollTopOnNavbarClick:true,
-      hideNavbarOnPageScroll:true
+    hideNavbarOnPageScroll:true
 
   },
     
@@ -62,18 +66,16 @@ new Vue({
 
   data: {
         list : {},
-        auth_info:{
-            name:'',
-            auth:false
-        },
-
+        ls_list:{},
+        auth_info:{},
+        localization:local_ru
     },
 
    watch:{
         auth_info: function(val){
           this.$ls.set('auth_info',val);
       },
-        list:function(val){
+       list:function(val){
             this.$ls.set('list',val);
        }
     },
@@ -87,14 +89,19 @@ new Vue({
         this.list=this.$ls.get('list',data_json);
         this.$ls.on('list',function(val){
           _this.list=val;
-      });
+        });
+
     },
 
   methods:{
         check_user_auth:function(){
-            if (this.auth_info.auth)
-                return true;
+            if (this.auth_info.auth) {
+                    return true;
+            }
             return false;
+        },
+        update_ls:function(){
+            this.$ls.set('list',this.list);
         }
 
     }

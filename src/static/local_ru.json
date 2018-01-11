@@ -1,0 +1,29 @@
+{
+  "LoginScreen": {
+    "LoginHeader": "Вход",
+    "LoginPlaceholder": "Логин",
+    "PasswordPlaceholder": "Пароль",
+    "SubmitButton": "Войти",
+    "FogetButton": "Забыли пароль?"
+  },
+  "LeftMenu":{
+    "Audit":"Аудиты",
+    "Object":"Объекты",
+    "Settings":"Настройки",
+    "Exit":"Выход"
+  },
+  "AuditPage_main":"Аудиты",
+  "ObjectPage_main":"Объекты",
+  "SettingPage":"Настройки",
+  "AuditPage":{
+    "name":"Название",
+    "object":"Объект",
+    "address":"Адресс",
+    "date_create":"Дата создания",
+    "check_list":"Чек-листы",
+    "comments_title":"Комментарии",
+    "comment_placeholder":"Сообщение...",
+    "comment_button":"Отправить"
+  }
+}
+

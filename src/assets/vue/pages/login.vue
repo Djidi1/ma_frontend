@@ -3,21 +3,23 @@
         <div id="login-form">
             <!-- Login Screen -->
             <f7-card id="center_body">
-                <f7-login-screen-title >Login IN</f7-login-screen-title>
+                <f7-login-screen-title >{{this.$root.localization.LoginScreen.LoginHeader}}</f7-login-screen-title>
                 <f7-list form>
                     <f7-list-item>
+                        <f7-label floating>{{this.$root.localization.LoginScreen.LoginPlaceholder}}</f7-label>
                         <f7-icon slot="media" fa="user" size="24px" ></f7-icon>
-                        <f7-input name="username" placeholder="Login" type="text"v-model="form_login.login"  ></f7-input>
+                        <f7-input name="username"  type="text"v-model="form_login.login"  ></f7-input>
                     </f7-list-item>
                     <f7-list-item>
+                        <f7-label floating>{{this.$root.localization.LoginScreen.PasswordPlaceholder}}</f7-label>
                         <f7-icon slot="media" fa="lock" size="24px"></f7-icon>
-                        <f7-input name="password" type="password" placeholder="Password"  v-model="form_login.password" ></f7-input>
+                        <f7-input name="password" type="password"   v-model="form_login.password" ></f7-input>
                     </f7-list-item>
                     <f7-list-item class="submit_item">
-                        <f7-button @click="onLogin" fill class="button_login_form" type="submit"> Submit</f7-button>
+                        <f7-button @click="onLogin" fill class="button_login_form" type="submit"> {{this.$root.localization.LoginScreen.SubmitButton}}</f7-button>
                     </f7-list-item>
                     <f7-list-item class="foget_item" >
-                        <f7-button  class="button_login_form_foget" > Foget password?</f7-button>
+                        <f7-button  class="button_login_form_foget" > {{this.$root.localization.LoginScreen.FogetButton}}</f7-button>
                     </f7-list-item>
                 </f7-list>
             </f7-card>

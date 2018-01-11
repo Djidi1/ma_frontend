@@ -8,14 +8,14 @@
 			<f7-view id="left-panel-view">
 				<f7-pages>
 					<f7-page>
-						<div class="left-panel-header">
-									<avatar :fullname="this.$root.auth_info.name" size="70"></avatar>
+						<div class="left-panel-header user_back">
+									<avatar :fullname="this.$root.auth_info.name" size="70" color="#c65c44"></avatar>
 						</div>
-						<f7-list>
-							<f7-list-item link="/page/" title="Audit" link-view="#main-view" link-close-panel media="<i class='fa fa-calendar-check-o ' aria-hidden='true'></i>"></f7-list-item>
-							<f7-list-item link="/page/" title="Objects" link-view="#main-view" link-close-panel media="<i class='fa fa-building-o' aria-hidden='true'></i>"></f7-list-item>
-							<f7-list-item link="/page/" title="Settings" link-view="#main-view" link-close-panel media="<i class='fa fa-cog ' aria-hidden='true'></i>"></f7-list-item>
-							<f7-list-item link="/login/"  @click="exit" title="Exit" link-view="#main-view" link-close-panel media="<i class='fa fa-sign-out' aria-hidden='true'></i>"></f7-list-item>
+						<f7-list class="mleft_menu_block">
+							<f7-list-item link="/page/" :title="this.$root.localization.LeftMenu.Audit" link-view="#main-view" link-close-panel media="<i class='fa fa-calendar-check-o ' aria-hidden='true'></i>"></f7-list-item>
+							<f7-list-item link="/page/" :title="this.$root.localization.LeftMenu.Object" link-view="#main-view" link-close-panel media="<i class='fa fa-building-o' aria-hidden='true'></i>"></f7-list-item>
+							<f7-list-item link="/page/" :title="this.$root.localization.LeftMenu.Settings" link-view="#main-view" link-close-panel media="<i class='fa fa-cog ' aria-hidden='true'></i>"></f7-list-item>
+							<f7-list-item link="/login/"  @click="exit" :title="this.$root.localization.LeftMenu.Exit" link-view="#main-view" link-close-panel media="<i class='fa fa-sign-out' aria-hidden='true'></i>"></f7-list-item>
 						</f7-list>
 					</f7-page>
 				</f7-pages>
@@ -35,8 +35,10 @@
 </template>
 
 <script>
-    import Avatar from './assets/Components/avatar.vue'
-    import User_name from './assets/Components/user_name.vue'
+    import Avatar from './assets/vue/Components/avatar.vue'
+    import User_name from './assets/vue/Components/user_name.vue'
+
+
 
     export default {
         components:{
@@ -54,11 +56,10 @@
                 this.$root.auth_info=user_info;
             },
             go_to_page:function(){
-				console.log('true');
                 this.$f7.views.main.router.load({url:'/page/'});
             },
 			go_to_login:function(){
-                console.log('false');
+
                 this.$f7.views.main.router.load({url:'/login/'});
 			}
 

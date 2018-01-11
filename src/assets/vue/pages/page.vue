@@ -6,7 +6,7 @@
             <f7-nav-left>
                 <f7-link icon="icon-bars" open-panel="left"></f7-link>
             </f7-nav-left>
-            <f7-nav-center sliding>Audit</f7-nav-center>
+            <f7-nav-center sliding>{{this.$root.localization.AuditPage_main}}</f7-nav-center>
 
         </f7-navbar>
             <list :data_storage="this.$root.list"></list>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import List from '../../Components/list_audit.vue'
+    import List from '../Components/list_audit.vue'
     export default {
         name: "page",
         components:{

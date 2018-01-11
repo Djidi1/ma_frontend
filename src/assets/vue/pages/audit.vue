@@ -11,7 +11,7 @@
                         <div class="obj_info">
                             <div class="row  no-gutter">
                                 <div class="col-70">
-                                    <div class="col-100">Name: {{audit.name}}</div>
+                                    <div class="col-100">{{this.$root.localization.AuditPage.name}}: {{audit.name}}</div>
                                     <div class="col-100">Id: {{audit.id}}</div>
                                     <div class="col-100">{{audit.create_date}}</div>
                                     <div class="col-100">{{object_audit.name}}</div>
@@ -32,7 +32,7 @@
 
             <f7-card>
                    <f7-card-header>
-                        Check-Lists
+                        {{this.$root.localization.AuditPage.check_list}}
                    </f7-card-header>
                         <f7-list accordion  v-for="check in this.audit.check_list"  :key="check.id"  :id="check.id" >
                             <f7-list-item accordion-item :title="check.name" :after="realStatus(check.status)">
@@ -58,18 +58,16 @@
             <f7-card>
                 <f7-card-content>
                     <f7-list accordion >
-                        <f7-list-item accordion-item title="Comments" :after="commentsCount">
+                        <f7-list-item accordion-item :title="this.$root.localization.AuditPage.comments_title" :after="commentsCount">
                             <f7-accordion-content >
                                 <f7-block inner class="comments" v-for="comments in this.audit.comments"  :key="comments.id">
                                 <comment :data_comments="comments" ></comment>
                                 </f7-block>
                                 <f7-block inner class="comment_text_zone">
                                   <f7-list form>
+
                                       <f7-list-item>
-                                          <f7-input type="text" placeholder="Title" class="title_input" v-model="comment_title"/>
-                                      </f7-list-item>
-                                      <f7-list-item>
-                                          <f7-input type="textarea" placeholder="Message" v-model="comment_text"></f7-input>
+                                          <f7-input type="textarea" :placeholder="this.$root.localization.AuditPage.comment_placeholder" v-model="comment_text"></f7-input>
                                       </f7-list-item>
                                       <f7-block v-show="hasAttach">
                                           <div class="attach" v-for="attach in this.attachment" :key="attach.index" :style="attachImg(attach.url)" @click="photolook(attachment,attach.index)">
@@ -80,11 +78,11 @@
                                       <f7-block>
                                          <div class="row">
                                              <div class="col-50 attachment_button">
-                                                <button> <i class="fa fa-paperclip fa-2x" aria-hidden="true"></i></button>
+
                                                  <button> <i class="fa fa-camera fa-2x" aria-hidden="true"></i></button>
                                              </div>
                                              <div class="col-50">
-                                                <f7-button fill @click="send_comments"> Отправить</f7-button>
+                                                <f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
                                              </div>
                                          </div>
                                       </f7-block>
@@ -102,7 +100,7 @@
 
 <script>
     var $$=Dom7;
-    import comment from '../../Components/comment.vue'
+    import comment from '../Components/comment.vue'
     export default {
         components:{
           comment:comment
@@ -264,6 +262,7 @@
                        if(item.status==="wrong") status="wrong";
                 })
                 this.audit.status=status;
+                this.$root.update_ls();
             },
             realStatus(str){
                 let result="";

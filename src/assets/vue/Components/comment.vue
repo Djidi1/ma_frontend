@@ -58,6 +58,7 @@
                     'background-image': this.hasAttach ? 'url(' + attach_img + ')' : 'none'
                 }
             },
+
             photolook(attach,id){
                 let photos =this.$f7.photoBrowser({
                     type: 'popup',
@@ -69,6 +70,7 @@
 
 
             },
+
             photoArray(array){
                let resultArray=new Array();
                  array.forEach(function (items,i,arr){
@@ -76,7 +78,9 @@
                 });
                  return resultArray;
             },
+
             removeComment(){
+                //this.f7.confirm();
                 let self=this;
                 this.$root.list.forEach(function (items,z,arr){
                     items.audits.forEach(function(item,j,arr){

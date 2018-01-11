@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row user_block">
         <div class="col-35">
             <div class="avatar" :style="style">
                 <table>
@@ -106,7 +106,7 @@
     }
     .user_name {
         display: inline-block;
-        font-size: 15px;
+        font-size: 16px;
         text-align: left;
         padding:0 5px 0 0;
         text-align: left;
@@ -125,4 +125,5 @@
         text-align: left;
         padding-left:10px;
     }
+
 </style>

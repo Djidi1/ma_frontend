@@ -1,0 +1,29 @@
+{
+  "LoginScreen": {
+    "LoginHeader": "Login IN",
+    "LoginPlaceholder": "Login",
+    "PasswordPlaceholder": "Password",
+    "SubmitButton": "Enter",
+    "FogetButton": "Foget password?"
+  },
+  "LeftMenu":{
+    "Audit":"Audits",
+    "Object":"Objects",
+    "Settings":"Settings",
+    "Exit":"Exit"
+  },
+  "AuditPage_main":"Audits",
+  "ObjectPage_main":"Objects",
+  "SettingPage":"Settings",
+  "AuditPage":{
+    "name":"Name",
+    "object":"Object",
+    "address":"Address",
+    "date_create":"Create date",
+    "check_list":"Check-lists",
+    "comments_title":"Comments",
+    "comment_placeholder":"Message...",
+    "comment_button":"Send"
+  }
+}
+
