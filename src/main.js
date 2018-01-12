@@ -93,7 +93,7 @@ new Vue({
         this.$ls.on('list',function(val){
           _this.list=val;
         });
-        this.lang_select();
+        this.lang_select(this.auth_info.lang);
 
     },
 
@@ -104,8 +104,8 @@ new Vue({
             }
             return false;
         },
-        lang_select:function(){
-          switch (this.auth_info.lang){
+        lang_select:function(val){
+          switch (val){
               case "ru":
                   this.localization=local_ru;
                   break;
@@ -115,8 +115,9 @@ new Vue({
           }
         },
         update_ls:function(){
-            this.$ls.set('list',this.list);
-        }
+                this.$ls.set('list',this.list);
+         }
+
 
     }
 

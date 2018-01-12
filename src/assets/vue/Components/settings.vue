@@ -12,7 +12,7 @@
             <f7-list form class="user_settings">
                 <f7-list-item>
                     <f7-label floating>{{this.$root.localization.lang.name}}</f7-label>
-                    <f7-input type="text" v-model="this.user_name"/>
+                    <f7-input type="text" v-model="user_name"/>
                 </f7-list-item>
                 <f7-list-item>
                     <f7-label floating>{{this.$root.localization.lang.tel}}</f7-label>
@@ -24,8 +24,8 @@
             <!--RadioGroup-->
             <f7-block-title>{{this.$root.localization.lang.lang_block}}</f7-block-title>
             <f7-list form>
-                <f7-list-item radio name="lang_radio" value="ru" :title="this.$root.localization.lang.rus" :checked="curLang('ru')"></f7-list-item>
-                <f7-list-item radio name="lang_radio" value="en" :title="this.$root.localization.lang.en" :checked="curLang('en')"></f7-list-item>
+                <f7-list-item @change="change_l('ru')" radio name="lang_radio" value="ru" :title="this.$root.localization.lang.rus" :checked="curLang('ru')"></f7-list-item>
+                <f7-list-item @change="change_l('en')" radio name="lang_radio" value="en" :title="this.$root.localization.lang.en" :checked="curLang('en')"></f7-list-item>
             </f7-list>
 
 
@@ -33,10 +33,10 @@
             <f7-block >
                 <div class="row">
                     <div class="col-50">
-                        <f7-button class="abort_button" back > {{this.$root.localization.lang.abort}}</f7-button>
+                        <f7-button @click="cancelSetting" class="abort_button"  back> {{this.$root.localization.lang.abort}}</f7-button>
                     </div>
                     <div class="col-50">
-                        <f7-button fill > {{this.$root.localization.lang.submit}}</f7-button>
+                        <f7-button fill back @click="submitSetting"> {{this.$root.localization.lang.submit}}</f7-button>
                     </div>
                 </div>
             </f7-block>
@@ -51,7 +51,8 @@
         name: "settings",
         data:function(){
             return{
-                user_name:this.$root.auth_info.name
+                user_name:this.$root.auth_info.name,
+                curentLang:this.$root.auth_info.lang
             }
         },
         methods:{
@@ -59,14 +60,50 @@
               let result;
                 switch (val){
                   case "ru":
-                      (this.$root.auth_info.lang==="ru")?result=true:result=false;
+                      (this.curentLang==="ru")?result=true:result=false;
                       break;
                   case "en":
-                      (this.$root.auth_info.lang==="en")?result=true:result=false;
+                      (this.curentLang==="en")?result=true:result=false;
                       break;
               }
               return result;
-    }
+    },
+            change_l:function(val){
+                //Таймер прикручен для вида, чтоб сразу резко все не скакало.
+                let self=this;
+                this.curentLang=val;
+                switch (val){
+                    case "ru":
+                        this.$f7.showPreloader(self.$root.localization.modal.preloader);
+                        setTimeout(function(){
+                            self.$root.lang_select(val);
+                            self.$f7.hidePreloader();
+                        },500)
+                        break;
+                    case "en":
+                        this.$f7.showPreloader(self.$root.localization.modal.preloader);
+                        setTimeout(function(){
+                            self.$root.lang_select(val);
+                            self.$f7.hidePreloader();
+                        },500)
+                        break;
+                }
+            },
+            submitSetting:function(){
+                console.log(this.user_name);
+                if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.auth_info.lang){
+                  let new_data={"name":this.user_name,"auth":true,lang:this.curentLang}
+                  this.$root.auth_info=new_data;
+                }
+            },
+            cancelSetting:function(){
+
+                if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.auth_info.lang){
+                    this.change_l(this.$root.auth_info.lang);
+
+                }
+
+            }
         }
     }
 </script>

@@ -42,7 +42,8 @@
     "modalTextConf":"Are you sure?",
     "modalTextConfExit":"Exit?",
     "modalTextLoginErr":"Login or password are wrong!",
-    "modalTextLoginEmp":"Login or password are empty"
+    "modalTextLoginEmp":"Login or password are empty",
+    "preloader":"Loading..."
   }
 }
 

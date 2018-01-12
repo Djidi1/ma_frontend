@@ -42,7 +42,8 @@
     "modalTextConf":"Вы уверены?",
     "modalTextConfExit":"Выйти?",
     "modalTextLoginErr":"Логин или пароль введены не верно",
-    "modalTextLoginEmp":"Заполните поля Логин и Пароль"
+    "modalTextLoginEmp":"Заполните поля Логин и Пароль",
+    "preloader":"Выполнение запроса..."
   }
 
 }
