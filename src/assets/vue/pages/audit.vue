@@ -78,7 +78,6 @@
                                       <f7-block>
                                          <div class="row">
                                              <div class="col-50 attachment_button">
-
                                                  <button> <i class="fa fa-camera fa-2x" aria-hidden="true"></i></button>
                                              </div>
                                              <div class="col-50">
@@ -324,8 +323,5 @@
         color: #868686;
         margin:0 7px 0 5px;
     }
-.abort_button{
-    border:1px solid #ddd;
 
-}
 </style>

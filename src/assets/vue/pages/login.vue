@@ -47,7 +47,7 @@
                 } else {
                     if (this.form_login.login == "Kon" && this.form_login.password == "password") {
 
-                        let user_info={name:'Konik Nikita',auth:true};
+                        let user_info={name:'Konik Nikita',auth:true,lang:this.$root.auth_info.lang};
                         this.$root.auth_info=user_info;
                        this.$f7.views.main.router.load({url:'/page/'});
                     } else {

@@ -6,24 +6,43 @@
     "SubmitButton": "Войти",
     "FogetButton": "Забыли пароль?"
   },
-  "LeftMenu":{
-    "Audit":"Аудиты",
-    "Object":"Объекты",
-    "Settings":"Настройки",
-    "Exit":"Выход"
+  "LeftMenu": {
+    "Audit": "Аудиты",
+    "Object": "Объекты",
+    "Settings": "Настройки",
+    "Exit": "Выход"
   },
-  "AuditPage_main":"Аудиты",
-  "ObjectPage_main":"Объекты",
-  "SettingPage":"Настройки",
-  "AuditPage":{
-    "name":"Название",
-    "object":"Объект",
-    "address":"Адресс",
-    "date_create":"Дата создания",
-    "check_list":"Чек-листы",
-    "comments_title":"Комментарии",
-    "comment_placeholder":"Сообщение...",
-    "comment_button":"Отправить"
+  "AuditPage_main": "Аудиты",
+  "ObjectPage_main": "Объекты",
+  "SettingPage": "Настройки",
+  "AuditPage": {
+    "name": "Название",
+    "object": "Объект",
+    "address": "Адресс",
+    "date_create": "Дата создания",
+    "check_list": "Чек-листы",
+    "comments_title": "Комментарии",
+    "comment_placeholder": "Сообщение...",
+    "comment_button": "Отправить"
+  },
+  "lang": {
+    "rus": "Русский",
+    "en": "Английский",
+    "submit": "Принять",
+    "abort": "Отмена",
+    "name": "Имя пользователя",
+    "tel":"Телефон/Пока выключен",
+    "user_block": "Инфо",
+    "lang_block": "Язык"
+  },
+  "modal":{
+    "modalOk":"Принять",
+    "modalCancel":"Отмена",
+    "modalHeaderError":"Внимание!",
+    "modalTextConf":"Вы уверены?",
+    "modalTextConfExit":"Выйти?",
+    "modalTextLoginErr":"Логин или пароль введены не верно",
+    "modalTextLoginEmp":"Заполните поля Логин и Пароль"
   }
-}
 
+}

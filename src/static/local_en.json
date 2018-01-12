@@ -24,6 +24,25 @@
     "comments_title":"Comments",
     "comment_placeholder":"Message...",
     "comment_button":"Send"
+  },
+  "lang": {
+    "rus": "Russian",
+    "en": "English",
+    "submit": "Submit",
+    "abort": "Cancel",
+    "name": "User name",
+    "tel":"Phone number/disabled",
+    "user_block": "Info",
+    "lang_block": "Language"
+  },
+  "modal":{
+    "modalOk":"Submit",
+    "modalCancel":"Cancel",
+    "modalHeaderError":"Warning!",
+    "modalTextConf":"Are you sure?",
+    "modalTextConfExit":"Exit?",
+    "modalTextLoginErr":"Login or password are wrong!",
+    "modalTextLoginEmp":"Login or password are empty"
   }
 }
 

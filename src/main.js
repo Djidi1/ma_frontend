@@ -55,7 +55,10 @@ new Vue({
     material: true,
     routes: Routes,
     scrollTopOnNavbarClick:true,
-    hideNavbarOnPageScroll:true
+    hideNavbarOnPageScroll:true,
+
+
+
 
   },
     
@@ -68,7 +71,7 @@ new Vue({
         list : {},
         ls_list:{},
         auth_info:{},
-        localization:local_ru
+        localization:{}
     },
 
    watch:{
@@ -81,7 +84,7 @@ new Vue({
     },
 
   created: function(){
-        this.auth_info =this.$ls.get('auth_info',{name:'',auth:false});
+        this.auth_info =this.$ls.get('auth_info',{name:'',auth:false,lang:"ru"});
         var _this=this;
         this.$ls.on('auth_info',function(val){
             _this.auth_info=val;
@@ -90,6 +93,7 @@ new Vue({
         this.$ls.on('list',function(val){
           _this.list=val;
         });
+        this.lang_select();
 
     },
 
@@ -99,6 +103,16 @@ new Vue({
                     return true;
             }
             return false;
+        },
+        lang_select:function(){
+          switch (this.auth_info.lang){
+              case "ru":
+                  this.localization=local_ru;
+                  break;
+              case "en":
+                  this.localization=local_en;
+                  break;
+          }
         },
         update_ls:function(){
             this.$ls.set('list',this.list);
