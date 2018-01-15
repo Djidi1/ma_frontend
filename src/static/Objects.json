@@ -18,72 +18,44 @@
           "id":0,
         "list_to_check":[
           {
+            "id":1,
             "discription":"Оборудование",
-            "status":false
+            "status":false,
+            "comments":[
+              {
+                "id":"3434",
+                "create_date":"22/12/2017 11:00:00",
+                "from":"Konik Nikita",
+                "title":"Проверка связи",
+                "text":"Проверяем работоспособность коментариев в приложении",
+                "attachments":[
+                  {
+                    "index":"0",
+                    "url": "./static/depositphotos_99061296-stock-illustration-safety-at-work-icon-design.jpg"
+                  },
+                  { "index":"1",
+                    "url": "https://i.pinimg.com/originals/43/a3/81/43a3818a0404a5acacc285ae6fc4be3a.jpg"}
+                ]
+              }
+            ]
           },
           {
+            "id":2,
             "discription":"Стены",
-            "status":false
+            "status":false,
+            "comments":[]
           },
           {
+            "id":3,
             "discription":"Потолок",
-            "status":false
+            "status":false,
+            "comments":[]
           }
         ]
-      },
-        {
-          "status":"new",
-          "name":"Проверка ds цеха",
-          "id":1,
-          "list_to_check":[
-            {
-              "discription":"Оборудование",
-              "status":false
-            },
-            {
-              "discription":"Стены",
-              "status":false
-            },
-            {
-              "discription":"Потолок",
-              "status":false
-            }
-          ]
-        }],
-      "comments":[
-        {
-          "id":"3434",
-          "create_date":"22/12/2017 11:00:00",
-          "from":"User_1",
-          "title":"Проверка связи",
-          "text":"Проверяем работоспособность коментариев в приложении",
-          "attachments":[]
-        },
-        {
-          "id":"3435",
-          "create_date":"23/12/2017 11:30:00",
-          "from":"User_2",
-          "title":"Состояние проверки",
-          "text":"Все ли объекты проверены? Есть ли какие-нибудь замечаний",
-          "attachments":[]
-        },
-        {
-          "id":"3436",
-          "create_date":"22/12/2017 11:00:00",
-          "from":"User_3",
-          "title":"Проблема с оборудование",
-          "text":"Оборудование не очень. Все на ладон дышит!",
-          "attachments":[
-            {
-              "index":"0",
-              "url": "./static/depositphotos_99061296-stock-illustration-safety-at-work-icon-design.jpg"
-            },
-            { "index":"1",
-              "url": "https://i.pinimg.com/originals/43/a3/81/43a3818a0404a5acacc285ae6fc4be3a.jpg"}
+      }]
 
-          ]
-        }
-      ]
+
+
     }
 
   ]

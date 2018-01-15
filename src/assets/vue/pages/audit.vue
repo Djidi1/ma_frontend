@@ -8,16 +8,17 @@
         <div class="blck_info">
             <f7-card>
                 <f7-card-header>
-                        <div class="obj_info">
+                        <div class="obj_info audit_obj">
                             <div class="row  no-gutter">
                                 <div class="col-70">
-                                    <div class="col-100">{{this.$root.localization.AuditPage.name}}: {{audit.name}}</div>
+                                    <div class="col-100">{{this.$root.localization.AuditPage.name}}:</div>
+                                    <div class="col-100">{{audit.name}}</div>
                                     <div class="col-100">Id: {{audit.id}}</div>
                                     <div class="col-100">{{audit.create_date}}</div>
                                     <div class="col-100">{{object_audit.name}}</div>
                                     <div class="col-100">{{object_audit.adres}}</div>
                                 </div>
-                                <div class="col-30 status">
+                                <div class="col-30 status" :style="status_style()">
                                     <table>
                                         <tr>
                                             <td> <i :class="status" aria-hidden="true"></i></td>
@@ -34,64 +35,30 @@
                    <f7-card-header>
                         {{this.$root.localization.AuditPage.check_list}}
                    </f7-card-header>
+
                         <f7-list accordion  v-for="check in this.audit.check_list"  :key="check.id"  :id="check.id" >
                             <f7-list-item accordion-item :title="check.name" :after="realStatus(check.status)">
                                 <f7-accordion-content>
-                                    <f7-list form>
-                                        <f7-list-item checkbox v-for="list in check.list_to_check" :key="list.id" name="checkbox"  :title="list.discription" :checked="list.status"></f7-list-item>
-                                        <f7-list-item>
-                                            <div class="row" style="width:100%; padding:15px 0 15px 0">
-                                                <div class="col-50">
-                                                    <f7-button @click="abort_check_list(check)" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>
-                                                </div>
-                                                <div class="col-50">
-                                                    <f7-button fill @click="check_list_status(check)"><i class="fa fa-check" aria-hidden="true"></i> </f7-button>
-                                                </div>
+                                        <check_item v-for="item in check.list_to_check" :data_item="item" :key="item.id"></check_item>
+                                    <f7-list-item>
+                                        <div class="row" style="width:100%; padding:15px 0 15px 0">
+                                            <div class="col-50">
+                                                <f7-button @click="abort_check_list(check)" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>
                                             </div>
-                                        </f7-list-item>
-                                    </f7-list>
+                                            <div class="col-50">
+                                                <f7-button fill @click="check_list_status(check)"><i class="fa fa-check" aria-hidden="true"></i> </f7-button>
+                                            </div>
+                                        </div>
+                                    </f7-list-item>
                                 </f7-accordion-content>
                             </f7-list-item>
                         </f7-list>
                 </f7-card>
 
-            <f7-card>
-                <f7-card-content>
-                    <f7-list accordion >
-                        <f7-list-item accordion-item :title="this.$root.localization.AuditPage.comments_title" :after="commentsCount">
-                            <f7-accordion-content >
-                                <f7-block inner class="comments" v-for="comments in this.audit.comments"  :key="comments.id">
-                                <comment :data_comments="comments" ></comment>
-                                </f7-block>
-                                <f7-block inner class="comment_text_zone">
-                                  <f7-list form>
 
-                                      <f7-list-item>
-                                          <f7-input type="textarea" :placeholder="this.$root.localization.AuditPage.comment_placeholder" v-model="comment_text"></f7-input>
-                                      </f7-list-item>
-                                      <f7-block v-show="hasAttach">
-                                          <div class="attach" v-for="attach in this.attachment" :key="attach.index" :style="attachImg(attach.url)" @click="photolook(attachment,attach.index)">
-                                              <div class="img_top_back">img</div>
-                                              <div class="img_bot_back"></div>
-                                          </div>
-                                      </f7-block>
-                                      <f7-block>
-                                         <div class="row">
-                                             <div class="col-50 attachment_button">
-                                                 <button> <i class="fa fa-camera fa-2x" aria-hidden="true"></i></button>
-                                             </div>
-                                             <div class="col-50">
-                                                <f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
-                                             </div>
-                                         </div>
-                                      </f7-block>
-                                  </f7-list>
-                                </f7-block>
-                            </f7-accordion-content>
-                        </f7-list-item>
-                    </f7-list>
-                </f7-card-content>
-            </f7-card>
+
+
+
 
         </div>
     </f7-page>
@@ -99,10 +66,13 @@
 
 <script>
     var $$=Dom7;
-    import comment from '../Components/comment.vue'
+    import check_item from '../Components/chek_item.vue'
+
+
     export default {
         components:{
-          comment:comment
+
+          check_item:check_item
         },
         name: "audit",
         props: {
@@ -112,11 +82,9 @@
             return {
                 audit:'',
                 object_audit:'',
-                comment_text:'',
-                comment_title:'',
                 acordianId:0,
-                attachment:[
-                ]
+
+
             }
         },
         created:function(){
@@ -126,9 +94,6 @@
                     if(item.id===self.id){
                         self.audit=item;
                         self.object_audit=items;
-
-
-
                     }
                 })
             })
@@ -144,13 +109,13 @@
                         result="";
                         break;
                     case 'ok':
-                        result="fa fa-check fa-2x audit_good";
+                        result="fa fa-check fa-3x audit_good";
                         break;
                     case 'error':
-                        result="fa fa-chain-broken fa-2x audit_error>";
+                        result="fa fa-chain-broken fa-3x audit_error>";
                         break;
                     case 'wrong':
-                        result="fa fa-times fa-2x audit_wrong>";
+                        result="fa fa-times fa-3x audit_wrong>";
                         break;
                 }
                 return result;
@@ -180,8 +145,6 @@
                     }
                 );
                 photos.open(id);
-
-
             },
             photoArray(array){
                 let resultArray=new Array();
@@ -190,8 +153,11 @@
                 });
                 return resultArray;
 
+            },
 
-
+            status_style(){
+                let height_block=$$('.audit_obj').height();
+                return {"height":height_block+"px"}
             },
             send_comments(){
                let current=this.audit;
@@ -217,6 +183,7 @@
                 return ++lastId;
             },
             check_list_status(obj){
+                let self=this;
                 let status=true;
                 let result=''
                 let acord=$$('#'+obj.id).find('.accordion-item');
@@ -224,34 +191,40 @@
                    if ($$(this).length>0){
                         let inputs=$$(this).find('form').find('li').find('input');
                         inputs.each(function(){
+                            let id_porp=$$(this).parent().parent().attr('id');
                             if($$(this).prop('checked')){
                             }else{
                                 status=false;
                             }
+                            self.item_status(status,obj,id_porp);
                         })
-                      if (status){
-                          result= "ok";
-                      }else{
-                          result="wrong";
-                      }
+                      result=(status)?"ok":"wrong";
                    }
                  });
-               obj.status=result;
+                obj.status=result;
                 this.audit_change_status()
 
             },
             abort_check_list(obj){
+                let self=this;
                 let acord=$$('#'+obj.id);
                 acord.each(function(){
                     if ($$(this).length>0){
                         let inputs=$$(this).find('form').find('li').find('input');
                         inputs.each(function(){
-                            $$(this).prop('checked',false);
+                            let id_porp=$$(this).parent().parent().attr('id');
+                            self.item_status(false,obj,id_porp);
                         })
                     }
                 })
                 obj.status='new';
                 this.audit_change_status();
+            },
+            item_status(val,obj,id_porp){
+                obj.list_to_check.forEach(function(itm,i,arr){
+                    if (itm.id.toString()===id_porp)
+                        itm.status=val;
+                });
             },
             audit_change_status(){
                let list =this.audit.check_list;
@@ -285,7 +258,13 @@
                 return result;
             }
 
+
         }
+
+
+
+
+
     }
 </script>
 
@@ -294,7 +273,7 @@
     display: inline-block;
     background-color: transparent;
     text-align: center;
-    padding-top:6%;
+
 }
     .status table{
         width: 100%;
@@ -323,5 +302,13 @@
         color: #868686;
         margin:0 7px 0 5px;
     }
+    .comments_button{
+        color:#757575;
+    }
+
+    .comm_show{
+        display:none;
+    }
+
 
 </style>

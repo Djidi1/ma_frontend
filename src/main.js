@@ -20,6 +20,7 @@ import AppStyles from './assets/sass/main.scss'
 import AppStylesCustom from './assets/sass/custom.scss'
 
 import  FAicon from 'font-awesome/css/font-awesome.css';
+ import f7icons from 'framework7-icons/css/framework7-icons.css'
 
 //Vue-localstorage
 import VueLocalStorage from 'vue-ls'
@@ -56,10 +57,6 @@ new Vue({
     routes: Routes,
     scrollTopOnNavbarClick:true,
     hideNavbarOnPageScroll:true,
-
-
-
-
   },
     
   // Register App Component
@@ -113,10 +110,15 @@ new Vue({
                   this.localization=local_en;
                   break;
           }
+        (this.$f7!=undefined)? this.changeModalLang() :"";
         },
         update_ls:function(){
                 this.$ls.set('list',this.list);
-         }
+         },
+        changeModalLang:function(){
+            this.$f7.params.modalButtonOk=this.localization.modal.modalOk;
+            this.$f7.params.modalButtonCancel=this.localization.modal.modalCancel;
+        }
 
 
     }

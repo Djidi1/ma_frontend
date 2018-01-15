@@ -1,36 +1,50 @@
 <template>
     <div class="comment_block">
-        <div class="header_comment">
-            <div class="row">
-                <div class="col-60 title_comment">
-                    {{data_comments.title}}
-                </div>
-                <div class="col-40 date_comment">
-                    {{data_comments.create_date}}
-                </div>
-            </div>
-        </div>
-        <div class="content_comment">
-            {{data_comments.text}}
-        </div>
-        <div v-show="hasAttach" class="attachments_comments">
-            <div class="attach" v-for="attach in data_comments.attachments" :key="attach.index" :style="attachImg(attach.url)" @click="photolook(data_comments.attachments,attach.index)">
-                <div class="img_top_back">img</div>
-                <div class="img_bot_back"></div>
-            </div>
-        </div>
-        <div class="footer_comment">
-            <div class="row">
-                <div class="col-60">
-                    <div class="control_my_comment" v-show="myComment">
-                        <button @click="removeComment()"> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+
+            <div class="header_comment">
+                <div class="row">
+                    <div class="col-60 title_comment">
+                        From: {{data_comments.from}}
+                    </div>
+                    <div class="col-40 date_comment">
+                        {{data_comments.create_date}}
                     </div>
                 </div>
-                <div class="col-40 from_comment">
-                    {{data_comments.from}}
+            </div>
+            <div class="content_comment">
+                {{data_comments.text}}
+                <div v-show="hasAttach" class="attachments_comments">
+                    <div class="attach_block" v-for="attach in data_comments.attachments" :key="attach.index">
+                        <div class="attach"  :style="attachImg(attach.url)" @click="photolook(data_comments.attachments,attach.index)">
+                            <div class="img_top_back">img
+                            </div>
+                            <div class="img_bot_back"></div>
+                        </div>
+                        <div class="remove_button_block">
+                            <div class="remove_button" @click="remove_attach(attach.index)"><i class="fa fa-times" aria-hidden="true"></i></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="footer_comment">
+                <div class="row">
+                    <div class="col-70">
+
+                    </div>
+                    <div class="col-30 ">
+                        <div class="control_my_comment" v-show="myComment">
+                            <button @click="removeComment()"> <i class="fa fa-pencil" aria-hidden="true"></i></button>
+                            <button @click="removeComment()"> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
     </div>
 
 </template>
@@ -39,6 +53,11 @@
 
     export default {
         name: "comment",
+        data:function(){
+            return{
+                comment_text:''
+            }
+        },
         props:{
             data_comments:{ type: Object, default: '' }
         },
@@ -49,6 +68,7 @@
             myComment(){
                 return (this.data_comments.from===this.$root.auth_info.name)
             }
+
 
 
         },
@@ -84,13 +104,37 @@
                 let self=this;
                 this.$root.list.forEach(function (items,z,arr){
                     items.audits.forEach(function(item,j,arr){
-                      item.comments.forEach(function(comment,i,arr){
-                          if (comment.id===self.data_comments.id){
-                             arr.splice(i,1);
-                          }
-                      })
+                        item.check_list.forEach(function(itm,g,arr){
+                            itm.list_to_check.forEach(function(it,d,arr){
+                                it.comments.forEach(function(comment,w,arr){
+                                    if (comment.id===self.data_comments.id){
+                                        arr.splice(i,1);
+                                    }
+                                })
+                            })
+                        })
                     })
                 })
+            },
+            remove_attach(id){
+                let self=this;
+                this.$root.list.forEach(function (items,z,arr){
+                    items.audits.forEach(function(item,j,arr){
+                        item.check_list.forEach(function(itm,g,arr){
+                            itm.list_to_check.forEach(function(it,d,arr){
+                                it.comments.forEach(function(comment,w,arr){
+                                   comment.attachments.forEach(function(attach,l,arr){
+                                       if(attach.index===id){
+                                           console.log('del')
+                                       }
+                                   })
+                                })
+                            })
+                        })
+                    })
+                })
+
+
             }
 
     }
@@ -100,6 +144,7 @@
 <style scoped>
     .comment_block{
         background-color: #FFFFFF;
+        margin-bottom: 16px;
     }
 .header_comment{
     margin-bottom:10px;
@@ -107,7 +152,7 @@
     .title_comment{
         font-weight: bold;
         font-size: 15px;
-        overflow: visible;
+        word-wrap:normal;
     }
     .date_comment{
         opacity: 0.7;
@@ -116,19 +161,16 @@
         padding-top:4px!important;
     }
     .content_comment{
-        padding:15px 5px 15px 5px;
-        margin-bottom: 7px;
+        padding:15px 7px 15px 7px;
+
     }
     .attachments_comments{
-        margin: 10px 0 10px 0;
+        margin: 20px 0 5px 0;
         display: flex;
         justify-content: flex-start;
         flex-wrap: wrap;
-    }
-    .from_comment{
-        text-align: right;
-    }
 
+    }
 .header_comment .row:after,
 .footer_comment .row:before{
     content: '';
@@ -153,6 +195,19 @@
         color: #868686;
         margin:0 7px 0 5px;
         font-size: 16px;
+    }
+    .remove_button_block{
+        position:relative;
+
+    }
+    .remove_button{
+        position:absolute;
+        top: -80px;
+        right:-5px;
+        color:#ddd;
+        width:18px;
+        text-align: center;
+        opacity: 1!important;
     }
 
 

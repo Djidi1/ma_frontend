@@ -48,6 +48,7 @@
 		},
         beforeMount:function(){
             this.$nextTick(function(){
+				this.$root.changeModalLang();
                 (this.$root.check_user_auth()) ? this.go_to_page():this.go_to_login();
             })
         },
@@ -60,16 +61,11 @@
                     self.$f7.closePanel();
                     self.go_to_login();
                 });
-
             },
             go_to_page:function(){
-
-
                 this.$f7.views.main.router.load({url:'/page/'});
             },
 			go_to_login:function(){
-
-                //this.$f7.views.main.modalButtonOk=this.localization.modal.modalOk;
                 this.$f7.views.main.router.load({url:'/login/'});
 			}
 

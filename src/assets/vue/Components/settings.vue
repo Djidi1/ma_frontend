@@ -33,7 +33,7 @@
             <f7-block >
                 <div class="row">
                     <div class="col-50">
-                        <f7-button @click="cancelSetting" class="abort_button"  back> {{this.$root.localization.lang.abort}}</f7-button>
+                        <f7-button @click="cancelSetting" class="abort_button" > {{this.$root.localization.lang.abort}}</f7-button>
                     </div>
                     <div class="col-50">
                         <f7-button fill back @click="submitSetting"> {{this.$root.localization.lang.submit}}</f7-button>
@@ -90,19 +90,18 @@
                 }
             },
             submitSetting:function(){
-                console.log(this.user_name);
                 if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.auth_info.lang){
                   let new_data={"name":this.user_name,"auth":true,lang:this.curentLang}
                   this.$root.auth_info=new_data;
                 }
             },
             cancelSetting:function(){
-
+                self=this;
                 if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.auth_info.lang){
                     this.change_l(this.$root.auth_info.lang);
-
+                    setTimeout(function(){self.$f7.views[0].back();},600)
                 }
-
+                self.$f7.views[0].back();
             }
         }
     }
