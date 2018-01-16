@@ -290,18 +290,7 @@
     .comment_zone{
         margin-bottom: 30px;
     }
-    .attachment_button{
-        display:flex;
-        justify-content: flex-start;
-        height: 36px;
-    }
-    .attachment_button button{
-        padding-top:5px;
-        background-color: transparent;
-        border:unset;
-        color: #868686;
-        margin:0 7px 0 5px;
-    }
+
     .comments_button{
         color:#757575;
     }

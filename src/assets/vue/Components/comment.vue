@@ -1,13 +1,12 @@
 <template>
-    <div class="comment_block">
-
+    <div :id="data_comments.id">
+        <div v-if=this.$root.show class="comment_block"  >
             <div class="header_comment">
-                <div class="row">
+                <div class="row no-gutter">
                     <div class="col-60 title_comment">
-                        From: {{data_comments.from}}
                     </div>
                     <div class="col-40 date_comment">
-                        {{data_comments.create_date}}
+                        <span class="data_text" >{{data_comments.create_date}}</span>
                     </div>
                 </div>
             </div>
@@ -20,43 +19,48 @@
                             </div>
                             <div class="img_bot_back"></div>
                         </div>
-                        <div class="remove_button_block">
-                            <div class="remove_button" @click="remove_attach(attach.index)"><i class="fa fa-times" aria-hidden="true"></i></div>
-                        </div>
                     </div>
                 </div>
             </div>
             <div class="footer_comment">
-                <div class="row">
-                    <div class="col-70">
+                <div class="row no-gutter">
+                    <div class="col-65">
 
                     </div>
-                    <div class="col-30 ">
-                        <div class="control_my_comment" v-show="myComment">
-                            <button @click="removeComment()"> <i class="fa fa-pencil" aria-hidden="true"></i></button>
-                            <button @click="removeComment()"> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    <div class="col-25 ">
+                        <div class="control">
+                            <div class="control_my_comment" v-show="myComment">
+                                <button @click="editComment($event)"> <i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                <button @click="removeComment()"> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            </div>
                         </div>
+                    </div>
+                    <div class="col-10">
                     </div>
                 </div>
             </div>
-
-
-
-
-
+        </div>
+        <div v-else>
+            <text_area :comment_text="data_comments.text" :attachment="data_comments.attachments" :id="data_comments.id" :focus="true"></text_area>
+        </div>
 
     </div>
+
 
 </template>
 
 <script>
-
+    var $$=Dom7;
+    import textarea from '../Components/textarea_comment.vue'
     export default {
         name: "comment",
         data:function(){
             return{
-                comment_text:''
+                show:true
             }
+        },
+        components:{
+          text_area:textarea
         },
         props:{
             data_comments:{ type: Object, default: '' }
@@ -116,25 +120,27 @@
                     })
                 })
             },
-            remove_attach(id){
+            editComment(e){
+                e.preventDefault();
+                this.$root.show=!this.$root.show;
+                this.animate()
+            },
+            animate(){
                 let self=this;
-                this.$root.list.forEach(function (items,z,arr){
-                    items.audits.forEach(function(item,j,arr){
-                        item.check_list.forEach(function(itm,g,arr){
-                            itm.list_to_check.forEach(function(it,d,arr){
-                                it.comments.forEach(function(comment,w,arr){
-                                   comment.attachments.forEach(function(attach,l,arr){
-                                       if(attach.index===id){
-                                           console.log('del')
-                                       }
-                                   })
-                                })
-                            })
-                        })
+                let height;
+                setTimeout(function(){
+                    height=$$('#'+self.data_comments.id).parent().parent().height()
+                    $$('#'+self.data_comments.id).parent().parent().parent().animate({
+                        'height':height
+                    },{
+                        duration:250,
+                        easing:'swing'
                     })
-                })
+                },15);
 
-
+            },
+            changeShow(){
+                console.log('test');
             }
 
     }
@@ -146,47 +152,44 @@
         background-color: #FFFFFF;
         margin-bottom: 16px;
     }
-.header_comment{
-    margin-bottom:10px;
-}
+    .header_comment{
+        margin-bottom:10px;
+        position:relative;
+    }
     .title_comment{
+        position:relative;
         font-weight: bold;
         font-size: 15px;
         word-wrap:normal;
     }
     .date_comment{
-        opacity: 0.7;
+        position:relative;
         font-size: 12px;
-        text-align: right;
         padding-top:4px!important;
+        overflow: auto;
+    }
+    .data_text{
+        opacity: 0.7;
+        margin:0 7px 0 7px;
+        position: relative;
     }
     .content_comment{
         padding:15px 7px 15px 7px;
-
     }
-    .attachments_comments{
-        margin: 20px 0 5px 0;
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
 
+    .footer_comment .control{
+        position:relative;
+        padding:0 10px 0 10px;
     }
-.header_comment .row:after,
-.footer_comment .row:before{
-    content: '';
+    .footer_comment,
+    .footer_comment div{
+        position:relative;
+    }
 
-    height: 1px;
-    background-color: rgba(0,0,0,.41);
-    width: 100%;
-    display: block;
-    overflow: hidden;
-    -webkit-transform-origin: 50% 100%;
-    transform-origin: 50% 100%;
-    opacity: 0.5;
-}
     .control_my_comment{
         display:flex;
         justify-content: flex-start;
+        overflow: visible;
     }
     .control_my_comment button{
         padding-top:5px;
@@ -196,19 +199,23 @@
         margin:0 7px 0 5px;
         font-size: 16px;
     }
-    .remove_button_block{
-        position:relative;
 
-    }
-    .remove_button{
-        position:absolute;
-        top: -80px;
-        right:-5px;
-        color:#ddd;
-        width:18px;
-        text-align: center;
-        opacity: 1!important;
-    }
+
+.header_comment .row div:after,
+.footer_comment .row .col-65:after,
+.footer_comment .row .col-10:after{
+    content: '';
+    position:absolute;
+    top:12px;
+    display:inline-block;
+    height: 1px;
+    background-color: rgba(0,0,0,.41);
+    width: 100%;
+    overflow: hidden;
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+    opacity: 0.5;
+}
 
 
 </style>

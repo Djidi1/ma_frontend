@@ -68,7 +68,9 @@ new Vue({
         list : {},
         ls_list:{},
         auth_info:{},
-        localization:{}
+        localization:{},
+        //Костыль для смены отображения коментов
+        show:true
     },
 
    watch:{
