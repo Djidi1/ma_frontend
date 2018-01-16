@@ -40,11 +40,7 @@
                 </div>
             </div>
         </div>
-
-
     </div>
-
-
 </template>
 
 <script>
@@ -66,9 +62,6 @@
             myComment(){
                 return (this.data_comments.from===this.$root.auth_info.name)
             }
-
-
-
         },
         methods:{
             attachImg(attach_img){
@@ -116,8 +109,7 @@
             },
             editComment(e){
                 e.preventDefault();
-                this.$emit('test');
-                console.log('test');
+
                // this.$root.show=!this.$root.show;
                // this.animate()
             },

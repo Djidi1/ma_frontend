@@ -6,11 +6,11 @@
                     <f7-button  @click='show_comments(data_item.id,$event)' ><i class='fa fa-commenting-o comments_button' aria-hidden='true'></i>  <f7-icon  f7="chevron_right" size="14" color="gray" style="opacity: 0.7"></f7-icon> </f7-button>
                 </div>
                 <!--comments-->
-                <div slot="root" class="animate_scroll">
+                <div slot="root" class="animate_scroll"  >
                   <!-- <transition name="slide-fade">-->
-                    <f7-block inner v-on:test="this.red()">
+                    <f7-block inner @test="this.red()">
                         <comment  v-for="comment in data_item.comments" :key="comment.id" :data_comments="comment"></comment>
-                        <text_area v-if="hasComment" :id="data_item.id"></text_area>
+                        <text_area v-if="hasComment" :id="data_item.id" ></text_area>
                     </f7-block>
 
                 </div>
@@ -49,6 +49,9 @@
             getElHeight(obj){
                 return obj.find('.content-block').height();
             },
+            red(){
+                console.log(111);
+            }
 
         },
         computed:{
