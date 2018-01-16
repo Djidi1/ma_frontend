@@ -43,6 +43,15 @@ Vue.use(Framework7Vue);
 // Init Vue-ls
 Vue.use(VueLocalStorage);
 
+//Components
+import List from './assets/vue/Components/list_audit.vue'
+Vue.component('list',List);
+import check_item from './assets/vue/Components/chek_item.vue'
+Vue.component('check_item',check_item);
+import textarea from './assets/vue/Components/textarea_comment.vue'
+Vue.component('text_area',textarea);
+import comment from './assets/vue/Components/comment.vue'
+Vue.component('comment',comment);
 
 // Init App
 new Vue({

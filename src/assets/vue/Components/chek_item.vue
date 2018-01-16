@@ -8,7 +8,7 @@
                 <!--comments-->
                 <div slot="root" class="animate_scroll">
                   <!-- <transition name="slide-fade">-->
-                    <f7-block inner>
+                    <f7-block inner v-on:test="this.red()">
                         <comment  v-for="comment in data_item.comments" :key="comment.id" :data_comments="comment"></comment>
                         <text_area v-if="hasComment" :id="data_item.id"></text_area>
                     </f7-block>
@@ -23,18 +23,11 @@
 
 <script>
     var $$=Dom7;
-    import textarea from '../Components/textarea_comment.vue'
-    import comment from '../Components/comment.vue'
     export default {
         name: "chek_item",
         props:{
             data_item:{ type: Object, default: '' }
         },
-        components:{
-            comment:comment,
-            text_area:textarea
-        },
-
         methods:{
             show_comments(val,e){
                 let input=$$('#'+val).find('.animate_scroll');
@@ -55,7 +48,8 @@
             },
             getElHeight(obj){
                 return obj.find('.content-block').height();
-            }
+            },
+
         },
         computed:{
             hasComment(){

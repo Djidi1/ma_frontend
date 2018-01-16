@@ -14,12 +14,8 @@
 </template>
 
 <script>
-    import List from '../Components/list_audit.vue'
     export default {
         name: "page",
-        components:{
-          list:List
-        },
         methods:{
             onRefresh: function (event, done) {
                 var self = this;

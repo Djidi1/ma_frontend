@@ -59,21 +59,16 @@
 
 
 
-
         </div>
     </f7-page>
 </template>
 
 <script>
     var $$=Dom7;
-    import check_item from '../Components/chek_item.vue'
 
 
     export default {
-        components:{
 
-          check_item:check_item
-        },
         name: "audit",
         props: {
             id: { type: String, default: '' }

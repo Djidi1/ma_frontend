@@ -40,9 +40,7 @@
                 </div>
             </div>
         </div>
-        <div v-else>
-            <text_area :comment_text="data_comments.text" :attachment="data_comments.attachments" :id="data_comments.id" :focus="true"></text_area>
-        </div>
+
 
     </div>
 
@@ -51,16 +49,12 @@
 
 <script>
     var $$=Dom7;
-    import textarea from '../Components/textarea_comment.vue'
     export default {
         name: "comment",
         data:function(){
             return{
                 show:true
             }
-        },
-        components:{
-          text_area:textarea
         },
         props:{
             data_comments:{ type: Object, default: '' }
@@ -122,8 +116,10 @@
             },
             editComment(e){
                 e.preventDefault();
-                this.$root.show=!this.$root.show;
-                this.animate()
+                this.$emit('test');
+                console.log('test');
+               // this.$root.show=!this.$root.show;
+               // this.animate()
             },
             animate(){
                 let self=this;
