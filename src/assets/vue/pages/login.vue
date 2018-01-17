@@ -30,7 +30,6 @@
 <script>
     export default {
         name: "login",
-
         data:function(){
             return{
                 form_login:{

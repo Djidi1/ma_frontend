@@ -75,10 +75,11 @@ new Vue({
 
   data: {
         list : {},
-        ls_list:{},
+        audits:{},
         auth_info:{},
         localization:{},
-        //Костыль для смены отображения коментов
+
+        //Костыль для смены отображения коментов не забыть удалить
         show:true
     },
 
@@ -97,7 +98,8 @@ new Vue({
         this.$ls.on('auth_info',function(val){
             _this.auth_info=val;
         });
-        this.list=this.$ls.get('list',data_json);
+        let data=this.$ls.get('list',data_json);
+        this.list=JSON.parse(JSON.stringify(data));
         this.$ls.on('list',function(val){
           _this.list=val;
         });

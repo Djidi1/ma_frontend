@@ -8,7 +8,7 @@ export default [
       component: require('./assets/vue/pages/page.vue')
     },
     {
-      path:'/audit/:id',
+      path:'/audit/:obj_id/:id',
       component:require('./assets/vue/pages/audit.vue')
     },
     {

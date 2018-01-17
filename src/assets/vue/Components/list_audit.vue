@@ -1,6 +1,6 @@
 <template>
     <div class="blck_info">
-        <f7-card v-for="item in data_storage" :key="item.id">
+        <f7-card v-for="(item,index) in data_storage" :key="index">
             <f7-card-header >
                     <div class="obj_info">
                         <div class="row  no-gutter">
@@ -12,7 +12,7 @@
             </f7-card-header>
             <f7-card-content>
                 <f7-list media-list>
-                    <f7-list-item v-for="acrd in item.audits" :key="acrd.id" :link="'/audit/'+acrd.id" :title="acrd.name" :subtitle="acrd.id"  :text="acrd.create_date"  :media="realStatus(acrd.status)"></f7-list-item>
+                    <f7-list-item v-for="(acrd,acrd_index) in item.audits" :key="acrd_index" :link="'/audit/'+index+'/'+acrd_index" :title="acrd.name" :subtitle="acrd.id"  :text="acrd.create_date"  :media="realStatus(acrd.status)"></f7-list-item>
                 </f7-list>
             </f7-card-content>
 
@@ -24,7 +24,7 @@
     export default {
         name: "list_audit",
         props:{
-            data_storage:{ type: Array, default: '[]' }
+            data_storage:{ type: Array, default: function () { return [] } }
         },
         methods:{
             realStatus(str){

@@ -15,10 +15,9 @@
                                     <div class="col-100">{{audit.name}}</div>
                                     <div class="col-100">Id: {{audit.id}}</div>
                                     <div class="col-100">{{audit.create_date}}</div>
-                                    <div class="col-100">{{object_audit.name}}</div>
-                                    <div class="col-100">{{object_audit.adres}}</div>
+                                    <div class="col-100">{{obj_name}}</div>
                                 </div>
-                                <div class="col-30 status" :style="status_style()">
+                                <div class="col-30 status" :style="this.block_height">
                                     <table>
                                         <tr>
                                             <td> <i :class="status" aria-hidden="true"></i></td>
@@ -35,18 +34,17 @@
                    <f7-card-header>
                         {{this.$root.localization.AuditPage.check_list}}
                    </f7-card-header>
-
-                        <f7-list accordion  v-for="check in this.audit.check_list"  :key="check.id"  :id="check.id" >
+                        <f7-list accordion  v-for="(check,id) in this.audit.check_list"  :key="id"  :id="'acord'+id" >
                             <f7-list-item accordion-item :title="check.name" :after="realStatus(check.status)">
                                 <f7-accordion-content>
-                                        <check_item v-for="item in check.list_to_check" :data_item="item" :key="item.id"></check_item>
+                                        <check_item v-for="(item,item_id) in check.list_to_check" :data_item="item" :data_id="item_id" :key="item_id"></check_item>
                                     <f7-list-item>
                                         <div class="row" style="width:100%; padding:15px 0 15px 0">
                                             <div class="col-50">
-                                                <f7-button @click="abort_check_list(check)" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>
+                                                <f7-button @click="abort_check_list(id)" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>
                                             </div>
                                             <div class="col-50">
-                                                <f7-button fill @click="check_list_status(check)"><i class="fa fa-check" aria-hidden="true"></i> </f7-button>
+                                                <f7-button fill @click="check_list_status(id)"><i class="fa fa-check" aria-hidden="true"></i> </f7-button>
                                             </div>
                                         </div>
                                     </f7-list-item>
@@ -65,33 +63,32 @@
 
 <script>
     var $$=Dom7;
-
-
     export default {
 
         name: "audit",
         props: {
-            id: { type: String, default: '' }
+            id: { type: String, default: '' },
+            obj_id:{type:String,default:''}
         },
         data:function() {
             return {
                 audit:'',
-                object_audit:'',
+                obj_name:'',
                 acordianId:0,
+                block_height:''
 
 
             }
         },
-        created:function(){
-           let self=this;
-            this.$root.list.forEach(function (items,i,arr) {
-                items.audits.forEach(function(item,i,arr){
-                    if(item.id===self.id){
-                        self.audit=item;
-                        self.object_audit=items;
-                    }
-                })
+        mounted:function(){
+            this.$nextTick(function () {
+                this.block_height=this.status_style()
             })
+        },
+        created:function(){
+            this.obj_name=this.$root.list[this.obj_id].name;
+            this.audit = this.$root.list[this.obj_id].audits[this.id];
+
         },
         computed:{
             status(){
@@ -115,111 +112,54 @@
                 }
                 return result;
             },
-            commentsCount(){
-                let str="<i class='fa fa-commenting-o' aria-hidden='true'></i> ";
-                str+=this.audit.comments.length;
-                return str;
-            },
             hasAttach(){
                 return (this.attachment.length>0);
             }
-
-
         },
         methods:{
-            attachImg(attach_img) {
-                return {
-                    'background-image': this.hasAttach ? 'url(' + attach_img + ')' : 'none'
-                }
-            },
-            photolook(attach,id){
-                let photos =this.$f7.photoBrowser({
-                        type: 'popup',
-                        photos:this.photoArray(attach),
-                        theme:'dark'
-                    }
-                );
-                photos.open(id);
-            },
-            photoArray(array){
-                let resultArray=new Array();
-                array.forEach(function (items,i,arr){
-                    resultArray[items.index]=items.url;
-                });
-                return resultArray;
-
-            },
-
             status_style(){
                 let height_block=$$('.audit_obj').height();
                 return {"height":height_block+"px"}
             },
-            send_comments(){
-               let current=this.audit;
-               let now= new Date();
-               let comment= {
-                   "id":this.getOfflineID(current),
-                   "create_date": now.getDate()+"/"+now.getMonth()+1+"/"+now.getFullYear()+" "+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds(),
-                   "from":this.$root.auth_info.name,
-                   "title":this.comment_title,
-                   "text":this.comment_text,
-                   "attachments":this.attachment
-               }
-               this.comment_title='';
-                this.comment_text='';
-                    this.attachment=[];
-               current.comments.push(comment);
-            },
-            getOfflineID(current){
-                let lastId;
-                (current.comments.length>0)?
-                    lastId=current.comments[current.comments.length-1].id:
-                    lastId=0;
-                return ++lastId;
-            },
-            check_list_status(obj){
+            check_list_status(id){
                 let self=this;
+                let result='ok';
                 let status=true;
-                let result=''
-                let acord=$$('#'+obj.id).find('.accordion-item');
-                   acord.each(function(){
-                   if ($$(this).length>0){
-                        let inputs=$$(this).find('form').find('li').find('input');
-                        inputs.each(function(){
-                            let id_porp=$$(this).parent().parent().attr('id');
-                            if($$(this).prop('checked')){
-                            }else{
-                                status=false;
-                            }
-                            self.item_status(status,obj,id_porp);
-                        })
-                      result=(status)?"ok":"wrong";
-                   }
-                 });
-                obj.status=result;
-                this.audit_change_status()
+                let acord=$$('#acord'+id).find('.accordion-item');
+                    acord.each(function() {
+                        if ($$(this).length > 0) {
+                            let inputs = $$(this).find('form').find('li').find('input');
+                            inputs.each(function () {
+                               let item_id=$$(this).parent().parent().attr('id');
+                               if(!$$(this).prop('checked')) {
+                                   status = false;
+                                   self.audit.check_list[id].list_to_check[item_id].status = status;
+                                   result='wrong';
+                               }else{
+                                   status=true;
+                                   self.audit.check_list[id].list_to_check[item_id].status = status;
+                               }
+                            })
+                            self.audit.check_list[id].status=result;
+                            self.audit_change_status();
+                        }
+                    });
 
             },
-            abort_check_list(obj){
+            abort_check_list(id){
                 let self=this;
-                let acord=$$('#'+obj.id);
+                let acord=$$('#acord'+id);
                 acord.each(function(){
                     if ($$(this).length>0){
                         let inputs=$$(this).find('form').find('li').find('input');
                         inputs.each(function(){
-                            let id_porp=$$(this).parent().parent().attr('id');
-                            self.item_status(false,obj,id_porp);
+                            let item_id=$$(this).parent().parent().attr('id');
+                            self.audit.check_list[id].list_to_check[item_id].status = false;
                         })
                     }
                 })
-                obj.status='new';
+                self.audit.check_list[id].status='new';
                 this.audit_change_status();
-            },
-            item_status(val,obj,id_porp){
-                obj.list_to_check.forEach(function(itm,i,arr){
-                    if (itm.id.toString()===id_porp)
-                        itm.status=val;
-                });
             },
             audit_change_status(){
                let list =this.audit.check_list;
@@ -252,10 +192,7 @@
                 }
                 return result;
             }
-
-
         }
-
 
 
 
