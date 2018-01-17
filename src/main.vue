@@ -24,7 +24,7 @@
 
 		<!-- Main Views -->
 		<f7-views>
-			<f7-view id="main-view" navbar-through :dynamic-navbar="true" main>
+			<f7-view id="main-view" navbar-through  main>
 				<!-- Pages -->
 
 				<f7-pages >

@@ -1,19 +1,19 @@
 <template>
     <transition name="slide-fade">
-    <div class="comment_text_zone check_list_items" :id="id">
+    <div class="comment_text_zone check_list_items" :id="this.item_id">
         <f7-list form>
             <f7-list-item>
-                <f7-input type="textarea" :placeholder="this.$root.localization.AuditPage.comment_placeholder" v-model="comment_text_new" ></f7-input>
+                <f7-input type="textarea" :placeholder="this.$root.localization.AuditPage.comment_placeholder" v-model="text" ></f7-input>
             </f7-list-item>
             <div v-show="hasAttach" class="attachments_comments">
-                <div class="attach_block" v-for="attach in attachment_new" :key="attach.index">
-                    <div class="attach"  :style="attachImg(attach.url)" @click="photolook(attachment,attach.index)">
+                <div class="attach_block" v-for="(attach,index) in attachment" :key="index">
+                    <div class="attach"  :style="attachImg(attach)" @click="photolook(attachment,index)">
                         <div class="img_top_back">img
                         </div>
                         <div class="img_bot_back"></div>
                     </div>
                     <div class="remove_button_block">
-                        <div class="remove_button" @click="remove_attach(attach.index)"><i class="fa fa-times" aria-hidden="true"></i></div>
+                        <div class="remove_button" @click="remove_attach(index)"><i class="fa fa-times" aria-hidden="true"></i></div>
                     </div>
                 </div>
             </div>
@@ -37,25 +37,35 @@
     export default {
         name: "textarea_comment",
         props:{
-            id:{type:Number,default:''},
-            comment_text: { type: String, default: '' },
-            attachment:{type:Array,default: function () { return [] }},
-            focus:{type:Boolean,default:false}
+            obj_id:{ type: Number, default: 0 },
+            audit_id:{ type: Number, default: 0 },
+            item_id:{ type: Number, default: 0 },
+            comment_id:{ type: Number, default: 0 },
+            check_id:{ type: Number, default: 0 }
         },
         data:function(){
           return{
-              comment_text_new:this.comment_text,
-              attachment_new:this.attachment,
-              current_comment:'',
-              current_item:''
+              data_comments:'',
+              text:'',
+              attachment:[]
           }
         },
-        mounted:function(){
-            this.$nextTick(function(){
-               if (this.focus) this.$$('#'+this.id).find('textarea').focus();
-               this.getCurrent();
-            })
+        created:function(){
+                let stoc =  this.$root.list[this.obj_id].audits[this.audit_id].check_list[this.check_id].list_to_check[this.item_id];
+                if(stoc.comments.length>0){
+                    this.data_comments=stoc.comments[this.comment_id]
+                    this.text=this.data_comments.text;
+                    this.attachment=this.data_comments.attachments;
+                }else{
+                    this.text=this.$root.localization.AuditPage.comment_placeholder;
+                }
         },
+        // mounted:function(){
+        //     this.$nextTick(function(){
+        //        if (this.focus) this.$$('#'+this.id).find('textarea').focus();
+        //        this.getCurrent();
+        //     })
+        // },
         computed:{
             hasAttach(){
                 return(this.attachment.length>0);
@@ -66,22 +76,6 @@
                 return {
                     'background-image': this.hasAttach ? 'url(' + attach_img + ')' : 'none'
                 }
-            },
-            photolook(attach,id){
-                let photos =this.$f7.photoBrowser({
-                        type: 'popup',
-                        photos:this.photoArray(attach),
-                        theme:'dark'
-                    }
-                );
-                photos.open(id);
-            },
-            photoArray(array){
-                let resultArray=new Array();
-                array.forEach(function (items,i,arr){
-                    resultArray[items.index]=items.url;
-                });
-                return resultArray;
             },
             send_comments(){
                 let now= new Date();
@@ -116,27 +110,16 @@
                     ++lastId;
                 return lastId;
             },
-            getCurrent(){
-                let self=this;
-                self.$root.list.forEach(function(obj,i,arr){
-                    obj.audits.forEach(function(audit,j,arr){
-                        audit.check_list.forEach(function(check,h,arr){
-                            check.list_to_check.forEach(function(list,g,arr){
-                                if (list.id===self.id) {
-                                    self.current_item = list;
-                                }
-                                list.comments.forEach(function(comment,f,arr){
-                                    if (comment.id===self.id) {
-                                        self.current_item=list;
-                                        self.current_comment = comment;
-                                    }
-                                })
-                            })
-                        })
-                    })
-
-                })
-            }
+            photolook(attach,id){
+                console.log(id);
+                let photos =this.$f7.photoBrowser({
+                        type: 'popup',
+                        photos:attach,
+                        theme:'dark'
+                    }
+                );
+                photos.open(id);
+            },
 
 
         }

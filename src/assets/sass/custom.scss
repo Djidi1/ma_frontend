@@ -158,28 +158,12 @@
 .accordion-item{
 	margin-bottom: 15px;
 }
-
-
 .comment_text_zone textarea,
 .comment_text_zone  .title_input input{
-	 border-radius:7px;
-	 border:1px solid #ddd;
 	 padding-left:7px;
 	 padding-rigth:7px;
-	transition: all 0.2s;
-	box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.1);
  }
-.comment_text_zone textarea:focus,
-.comment_text_zone  .title_input input:focus{
-	border-color:#2196F3;
-	box-shadow: inset 0 0 5px 1px rgba(33,150,243,0.2);
 
-}
-.comment_text_zone .item-input-field:after,
-.comment_text_zone .item-content:after
-{
-	display:none;
-}
 .comment_text_zone .content-block-inner:before,
 .comment_text_zone .content-block-inner:after{
 	display:none;
@@ -188,7 +172,7 @@
 	display:none!important;
 }
 .comment_text_zone .content-block{
-	padding:0 0 0 5px;
+	padding:15px 0 0 5px;
 }
 .attachments_comments{
 	margin: 20px 0 5px 0;
@@ -289,10 +273,10 @@
 
 //Animation
 .slide-fade-enter-active {
-	transition: all .3s cubic-bezier(.65, 0.05, 0.36, 1.0);
+	transition: all .7s cubic-bezier(.65, 0.05, 0.36, 1.0);
 }
 .slide-fade-leave-active {
-	transition: all .3s cubic-bezier(.65, 0.05, 0.36, 1.0);
+	transition: all .7s cubic-bezier(.65, 0.05, 0.36, 1.0);
 }
 .slide-fade-enter, .slide-fade-leave-to
 	/* .slide-fade-leave-active до версии 2.1.8 */ {

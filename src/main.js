@@ -53,6 +53,8 @@ Vue.component('text_area',textarea);
 import comment from './assets/vue/Components/comment.vue'
 Vue.component('comment',comment);
 
+
+
 // Init App
 new Vue({
   el: '#app',
@@ -77,10 +79,10 @@ new Vue({
         list : {},
         audits:{},
         auth_info:{},
-        localization:{},
+        localization:{}
 
-        //Костыль для смены отображения коментов не забыть удалить
-        show:true
+
+
     },
 
    watch:{

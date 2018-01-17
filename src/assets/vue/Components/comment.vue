@@ -1,6 +1,6 @@
 <template>
     <div :id="data_comments.id">
-        <div v-if=this.$root.show class="comment_block"  >
+        <div  class="comment_block"  >
             <div class="header_comment">
                 <div class="row no-gutter">
                     <div class="col-60 title_comment">
@@ -13,13 +13,17 @@
             <div class="content_comment">
                 {{data_comments.text}}
                 <div v-show="hasAttach" class="attachments_comments">
-                    <div class="attach_block" v-for="attach in data_comments.attachments" :key="attach.index">
-                        <div class="attach"  :style="attachImg(attach.url)" @click="photolook(data_comments.attachments,attach.index)">
+
+                    <!-- вынести в отдельный компонент-->
+                    <div class="attach_block" v-for="(attach,index) in data_comments.attachments" :key="index">
+                        <div class="attach"  :style="attachImg(attach)" @click="photolook(data_comments.attachments,index)">
                             <div class="img_top_back">img
                             </div>
                             <div class="img_bot_back"></div>
                         </div>
                     </div>
+                    <!-------->
+
                 </div>
             </div>
             <div class="footer_comment">
@@ -31,7 +35,7 @@
                         <div class="control">
                             <div class="control_my_comment" v-show="myComment">
                                 <button @click="editComment($event)"> <i class="fa fa-pencil" aria-hidden="true"></i></button>
-                                <button @click="removeComment()"> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                <button @click.prevent="removeComment(comment_id)"> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
@@ -47,13 +51,17 @@
     var $$=Dom7;
     export default {
         name: "comment",
+        props:{
+            obj_id:{ type: Number, default: 0 },
+            audit_id:{ type: Number, default: 0 },
+            item_id:{ type: Number, default: 0 },
+            comment_id:{ type: Number, default: 0 },
+            check_id:{ type: Number, default: 0 }
+        },
         data:function(){
             return{
-                show:true
+                data_comments:''
             }
-        },
-        props:{
-            data_comments:{ type: Object, default: '' }
         },
         computed:{
             hasAttach(){
@@ -63,56 +71,41 @@
                 return (this.data_comments.from===this.$root.auth_info.name)
             }
         },
+        created:function(){
+            this.data_comments=this.data_comments=this.$root.list[this.obj_id].audits[this.audit_id].check_list[this.check_id].list_to_check[this.item_id].comments[this.comment_id];
+
+        },
         methods:{
             attachImg(attach_img){
                 return{
                     'background-image': this.hasAttach ? 'url(' + attach_img + ')' : 'none'
                 }
             },
-
             photolook(attach,id){
+                console.log(id);
                 let photos =this.$f7.photoBrowser({
                     type: 'popup',
-                    photos:this.photoArray(attach),
+                    photos:attach,
                     theme:'dark'
                 }
                 );
                 photos.open(id);
-
-
             },
-
-            photoArray(array){
-               let resultArray=new Array();
-                 array.forEach(function (items,i,arr){
-                     resultArray[items.index]=items.url;
+            removeComment(id){
+                let sefl=this;
+                this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
+                    let current=sefl.data_comments=sefl.$root.list[sefl.obj_id].audits[sefl.audit_id].check_list[sefl.check_id].list_to_check[sefl.item_id].comments;
+                    current.splice(id,1);
                 });
-                 return resultArray;
-            },
-
-            removeComment(){
-                //this.f7.confirm();
-                let self=this;
-                this.$root.list.forEach(function (items,z,arr){
-                    items.audits.forEach(function(item,j,arr){
-                        item.check_list.forEach(function(itm,g,arr){
-                            itm.list_to_check.forEach(function(it,d,arr){
-                                it.comments.forEach(function(comment,w,arr){
-                                    if (comment.id===self.data_comments.id){
-                                        arr.splice(i,1);
-                                    }
-                                })
-                            })
-                        })
-                    })
-                })
             },
             editComment(e){
                 e.preventDefault();
-
+                this.$emit('test');
                // this.$root.show=!this.$root.show;
                // this.animate()
             },
+
+            //Левый хлам
             animate(){
                 let self=this;
                 let height;
@@ -126,10 +119,8 @@
                     })
                 },15);
 
-            },
-            changeShow(){
-                console.log('test');
             }
+
 
     }
     }

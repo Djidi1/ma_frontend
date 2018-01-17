@@ -36,7 +36,7 @@
     "lang_block": "Язык"
   },
   "modal":{
-    "modalOk":"Принять",
+    "modalOk":"Да",
     "modalCancel":"Отмена",
     "modalHeaderError":"Внимание!",
     "modalTextConf":"Вы уверены?",
