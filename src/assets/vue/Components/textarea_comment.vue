@@ -5,17 +5,8 @@
             <f7-list-item>
                 <f7-input type="textarea" :placeholder="this.$root.localization.AuditPage.comment_placeholder" v-model="text" ></f7-input>
             </f7-list-item>
-            <div v-show="hasAttach" class="attachments_comments">
-                <div class="attach_block" v-for="(attach,index) in attachment" :key="index">
-                    <div class="attach"  :style="attachImg(attach)" @click="photolook(attachment,index)">
-                        <div class="img_top_back">img
-                        </div>
-                        <div class="img_bot_back"></div>
-                    </div>
-                    <div class="remove_button_block">
-                        <div class="remove_button" @click="remove_attach(index)"><i class="fa fa-times" aria-hidden="true"></i></div>
-                    </div>
-                </div>
+            <div v-show="hasAttach" >
+                <attachment @removeAttach="this.removeAttachment" :attachment="attachment" :edit_mode="true"></attachment>
             </div>
             <f7-block>
                 <div class="row">
@@ -41,31 +32,32 @@
             audit_id:{ type: Number, default: 0 },
             item_id:{ type: Number, default: 0 },
             comment_id:{ type: Number, default: 0 },
-            check_id:{ type: Number, default: 0 }
+            check_id:{ type: Number, default: 0 },
         },
         data:function(){
           return{
               data_comments:'',
               text:'',
-              attachment:[]
+              comment:'',
+              attachment:[],
+              focus:false,
+              remove_attach_id:''
           }
         },
         created:function(){
-                let stoc =  this.$root.list[this.obj_id].audits[this.audit_id].check_list[this.check_id].list_to_check[this.item_id];
-                if(stoc.comments.length>0){
-                    this.data_comments=stoc.comments[this.comment_id]
-                    this.text=this.data_comments.text;
-                    this.attachment=this.data_comments.attachments;
-                }else{
-                    this.text=this.$root.localization.AuditPage.comment_placeholder;
+                 this.data_comments =  this.$root.list[this.obj_id].audits[this.audit_id].check_list[this.check_id].list_to_check[this.item_id].comments;
+                if( this.data_comments.length>0){
+                     this.comment=this.data_comments[this.comment_id];
+                     this.attachment=this.comment.attachments;
+                     this.text=this.comment.text;
+                     this.focus=true;
                 }
         },
-        // mounted:function(){
-        //     this.$nextTick(function(){
-        //        if (this.focus) this.$$('#'+this.id).find('textarea').focus();
-        //        this.getCurrent();
-        //     })
-        // },
+        mounted:function(){
+            this.$nextTick(function(){
+                if (this.focus)(this.$$('#'+this.item_id).find('textarea').focus());
+            })
+        },
         computed:{
             hasAttach(){
                 return(this.attachment.length>0);
@@ -78,30 +70,19 @@
                 }
             },
             send_comments(){
-                let now= new Date();
-                let comment= {
-                    "id":this.getOfflineID(this.current_comment),
-                    "create_date": now.getDate()+"/"+now.getMonth()+1+"/"+now.getFullYear()+" "+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds(),
-                    "from":this.$root.auth_info.name,
-                    "text":this.comment_text_new,
-                    "attachments":this.attachment_new
-                }
-
-                if (this.current_comment!=''){
-                    this.current_comment=comment;
-                    console.log(this.$root.list);
-                   }
-                    else{
-                     this.current_item.comments.push(comment);
-                   }
-                //current.comments.push(comment);
-                this.$root.show=!this.$root.show;
+                 let now= new Date();
+                 let comment= {
+                     "id":this.getOfflineID(this.current_comment),
+                     "create_date": now.getDate()+"/"+now.getMonth()+1+"/"+now.getFullYear()+" "+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds(),
+                     "from":this.$root.auth_info.name,
+                     "text":this.text,
+                     "attachments":this.attachment
+                 }
+                this.data_comments[this.comment_id]=comment
+                 console.log(this.$root.list);
             },
-            remove_attach(index){
-                this.current_comment.attachments.forEach(function(item,i,arr){
-                    if (item.index===index)
-                        arr.splice(i,1);;
-                })
+            removeAttachment(id){
+                this.attachment.splice(id,1);
             },
             getOfflineID(current){
                 let lastId=0;

@@ -12,18 +12,8 @@
             </div>
             <div class="content_comment">
                 {{data_comments.text}}
-                <div v-show="hasAttach" class="attachments_comments">
-
-                    <!-- вынести в отдельный компонент-->
-                    <div class="attach_block" v-for="(attach,index) in data_comments.attachments" :key="index">
-                        <div class="attach"  :style="attachImg(attach)" @click="photolook(data_comments.attachments,index)">
-                            <div class="img_top_back">img
-                            </div>
-                            <div class="img_bot_back"></div>
-                        </div>
-                    </div>
-                    <!-------->
-
+                <div v-show="hasAttach" >
+                    <attachment :attachment="data_comments.attachments" ></attachment>
                 </div>
             </div>
             <div class="footer_comment">
@@ -48,8 +38,11 @@
 </template>
 
 <script>
+    import Attachment from "src/assets/vue/Components/attachment";
+
     var $$=Dom7;
     export default {
+        components: {Attachment},
         name: "comment",
         props:{
             obj_id:{ type: Number, default: 0 },
@@ -73,7 +66,6 @@
         },
         created:function(){
             this.data_comments=this.data_comments=this.$root.list[this.obj_id].audits[this.audit_id].check_list[this.check_id].list_to_check[this.item_id].comments[this.comment_id];
-
         },
         methods:{
             attachImg(attach_img){
@@ -81,21 +73,10 @@
                     'background-image': this.hasAttach ? 'url(' + attach_img + ')' : 'none'
                 }
             },
-            photolook(attach,id){
-                console.log(id);
-                let photos =this.$f7.photoBrowser({
-                    type: 'popup',
-                    photos:attach,
-                    theme:'dark'
-                }
-                );
-                photos.open(id);
-            },
             removeComment(id){
                 let sefl=this;
                 this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
-                    let current=sefl.data_comments=sefl.$root.list[sefl.obj_id].audits[sefl.audit_id].check_list[sefl.check_id].list_to_check[sefl.item_id].comments;
-                    current.splice(id,1);
+
                 });
             },
             editComment(e){
@@ -105,21 +86,10 @@
                // this.animate()
             },
 
-            //Левый хлам
-            animate(){
-                let self=this;
-                let height;
-                setTimeout(function(){
-                    height=$$('#'+self.data_comments.id).parent().parent().height()
-                    $$('#'+self.data_comments.id).parent().parent().parent().animate({
-                        'height':height
-                    },{
-                        duration:250,
-                        easing:'swing'
-                    })
-                },15);
 
-            }
+
+
+
 
 
     }

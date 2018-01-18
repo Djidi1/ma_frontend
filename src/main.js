@@ -52,6 +52,8 @@ import textarea from './assets/vue/Components/textarea_comment.vue'
 Vue.component('text_area',textarea);
 import comment from './assets/vue/Components/comment.vue'
 Vue.component('comment',comment);
+import attachment from './assets/vue/Components/attachment.vue'
+Vue.component('attachment',attachment);
 
 
 

@@ -9,8 +9,8 @@
                 <div slot="root" class="animate_scroll"  >
                   <!--&lt;!&ndash; <transition name="slide-fade">&ndash;&gt;-->
                     <f7-block inner  >
-                        <comment  v-if="show"   v-on:test="test()" v-for="(comment,id) in data_item.comments" :key="id"  :obj_id="this.obj_id" :audit_id="this.audit_id" :check_id="this.check_id" :item-id="this.data_id" :comment_id="id"></comment>
-                        <text_area  v-if="!show" :obj_id="this.obj_id" :audit_id="this.audit_id" :check_id="this.check_id" :item_id="this.data_id" :comment_id=0 ></text_area>
+                        <comment  v-if="show"    @test="test()" v-for="(comment,id) in data_item.comments" :key="id"  :obj_id="this.obj_id" :audit_id="this.audit_id" :check_id="this.check_id" :item-id="this.data_id" :comment_id="id"></comment>
+                        <text_area  v-if="!show"  :obj_id="this.obj_id" :audit_id="this.audit_id" :check_id="this.check_id" :item_id="this.data_id" :comment_id=0 ></text_area>
                     </f7-block>
 
                 </div>
@@ -53,7 +53,6 @@
                 let duration=(type)?75:0;
                 setTimeout(function(){
                     let height=(type)?self.getElHeight(obj):(obj.height()===0)?self.getElHeight(obj):0;
-                    console.log(height);
                     obj.animate({
                         'height':height
                     },{
@@ -69,14 +68,10 @@
             test(){
                this.show=!this.show;
                this.animate($$('#'+this.data_id).find('.animate_scroll'),true);
-            }
-        },
-        computed:{
-            hasComment(){
-               return (this.$root.list[this.obj_id].audits[this.audit_id].check_list[this.check_id].list_to_check[this.data_id].comments.length>0);
-            }
+            },
 
         }
+
     }
 </script>
 
