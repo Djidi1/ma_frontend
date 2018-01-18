@@ -9,10 +9,9 @@
                 <div slot="root" class="animate_scroll"  >
                   <!--&lt;!&ndash; <transition name="slide-fade">&ndash;&gt;-->
                     <f7-block inner  >
-                        <comment  v-if="show"    @test="test()" v-for="(comment,id) in data_item.comments" :key="id"  :obj_id="this.obj_id" :audit_id="this.audit_id" :check_id="this.check_id" :item-id="this.data_id" :comment_id="id"></comment>
-                        <text_area  v-if="!show"  :obj_id="this.obj_id" :audit_id="this.audit_id" :check_id="this.check_id" :item_id="this.data_id" :comment_id=0 ></text_area>
+                            <comment v-if="hasComment" :data_comments="this.data_item.comments"></comment>
+                            <text_area v-else @test='test' :data_set="this.data_item.comments"></text_area>
                     </f7-block>
-
                 </div>
             </f7-list-item>
 
@@ -34,11 +33,17 @@
         },
         data:function(){
             return{
-                show:false
+
             }
         },
         created:function(){
-            this.show=(this.$root.list[this.obj_id].audits[this.audit_id].check_list[this.check_id].list_to_check[this.data_id].comments.length>0)?true:false;
+          // this.data=this.$root.list[this.obj_id].audits[this.audit_id].check_list[this.check_id].list_to_check[this.data_id].comments;
+
+        },
+        computed:{
+            hasComment(){
+                return (this.data_item.comments.length>0)?true:false;
+            }
         },
         methods:{
             show_comments(val){
@@ -69,7 +74,11 @@
                this.show=!this.show;
                this.animate($$('#'+this.data_id).find('.animate_scroll'),true);
             },
-
+            test_react(comment,id){
+                console.log(comment);
+                this.data[id]=comment;
+                console.log(this.$root.list)
+            }
         }
 
     }

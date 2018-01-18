@@ -54,7 +54,8 @@ import comment from './assets/vue/Components/comment.vue'
 Vue.component('comment',comment);
 import attachment from './assets/vue/Components/attachment.vue'
 Vue.component('attachment',attachment);
-
+import single_comment from './assets/vue/Components/single-comment.vue'
+Vue.component('single_comment',single_comment);
 
 
 // Init App

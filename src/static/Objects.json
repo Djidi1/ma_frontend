@@ -32,6 +32,17 @@
                       "./static/depositphotos_99061296-stock-illustration-safety-at-work-icon-design.jpg",
                       "https://i.pinimg.com/originals/43/a3/81/43a3818a0404a5acacc285ae6fc4be3a.jpg"
                     ]
+                  },
+                  {
+                    "id":"3434",
+                    "create_date":"22/12/2017 11:00:00",
+                    "from":"Konik Nikita",
+                    "title":"Проверка связи",
+                    "text":"Проверяем работоспособность коментариев в приложении",
+                    "attachments":[
+                      "./static/depositphotos_99061296-stock-illustration-safety-at-work-icon-design.jpg",
+                      "https://i.pinimg.com/originals/43/a3/81/43a3818a0404a5acacc285ae6fc4be3a.jpg"
+                    ]
                   }
                 ]
               },

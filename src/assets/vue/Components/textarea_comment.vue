@@ -1,6 +1,6 @@
 <template>
     <transition name="slide-fade">
-    <div class="comment_text_zone check_list_items" :id="this.item_id">
+    <div class="comment_text_zone check_list_items" :id="'edit_'+this.comment_id">
         <f7-list form>
             <f7-list-item>
                 <f7-input type="textarea" :placeholder="this.$root.localization.AuditPage.comment_placeholder" v-model="text" ></f7-input>
@@ -28,34 +28,27 @@
     export default {
         name: "textarea_comment",
         props:{
-            obj_id:{ type: Number, default: 0 },
-            audit_id:{ type: Number, default: 0 },
-            item_id:{ type: Number, default: 0 },
-            comment_id:{ type: Number, default: 0 },
-            check_id:{ type: Number, default: 0 },
+           data_set:{type:Array,default:function(){return[]}},
+           type:{type:Boolean,default:false},
+           comment_id:{type:Number,default:0}
         },
         data:function(){
           return{
-              data_comments:'',
-              text:'',
               comment:'',
-              attachment:[],
-              focus:false,
-              remove_attach_id:''
+              text:'',
+              attachment:[]
           }
         },
         created:function(){
-                 this.data_comments =  this.$root.list[this.obj_id].audits[this.audit_id].check_list[this.check_id].list_to_check[this.item_id].comments;
-                if( this.data_comments.length>0){
-                     this.comment=this.data_comments[this.comment_id];
-                     this.attachment=this.comment.attachments;
-                     this.text=this.comment.text;
-                     this.focus=true;
-                }
+            this.comment=this.data_set;
+            if(this.comment.length>0){
+                this.text=this.comment[this.comment_id].text;
+                this.attachment=this.comment[this.comment_id].attachments;
+            }
         },
         mounted:function(){
             this.$nextTick(function(){
-                if (this.focus)(this.$$('#'+this.item_id).find('textarea').focus());
+                if (this.type)(this.$$('#edit_'+this.comment_id).find('textarea').focus());
             })
         },
         computed:{
@@ -78,8 +71,8 @@
                      "text":this.text,
                      "attachments":this.attachment
                  }
-                this.data_comments[this.comment_id]=comment
-                 console.log(this.$root.list);
+                this.comment.push(comment);
+
             },
             removeAttachment(id){
                 this.attachment.splice(id,1);
