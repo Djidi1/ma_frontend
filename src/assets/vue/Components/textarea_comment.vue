@@ -30,13 +30,15 @@
         props:{
            data_set:{type:Array,default:function(){return[]}},
            type:{type:Boolean,default:false},
-           comment_id:{type:Number,default:0}
+           comment_id:{type:Number,default:0},
+            test_comment:{type:Object,default:function(){return {}}}
         },
         data:function(){
           return{
               comment:'',
               text:'',
-              attachment:[]
+              attachment:[],
+              test_test:''
           }
         },
         created:function(){
@@ -44,6 +46,12 @@
             if(this.comment.length>0){
                 this.text=this.comment[this.comment_id].text;
                 this.attachment=this.comment[this.comment_id].attachments;
+            }
+            //testing some shit
+            if (this.test_comment.text){
+                this.test_test=this.test_comment;
+                this.text=this.test_test.text;
+                this.attachment=this.test_test.attachments;
             }
         },
         mounted:function(){
@@ -71,7 +79,9 @@
                      "text":this.text,
                      "attachments":this.attachment
                  }
-                this.comment.push(comment);
+                //this.comment.push(comment);
+                this.test_test.text=this.text;
+                 this.$emit('edit_done')
 
             },
             removeAttachment(id){

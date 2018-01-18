@@ -36,7 +36,7 @@
             </div>
         </div>
         <div v-else>
-            <text_area :data_set="this.single_comment"></text_area>
+            <text_area :test_comment="this.single_comment" @edit_done="edit_done()"></text_area>
         </div>
         </div>
 </template>
@@ -77,8 +77,11 @@
             },
             editComment(e) {
                 e.preventDefault();
-                // this.$emit('test');
+                this.mode=!this.mode;
             },
+            edit_done(){
+                this.mode=!this.mode;
+            }
         }
     }
 </script>
