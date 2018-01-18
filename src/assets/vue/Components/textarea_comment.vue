@@ -114,7 +114,7 @@
         margin:0 7px 0 5px;
     }
     .comment_text_zone{
-        padding:0 0 10px 0;
+        padding:10px 0 20px 0;
     }
     .attachments{
         margin:5px 0 15px 0!important;

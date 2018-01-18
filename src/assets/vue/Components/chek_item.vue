@@ -92,6 +92,7 @@
     height: 0;
     overflow: hidden;
 }
+
     .check_list_items .fa{
         color:#9e9e9e;
     }
