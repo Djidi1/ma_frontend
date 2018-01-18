@@ -31,27 +31,20 @@
            data_set:{type:Array,default:function(){return[]}},
            type:{type:Boolean,default:false},
            comment_id:{type:Number,default:0},
-            test_comment:{type:Object,default:function(){return {}}}
+           comment:{type:Object,default:function(){return {}}}
         },
         data:function(){
           return{
-              comment:'',
+              data_comm:'',
               text:'',
               attachment:[],
-              test_test:''
           }
         },
         created:function(){
-            this.comment=this.data_set;
-            if(this.comment.length>0){
-                this.text=this.comment[this.comment_id].text;
-                this.attachment=this.comment[this.comment_id].attachments;
-            }
-            //testing some shit
-            if (this.test_comment.text){
-                this.test_test=this.test_comment;
-                this.text=this.test_test.text;
-                this.attachment=this.test_test.attachments;
+            this.data_comm=this.data_set;
+            if (this.comment.text){
+                this.text=this.comment.text;
+                this.attachment=this.comment.attachments;
             }
         },
         mounted:function(){
@@ -72,15 +65,24 @@
             },
             send_comments(){
                  let now= new Date();
-                 let comment= {
-                     "id":this.getOfflineID(this.current_comment),
-                     "create_date": now.getDate()+"/"+now.getMonth()+1+"/"+now.getFullYear()+" "+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds(),
-                     "from":this.$root.auth_info.name,
-                     "text":this.text,
-                     "attachments":this.attachment
+                 let date_for_text=now.getDate()+"/"+now.getMonth()+1+"/"+now.getFullYear()+" "+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
+                 if(this.type){
+                     this.comment.id=this.getOfflineID(this.comment.id);
+                     this.comment.create_date=date_for_text;
+                     this.comment.from=this.$root.auth_info.name;
+                     this.comment.text=this.text;
+                     this.comment.attachments=this.attachment;
+                 }else{
+                     let comment= {
+                         "id":this.getOfflineID(),
+                         "create_date":date_for_text ,
+                         "from":this.$root.auth_info.name,
+                         "text":this.text,
+                         "attachments":this.attachment
+                     }
+                     this.data_comm.push(comment);
                  }
-                //this.comment.push(comment);
-                this.test_test.text=this.text;
+
                  this.$emit('edit_done')
 
             },

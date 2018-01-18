@@ -23,9 +23,9 @@
                         </div>
                         <div class="col-25 ">
                             <div class="control">
-                                <div class="control_my_comment" v-show="myComment(id)">
+                                <div class="control_my_comment" v-show="myComment()">
                                     <button @click="editComment($event)"> <i class="fa fa-pencil" aria-hidden="true"></i></button>
-                                    <button @click.prevent="removeComment()"> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                    <button @click.prevent="removeComment(id)"> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
             </div>
         </div>
         <div v-else>
-            <text_area :test_comment="this.single_comment" @edit_done="edit_done()"></text_area>
+            <text_area :comment="this.single_comment" @edit_done="edit_done()" :type="true"></text_area>
         </div>
         </div>
 </template>
@@ -58,10 +58,10 @@
             }
         },
         methods: {
-            hasAttach(id) {
+            hasAttach() {
                 return (this.single_comment.attachments.length > 0)
             },
-            myComment(id) {
+            myComment() {
                 return (this.single_comment.from === this.$root.auth_info.name)
             },
             attachImg(attach_img) {
@@ -70,15 +70,13 @@
                 }
             },
             removeComment(id) {
-                let self = this;
-                this.$f7.confirm("", this.$root.localization.modal.modalTextConf, function () {
-                    //self.test.splice(id,1);
-                });
+               this.$emit('remove',id);
             },
             editComment(e) {
                 e.preventDefault();
                 this.mode=!this.mode;
             },
+
             edit_done(){
                 this.mode=!this.mode;
             }

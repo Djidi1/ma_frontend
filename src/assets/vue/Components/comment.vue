@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-for="(comment,id)  in this.data_comments" :key="id" :id="'comment_'+id">
-            <single_comment :single_comment="comment" :id="id"></single_comment>
+            <single_comment :single_comment="comment" :id="id" @remove="removeComment"></single_comment>
         </div>
     </div>
 </template>
@@ -34,10 +34,10 @@
                 }
             },
             removeComment(id){
-                let self=this;
-                this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
-                   //self.test.splice(id,1);
-                });
+                 let self=this;
+                 this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
+                      self.data_comments.splice(id,1);
+                 });
             },
             editComment(e){
                 e.preventDefault();
