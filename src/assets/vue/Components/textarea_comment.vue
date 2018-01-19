@@ -9,8 +9,10 @@
             <f7-block>
                 <div class="row">
                     <div class="col-50 attachment_button">
-                        <button> <i class="fa fa-camera fa-2x" aria-hidden="true"></i>с</button>
-
+                        <f7-col  class="comment-photupload comment-photos" width="20">
+                            <f7-icon size=28  fa="camera"></f7-icon>
+                            <input @change="upload" class="comment-file" type='file' multiple accept="image/*;capture=camera">
+                        </f7-col>
                     </div>
                     <div class="col-50">
                         <f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
@@ -50,7 +52,6 @@
         },
 
         mounted:function(){
-
             this.$nextTick(function(){
                 this.check_style_class();
                 if (this.type)(this.$$('#edit_'+this.comment_id).find('textarea').focus());
@@ -133,6 +134,12 @@
             },
             resize_attach(){
                 this.$emit('resize')
+            },
+            upload(e){
+                e.preventDefault();
+                this.attachment.push(e.target.files[0].name);
+                console.log(this.attachment);
+
             }
         }
     }
@@ -154,22 +161,32 @@
     .comment_text_zone{
         padding:10px 0 20px 0;
     }
-    .comment_text_zone .item-input:after {
-        color: red;
-        /*content: '';*/
-        /*position: absolute;*/
-        /*left: 0;*/
-        /*bottom: 0;*/
-        /*right: auto;*/
-        /*top: auto;*/
-        /*height: 1px;*/
-        /*width: 100%;*/
-        /*background-color: rgba(0,0,0,.12);*/
-        /*display: block;*/
-        /*z-index: 15;*/
-        /*-webkit-transform-origin: 50% 100%;*/
-        /*transform-origin: 50% 100%;*/
-    }
+    .comment-photos {
+        text-align: center;
+        color: #868686;
+        margin:0 7px 0 5px;
+        padding-top:5px;
+        width:36px;
 
+    }
+    .comment-photupload {
+        position: relative;
+        overflow: hidden;
+    }
+    .comment-file {
+        min-height: 0;
+        width: 100%;
+    }
+    .comment-photupload input{
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        font-size: 20px;
+        cursor: pointer;
+        filter: alpha(opacity=0);
+    }
 
 </style>
