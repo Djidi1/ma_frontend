@@ -1,7 +1,7 @@
 <template>
     <div class="attachments_comments">
-        <div class="attach_block" v-for="(attach,index) in attachment" :key="index">
-
+        <transition-group name="attach_fade" v-on:after-leave="resize" v-on:enter="resize">
+        <div class="attach_block" v-for="(attach,index) in attachment" :key="attach">
             <div class="attach"  :style="attachImg(attach)" @click="photolook(attachment,index)">
                 <div class="img_top_back">img
                 </div>
@@ -10,9 +10,9 @@
             <div class="remove_button_block" v-show="edit_mode">
                 <div class="remove_button" @click="remove_attach(index)"><i class="fa fa-times" aria-hidden="true"></i></div>
             </div>
-
         </div>
-    </div>
+        </transition-group>
+        </div>
 </template>
 
 <script>
@@ -38,7 +38,10 @@
                 photos.open(id);
             },
             remove_attach(id){
-                this.$emit('removeAttach',id)
+                this.attachment.splice(id,1);
+            },
+            resize(){
+                this.$emit('resize_attach');
             }
         }
     }
@@ -59,4 +62,15 @@
         background-image: none;
         margin:0 10px 0 10px;
     }
+
+    .attach_fade-enter-active,.attach_fade-leave-active{
+        transition:  all .3s cubic-bezier(.65, 0.05, 0.36, 1.0);
+    }
+
+    .attach_fade-enter,.attach_fade-leave-to{
+        opacity: 0;
+
+    }
+
+
 </style>

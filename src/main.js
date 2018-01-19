@@ -66,7 +66,6 @@ new Vue({
   // Init Framework7 by passing parameters here
   framework7: {
     root: '#app',
-    /* Uncomment to enable Material theme: */
     material: true,
     routes: Routes,
     scrollTopOnNavbarClick:true,
@@ -83,9 +82,6 @@ new Vue({
         audits:{},
         auth_info:{},
         localization:{}
-
-
-
     },
 
    watch:{

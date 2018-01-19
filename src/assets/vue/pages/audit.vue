@@ -64,7 +64,6 @@
 <script>
     var $$=Dom7;
     export default {
-
         name: "audit",
         props: {
             id: { type: String, default: '' },
@@ -217,20 +216,9 @@
         padding: 0;
         color:#ddd;
     }
-    .check-list-acord{
-        padding:0;
-    }
-    .comment_zone{
-        margin-bottom: 30px;
-    }
 
-    .comments_button{
-        color:#757575;
-    }
 
-    .comm_show{
-        display:none;
-    }
+
 
 
 </style>

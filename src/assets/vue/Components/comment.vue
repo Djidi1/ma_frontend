@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-for="(comment,id)  in this.data_comments" :key="id" :id="'comment_'+id">
-            <single_comment :single_comment="comment" :id="id" @remove="removeComment"></single_comment>
+            <single_comment :single_comment="comment" :id="id" @remove="removeComment" @resize="resize"></single_comment>
         </div>
     </div>
 </template>
@@ -12,14 +12,6 @@
         name: "comment",
         props:{
            data_comments:{type: Array,default:function(){return[]}}
-        },
-        data:function(){
-            return{
-                show:true
-            }
-        },
-        created:function(){
-
         },
         methods:{
             hasAttach(id){
@@ -39,17 +31,9 @@
                       self.data_comments.splice(id,1);
                  });
             },
-            editComment(e){
-                e.preventDefault();
-               // this.$emit('test');
-            },
-
-
-
-
-
-
-
+            resize(){
+                this.$emit('resize')
+            }
     }
     }
 </script>

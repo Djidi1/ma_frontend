@@ -7,10 +7,11 @@
                 </div>
                 <!--comments-->
                 <div slot="root" class="animate_scroll"  >
-                  <!--&lt;!&ndash; <transition name="slide-fade">&ndash;&gt;-->
                     <f7-block inner  >
-                            <comment v-if="hasComment" :data_comments="this.data_item.comments"></comment>
-                            <text_area v-else @test='test' :data_set="this.data_item.comments"></text_area>
+                        <transition appear mode="out-in" name="slide-fade" v-on:enter="resize()">
+                            <comment v-if="hasComment" :data_comments="this.data_item.comments" @resize="resize"></comment>
+                            <text_area v-else  :data_set="this.data_item.comments" @resize="resize"></text_area>
+                        </transition>
                     </f7-block>
                 </div>
             </f7-list-item>
@@ -36,10 +37,6 @@
 
             }
         },
-        created:function(){
-          // this.data=this.$root.list[this.obj_id].audits[this.audit_id].check_list[this.check_id].list_to_check[this.data_id].comments;
-
-        },
         computed:{
             hasComment(){
                 return (this.data_item.comments.length>0)?true:false;
@@ -47,38 +44,34 @@
         },
         methods:{
             show_comments(val){
-                let input=$$('#'+val).find('.animate_scroll');
-                this.animate(input,false);
+                let input=this.$$('#'+val).find('.animate_scroll');
+                this.animate_acrd(input,undefined);
                 let arrow=$$('#'+val).find('.f7-icons');
                 let result=(arrow.html()==="chevron_right")?"chevron_down":"chevron_right";
                 arrow.text(result);
             },
-            animate(obj,type){
+            animate_acrd(obj,resize_height){
                 let self=this;
-                let duration=(type)?75:0;
-                setTimeout(function(){
-                    let height=(type)?self.getElHeight(obj):(obj.height()===0)?self.getElHeight(obj):0;
-                    obj.animate({
-                        'height':height
-                    },{
-                        duration:250,
-                        easing:'swing'
-                    })
-                },duration);
+                let height=(resize_height!=undefined)?resize_height:(obj.height()===0)?self.getElHeight(obj):0;
+                obj.animate({
+                    'height':height
+                },{
+                    duration:250,
+                    easing:'swing'
+                })
 
             },
             getElHeight(obj){
                 return obj.find('.content-block').height();
             },
-            test(){
-               this.show=!this.show;
-               this.animate($$('#'+this.data_id).find('.animate_scroll'),true);
-            },
-            test_react(comment,id){
-                console.log(comment);
-                this.data[id]=comment;
-                console.log(this.$root.list)
-            }
+           resize(){
+                let self=this;
+                let input=this.$$('#'+this.data_id).find('.animate_scroll');
+                if (input.height()!=0) {
+                        this.animate_acrd(input, this.getElHeight(input));
+
+                }
+           }
         }
 
     }

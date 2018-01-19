@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div v-if="mode">
+        <transition  mode="out-in" name="slide-fade" v-on:enter="enter" >
+        <div v-if="mode" key="message">
             <div  class="comment_block">
                 <div class="header_comment">
                     <div class="row no-gutter">
@@ -35,10 +36,12 @@
                 </div>
             </div>
         </div>
-        <div v-else>
-            <text_area :comment="this.single_comment" @edit_done="edit_done()" :type="true"></text_area>
+        <div v-else key="edit">
+            <text_area :comment="this.single_comment" @edit_done="edit_done()" :type="true" @resize="resize"></text_area>
         </div>
+        </transition>
         </div>
+
 </template>
 
 <script>
@@ -76,9 +79,14 @@
                 e.preventDefault();
                 this.mode=!this.mode;
             },
-
             edit_done(){
                 this.mode=!this.mode;
+            },
+            enter(){
+                this.resize(0)
+            },
+            resize(){
+                this.$emit('resize',);
             }
         }
     }
@@ -136,8 +144,6 @@
         margin:0 7px 0 5px;
         font-size: 16px;
     }
-
-
     .header_comment .row div:after,
     .footer_comment .row .col-65:after,
     .footer_comment .row .col-10:after{
@@ -152,5 +158,8 @@
         -webkit-transform-origin: 50% 100%;
         transform-origin: 50% 100%;
         opacity: 0.5;
+    }
+    .invisible{
+        opacity:0;
     }
 </style>

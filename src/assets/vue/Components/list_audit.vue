@@ -53,8 +53,6 @@
 </script>
 
 <style scoped>
-
-
     .dop_info{
         font-size:15px;
         color:#757575;
