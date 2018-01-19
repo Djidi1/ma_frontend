@@ -130,14 +130,16 @@
                         if ($$(this).length > 0) {
                             let inputs = $$(this).find('form').find('li').find('input');
                             inputs.each(function () {
-                               let item_id=$$(this).parent().parent().attr('id');
-                               if(!$$(this).prop('checked')) {
-                                   status = false;
-                                   self.audit.check_list[id].list_to_check[item_id].status = status;
-                                   result='wrong';
-                               }else{
-                                   status=true;
-                                   self.audit.check_list[id].list_to_check[item_id].status = status;
+                                if($$(this).attr('type')==='checkbox'){
+                                   let item_id=$$(this).parent().parent().attr('id');
+                                   if(!$$(this).prop('checked')) {
+                                       status = false;
+                                       self.audit.check_list[id].list_to_check[item_id].status = status;
+                                       result='wrong';
+                                   }else{
+                                       status=true;
+                                       self.audit.check_list[id].list_to_check[item_id].status = status;
+                                   }
                                }
                             })
                             self.audit.check_list[id].status=result;
@@ -153,8 +155,10 @@
                     if ($$(this).length>0){
                         let inputs=$$(this).find('form').find('li').find('input');
                         inputs.each(function(){
-                            let item_id=$$(this).parent().parent().attr('id');
-                            self.audit.check_list[id].list_to_check[item_id].status = false;
+                            if($$(this).attr('type')==='checkbox') {
+                                let item_id = $$(this).parent().parent().attr('id');
+                                self.audit.check_list[id].list_to_check[item_id].status = false;
+                            }
                         })
                     }
                 })

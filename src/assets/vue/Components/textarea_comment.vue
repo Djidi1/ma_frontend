@@ -107,6 +107,7 @@
                      }
                      this.data_comm.push(comment);
                  }
+                 this.$root.update_ls();
                  this.$emit('edit_done')
             },
             removeAttachment(id){
