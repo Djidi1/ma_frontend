@@ -2,11 +2,7 @@
     <div class="attachments_comments">
         <transition-group name="attach_fade" v-on:after-leave="resize" v-on:enter="resize">
         <div class="attach_block" v-for="(attach,index) in attachment" :key="attach">
-            <div class="attach"  :style="attachImg(attach)" @click="photolook(attachment,index)">
-                <div class="img_top_back">img
-                </div>
-                <div class="img_bot_back"></div>
-            </div>
+            <div class="attach"  :style="attachImg(attach)" @click="photolook(attachment,index)"></div>
             <div class="remove_button_block" v-show="edit_mode">
                 <div class="remove_button" @click="remove_attach(index)"><i class="fa fa-times" aria-hidden="true"></i></div>
             </div>
@@ -61,6 +57,7 @@
         background-repeat: no-repeat;
         background-image: none;
         margin:0 10px 0 10px;
+        position: relative;
     }
 
     .attach_fade-enter-active,.attach_fade-leave-active{
@@ -71,6 +68,22 @@
         opacity: 0;
 
     }
+    .attach:after,
+    .attach:before{
+        content:'';
+        display: block;
+        height:15px;
+        width: 100%;
+        background-color: #222222;
+        opacity: 0.5;
+        position: absolute;
+    }
+    .attach:after{
+        bottom: 0;
+    }
+
+
+
 
 
 </style>

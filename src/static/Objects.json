@@ -21,6 +21,7 @@
                 "id":"1",
                 "discription":"Оборудование",
                 "status":false,
+                "type":"new",
                 "comments":[
                   {
                     "id":"3434",
@@ -40,12 +41,14 @@
                 "id":"2",
                 "discription":"Стены",
                 "status":false,
+                "type":"new",
                 "comments":[]
               },
               {
                 "id":"3",
                 "discription":"Потолок",
                 "status":false,
+                "type":"new",
                 "comments":[]
               }
             ]

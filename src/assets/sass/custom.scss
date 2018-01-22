@@ -60,14 +60,14 @@
 }
 
 .audit_good{
-	color:#ddd;
+	color: #019341;
 }
 .audit_error{
 	color: #ddd;
 }
 .audit_wrong{
-	color:#ddd;
-	width:28px;
+	color: #b51313;
+
 }
 .blck_info .card{
 	margin:3% 0 0 0 ;
@@ -175,6 +175,9 @@
 .comment_text_zone .attachments_comments{
 	margin:10px 0 10px 0!important;
 }
+.comment_text_zone .item-content:after{
+	display:none;
+}
 .remove_button_block{
 	position:relative;
 }
@@ -246,8 +249,17 @@
 	transform-origin: 50% 100%;
 	opacity: 0.5;
 }
-.check_list_items .item-content:after{
+.check_list_items .col-50 .item-content:after{
 	display:none;
+}
+.status_sucs .item-content:first-child {
+	background-color:#D9FFDA;
+}
+.status_false .item-content:first-child {
+	background-color:#FEE9E6;
+}
+.comment_text_zone .item-content{
+	background-color:#FFFFFF!important;
 }
 
 //Animation

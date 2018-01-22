@@ -1,5 +1,5 @@
 <template>
-    <div class="comment_text_zone check_list_items" :id="'edit_'+this.comment_id">
+    <div class="comment_text_zone" :id="'edit_'+this.comment_id">
         <f7-list form>
             <f7-list-item>
                 <f7-label floating>{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>
@@ -7,7 +7,7 @@
             </f7-list-item>
                 <attachment @removeAttach="this.removeAttachment" :attachment="attachment" :edit_mode="true" @resize_attach="resize_attach"></attachment>
             <f7-block>
-                <div class="row">
+                <div class="row ">
                     <div class="col-50 attachment_button">
                         <f7-col  class="comment-photupload comment-photos" width="20">
                             <f7-icon size=28  fa="camera"></f7-icon>
@@ -90,7 +90,8 @@
             },
             send_comments(){
                  let now= new Date();
-                 let date_for_text=now.getDate()+"/"+now.getMonth()+1+"/"+now.getFullYear()+" "+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
+                 let curSec=('0'+now.getSeconds()).substr(-2);
+                 let date_for_text=now.getDate()+"/"+now.getMonth()+1+"/"+now.getFullYear()+" "+now.getHours()+":"+now.getMinutes()+":"+curSec;
                  if(this.type){
                      this.comment.id=this.getOfflineID(this.comment.id);
                      this.comment.create_date=date_for_text;

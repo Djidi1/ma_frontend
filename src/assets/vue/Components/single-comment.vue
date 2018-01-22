@@ -112,6 +112,7 @@
         font-size: 12px;
         padding-top:4px!important;
         overflow: auto;
+        background-color: transparent;
     }
     .data_text{
         opacity: 0.7;

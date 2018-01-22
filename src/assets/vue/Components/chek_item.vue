@@ -1,12 +1,27 @@
 <template>
     <div>
-        <f7-list form class="check_list_items">
-            <f7-list-item checkbox   name="checkbox" :id="this.data_id"  :title="data_item.discription" :checked="data_item.status" >
-                <div slot="inner">
-                    <f7-button  @click='show_comments(data_id)' ><i class='fa fa-commenting-o comments_button' aria-hidden='true'></i>  <f7-icon  f7="chevron_right" size="14" color="gray" style="opacity: 0.7; "></f7-icon> </f7-button>
+        <f7-list form class="check_list_items" :id="'list_itm_'+this.data_id">
+            <f7-list-item :id="this.data_id"  :title="data_item.discription" >
+                <div class="row">
+                    <div class="col-50">
+                    <label class="item-content label-checkbox sucsess_status"><i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                        <input name="checkbox" type="checkbox" :checked="status_true"  @change="checkbox_change(true)">
+                        <div class="item-media">
+                            <i class="icon icon-form-checkbox"></i>
+                        </div>
+                    </label>
+                </div>
+                    <div class="col-50">
+                    <label class="item-content label-checkbox false_status"><i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                        <input name="checkbox" type="checkbox" :checked="status_false" @change="checkbox_change(false)">
+                        <div class="item-media">
+                            <i class="icon icon-form-checkbox"></i>
+                        </div>
+                    </label>
+                    </div>
                 </div>
                 <!--comments-->
-                <div slot="root" class="animate_scroll"  >
+                <div slot="root" class="animate_scroll">
                     <f7-block inner  >
                         <transition appear mode="out-in" name="slide-fade" v-on:enter="resize()">
                             <comment v-if="hasComment" :data_comments="this.data_item.comments" @resize="resize"></comment>
@@ -30,17 +45,34 @@
             data_id:{ type: Number, default: 0 },
             obj_id:{ type: Number, default: 0 },
             audit_id:{ type: Number, default: 0 },
-            check_id:{ type: Number, default: 0 }
+            check_id:{ type: Number, default: 0 },
         },
         data:function(){
             return{
-
+                status_true:false,
+                status_false:false
             }
         },
         computed:{
             hasComment(){
                 return (this.data_item.comments.length>0)?true:false;
             }
+        },
+        created(){
+            if(this.data_item.type!='new'){
+                this.status_true=this.data_item.status;
+                this.status_false=!this.data_item.status;
+            }
+        },
+        mounted(){
+          this.$nextTick(function(){
+              if(this.data_item.type!='new'){
+                  this.change_cls(this.data_item.status);
+              }
+            if (this.status_false) {
+                this.animate_acrd(this.$$('#' + this.data_id).find('.animate_scroll'), undefined);
+            }
+          })
         },
         methods:{
             show_comments(val){
@@ -69,9 +101,27 @@
                 let input=this.$$('#'+this.data_id).find('.animate_scroll');
                 if (input.height()!=0) {
                         this.animate_acrd(input, this.getElHeight(input));
-
                 }
-           }
+           },
+           checkbox_change(val){
+               this.data_item.status=(val)?( this.data_item.status)?false:val:val;
+               this.data_item.type="old";
+               this.change_cls(val);
+               this.status_false=!val;
+               this.status_true=val;
+               (!val)? this.animate_acrd(this.$$('#' + this.data_id).find('.animate_scroll'), undefined)
+                   :(this.$$('#' + this.data_id).find('.animate_scroll').height()!=0)?this.animate_acrd(this.$$('#' + this.data_id).find('.animate_scroll'), 0):'';
+            },
+            change_cls(val){
+
+                if(val){
+                    this.$$('#list_itm_'+this.data_id).removeClass('status_false');
+                    this.$$('#list_itm_'+this.data_id).toggleClass('status_sucs');
+                }else{
+                    this.$$('#list_itm_'+this.data_id).removeClass('status_sucs');
+                    this.$$('#list_itm_'+this.data_id).toggleClass('status_false');
+                }
+            }
         }
 
     }
@@ -85,8 +135,23 @@
     height: 0;
     overflow: hidden;
 }
-
     .check_list_items .fa{
         color:#9e9e9e;
     }
+    .false_status input[type=checkbox]:checked+.item-media i,icon-form-checkbox{
+        background-color:#b51313!important;
+        border-color: #b51313!important;
+    }
+    .sucsess_status input[type=checkbox]:checked+.item-media i,icon-form-checkbox{
+        background-color: #019341 !important;
+        border-color: #019341!important;
+    }
+    .check_list_items .label-checkbox .item-content :after{
+        display:none!important;
+    }
+
+
+
+
+
 </style>
