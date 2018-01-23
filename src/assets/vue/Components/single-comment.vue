@@ -1,46 +1,46 @@
 <template>
-    <div>
-        <transition  mode="out-in" name="slide-fade" v-on:enter="enter" >
-        <div v-if="mode" key="message">
-            <div  class="comment_block">
-                <div class="header_comment">
-                    <div class="row no-gutter">
-                        <div class="col-60 title_comment">
-                        </div>
-                        <div class="col-40 date_comment">
-                            <span class="data_text" >{{single_comment.create_date}}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="content_comment">
-                    {{single_comment.text}}
-                    <div v-show="hasAttach(id)" >
-                        <attachment :attachment="single_comment.attachments" ></attachment>
-                    </div>
-                </div>
-                <div class="footer_comment">
-                    <div class="row no-gutter">
-                        <div class="col-65">
-                        </div>
-                        <div class="col-25 ">
-                            <div class="control">
-                                <div class="control_my_comment" v-show="myComment()">
-                                    <button @click="editComment($event)"> <i class="fa fa-pencil" aria-hidden="true"></i></button>
-                                    <button @click.prevent="removeComment(id)"> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+    <f7-block inner class="custom_block_no_after">
+        <transition  mode="out-in" name="slide-fade" >
+                <div v-if="mode" key="message">
+                    <div  class="comment_block">
+                        <div class="header_comment">
+                            <div class="row no-gutter">
+                                <div class="col-60 title_comment">
+                                </div>
+                                <div class="col-40 date_comment">
+                                    <span class="data_text" >{{single_comment.create_date}}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-10">
+                        <div class="content_comment">
+                            {{single_comment.text}}
+                            <div v-show="hasAttach(id)" >
+                                <attachment :attachment="single_comment.attachments" ></attachment>
+                            </div>
+                        </div>
+                        <div class="footer_comment">
+                            <div class="row no-gutter">
+                                <div class="col-65">
+                                </div>
+                                <div class="col-25 ">
+                                    <div class="control">
+                                        <div class="control_my_comment" v-show="myComment()">
+                                            <button @click="editComment($event)"> <i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                            <button @click.prevent="removeComment(id)"> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-10">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div v-else key="edit">
-            <text_area :comment="this.single_comment" @edit_done="edit_done()" :type="true" @resize="resize"></text_area>
-        </div>
+                <text_area v-else key="edit" :comment="this.single_comment" @edit_done="edit_done()" :type="true" ></text_area>
         </transition>
-        </div>
+    </f7-block>
+
+
 
 </template>
 
@@ -81,13 +81,8 @@
             },
             edit_done(){
                 this.mode=!this.mode;
-            },
-            enter(){
-                this.resize(0)
-            },
-            resize(){
-                this.$emit('resize',);
             }
+
         }
     }
 </script>

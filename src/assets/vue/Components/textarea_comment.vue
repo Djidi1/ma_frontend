@@ -1,26 +1,28 @@
 <template>
-    <div class="comment_text_zone" :id="'edit_'+this.comment_id">
-        <f7-list form>
-            <f7-list-item>
-                <f7-label floating>{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>
-                <f7-input type="textarea"  v-model="text" ></f7-input>
-            </f7-list-item>
-                <attachment @removeAttach="this.removeAttachment" :attachment="attachment" :edit_mode="true" @resize_attach="resize_attach"></attachment>
-            <f7-block>
-                <div class="row ">
-                    <div class="col-50 attachment_button">
-                        <f7-col  class="comment-photupload comment-photos" width="20">
-                            <f7-icon size=28  fa="camera"></f7-icon>
-                            <input @change="upload" class="comment-file" type='file' multiple accept="image/*;capture=camera">
-                        </f7-col>
+        <div class="comment_text_zone" :id="'edit_'+this.comment_id">
+            <f7-list form>
+                <f7-list-item>
+                    <f7-label floating>{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>
+                    <f7-input type="textarea"  v-model="text" ></f7-input>
+                </f7-list-item>
+                <attachment @removeAttach="this.removeAttachment" :attachment="attachment" :edit_mode="true" ></attachment>
+                <f7-block>
+                    <div class="row ">
+                        <div class="col-50 attachment_button">
+                            <f7-col  class="comment-photupload comment-photos" width="20">
+                                <f7-icon size=28  fa="camera"></f7-icon>
+                                <input @change="upload" class="comment-file" type='file' multiple accept="image/*;capture=camera">
+                            </f7-col>
+                        </div>
+                        <div class="col-50">
+                            <f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
+                        </div>
                     </div>
-                    <div class="col-50">
-                        <f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
-                    </div>
-                </div>
-            </f7-block>
-        </f7-list>
-    </div>
+                </f7-block>
+            </f7-list>
+        </div>
+
+
 </template>
 
 <script>
@@ -53,7 +55,7 @@
 
         mounted:function(){
             this.$nextTick(function(){
-                this.check_style_class();
+                this.check_style_class(this.$el);
                 if (this.type)(this.$$('#edit_'+this.comment_id).find('textarea').focus());
             })
         },
@@ -64,17 +66,18 @@
         },
         methods:{
             //Костыль для отображения класов которые не цепляются если вызывать форму на редактирование
-            check_style_class(){
+            check_style_class(el){
+                let element=$$(el);
                 let form_cls;
                 let input_cls;
                 //костыль дял формы
-                let form=(this.$$('.comment_text_zone').find('form'));
+                let form=element.find('form');
                 form.attr('class').split(' ').forEach(function(item){
                      form_cls=(item!='inputs-list')?true:false;
                 })
                 if (form_cls) this.add_cls_to_form(form,'inputs-list');
                 //костыль для инпута item-input-field
-                let input=(this.$$('.item-input'));
+                let input=element.find('.item-input');
                input.attr('class').split(' ').forEach(function(item){
                    input_cls=(item!='item-input-field')?true:false;
                });
@@ -83,6 +86,7 @@
             add_cls_to_form(form,cls){
                 form.addClass(cls);
             },
+
             attachImg(attach_img) {
                 return {
                     'background-image': this.hasAttach ? 'url(' + attach_img + ')' : 'none'
@@ -106,7 +110,8 @@
                          "text":this.text,
                          "attachments":this.attachment
                      }
-                     this.data_comm.push(comment);
+
+                     this.data_set.push(comment);
                  }
                  this.$root.update_ls();
                  this.$emit('edit_done')
@@ -120,22 +125,6 @@
                     lastId=current.id:
                     ++lastId;
                 return lastId;
-            },
-            photolook(attach,id){
-                console.log(id);
-                let photos =this.$f7.photoBrowser({
-                        type: 'popup',
-                        photos:attach,
-                        theme:'dark'
-                    }
-                );
-                photos.open(id);
-            },
-            resize(){
-                this.$emit('resize');
-            },
-            resize_attach(){
-                this.$emit('resize')
             },
             upload(e){
                 e.preventDefault();

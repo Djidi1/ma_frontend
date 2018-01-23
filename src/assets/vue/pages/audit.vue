@@ -37,7 +37,7 @@
                         <f7-list accordion  v-for="(check,id) in this.audit.check_list"  :key="id"  :id="'acord'+id" >
                             <f7-list-item accordion-item :title="check.name" :after="realStatus(check.status)">
                                 <f7-accordion-content>
-                                        <check_item v-for="(item,item_id) in check.list_to_check" :data_item="item" :data_id="item_id" :key="item_id" :obj_id="this.obj_id" :audit_id="this.id" :check_id="id" :start_status="check.status"></check_item>
+                                        <check_item v-for="(item,item_id) in check.list_to_check" :data_item="item" :data_id="item_id" :key="item_id" :obj_id="this.obj_id" :audit_id="this.id" :check_id="id" ></check_item>
                                     <f7-list-item>
                                         <div class="row" style="width:100%; padding:15px 0 15px 0">
                                             <div class="col-50">
@@ -143,7 +143,7 @@
                 (this.audit.check_list).forEach(function(item,i,arr){
                    item.list_to_check.forEach(function(list_item){
                        list_item.status=false;
-                       list_item.type='new';
+                       list_item.type=true;
                    })
                 });
                 let acord=$$('#acord'+id);

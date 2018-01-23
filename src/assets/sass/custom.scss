@@ -271,6 +271,32 @@
 	//transform: translateY(-20px);
 	opacity: 0;
 }
+.acrd_custom .item-content:before{
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: auto;
+	right: auto;
+	height: 1px;
+	width: 100%;
+	background-color: rgba(0,0,0,.12);
+	display: block;
+	z-index: 15;
+	-webkit-transform-origin: 50% 0;
+	transform-origin: 50% 0;
+	opacity: 0.5;
+}
+.custom_block_no_after .content-block-inner:after,
+.custom_block_no_after .content-block-inner:before{
+  display:none;
+}
+.comment_text_zone .item-content:before{
+  display:none;
+}
+.check_list_items .accordion-item .item-content{
+	background-color: transparent!important;
+}
 
 
 

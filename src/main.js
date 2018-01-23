@@ -56,6 +56,8 @@ import attachment from './assets/vue/Components/attachment.vue'
 Vue.component('attachment',attachment);
 import single_comment from './assets/vue/Components/single-comment.vue'
 Vue.component('single_comment',single_comment);
+import check_box from './assets/vue/Components/check_box_item.vue'
+Vue.component('check_box_item',check_box);
 
 
 // Init App
