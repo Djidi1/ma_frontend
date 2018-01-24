@@ -3,7 +3,7 @@
         <f7-page class="cost">
             <!-- Navbar -->
             <f7-navbar  sliding class="settings" >
-                <f7-nav-left back-link="Back" sliding ></f7-nav-left>
+                <f7-nav-left back-link="Back" sliding @back-click.stop="cancelSetting()"></f7-nav-left>
                 <f7-nav-center sliding >{{this.$root.localization.SettingPage}}</f7-nav-center>
             </f7-navbar>
 
@@ -96,13 +96,15 @@
                 }
             },
             cancelSetting:function(){
-                self=this;
+                let self=this;
+                let duration=0;
                 if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.auth_info.lang){
                     this.change_l(this.$root.auth_info.lang);
-                    setTimeout(function(){self.$f7.views[0].back();},600)
+                    duration=600;
                 }
-                self.$f7.views[0].back();
-            }
+                setTimeout(function(){self.$f7.views[0].back();},duration)
+            },
+
         }
     }
 </script>

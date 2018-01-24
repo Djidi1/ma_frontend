@@ -1,7 +1,7 @@
 <template>
     <f7-block class="comment_acrd"  >
         <f7-list accordion class="acrd_custom">
-            <f7-list-item accordion-item :title="this.$root.localization.AuditPage.comments_title" after="<i class='fa fa-commenting-o' aria-hidden='true'></i>">
+            <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_title" after="<i class='fa fa-commenting-o' aria-hidden='true'></i>">
                 <f7-accordion-content>
                     <transition appear mode="out-in" name="slide-fade">
                     <single-comment  v-for="(comment,id) in this.data_comments" :key="id" :single_comment="comment" @remove="remove_comment"></single-comment>

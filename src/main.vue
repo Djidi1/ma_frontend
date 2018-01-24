@@ -12,8 +12,8 @@
 									<avatar :fullname="this.$root.auth_info.name" size="70" color="#c65c44"></avatar>
 						</div>
 						<f7-list class="mleft_menu_block">
-							<f7-list-item  link="/page/" :title="this.$root.localization.LeftMenu.Audit" link-view="#main-view" link-close-panel media="<i class='fa fa-calendar-check-o ' aria-hidden='true'></i>"></f7-list-item>
-							<f7-list-item link="/page/" :title="this.$root.localization.LeftMenu.Object" link-view="#main-view" link-close-panel media="<i class='fa fa-building-o' aria-hidden='true'></i>"></f7-list-item>
+							<f7-list-item  link="/page/" :title="this.$root.localization.LeftMenu.Audit" link-view="#main-view" link-close-panel media="<i class='fa fa-calendar-check-o ' aria-hidden='true'></i>" :badge="count_new" badge-color="blue"></f7-list-item>
+							<f7-list-item link="/object/" :title="this.$root.localization.LeftMenu.Object" link-view="#main-view" link-close-panel media="<i class='fa fa-building-o' aria-hidden='true'></i>"></f7-list-item>
 							<f7-list-item link="/settings/" :title="this.$root.localization.LeftMenu.Settings"  media="<i class='fa fa-cog ' aria-hidden='true'></i>"></f7-list-item>
 							<f7-list-item  @click="exit" :title="this.$root.localization.LeftMenu.Exit" link-view="#main-view"  media="<i class='fa fa-sign-out' aria-hidden='true'></i>"></f7-list-item>
 						</f7-list>
@@ -53,6 +53,17 @@
                 (this.$root.check_user_auth()) ? this.go_to_page():this.go_to_login();
             })
         },
+		computed:{
+            count_new(){
+                let count=0;
+                this.$root.list.forEach(function(item){
+					item.audits.forEach(function(audit){
+						(audit.status==='new')?count++:'';
+					})
+                })
+				return count;
+			}
+		},
 		methods:{
             exit:function () {
                 self=this;

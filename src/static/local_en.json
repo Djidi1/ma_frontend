@@ -13,7 +13,18 @@
     "Exit":"Exit"
   },
   "AuditPage_main":"Audits",
+  "AuditPage_count":"from",
   "ObjectPage_main":"Objects",
+  "ObjectPage":{
+    "name":"Name",
+    "address":"Address",
+    "date_create":"create date",
+    "id":"ID",
+    "count":"from",
+    "audits":"Audits",
+    "audits_view":"Audits",
+    "new_audits":"New"
+  },
   "SettingPage":"Settings",
   "AuditPage":{
     "name":"Name",

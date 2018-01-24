@@ -1,5 +1,5 @@
 <template>
-    <f7-page   >
+    <f7-page  pull-to-refresh @ptr:refresh="this.$root.onRefresh" >
         <!-- Navbar -->
         <f7-navbar back-link="Back" sliding  >
 
@@ -15,7 +15,7 @@
                                     <div class="col-100">{{audit.name}}</div>
                                     <div class="col-100">Id: {{audit.id}}</div>
                                     <div class="col-100">{{audit.create_date}}</div>
-                                    <div class="col-100">{{obj_name}}</div>
+                                    <div class="col-100"><f7-link no-link-class :href="'/object/'+this.obj_id+'/'">{{obj_name}}</f7-link></div>
                                 </div>
                                 <div class="col-30 status" :style="this.block_height">
                                     <table>

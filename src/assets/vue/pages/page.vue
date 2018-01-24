@@ -1,5 +1,5 @@
 <template>
-    <f7-page pull-to-refresh @ptr:refresh="onRefresh">
+    <f7-page pull-to-refresh @ptr:refresh="this.$root.onRefresh">
 
         <!-- Navbar -->
         <f7-navbar>
@@ -16,15 +16,7 @@
 <script>
     export default {
         name: "page",
-        methods:{
-            onRefresh: function (event, done) {
-                var self = this;
-                setTimeout(function () {
-                    self.$root.list.push({name:'test'});
-                    done();
-                }, 2000);
-            }
-        }
+
     }
 </script>
 

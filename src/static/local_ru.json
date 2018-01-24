@@ -13,7 +13,18 @@
     "Exit": "Выход"
   },
   "AuditPage_main": "Аудиты",
+  "AuditPage_count":"из",
   "ObjectPage_main": "Объекты",
+  "ObjectPage":{
+    "name":"Название",
+    "address":"Адрес",
+    "date_create":"дата создания",
+    "id":"ID",
+    "count":"из",
+    "audits":"Аудитов",
+    "audits_view":"Аудиты",
+    "new_audits":"Новых"
+  },
   "SettingPage": "Настройки",
   "AuditPage": {
     "name": "Название",

@@ -46,6 +46,8 @@ Vue.use(VueLocalStorage);
 //Components
 import List from './assets/vue/Components/list_audit.vue'
 Vue.component('list',List);
+import Object_list from './assets/vue/Components/object_list.vue'
+Vue.component('list_object',Object_list);
 import check_item from './assets/vue/Components/chek_item.vue'
 Vue.component('check_item',check_item);
 import textarea from './assets/vue/Components/textarea_comment.vue'
@@ -134,7 +136,14 @@ new Vue({
         changeModalLang:function(){
             this.$f7.params.modalButtonOk=this.localization.modal.modalOk;
             this.$f7.params.modalButtonCancel=this.localization.modal.modalCancel;
-        }
+        },
+          onRefresh(event, done){
+              var self = this;
+              setTimeout(function () {
+                  self.list=data_json;
+                  done();
+              }, 2000);
+          }
 
 
     }

@@ -48,10 +48,9 @@
         methods: {
             change_item_status(val){
                 this.data_item.type=(this.data_item.status===val)?(this.data_item.type)?false:true:false;
-                this.data_item.status=val;
+                this.data_item.status=(this.data_item.status===val)?false:val;
                 this.$root.update_ls();
             }
-
         }
 
     }

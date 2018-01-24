@@ -8,6 +8,14 @@ export default [
       component: require('./assets/vue/pages/page.vue')
     },
     {
+        path:'/object/',
+        component: require('./assets/vue/pages/objects.vue')
+    },
+    {
+        path:'/object/:id',
+        component: require('./assets/vue/pages/single_object.vue')
+    },
+    {
       path:'/audit/:obj_id/:id',
       component:require('./assets/vue/pages/audit.vue')
     },
