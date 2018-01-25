@@ -211,7 +211,7 @@
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url("http://materialdesignblog.com/wp-content/uploads/2016/06/image3.jpg");
+	background-image: url("../../static/background_user.jpg");
 	height: 90px;
 }
 .mleft_menu_block{
@@ -221,7 +221,9 @@
 	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M20%2011H7.83l5.59-5.59L12%204l-8%208%208%208%201.41-1.41L7.83%2013H20v-2z'%20fill%3D'%23222222'%2F%3E%3C%2Fsvg%3E")
 }
 .user_settings ul:before,
-.user_settings .item-content:after
+.user_settings .item-content:after,
+.add_list ul:before,
+.add_list .item-content:after
 {
 	display:none;
 }
@@ -303,9 +305,40 @@
 	color:#FFFFFF;
 	border-radius:3px;
 }
+.fab_bottom{
+	margin-bottom:48px;
+	left:15px;
+}
+.crud_header{
+	width:80px;
+	margin-right:10px
+}
+.crud_header div{
+	text-align: center;
+}
+.add_check .list-block ul {
+	padding-left: 0 !important;
+}
+.add_check .list-block ,
+.add_check .list-block .accordion-item{
+	margin-bottom: 5px !important;
+}
+.checks_to_add li:last-child .item-content:after{
+	display:none;
 
-
-
-
+}
+.add_check .item-content{
+	border-bottom:1px solid #ddd;
+}
+.add_check .list-block{
+	margin-top: 0 !important;
+}
+.add_check_btn .item-content{
+	border-bottom:unset;
+}
+.checks_to_add .fa{
+	color:#9e9e9e;
+	font-size: 22px;
+}
 
 

@@ -4,6 +4,12 @@
         <f7-navbar back-link="Back" sliding  >
 
             <f7-nav-center sliding> {{audit.name}} {{audit.id}}</f7-nav-center>
+            <f7-nav-right>
+                <f7-grid class="crud_header">
+                    <f7-col width="50" > <i class="fa fa-pencil" aria-hidden="true" @click="edit_audit()"></i></f7-col>
+                    <f7-col width="50"><i class="fa fa-trash-o" aria-hidden="true"></i></f7-col>
+                </f7-grid>
+            </f7-nav-right>
         </f7-navbar>
         <div class="blck_info">
             <f7-card>
@@ -52,6 +58,7 @@
                             </f7-list-item>
                         </f7-list>
                 </f7-card>
+
 
 
 
@@ -130,6 +137,7 @@
                         if (!list_item.status){
                             status=false;
                             result='wrong';
+                            list_item.type=false;
                         }else{
                             status=true;
                         }
@@ -190,6 +198,9 @@
                         break;
                 }
                 return result;
+            },
+            edit_audit(){
+                console.log(1)
             }
         }
 

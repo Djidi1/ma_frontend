@@ -1,6 +1,5 @@
 <template>
-    <f7-page pull-to-refresh @ptr:refresh="this.$root.onRefresh">
-
+        <f7-page pull-to-refresh @ptr:refresh="this.$root.onRefresh">
         <!-- Navbar -->
         <f7-navbar>
             <f7-nav-left>
@@ -10,13 +9,29 @@
 
         </f7-navbar>
             <list :data_storage="this.$root.list"></list>
+
+            <f7-fab color="blue"  class="fab_bottom" @click="popup_open=true">
+               <f7-icon icon="icon-plus"></f7-icon>
+            </f7-fab>
+            <popup_new :opendPopup="popup_open" @close="popup_open=false"></popup_new>
     </f7-page>
 </template>
 
 <script>
     export default {
         name: "page",
+        data:function(){
+          return{
+              popup_open:false,
+              test_sw:false
 
+            }
+        },
+        methods:{
+            test(){
+                this.test_sw=true;
+            }
+        }
     }
 </script>
 

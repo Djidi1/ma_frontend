@@ -10,6 +10,9 @@
 
         </f7-navbar>
         <list_object :data_storage="this.$root.list"></list_object>
+        <f7-fab color="blue"  class="fab_bottom">
+            <f7-icon icon="icon-plus"></f7-icon>
+        </f7-fab>
     </f7-page>
 </template>
 

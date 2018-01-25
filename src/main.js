@@ -60,6 +60,11 @@ import single_comment from './assets/vue/Components/single-comment.vue'
 Vue.component('single_comment',single_comment);
 import check_box from './assets/vue/Components/check_box_item.vue'
 Vue.component('check_box_item',check_box);
+import popup_new from './assets/vue/Components/popup_ne.vue'
+Vue.component('popup_new',popup_new);
+import audit_add from './assets/vue/Components/add_audit_form.vue'
+Vue.component('audit_add',audit_add);
+
 
 
 // Init App
