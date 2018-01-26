@@ -273,6 +273,18 @@
 	//transform: translateY(-20px);
 	opacity: 0;
 }
+
+
+
+.slide-app-enter-active,.slide-fade-leave-active {
+	transition:   all .3s cubic-bezier(.65, 0.05, 0.36, 1.0); ;
+}
+.slide-app-enter, .slide-fade-leave-to
+	/* .slide-fade-leave-active до версии 2.1.8 */ {
+	transform: translateY(20px);
+	opacity: 0;
+}
+
 .acrd_custom .item-content:before{
 	content: '';
 	position: absolute;
@@ -339,6 +351,9 @@
 .checks_to_add .fa{
 	color:#9e9e9e;
 	font-size: 22px;
+}
+.popup_card .card{
+	margin-top:30px;
 }
 
 

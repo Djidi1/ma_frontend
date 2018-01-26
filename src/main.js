@@ -37,6 +37,7 @@ import local_en from "./static/local_en"
 
 //Test zone inmport json
 import data_json from './static/Objects.json'
+import check_json from './static/check_lists.json'
 
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue);
@@ -64,6 +65,8 @@ import popup_new from './assets/vue/Components/popup_ne.vue'
 Vue.component('popup_new',popup_new);
 import audit_add from './assets/vue/Components/add_audit_form.vue'
 Vue.component('audit_add',audit_add);
+import popover_obj from './assets/vue/Components/popover_obj.vue'
+Vue.component('popover_obj',popover_obj);
 
 
 
@@ -90,7 +93,8 @@ new Vue({
         list : {},
         audits:{},
         auth_info:{},
-        localization:{}
+        localization:{},
+        check_list:{}
     },
 
    watch:{
@@ -99,6 +103,9 @@ new Vue({
       },
        list:function(val){
             this.$ls.set('list',val);
+       },
+       check_list:function(val){
+           this.$ls.set('check_list',val);
        }
     },
 
@@ -113,6 +120,10 @@ new Vue({
         this.$ls.on('list',function(val){
           _this.list=val;
         });
+        this.check_list=this.$ls.get('check_list',check_json);
+        this.$ls.on('check_list',function(val){
+          _this.check_list=val;
+      });
         this.lang_select(this.auth_info.lang);
 
     },
