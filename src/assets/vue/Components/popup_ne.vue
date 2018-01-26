@@ -1,7 +1,7 @@
 <template>
     <f7-popup id="popup_add" :opened="opendPopup">
         <f7-navbar back-link="Back" sliding @back-click.stop="closePopUp()" >
-            <f7-nav-center sliding> Test </f7-nav-center>
+            <f7-nav-center sliding> {{title}} </f7-nav-center>
             <f7-nav-right>
                 <f7-grid class="crud_header edit_menu">
                     <f7-col width="30" ></f7-col>
@@ -14,12 +14,12 @@
         <div class="blck_info popup_card">
             <f7-card>
                 <f7-card-header>
-                   Object info
+                    {{this.$root.localization.pop_up.object_info}}
                 </f7-card-header>
                 <f7-card-content>
                     <f7-list form class="add_list">
                         <f7-list-item class="correct_css" v-if="CheckMode">
-                                  <f7-label floating>Object</f7-label>
+                                  <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
                                    <f7-input type="select" @change="Change_select_item($event.target.value)" v-model="current">
                                         <option v-for="(item,index) in this.select_list" :key="index" :value="index" >{{item.name}}</option>
                                    </f7-input>
@@ -30,7 +30,7 @@
                             </f7-input>
                         </f7-list-item>
                         <f7-list-item v-show="selected_exist" class="correct_css">
-                            <f7-label floating>Address</f7-label>
+                            <f7-label floating>{{this.$root.localization.pop_up.address}}</f7-label>
                             <f7-input type="text" v-model="addres_obj"/>
                         </f7-list-item>
                     </f7-list>
@@ -39,7 +39,7 @@
             </f7-card>
             <f7-card>
                 <f7-card-header>
-                    Audits info
+                    {{this.$root.localization.pop_up.audits_info}}
                 </f7-card-header>
                 <f7-card-content class="card_audit_add">
                        <audit_add v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index" @remove="remove(true,index)" :type="true" @popup_call="change_id_audit"></audit_add>
@@ -48,19 +48,21 @@
                        </transition-group>
                     <f7-card>
                         <f7-grid style="width:100%">
-                            <f7-col width="100"> <f7-button fill @click="Add_audit_block" :disabled="!this.selected_exist">AddAudit</f7-button></f7-col>
+                            <f7-col width="100"> <f7-button fill @click="Add_audit_block" :disabled="!this.selected_exist">{{this.$root.localization.pop_up.add_audit}}</f7-button></f7-col>
                         </f7-grid>
                     </f7-card>
                 </f7-card-content>
                 <f7-card-footer></f7-card-footer>
             </f7-card>
     <f7-card class="btn_pop_up_main">
-        <f7-card-header>
+        <f7-card class="btn_pop_up_card">
+        <f7-card-header class="btn_pop_up_card">
             <f7-grid class="btn_complete">
-                <f7-col width="50"><f7-button  class="abort_button" @click="closePopUp()" >Cancel</f7-button></f7-col>
-                <f7-col width="50"><f7-button fill @click="Submit_data">Submit</f7-button></f7-col>
+                <f7-col width="50"><f7-button  class="abort_button" @click="closePopUp()" > {{this.$root.localization.pop_up.cancel}}</f7-button></f7-col>
+                <f7-col width="50"><f7-button fill @click="Submit_data">{{this.$root.localization.pop_up.submit}}</f7-button></f7-col>
             </f7-grid>
         </f7-card-header>
+        </f7-card>
     </f7-card>
         </div>
         <popover_obj @add_check="add_check_lists"></popover_obj>
@@ -84,6 +86,7 @@
         },
         data:function(){
           return{
+              title:this.$root.localization.pop_up.edit,
               select_list:'',
               selected_exist:false,
               current:'',
@@ -103,6 +106,7 @@
         },
         mounted:function(){
             this.$nextTick(function(){
+                this.title=(this.mode_audit_edit)?this.$root.localization.pop_up.edit:this.$root.localization.pop_up.new;
                 if (this.obj_id!=-1)
                 this.correct_css(this.$el);
             })
@@ -112,6 +116,9 @@
         },
         methods:{
             closePopUp(){
+                this.clear_data();
+                this.correct_css();
+                this.secod_correct_css();
                 this.$emit('close')
             },
             Change_select_item(val){
@@ -187,7 +194,7 @@
                             this.BadEnd
                     }
                     }else{
-                      this.$f7.alert('Empty Object', 'Warning');
+                      this.$f7.alert(this.$root.localization.pop_up.empty_obj, this.$root.localization.pop_up.warning);
                     }
                 }else{
 
@@ -202,18 +209,19 @@
             validate_arr(){
                 let self=this;
                 let result=true;
+                let result_2=true;
                 this.new_audit.forEach(function(item){
                     result=(item.name!='')?true:false;
                 })
-                if (!result)this.$f7.alert('Some inputs are empty!', 'Warning');
-                return result
+                this.audits.forEach(function(item){
+                    result_2=(item.name!='')?true:false;
+                })
+                if (!result||!result_2)this.$f7.alert(this.$root.localization.pop_up.empty_input,this.$root.localization.pop_up.warning );
+                return (result)?(result_2)?true:false:false;
             },
             GoodEnd(){
                 this.push_new_audits_in();
-                this.clear_data();
                 this.closePopUp();
-                this.correct_css();
-                this.secod_correct_css();
             },
             BadEnd(){
 
@@ -252,6 +260,17 @@
     }
     .btn_pop_up_main{
         margin-bottom:30px;
+        margin-top:40px;
+    }
+    .btn_pop_up_card{
+        padding: 8px;
+        box-shadow: unset;
+        -moz-box-shadow: unset;
+        -o-box-shadow: unset;
+        -webkit-box-shadow: unset;
+    }
+    .btn_pop_up_card:after{
+        display:none;
     }
 
 

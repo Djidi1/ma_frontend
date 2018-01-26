@@ -55,6 +55,22 @@
     "modalTextLoginErr":"Login or password are wrong!",
     "modalTextLoginEmp":"Login or password are empty",
     "preloader":"Loading..."
+  },
+  "pop_up":{
+    "edit":"Edit",
+    "new":"Add",
+    "object_info":"Object",
+    "audits_info":"Audit",
+    "name":"Name",
+    "address":"Address",
+    "check_list":"Check-list",
+    "add_audit":"Add Audit",
+    "add_check":"Add Check-list's",
+    "submit":"Submit",
+    "cancel":"Cancel",
+    "empty_obj":"Chose Object!",
+    "empty_input":"Some fields are empty!",
+    "warning":"Warning"
   }
 }
 

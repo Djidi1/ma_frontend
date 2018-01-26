@@ -4,7 +4,7 @@
         <f7-list-item  class="add_check">
             <f7-grid style="width:100%" class="css_cost">
                 <f7-col width="80">
-                    <f7-label floating>Name</f7-label>
+                    <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
                     <f7-input type="text" v-model="audit_name" @change="change_audit_name"></f7-input>
                 </f7-col>
                 <f7-col width="20" >
@@ -14,7 +14,7 @@
 
         <div slot="root" class="add_check">
             <f7-list accordion >
-                <f7-list-item accordion-item title="Check_list" >
+                <f7-list-item accordion-item :title="this.$root.localization.pop_up.check_list" >
                     <f7-accordion-content>
                        <f7-list class="checks_to_add">
                            <f7-list-item v-for="(item,index) in this.audits.check_list" :key="index" >
@@ -33,7 +33,7 @@
                            </f7-list-item>
                            <f7-list-item class="add_check_btn">
                                <f7-grid style="width:100%">
-                                   <f7-col width="100"> <f7-button open-popover=".popover_add_obj" @click="change_id">AddCheck</f7-button></f7-col>
+                                   <f7-col width="100"> <f7-button open-popover=".popover_add_obj" @click="change_id">{{this.$root.localization.pop_up.add_check}}</f7-button></f7-col>
                                </f7-grid>
                            </f7-list-item>
                        </f7-list>

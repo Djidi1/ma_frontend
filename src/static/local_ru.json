@@ -47,7 +47,7 @@
     "lang_block": "Язык"
   },
   "modal":{
-    "modalOk":"Да",
+    "modalOk":"Ок",
     "modalCancel":"Отмена",
     "modalHeaderError":"Внимание!",
     "modalTextConf":"Вы уверены?",
@@ -55,6 +55,21 @@
     "modalTextLoginErr":"Логин или пароль введены не верно",
     "modalTextLoginEmp":"Заполните поля Логин и Пароль",
     "preloader":"Выполнение запроса..."
+  },
+  "pop_up":{
+    "edit":"Редактирование",
+    "new":"Добавление",
+    "object_info":"Объект",
+    "audits_info":"Аудиты",
+    "name":"Название",
+    "address":"Адрес",
+    "check_list":"Чек-листы",
+    "add_audit":"Добавить Аудит",
+    "add_check":"Добавить Чек-листы",
+    "submit":"Принять",
+    "cancel":"Отмена",
+    "empty_obj":"Выберите объетк!",
+    "empty_input":"Заполните все поля у аудитов!",
+    "warning":"Внимание"
   }
-
 }
