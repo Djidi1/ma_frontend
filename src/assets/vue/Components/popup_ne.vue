@@ -5,7 +5,7 @@
             <f7-nav-right>
                 <f7-grid class="crud_header edit_menu">
                     <f7-col width="30" ></f7-col>
-                    <f7-col width="50" ><f7-link> <i class="fa fa-check" aria-hidden="true"></i></f7-link></f7-col>
+                    <f7-col width="50" ><f7-link @click="Submit_data"> <i class="fa fa-check" aria-hidden="true"></i></f7-link></f7-col>
                     <f7-col width="10" ></f7-col>
                 </f7-grid>
             </f7-nav-right>

@@ -17,10 +17,19 @@
                 <f7-list-item accordion-item title="Check_list" >
                     <f7-accordion-content>
                        <f7-list class="checks_to_add">
-                           <f7-list-item v-for="(item,index) in this.audits.check_list" :key="index" :title="item.name" >
-                           <span slot="after">
-                               <f7-button class='cross_button in_list' @click=remove_Check(index)><i class='fa fa-trash-o fa-2x' aria-hidden='true' ></i></f7-button>
-                           </span>
+                           <f7-list-item v-for="(item,index) in this.audits.check_list" :key="index" >
+                               <f7-grid>
+                                   <f7-col width="80">
+                                       {{item.name}}
+                                   </f7-col>
+                                   <f7-col width="20">
+                                       <f7-button class='cross_button in_list' @click=remove_Check(index)><i class='fa fa-trash-o fa-2x' aria-hidden='true' ></i></f7-button>
+                                   </f7-col>
+                               </f7-grid>
+
+
+
+
                            </f7-list-item>
                            <f7-list-item class="add_check_btn">
                                <f7-grid style="width:100%">
@@ -109,7 +118,7 @@
                 let input_cls;
                 let sec_input_cls;
                 //костыль дял формы
-                let form=element;
+                let form=element.find('form');
                 element.attr('class').split(' ').forEach(function(item){
                     form_cls=(item!='inputs-list')?true:false;
                 })
@@ -124,9 +133,9 @@
                 sec_imput.attr('class').split(' ').forEach(function(item){
                     sec_input_cls=(item!='not-empty-state')?true:false;
                 })
-
-                if (sec_input_cls)this.add_cls_to_form(sec_imput,'not-empty-state')
-
+                if(this.audit_name!=''){
+                if (sec_input_cls)this.add_cls_to_form(sec_imput,'not-empty-state')}
+                element.find('.checks_to_add').find('.item-inner').removeClass('not-empty-state')
             },
             add_cls_to_form(form,cls){
                 form.addClass(cls);
