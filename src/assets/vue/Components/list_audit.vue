@@ -1,7 +1,7 @@
 <template>
     <div class="blck_info">
         <f7-card v-for="(item,index) in data_storage" :key="index">
-            <f7-card-header >
+            <f7-card-header class="show_border" >
                     <div class="obj_info">
                         <div class="row  no-gutter">
                             <div class="col-70"> <f7-link no-link-class :href="'/object/'+index+'/'">{{item.name}}</f7-link></div>
@@ -66,6 +66,9 @@
     }
     .count_info{
         text-align: center;
+    }
+    .show_border{
+        border-bottom:1px solid #ddd
     }
 
 </style>

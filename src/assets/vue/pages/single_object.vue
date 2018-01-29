@@ -31,7 +31,7 @@
                 </f7-card-header>
                 <f7-card-content>
                     <f7-list media-list>
-                        <f7-list-item v-for="(acrd,acrd_index) in this.object.audits" :key="acrd_index" :link="'/audit/'+id+'/'+acrd_index" :title="acrd.name" :subtitle="acrd.id"  :text="acrd.create_date"  :media="realStatus(acrd.status)"></f7-list-item>
+                        <f7-list-item v-for="(acrd,acrd_index) in this.object.audits" :key="acrd_index" :link="'/audit/'+objcet_id+'/'+acrd_index" :title="acrd.name" :subtitle="acrd.id"  :text="acrd.create_date"  :media="realStatus(acrd.status)"></f7-list-item>
                     </f7-list>
                 </f7-card-content>
             </f7-card>
@@ -55,6 +55,7 @@
         },
         created(){
             this.object=this.$root.list[this.id];
+            this.objcet_id=this.id;
         },
         computed:{
             audit_count(){

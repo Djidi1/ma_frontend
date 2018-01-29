@@ -119,7 +119,6 @@
                     this.current = this.$root.list[this.obj_id].name;
                     this.selected_object = this.$root.list[this.obj_id];
                     this.selected_exist = true;
-                    this.active_btn = true;
                     this.addres_obj = this.selected_object.adres;
                     this.audits = this.selected_object.audits;
             }

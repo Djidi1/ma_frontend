@@ -71,7 +71,7 @@
         },
         data:function() {
             return {
-                audit:'',
+                audit:{},
                 obj_name:'',
                 object_id:'',
                 acordianId:0,
