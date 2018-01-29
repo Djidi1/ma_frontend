@@ -10,9 +10,11 @@
 
         </f7-navbar>
         <list_object :data_storage="this.$root.list"></list_object>
-        <f7-fab color="blue"  class="fab_bottom">
+        <f7-fab color="blue"  class="fab_bottom" @click="popup_open=true">
             <f7-icon icon="icon-plus"></f7-icon>
         </f7-fab>
+
+        <popup_new_object :opendPopup="popup_open" @close="popup_open=false" ></popup_new_object>
     </f7-page>
 </template>
 
@@ -20,7 +22,12 @@
 
 
     export default {
-        name: "objects"
+        name: "objects",
+        data:function(){
+            return{
+                popup_open:false
+            }
+        }
     }
 </script>
 

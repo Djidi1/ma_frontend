@@ -67,6 +67,10 @@ import audit_add from './assets/vue/Components/add_audit_form.vue'
 Vue.component('audit_add',audit_add);
 import popover_obj from './assets/vue/Components/popover_obj.vue'
 Vue.component('popover_obj',popover_obj);
+import curr_objects from './assets/vue/Components/exist_objects_list.vue'
+Vue.component('curr_objects',curr_objects);
+import popup_new_object from './assets/vue/Components/popup_new_object.vue'
+Vue.component('popup_new_object',popup_new_object);
 
 
 

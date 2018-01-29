@@ -13,7 +13,7 @@
             <f7-fab color="blue"  class="fab_bottom" @click="popup_open=true">
                <f7-icon icon="icon-plus"></f7-icon>
             </f7-fab>
-            <popup_new :opendPopup="popup_open" @close="popup_open=false" :mode_audit="true" :mode_audit_edit="true"></popup_new>
+            <popup_new :opendPopup="popup_open" @close="popup_open=false" :mode_audit="true" :mode_audit_edit="false"></popup_new>
     </f7-page>
 </template>
 
@@ -28,9 +28,7 @@
             }
         },
         methods:{
-            test(){
-                this.test_sw=true;
-            }
+
         }
     }
 </script>

@@ -5,10 +5,8 @@
 
             <f7-nav-center sliding> {{object.name}} ID:{{object.id}}</f7-nav-center>
             <f7-nav-right>
-                <f7-grid class="crud_header">
-                    <f7-col width="50"> <i class="fa fa-pencil" aria-hidden="true"></i></f7-col>
-                    <f7-col width="50"><i class="fa fa-trash-o" aria-hidden="true"></i></f7-col>
-                </f7-grid>
+                <f7-link @click="popup_open=true"><i class="fa fa-pencil" aria-hidden="true"></i></f7-link>
+                <f7-link @click="remove_obj"> <i class="fa fa-trash-o" aria-hidden="true"></i></f7-link>
             </f7-nav-right>
         </f7-navbar>
         <div class="blck_info">
@@ -38,6 +36,8 @@
                 </f7-card-content>
             </f7-card>
         </div>
+        <popup_new_object :opendPopup="popup_open" @close="popup_open=false" :edit="true" :obj_id="this.id" @cancel="cancel_edit"></popup_new_object>
+
     </f7-page>
 </template>
 
@@ -45,11 +45,12 @@
     export default {
         name: "single_object",
         props: {
-            id: { type: String, default: '' },
+            id: { type: String},
         },
         data:function(){
             return{
-                object:''
+                object:'',
+                popup_open:false
             }
         },
         created(){
@@ -81,6 +82,17 @@
                         break;
                 }
                 return result;
+            },
+            remove_obj(){
+                let self=this;
+                this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
+                    self.$root.list.splice(self.id, 1)
+                    self.$f7.views.main.back();
+                })
+            },
+            cancel_edit(index){
+                this.object.name=this.$root.list[index].name;
+                this.object.audits = this.$root.list[index].audits;
             }
         }
     }

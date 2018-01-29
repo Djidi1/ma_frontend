@@ -5,10 +5,8 @@
 
             <f7-nav-center sliding> {{audit.name}} {{audit.id}}</f7-nav-center>
             <f7-nav-right>
-                <f7-grid class="crud_header">
-                    <f7-col width="50" > <i class="fa fa-pencil" aria-hidden="true" @click="edit_audit()"></i></f7-col>
-                    <f7-col width="50"><i class="fa fa-trash-o" aria-hidden="true"></i></f7-col>
-                </f7-grid>
+                <f7-link @click="popup_open=true"><i class="fa fa-pencil" aria-hidden="true"></i></f7-link>
+                   <f7-link @click="remove_audit"> <i class="fa fa-trash-o" aria-hidden="true"></i></f7-link>
             </f7-nav-right>
         </f7-navbar>
         <div class="blck_info">
@@ -58,13 +56,8 @@
                             </f7-list-item>
                         </f7-list>
                 </f7-card>
-
-
-
-
-
-
         </div>
+        <popup_new :opendPopup="popup_open" @close="popup_open=false" :mode_audit="false" :mode_audit_edit="true" :obj_id="this.obj_id" @cancel="cancel_edit" :audit_id="this.id"></popup_new>
     </f7-page>
 </template>
 
@@ -73,19 +66,21 @@
     export default {
         name: "audit",
         props: {
-            id: { type: String, default: '' },
-            obj_id:{type:String,default:''}
+            id: { type: String},
+            obj_id:{type:String}
         },
         data:function() {
             return {
                 audit:'',
                 obj_name:'',
+                object_id:'',
                 acordianId:0,
                 block_height:'',
                 id_list:[
                     this.obj_id,
                     this.id
-                ]
+                ],
+                popup_open:false
             }
         },
         mounted:function(){
@@ -95,6 +90,7 @@
         },
         created:function(){
             this.obj_name=this.$root.list[this.obj_id].name;
+            this.object_id=this.obj_id;
             this.audit = this.$root.list[this.obj_id].audits[this.id];
         },
         computed:{
@@ -199,8 +195,16 @@
                 }
                 return result;
             },
-            edit_audit(){
-                console.log(1)
+            remove_audit(){
+                let self=this;
+                this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
+                    self.$root.list[self.obj_id].audits.splice(self.id, 1)
+                    self.$f7.views.main.back();
+                })
+            },
+            cancel_edit(){
+                this.obj_name=this.$root.list[this.obj_id].name;
+                this.audit = this.$root.list[this.obj_id].audits[this.id];
             }
         }
 

@@ -68,9 +68,16 @@
     "add_check":"Add Check-list's",
     "submit":"Submit",
     "cancel":"Cancel",
-    "empty_obj":"Chose Object!",
-    "empty_input":"Some fields are empty!",
-    "warning":"Warning"
+    "empty_obj":"Chose object!",
+    "empty_input":"Fill in the 'Title' field for each audit!",
+    "warning":"Warning!",
+    "erase_data":"This will result in data loss.",
+    "add_object":"Add",
+    "select_object":"Select",
+    "empty_input_obj":"Enter the name of the object",
+    "empty_input_address":"Enter the address of the object",
+    "select_ex":"Select",
+    "select_pop_over": "Selecte Object"
   }
 }
 

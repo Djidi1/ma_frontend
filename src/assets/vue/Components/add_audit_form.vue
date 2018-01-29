@@ -7,7 +7,7 @@
                     <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
                     <f7-input type="text" v-model="audit_name" @change="change_audit_name"></f7-input>
                 </f7-col>
-                <f7-col width="20" >
+                <f7-col width="20" v-show="!trash_btn">
                    <f7-button @click=remove class="cross_button"><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
                 </f7-col>
             </f7-grid>
@@ -15,7 +15,7 @@
         <div slot="root" class="add_check">
             <f7-list accordion >
                 <f7-list-item accordion-item :title="this.$root.localization.pop_up.check_list" >
-                    <f7-accordion-content>
+                    <f7-accordion-content >
                        <f7-list class="checks_to_add">
                            <f7-list-item v-for="(item,index) in this.audits.check_list" :key="index" >
                                <f7-grid>
@@ -26,10 +26,6 @@
                                        <f7-button class='cross_button in_list' @click=remove_Check(index)><i class='fa fa-trash-o fa-2x' aria-hidden='true' ></i></f7-button>
                                    </f7-col>
                                </f7-grid>
-
-
-
-
                            </f7-list-item>
                            <f7-list-item class="add_check_btn">
                                <f7-grid style="width:100%">
@@ -55,6 +51,7 @@
         props:{
             id:{type:Number,default:0},
             type:{type:Boolean,default:true},
+            trash_btn:{type:Boolean,default:true},
             audits:{type:Object,default:function(){return{}}}
         },
         data:function(){
