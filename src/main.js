@@ -1,6 +1,9 @@
 // Import Vue
 import Vue from 'vue'
 
+// Import vue-resource
+import VueResource from 'vue-resource'
+
 // Import F7
 import Framework7 from 'framework7'
 
@@ -43,6 +46,7 @@ import check_json from './static/check_lists.json'
 Vue.use(Framework7Vue);
 // Init Vue-ls
 Vue.use(VueLocalStorage);
+Vue.use(VueResource);
 
 //Components
 import List from './assets/vue/Components/list_audit.vue'
@@ -98,26 +102,42 @@ new Vue({
         audits:{},
         auth_info:{},
         localization:{},
-        check_list:{}
+        check_list:{},
+        settings:{},
+        token:'empty'
     },
 
    watch:{
         auth_info: function(val){
           this.$ls.set('auth_info',val);
       },
+       settings:function(val){
+         this.$ls.set('settings',val);
+       },
        list:function(val){
             this.$ls.set('list',val);
        },
        check_list:function(val){
            this.$ls.set('check_list',val);
+       },
+       token:function(val){
+            this.$ls.set('token',val);
        }
     },
 
   created: function(){
-        this.auth_info =this.$ls.get('auth_info',{name:'',auth:false,lang:"ru"});
+        this.auth_info =this.$ls.get('auth_info',{name:'',email:'',auth:false});
         var _this=this;
         this.$ls.on('auth_info',function(val){
             _this.auth_info=val;
+        });
+        this.settings=this.$ls.get('settings','ru');
+        this.$ls.on('settings',function(val){
+           _this.settings=val;
+        });
+        this.token=this.$ls.get('token','');
+        this.$ls.on('token',function(val){
+           _this.token=val;
         });
         let data=this.$ls.get('list',data_json);
         this.list=JSON.parse(JSON.stringify(data));
@@ -128,16 +148,13 @@ new Vue({
         this.$ls.on('check_list',function(val){
           _this.check_list=val;
       });
-        this.lang_select(this.auth_info.lang);
+        this.lang_select(this.settings);
 
     },
 
   methods:{
         check_user_auth:function(){
-            if (this.auth_info.auth) {
-                    return true;
-            }
-            return false;
+           return (this.auth_info.auth)
         },
         lang_select:function(val){
           switch (val){

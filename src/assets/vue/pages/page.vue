@@ -29,6 +29,18 @@
               popup_open:false,
             }
         },
+        created(){
+          let self=this;
+          if (this.$root.auth_info.name===''){
+              this.$http.post('https://test.bh-app.ru/api/get-details',{},{headers:{'Authorization':'Bearer ' + self.$root.token}}).then(
+                  response=>{
+                      self.$root.auth_info={name:response.body.success.name,email:response.body.success.email,auth:true};
+                  },
+                  response=>{
+                      console.log('error get')
+                  })
+          }
+        },
        computed:{
            hasSomething(){
               let result=true;

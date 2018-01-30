@@ -4,6 +4,9 @@
             <tr>
                 <td>{{fullname}}</td>
             </tr>
+            <tr>
+                <td>{{email}}</td>
+            </tr>
         </table>
     </div>
 </template>
@@ -12,7 +15,8 @@
     export default {
         name: 'user_name',
         props: {
-            fullname: { type: String, default: '' }
+            fullname: { type: String, default: '' },
+            email: { type: String, default: '##' },
         }
     }
 </script>

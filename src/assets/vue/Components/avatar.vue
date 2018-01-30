@@ -13,8 +13,21 @@
             <div class="user_name" >
                 <table>
                     <tr>
-                        <td>{{fullname}}</td>
+                        <td>
+                            <f7-grid>
+                                <f7-col width="100">
+                                    {{fullname}}
+                                </f7-col>
+                                <f7-col width="100" class="email_user">
+                                    {{email}}
+                                </f7-col>
+                            </f7-grid>
+
+                        </td>
                     </tr>
+
+
+
                 </table>
             </div>
         </div>
@@ -26,6 +39,7 @@
         name: 'avatar',
         props: {
             fullname: { type: String, default: '##' },
+            email: { type: String, default: '##' },
             size: { type: String, default: 48 },
             radius: { type: Number, default: 50 },
             color: { type: String, default: '' },
@@ -124,6 +138,9 @@
     .user_name td{
         text-align: left;
         padding-left:10px;
+    }
+    .email_user{
+        font-size:14px;
     }
 
 </style>

@@ -40,18 +40,28 @@
         },
         methods:{
             onLogin:function(){
-                if (this.form_login.login == "" || this.form_login.password == "") {
-                    this.$f7.alert('Login or Passsword are empty!', 'Warning')
-                } else {
-                    if (this.form_login.login == "Kon" && this.form_login.password == "password") {
-
-                        let user_info={name:'Konik Nikita',auth:true,lang:this.$root.auth_info.lang};
-                        this.$root.auth_info=user_info;
-                       this.$f7.views.main.router.load({url:'/page/'});
-                    } else {
-                        this.$f7.alert('Login or Passsword are wrong!', 'Warning');
-                    }
-                }
+               (this.Valid_inputs())?this.send_post_login():'';
+            },
+            Valid_inputs(){
+                let result_login=true;
+                let result_password=true;
+                result_login=(this.form_login.login !='')?result_login:false;
+                result_password=(this.form_login.password !='')?result_password:false;
+                (result_login)?(result_password)?'':this.$f7.alert(this.$root.localization.LoginScreen.Empty_input_password,this.$root.localization.LoginScreen.warning):this.$f7.alert(this.$root.localization.LoginScreen.Empty_input_login,this.$root.localization.LoginScreen.warning);
+                return (result_login && result_password);
+            },
+            send_post_login(){
+                let self=this;
+               this.$f7.showPreloader(this.$root.localization.modal.preloader);
+                this.$http.post('https://test.bh-app.ru/api/login',{email:this.form_login.login,password:this.form_login.password}).then(response=>{
+                    self.$f7.hidePreloader();
+                    self.$root.auth_info={name:'',auth:true};
+                    self.$root.token=response.body.success.token;
+                    this.$f7.views.main.router.load({url:'/page/'});
+                },response=>{
+                    self.$f7.hidePreloader();
+                    self.$f7.alert('Somethin got wrong!', 'Warning');
+                });
             }
         }
 

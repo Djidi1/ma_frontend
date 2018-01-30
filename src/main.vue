@@ -9,7 +9,7 @@
 				<f7-pages>
 					<f7-page>
 						<div class="left-panel-header user_back">
-									<avatar :fullname="this.$root.auth_info.name" size="70" color="#c65c44"></avatar>
+									<avatar :fullname="this.$root.auth_info.name" :email="this.$root.auth_info.email" size="70" color="#c65c44"></avatar>
 						</div>
 						<f7-list class="mleft_menu_block">
 							<f7-list-item  link="/page/" :title="this.$root.localization.LeftMenu.Audit" link-view="#main-view" link-close-panel media="<i class='fa fa-calendar-check-o ' aria-hidden='true'></i>" :badge="count_new" badge-color="blue"></f7-list-item>

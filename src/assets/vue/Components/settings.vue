@@ -52,7 +52,7 @@
         data:function(){
             return{
                 user_name:this.$root.auth_info.name,
-                curentLang:this.$root.auth_info.lang
+                curentLang:this.$root.settings
             }
         },
         methods:{
@@ -90,16 +90,16 @@
                 }
             },
             submitSetting:function(){
-                if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.auth_info.lang){
-                  let new_data={"name":this.user_name,"auth":true,lang:this.curentLang}
-                  this.$root.auth_info=new_data;
+                if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings){
+                    this.$root.auth_info={name:this.user_name,auth:true};
+                    this.$root.settings=this.curentLang;
                 }
             },
             cancelSetting:function(){
                 let self=this;
                 let duration=0;
-                if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.auth_info.lang){
-                    this.change_l(this.$root.auth_info.lang);
+                if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings){
+                    this.change_l(this.$root.settings);
                     duration=600;
                 }
                 setTimeout(function(){self.$f7.views[0].back();},duration)

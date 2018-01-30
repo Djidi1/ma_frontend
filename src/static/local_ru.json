@@ -4,7 +4,10 @@
     "LoginPlaceholder": "Логин",
     "PasswordPlaceholder": "Пароль",
     "SubmitButton": "Войти",
-    "FogetButton": "Забыли пароль?"
+    "FogetButton": "Забыли пароль?",
+    "Empty_input_login":"Введите Email!",
+    "Empty_input_password":"Введите пароль!",
+    "warning":"Внимание!"
   },
   "LeftMenu": {
     "Audit": "Аудиты",
