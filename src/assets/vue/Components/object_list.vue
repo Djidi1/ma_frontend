@@ -4,9 +4,15 @@
             <f7-card-content>
                 <f7-list media-list>
                     <f7-list-item v-for="(object,index) in data_storage" :key="index" :link="'/object/'+index+'/'" :title="title+': '+object.name" :subtitle="'ID: '+object.id"  :text="object.created_date+'</br>'+object.adres" :after="audit_count(object)+'</br>'+new_audit_count(object)"></f7-list-item>
+
                 </f7-list>
             </f7-card-content>
         </f7-card>
+        <div  v-if="!hasSomething">
+            <f7-block inner class="nothing" >
+                {{this.$root.localization.ObjectPage_nothing}}
+            </f7-block>
+        </div>
     </div>
 </template>
 
@@ -20,6 +26,9 @@
             title(){
                 return this.$root.localization.ObjectPage.name;
             },
+            hasSomething(){
+                return(this.$root.list.length>0)
+            }
     },
         methods:{
             audit_count(obj){

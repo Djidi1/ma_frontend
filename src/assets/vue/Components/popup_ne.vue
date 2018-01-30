@@ -26,7 +26,7 @@
                                     </f7-input>
                                 </f7-col>
                                 <f7-col width="40" style="height: 58px; padding-top:18px;">
-                                    <f7-button fill open-popover=".exist_pop_over"> {{this.$root.localization.pop_up.select_ex}}</f7-button>
+                                    <f7-button fill open-popover=".exist_pop_over" :disabled="!hasObject"> {{this.$root.localization.pop_up.select_ex}}</f7-button>
                                 </f7-col>
                             </f7-grid>
                         </f7-list-item>
@@ -40,7 +40,7 @@
             </f7-card>
             <f7-card>
                 <f7-card-header>
-                    <span v-if="!this.mode_audit_edit">{{this.$root.localization.pop_up.audits_info}} </span> <span v-else>{{this.$root.localization.pop_up.audits_info.substr(0,this.$root.localization.pop_up.audits_info.length -1)}} : <span v-if="hasAudit">{{this.audits[this.audit_id].name}} {{this.audits[this.audit_id].id}}</span> </span>
+                    <span v-if="!this.mode_audit_edit">{{this.$root.localization.pop_up.audits_info}} </span> <span v-else>{{this.$root.localization.pop_up.audits_info.substr(0,this.$root.localization.pop_up.audits_info.length -1)}} : <span v-if="hasAudit">{{this.audits[this.audit_id_save].name}} {{this.audits[this.audit_id_save].id}}</span> </span>
                 </f7-card-header>
                 <f7-card-content class="card_audit_add">
                        <audit_add v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index" @remove="remove(true,index)" :type="true" @popup_call="change_id_audit" :trash_btn="mode_audit_edit"></audit_add>
@@ -66,7 +66,7 @@
         </f7-card>
     </f7-card>
         </div>
-        <curr_objects :list="this.select_list"  :current="this.selected_object" @selected_object_done="selected_object_done"></curr_objects>
+        <curr_objects v-if="hasObject" :list="this.select_list"  :current="this.selected_object" @selected_object_done="selected_object_done"></curr_objects>
         <popover_obj @add_check="add_check_lists"></popover_obj>
     </f7-popup>
 </template>
@@ -88,7 +88,7 @@
         data:function(){
           return{
               title:'',
-              select_list:'',
+              select_list:[],
               selected_exist:false,
               current:'',
               selected_object:{},
@@ -98,11 +98,15 @@
               current_audit_id:0,
               current_arr:true,
               mode:this.mode_audit,
+              audit_id_save:0
           }
         },
         computed:{
             hasAudit(){
                 return (this.audits.length>0)
+            },
+            hasObject(){
+                return(this.select_list.length>0)
             }
         },
         mounted:function(){
@@ -122,6 +126,7 @@
                     this.addres_obj = this.selected_object.adres;
                     this.audits = this.selected_object.audits;
             }
+            this.audit_id_save=(this.audit_id!=null)?this.audit_id:null;
         },
         methods:{
             closePopUp(mode){

@@ -199,6 +199,7 @@
                 let self=this;
                 this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
                     self.$root.list[self.obj_id].audits.splice(self.id, 1)
+                    self.$root.update_ls();
                     self.$f7.views.main.back();
                 })
             },

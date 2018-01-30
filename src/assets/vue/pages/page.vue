@@ -9,7 +9,11 @@
 
         </f7-navbar>
             <list :data_storage="this.$root.list"></list>
-
+            <div  v-if="!hasSomething">
+                <f7-block inner class="nothing" >
+                    {{this.$root.localization.AuditPage_nothing}}
+                </f7-block>
+            </div>
             <f7-fab color="blue"  class="fab_bottom" @click="popup_open=true">
                <f7-icon icon="icon-plus"></f7-icon>
             </f7-fab>
@@ -23,13 +27,18 @@
         data:function(){
           return{
               popup_open:false,
-              test_sw:false
-
             }
         },
-        methods:{
-
-        }
+       computed:{
+           hasSomething(){
+              let result=true;
+              this.$root.list.forEach(function(item){
+                  result=(item.audits.length>0)?result:false;
+              });
+              result=(this.$root.list.length>0)?result:false;
+               return result
+           }
+       }
     }
 </script>
 
