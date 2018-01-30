@@ -4,7 +4,10 @@
     "LoginPlaceholder": "Login",
     "PasswordPlaceholder": "Password",
     "SubmitButton": "Enter",
-    "FogetButton": "Foget password?"
+    "FogetButton": "Foget password?",
+    "Empty_input_login":"Need Email!",
+    "Empty_input_password":"Need password!",
+    "warning":"Warning!"
   },
   "LeftMenu":{
     "Audit":"Audits",
