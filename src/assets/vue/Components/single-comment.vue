@@ -22,14 +22,15 @@
                             <div class="row no-gutter">
                                 <div class="col-65">
                                 </div>
-                                <div class="col-25 ">
+                                <div class="col-25 " v-if="myComment()">
                                     <div class="control">
-                                        <div class="control_my_comment" v-show="myComment()">
+                                        <div class="control_my_comment" >
                                             <button @click="editComment($event)"> <i class="fa fa-pencil" aria-hidden="true"></i></button>
                                             <button @click.prevent="removeComment(id)"> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-25 no_my_comment" v-else></div>
                                 <div class="col-10">
                                 </div>
                             </div>
@@ -142,7 +143,8 @@
     }
     .header_comment .row div:after,
     .footer_comment .row .col-65:after,
-    .footer_comment .row .col-10:after{
+    .footer_comment .row .col-10:after,
+    .footer_comment .row .no_my_comment:after{
         content: '';
         position:absolute;
         top:12px;
