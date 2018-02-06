@@ -91,7 +91,7 @@
             },
             submitSetting:function(){
                 if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings){
-                    this.$root.auth_info={name:this.user_name,auth:true};
+                    this.$root.auth_info={name:this.user_name,email:this.$root.auth_info.email,auth:true};
                     this.$root.settings=this.curentLang;
                 }
             },

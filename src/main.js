@@ -75,6 +75,8 @@ import curr_objects from './assets/vue/Components/exist_objects_list.vue'
 Vue.component('curr_objects',curr_objects);
 import popup_new_object from './assets/vue/Components/popup_new_object.vue'
 Vue.component('popup_new_object',popup_new_object);
+import popup_audit_edit from './assets/vue/Components/popup_edit_audit.vue'
+Vue.component('popup_audit_edit',popup_audit_edit);
 
 
 

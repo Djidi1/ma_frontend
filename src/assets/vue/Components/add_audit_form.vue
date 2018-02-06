@@ -142,22 +142,12 @@
 </script>
 
 <style scoped>
-.cross_button{
-    color:#9e9e9e;
-    text-align: center;
-    font-size:22px;
-    height:64px;
-    padding-top:10px;
-}
+
     .trash_btn{
         text-align: center;
 
     }
-    .in_list{
-        padding: 0 0 0 0 !important;
-        width: 30px !important;
-        height: 30px !important;
-    }
+
 
 
 

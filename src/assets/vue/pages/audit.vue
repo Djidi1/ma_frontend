@@ -57,13 +57,16 @@
                         </f7-list>
                 </f7-card>
         </div>
-        <popup_new :opendPopup="popup_open" @close="popup_open=false" :mode_audit="false" :mode_audit_edit="true" :obj_id="this.obj_id" @cancel="cancel_edit" :audit_id="this.id"></popup_new>
+        <popup_audit_edit :opendPopup="popup_open" @close="popup_open=false" :audit="this.id" :object="this.obj_id" @cancel="cancelEdit()"></popup_audit_edit>
     </f7-page>
 </template>
 
 <script>
+    import Popup_audit_edit from "src/assets/vue/Components/popup_edit_audit";
+
     var $$=Dom7;
     export default {
+        components: {Popup_audit_edit},
         name: "audit",
         props: {
             id: { type: String},
@@ -203,9 +206,9 @@
                     self.$f7.views.main.back();
                 })
             },
-            cancel_edit(){
-                this.obj_name=this.$root.list[this.obj_id].name;
-                this.audit = this.$root.list[this.obj_id].audits[this.id];
+            cancelEdit(){
+               this.audit=this.$root.list[this.obj_id].audits[this.id];
+
             }
         }
 
