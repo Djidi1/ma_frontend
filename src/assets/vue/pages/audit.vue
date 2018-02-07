@@ -38,26 +38,29 @@
                    <f7-card-header>
                         {{this.$root.localization.AuditPage.check_list}}
                    </f7-card-header>
-                        <f7-list accordion  v-for="(check,id) in this.audit.check_list"  :key="id"  :id="'acord'+id" >
-                            <f7-list-item accordion-item :title="check.name" :after="realStatus(check.status)">
+                        <f7-list accordion>
+                            <f7-list-item   v-for="(check,id) in get_check_array(this.audit.checklist.id)"  :key="id"  :id="'acord'+check.id" accordion-item :title="check.title" :after="realStatus(check.status)">
                                 <f7-accordion-content>
-                                        <check_item v-for="(item,item_id) in check.list_to_check" :data_item="item" :data_id="item_id" :key="item_id" :obj_id="this.obj_id" :audit_id="this.id" :check_id="id" ></check_item>
-                                    <f7-list-item>
-                                        <div class="row" style="width:100%; padding:15px 0 15px 0">
-                                            <div class="col-50">
-                                                <f7-button @click="abort_check_list(id)" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>
-                                            </div>
-                                            <div class="col-50">
-                                                <f7-button fill @click="check_list_status(id)"><i class="fa fa-check" aria-hidden="true"></i> </f7-button>
-                                            </div>
-                                        </div>
-                                    </f7-list-item>
+                                        <check_item v-for="(item,item_id) in check.requirement" :key="item_id"  :data_item="item" ></check_item>
                                 </f7-accordion-content>
                             </f7-list-item>
                         </f7-list>
                 </f7-card>
+            <f7-card>
+                <f7-block inner>
+                    <f7-grid>
+                        <f7-col width="50">
+                            <f7-button @click="abort_check_list(id)" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>
+                        </f7-col>
+                        <f7-col width="50">
+                            <f7-button fill @click="check_list_status(id)"><i class="fa fa-check" aria-hidden="true"></i> </f7-button>
+                        </f7-col>
+                    </f7-grid>
+                </f7-block>
+
+            </f7-card>
         </div>
-        <popup_audit_edit :opendPopup="popup_open" @close="popup_open=false"  @cancel="cancelEdit()"></popup_audit_edit>
+        <!--<popup_audit_edit :opendPopup="popup_open" @close="popup_open=false"  @cancel="cancelEdit()"></popup_audit_edit>-->
     </f7-page>
 </template>
 
@@ -212,6 +215,15 @@
             cancelEdit(){
                this.audit=this.$root.list[this.obj_id].audits[this.id];
 
+            },
+
+            get_check_array(check_id){
+                let self=this;
+                let check_array=[];
+                this.$root.check_list.forEach(function(item){
+                    (item.id===check_id)?check_array.push(item):'';
+                });
+                return check_array;
             }
         },
 

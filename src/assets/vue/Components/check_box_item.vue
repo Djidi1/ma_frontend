@@ -14,8 +14,7 @@
     export default {
         name: "check_box_item",
         props:{
-            item_status:{type:Boolean,default:false},
-            item_type:{type:Boolean,default:true},
+            item_status:{type:Number,default:0},
             button_type:{type:Boolean,default:true}
         },
         computed:{
@@ -26,11 +25,13 @@
                 return (this.button_type)?"fa fa-thumbs-up":"fa fa-thumbs-down";
             },
             checked_status(){
-                return (this.item_type)?false:this.item_status;
+                console.log((this.item_status===0)?false:(this.item_status===1)?true:false);
+                return (this.item_status===0)?false:(this.item_status===1)?(this.button_type)?true:false:(!this.button_type)?true:false;
             }
         },
         methods:{
             checkbox_change(val){
+                val = (this.button_type)?1:-1;
                 this.$emit('change_status',val)
             }
         }

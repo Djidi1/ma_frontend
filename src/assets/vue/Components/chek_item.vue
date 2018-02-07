@@ -1,15 +1,15 @@
 <template>
     <div>
-        <f7-list form class="check_list_items" :id="'list_itm_'+this.data_id" :class="class_result">
-            <f7-list-item :id="this.data_id"  :title="data_item.discription" >
+        <f7-list form class="check_list_items" :id="'list_itm_'+this.data_item.id" :class="class_result">
+            <f7-list-item :id="this.data_item"  :title="data_item.title" >
                 <f7-grid no-gutter>
-                    <check_box_item :item_status="this.data_item.status" :button_type="true" :item_type="this.data_item.type" @change_status="change_item_status"></check_box_item>
-                    <check_box_item :item_status="!this.data_item.status" :button_type="false" :item_type="this.data_item.type" @change_status="change_item_status"></check_box_item>
+                    <check_box_item :button_type="true" :item_status="this.status" @change_status="change_item_status"></check_box_item>
+                    <check_box_item :button_type="false" :item_status="this.status" @change_status="change_item_status"></check_box_item>
                 </f7-grid>
                 <div slot="root" >
-                    <transition  mode="out-in" name="comment-show">
-                        <comment v-if="showComment" :data_comments="this.data_item.comments"></comment>
-                    </transition>
+                        <transition  mode="out-in" name="comment-show">
+                            <comment v-if="showComment" :req_id="this.data_item.id"></comment>
+                        </transition>
                 </div>
             </f7-list-item>
         </f7-list>
@@ -26,30 +26,23 @@
         name: "chek_item",
         props:{
             data_item:{ type: Object, default: '' },
-            data_id:{ type: Number, default: 0 },
-            obj_id:{ type: Number, default: 0 },
-            audit_id:{ type: Number, default: 0 },
-            check_id:{ type: Number, default: 0 },
         },
         data:function(){
             return{
-                status_true:false,
-                status_false:false
+                status:0
             }
         },
         computed:{
             showComment(){
-                return (this.data_item.type)?false:(this.data_item.status)?false:true;
+                return (this.status===0)?false:(this.status===1)?false:true;
             },
             class_result(){
-                return (this.data_item.type)?"":(this.data_item.status)?"status_sucs":"status_false";
+                return (this.status===0)?"":(this.status===1)?"status_sucs":"status_false";
             }
         },
         methods: {
             change_item_status(val){
-                this.data_item.type=(this.data_item.status===val)?(this.data_item.type)?false:true:false;
-                this.data_item.status=(this.data_item.status===val)?false:val;
-                this.$root.update_ls();
+                this.status=(this.status===val)?0:val;
             }
         }
 
