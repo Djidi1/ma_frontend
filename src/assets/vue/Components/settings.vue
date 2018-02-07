@@ -91,7 +91,8 @@
             },
             submitSetting:function(){
                 if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings){
-                    this.$root.auth_info={name:this.user_name,email:this.$root.auth_info.email,auth:true};
+                    //this.$set(this.$root.auth_info,'name',this.user_name);
+                     this.$root.auth_info={name:this.user_name,email:this.$root.auth_info.email,user_id:this.$root.auth_info.user_id,auth:true};
                     this.$root.settings=this.curentLang;
                 }
             },

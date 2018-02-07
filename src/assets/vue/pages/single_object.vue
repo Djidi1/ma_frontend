@@ -3,7 +3,7 @@
         <!-- Navbar -->
         <f7-navbar back-link="Back" sliding  >
 
-            <f7-nav-center sliding> {{object.name}} ID:{{object.id}}</f7-nav-center>
+            <f7-nav-center sliding> {{object.title}}</f7-nav-center>
             <f7-nav-right>
                 <f7-link @click="popup_open=true"><i class="fa fa-pencil" aria-hidden="true"></i></f7-link>
                 <f7-link @click="remove_obj"> <i class="fa fa-trash-o" aria-hidden="true"></i></f7-link>
@@ -14,10 +14,10 @@
                 <f7-card-header>
                     <div class="obj_info audit_obj">
                         <div class="row  no-gutter">
-                                <div class="col-100">{{this.$root.localization.ObjectPage.name}}:{{object.name}}</div>
+                                <div class="col-100">{{this.$root.localization.ObjectPage.name}}:{{object.title}}</div>
                                 <div class="col-100">Id: {{object.id}}</div>
-                                <div class="col-100">{{object.created_date}}</div>
-                                <div class="col-100">{{object.adres}}</div>
+                                <div class="col-100">{{data_format()}}</div>
+                                <div class="col-100">{{object.audit_object_group.address}}</div>
                         </div>
                     </div>
                 </f7-card-header>
@@ -31,12 +31,12 @@
                 </f7-card-header>
                 <f7-card-content>
                     <f7-list media-list>
-                        <f7-list-item v-for="(acrd,acrd_index) in this.object.audits" :key="acrd_index" :link="'/audit/'+objcet_id+'/'+acrd_index" :title="acrd.name" :subtitle="acrd.id"  :text="acrd.create_date"  :media="realStatus(acrd.status)"></f7-list-item>
+                        <f7-list-item v-for="(acrd,acrd_index) in get_audits(this.id)" :key="acrd_index" :link="'/audit/'+acrd_index+'/'+acrd.id" :title="acrd.title" :subtitle="acrd.id"  :text="data_format(acrd.created_at)"  :media="realStatus(acrd.status)"></f7-list-item>
                     </f7-list>
                 </f7-card-content>
             </f7-card>
         </div>
-        <popup_new_object :opendPopup="popup_open" @close="popup_open=false" :edit="true" :obj_id="this.id" @cancel="cancel_edit"></popup_new_object>
+        <!--<popup_new_object :opendPopup="popup_open" @close="popup_open=false" :edit="true" :obj_id="this.id" @cancel="cancel_edit"></popup_new_object>-->
 
     </f7-page>
 </template>
@@ -49,39 +49,46 @@
         },
         data:function(){
             return{
-                object:'',
+                object:{},
                 popup_open:false
             }
         },
         created(){
-            this.object=this.$root.list[this.id];
-            this.objcet_id=this.id;
+            let self=this;
+            this.$root.objects.forEach(function(item){
+                self.object=(item.id===Number(self.id))?item:self.object;
+            })
         },
         computed:{
             audit_count(){
-                return (this.object.audits.length>0)?this.object.audits.length:'';
+                let self=this;
+                let count=0;
+                this.$root.audits.forEach(function(item){
+                    count=(item.object_id===self.object.id)?++count:count;
+                });
+                return (count>0)? this.$root.localization.ObjectPage.audits+': '+count:'';
             }
         },
         methods:{
             realStatus(str){
                 let result="";
-                switch (str){
-                    case '':
-                        result="";
-                        break;
-                    case 'new':
-                        result="<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>";
-                        break;
-                    case 'ok':
-                        result="<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>";
-                        break;
-                    case 'error':
-                        result="<i class='fa fa-chain-broken fa-2x audit_error' aria-hidden='true'></i>";
-                        break;
-                    case 'wrong':
-                        result="<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
-                        break;
-                }
+                // switch (str){
+                //     case '':
+                //         result="";
+                //         break;
+                //     case 'new':
+                //         result="<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>";
+                //         break;
+                //     case 'ok':
+                //         result="<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>";
+                //         break;
+                //     case 'error':
+                //         result="<i class='fa fa-chain-broken fa-2x audit_error' aria-hidden='true'></i>";
+                //         break;
+                //     case 'wrong':
+                //         result="<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
+                //         break;
+                // }
                 return result;
             },
             remove_obj(){
@@ -94,6 +101,25 @@
             cancel_edit(index){
                 this.object.name=this.$root.list[index].name;
                 this.object.audits = this.$root.list[index].audits;
+            },
+            get_audits(id){
+                let self=this;
+                let count=0;
+                let array=[];
+                this.$root.audits.forEach(function(item){
+                    if (item.object_id===self.object.id){
+                       array.push(item)
+                    }
+                });
+                return array;
+            },
+            data_format(data_str){
+                let data=(data_str!=undefined)?new Date(data_str):new Date(this.object.created_at);
+                let curSec=('0'+data.getSeconds()).substr(-2);
+                let curMin=('0'+data.getMinutes()).substr(-2);
+                let curDay=('0'+data.getDate()).substr(-2);
+                let date_for_text=curDay+"/"+data.getMonth()+1+"/"+data.getFullYear()+" "+data.getHours()+":"+curMin+":"+curSec;
+                return date_for_text;
             }
         }
     }

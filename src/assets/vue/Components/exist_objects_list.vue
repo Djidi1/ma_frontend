@@ -3,7 +3,7 @@
         <f7-block-title> {{this.$root.localization.pop_up.select_pop_over}}</f7-block-title>
         <f7-block inner>
             <f7-list form>
-                <f7-list-item radio name="select_object" v-for="(item,index) in list" :key="index" :title="item.name" @change="Chagne_item(item,index)" @selected="selecte_item"></f7-list-item>
+                <f7-list-item radio name="select_object" v-for="(item,index) in list" :key="index" :title="item.title" @change="Chagne_item(item,index)" @selected="selecte_item"></f7-list-item>
 
                 <f7-grid class="popover_btn">
                     <f7-col width="50"><f7-button  class="abort_button"  close-popover=".exist_pop_over">{{this.$root.localization.pop_up.cancel}}</f7-button></f7-col>

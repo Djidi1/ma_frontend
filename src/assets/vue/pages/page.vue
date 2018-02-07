@@ -8,7 +8,7 @@
             <f7-nav-center sliding>{{this.$root.localization.AuditPage_main}}</f7-nav-center>
 
         </f7-navbar>
-            <list :data_storage="this.$root.list"></list>
+            <list></list>
             <div  v-if="!hasSomething">
                 <f7-block inner class="nothing" >
                     {{this.$root.localization.AuditPage_nothing}}
@@ -34,20 +34,19 @@
           if (this.$root.auth_info.name===''){
               this.$http.post('https://test.bh-app.ru/api/get-details',{},{headers:{'Authorization':'Bearer ' + self.$root.token}}).then(
                   response=>{
-                      self.$root.auth_info={name:response.body.success.name,email:response.body.success.email,auth:true};
+                      self.$root.auth_info={name:response.body.success.name,email:response.body.success.email,user_id:response.body.success.id,auth:true};
                   },
                   response=>{
                       console.log('error get')
-                  })
+                  });
+              this.$root.getData_from_server();
           }
         },
        computed:{
            hasSomething(){
               let result=true;
-              this.$root.list.forEach(function(item){
-                  result=(item.audits.length>0)?result:false;
-              });
-              result=(this.$root.list.length>0)?result:false;
+               result=(this.$root.audits.length>0)?result:false;
+               result=(this.$root.objects.length>0)?result:false;
                return result
            }
        }

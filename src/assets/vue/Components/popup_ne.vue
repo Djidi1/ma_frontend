@@ -118,7 +118,7 @@
             })
         },
         created(){
-           this.select_list=(this.$root.list.length>0)?this.$root.list:'';
+            this.select_list=(this.$root.objects.length>0)?this.$root.objects:'';
             if (this.obj_id!=null){
                     this.current = this.$root.list[this.obj_id].name;
                     this.selected_object = this.$root.list[this.obj_id];

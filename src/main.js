@@ -100,8 +100,8 @@ new Vue({
   },
 
   data: {
-        list : {},
-        audits:{},
+        objects : [],
+        audits:[],
         auth_info:{},
         localization:{},
         check_list:{},
@@ -110,14 +110,17 @@ new Vue({
     },
 
    watch:{
-        auth_info: function(val){
+      auth_info: function(val){
           this.$ls.set('auth_info',val);
       },
        settings:function(val){
          this.$ls.set('settings',val);
        },
-       list:function(val){
-            this.$ls.set('list',val);
+       objects:function(val){
+            this.$ls.set('objects',val);
+       },
+       audits:function(val){
+           this.$ls.set('audits',val);
        },
        check_list:function(val){
            this.$ls.set('check_list',val);
@@ -128,7 +131,7 @@ new Vue({
     },
 
   created: function(){
-        this.auth_info =this.$ls.get('auth_info',{name:'',email:'',auth:false});
+        this.auth_info =this.$ls.get('auth_info',{name:'',email:'',user_id:'',auth:false});
         var _this=this;
         this.$ls.on('auth_info',function(val){
             _this.auth_info=val;
@@ -141,12 +144,15 @@ new Vue({
         this.$ls.on('token',function(val){
            _this.token=val;
         });
-        let data=this.$ls.get('list',data_json);
-        this.list=JSON.parse(JSON.stringify(data));
-        this.$ls.on('list',function(val){
+        this.objects=this.$ls.get('objects',[]);
+        this.$ls.on('objects',function(val){
           _this.list=val;
         });
-        this.check_list=this.$ls.get('check_list',check_json);
+        this.audits=this.$ls.get('audits',[]);
+        this.$ls.on('audits',function(val){
+            _this.list=val;
+        });
+        this.check_list=this.$ls.get('check_list','');
         this.$ls.on('check_list',function(val){
           _this.check_list=val;
       });
@@ -176,13 +182,47 @@ new Vue({
             this.$f7.params.modalButtonOk=this.localization.modal.modalOk;
             this.$f7.params.modalButtonCancel=this.localization.modal.modalCancel;
         },
-          onRefresh(event, done){
+        onRefresh(event, done){
               var self = this;
               setTimeout(function () {
                   self.list=data_json;
                   done();
               }, 2000);
-          }
+          },
+        getData_from_server(){
+            let self=this;
+            this.$f7.showPreloader(this.$root.localization.modal.preloader);
+            this.$http.post('https://test.bh-app.ru/api/get-checklists',{},{headers:{'Authorization':'Bearer ' + this.token}}).then(
+                response=>{
+                    self.$f7.hidePreloader();
+                    this.check_list=response.body;
+                },
+                response=>{
+                    self.$f7.hidePreloader();
+                    this.check_list=this.$ls.get('check_list');
+                }
+            );
+            this.$http.post('https://test.bh-app.ru/api/get-objects',{},{headers:{'Authorization':'Bearer ' + this.token}}).then(
+                response=>{
+                    self.$f7.hidePreloader();
+                    this.objects=response.body;
+                },
+                response=>{
+                    self.$f7.hidePreloader();
+                    this.objects=this.$ls.get('objects');
+                }
+            );
+            this.$http.post('https://test.bh-app.ru/api/get-audits',{},{headers:{'Authorization':'Bearer ' + this.token}}).then(
+                response=>{
+                    self.$f7.hidePreloader();
+                    this.audits=response.body;
+                },
+                response=>{
+                    self.$f7.hidePreloader();
+                    this.audits=this.$ls.get('audits');
+                }
+            );
+        }
 
 
     }

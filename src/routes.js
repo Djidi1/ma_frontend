@@ -16,7 +16,7 @@ export default [
         component: require('./assets/vue/pages/single_object.vue')
     },
     {
-      path:'/audit/:obj_id/:id',
+      path:'/audit/:array_index/:id',
       component:require('./assets/vue/pages/audit.vue')
     },
     {

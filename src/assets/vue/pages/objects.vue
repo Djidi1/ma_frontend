@@ -9,7 +9,7 @@
             <f7-nav-center sliding>{{this.$root.localization.ObjectPage_main}}</f7-nav-center>
 
         </f7-navbar>
-        <list_object :data_storage="this.$root.list"></list_object>
+        <list_object></list_object>
         <f7-fab color="blue"  class="fab_bottom" @click="popup_open=true">
             <f7-icon icon="icon-plus"></f7-icon>
         </f7-fab>

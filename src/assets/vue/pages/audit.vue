@@ -3,7 +3,7 @@
         <!-- Navbar -->
         <f7-navbar back-link="Back" sliding  >
 
-            <f7-nav-center sliding> {{audit.name}} {{audit.id}}</f7-nav-center>
+            <f7-nav-center sliding> {{audit.title}}</f7-nav-center>
             <f7-nav-right>
                 <f7-link @click="popup_open=true"><i class="fa fa-pencil" aria-hidden="true"></i></f7-link>
                    <f7-link @click="remove_audit"> <i class="fa fa-trash-o" aria-hidden="true"></i></f7-link>
@@ -16,10 +16,10 @@
                             <div class="row  no-gutter">
                                 <div class="col-70">
                                     <div class="col-100">{{this.$root.localization.AuditPage.name}}:</div>
-                                    <div class="col-100">{{audit.name}}</div>
+                                    <div class="col-100">{{audit.title}}</div>
                                     <div class="col-100">Id: {{audit.id}}</div>
-                                    <div class="col-100">{{audit.create_date}}</div>
-                                    <div class="col-100"><f7-link no-link-class :href="'/object/'+this.obj_id+'/'">{{obj_name}}</f7-link></div>
+                                    <div class="col-100">{{data_format}}</div>
+                                    <div class="col-100"><f7-link no-link-class :href="'/object/'+this.audit.audit_object.id+'/'">{{this.audit.audit_object.title}}</f7-link></div>
                                 </div>
                                 <div class="col-30 status" :style="this.block_height">
                                     <table>
@@ -57,7 +57,7 @@
                         </f7-list>
                 </f7-card>
         </div>
-        <popup_audit_edit :opendPopup="popup_open" @close="popup_open=false" :audit="this.id" :object="this.obj_id" @cancel="cancelEdit()"></popup_audit_edit>
+        <popup_audit_edit :opendPopup="popup_open" @close="popup_open=false"  @cancel="cancelEdit()"></popup_audit_edit>
     </f7-page>
 </template>
 
@@ -70,19 +70,13 @@
         name: "audit",
         props: {
             id: { type: String},
-            obj_id:{type:String}
+            array_index:{type:String}
         },
         data:function() {
             return {
                 audit:{},
-                obj_name:'',
-                object_id:'',
                 acordianId:0,
                 block_height:'',
-                id_list:[
-                    this.obj_id,
-                    this.id
-                ],
                 popup_open:false
             }
         },
@@ -92,9 +86,10 @@
             })
         },
         created:function(){
-            this.obj_name=this.$root.list[this.obj_id].name;
-            this.object_id=this.obj_id;
-            this.audit = this.$root.list[this.obj_id].audits[this.id];
+            let self=this;
+           this.$root.audits.forEach(function(item){
+               self.audit=(item.id===Number(self.id))?item:self.audit;
+           });
         },
         computed:{
             status(){
@@ -120,6 +115,14 @@
             },
             hasAttach(){
                 return (this.attachment.length>0);
+            },
+            data_format(){
+                let data=new Date(this.audit.created_at);
+                let curSec=('0'+data.getSeconds()).substr(-2);
+                let curMin=('0'+data.getMinutes()).substr(-2);
+                let curDay=('0'+data.getDate()).substr(-2);
+                let date_for_text=curDay+"/"+data.getMonth()+1+"/"+data.getFullYear()+" "+data.getHours()+":"+curMin+":"+curSec;
+                return date_for_text;
             }
         },
         methods:{
@@ -210,7 +213,8 @@
                this.audit=this.$root.list[this.obj_id].audits[this.id];
 
             }
-        }
+        },
+
 
 
 
