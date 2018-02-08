@@ -65,8 +65,6 @@ import single_comment from './assets/vue/Components/single-comment.vue'
 Vue.component('single_comment',single_comment);
 import check_box from './assets/vue/Components/check_box_item.vue'
 Vue.component('check_box_item',check_box);
-import popup_new from './assets/vue/Components/popup_ne.vue'
-Vue.component('popup_new',popup_new);
 import audit_add from './assets/vue/Components/add_audit_form.vue'
 Vue.component('audit_add',audit_add);
 import popover_obj from './assets/vue/Components/popover_obj.vue'
@@ -103,6 +101,7 @@ new Vue({
         objects : [],
         audits:[],
         auth_info:{},
+        user_info:{},
         localization:{},
         check_list:{},
         settings:{},
@@ -113,6 +112,9 @@ new Vue({
       auth_info: function(val){
           this.$ls.set('auth_info',val);
       },
+       user_info:function(val){
+           this.$ls.set('user_info',val);
+       },
        settings:function(val){
          this.$ls.set('settings',val);
        },
@@ -135,6 +137,11 @@ new Vue({
         var _this=this;
         this.$ls.on('auth_info',function(val){
             _this.auth_info=val;
+        });
+        this.user_info =this.$ls.get('user_info',{});
+        var _this=this;
+        this.$ls.on('user_info',function(val){
+             _this.user_info=val;
         });
         this.settings=this.$ls.get('settings','ru');
         this.$ls.on('settings',function(val){
@@ -194,12 +201,21 @@ new Vue({
             this.$f7.showPreloader(this.$root.localization.modal.preloader);
             this.$http.post('https://test.bh-app.ru/api/get-checklists',{},{headers:{'Authorization':'Bearer ' + this.token}}).then(
                 response=>{
-                    self.$f7.hidePreloader();
                     this.check_list=response.body;
                 },
                 response=>{
-                    self.$f7.hidePreloader();
                     this.check_list=this.$ls.get('check_list');
+                }
+            );
+
+            this.$http.post('https://test.bh-app.ru/api/get-audits',{},{headers:{'Authorization':'Bearer ' + this.token}}).then(
+                response=>{
+
+                    this.audits=response.body;
+                },
+                response=>{
+
+                    this.audits=this.$ls.get('audits');
                 }
             );
             this.$http.post('https://test.bh-app.ru/api/get-objects',{},{headers:{'Authorization':'Bearer ' + this.token}}).then(
@@ -210,16 +226,6 @@ new Vue({
                 response=>{
                     self.$f7.hidePreloader();
                     this.objects=this.$ls.get('objects');
-                }
-            );
-            this.$http.post('https://test.bh-app.ru/api/get-audits',{},{headers:{'Authorization':'Bearer ' + this.token}}).then(
-                response=>{
-                    self.$f7.hidePreloader();
-                    this.audits=response.body;
-                },
-                response=>{
-                    self.$f7.hidePreloader();
-                    this.audits=this.$ls.get('audits');
                 }
             );
         }

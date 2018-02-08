@@ -14,9 +14,13 @@
         <div class="blck_info popup_card">
             <f7-card>
                 <f7-card-header>
-                    {{this.$root.localization.pop_up.object_info}}
+                    <f7-grid style="width:100%; padding:5px 0 5px 0;">
+                        <f7-col width="60">{{this.$root.localization.pop_up.object_info}}</f7-col>
+                        <f7-col v-show="this.mode" width="40"> <f7-button  class="btn_select_obj" open-popover=".exist_pop_over" :disabled="!hasObject"> {{this.$root.localization.pop_up.select_ex}}</f7-button></f7-col>
+                    </f7-grid>
                 </f7-card-header>
-                <f7-card-content>
+                <f7-card-content style="padding-bottom:15px;">
+                    <f7-card style="padding-bottom:10px;">
                     <f7-list form class="add_list">
                         <f7-list-item class="correct_css">
                                     <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
@@ -28,29 +32,26 @@
                             <f7-input type="text" v-model="addres_obj"/>
                         </f7-list-item>
                     </f7-list>
+                    </f7-card>
                 </f7-card-content>
                 <f7-card-footer></f7-card-footer>
             </f7-card>
-
             <f7-card>
                 <f7-card-header>
                    {{this.$root.localization.pop_up.audits_info}}
                 </f7-card-header>
                 <f7-card-content class="card_audit_add">
-                    <audit_add v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index" @remove="remove(true,index)" :type="true" @popup_call="change_id_audit" :trash_btn="false"></audit_add>
                     <transition-group  appear mode="out-in" name="slide-app">
-                        <audit_add v-for="(items,index) in this.new_audit" :key="index" :audits="items" :id="index" @remove="remove(false,index)"  :type="false" @popup_call="change_id_audit" :trash_btn="false"></audit_add>
+                        <audit_add v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index"  :type="true" :trash_btn="false"></audit_add>
                     </transition-group>
                     <f7-card >
                         <f7-grid style="width:100%">
-                            <f7-col width="100"> <f7-button fill @click="Add_audit_block">{{this.$root.localization.pop_up.add_audit}}</f7-button></f7-col>
+                            <f7-col width="100"> <f7-button fill @click="add_audit()">{{this.$root.localization.pop_up.add_audit}}</f7-button></f7-col>
                         </f7-grid>
                     </f7-card>
                 </f7-card-content>
                 <f7-card-footer></f7-card-footer>
             </f7-card>
-            <!--@click="Add_audit_block"-->
-
             <f7-card class="btn_pop_up_main">
                 <f7-card class="btn_pop_up_card">
                     <f7-card-header class="btn_pop_up_card">
@@ -62,7 +63,8 @@
                 </f7-card>
             </f7-card>
         </div>
-        <popover_obj @add_check="add_check_lists"></popover_obj>
+        <curr_objects v-if="hasObject" :list="this.select_list"  :current="this.selected_object" @selected_object_done="selected_object_done"></curr_objects>
+        <popover_obj></popover_obj>
     </f7-popup>
 </template>
 
@@ -71,148 +73,119 @@
     export default {
         name: "popup_new_object",
         props:{
-            obj_id:{type:String,default:null},
-            audit_id:{type:String,default:null},
             opendPopup:{type:Boolean,default:false},
-            edit:{type:Boolean,default:false}
+            mode:{type:Boolean,default:false}
         },
         data:function(){
           return{
               title:'',
+              selected_object:{},
               current:'',
               addres_obj:'',
               audits:[],
-              new_audit:[],
               current_audit_id:0,
               current_arr:true,
           }
         },
         created(){
-
             this.title=(this.edit)?this.$root.localization.pop_up.edit:this.$root.localization.pop_up.new;
+            this.select_list=(this.$root.objects.length>0)?this.$root.objects:'';
         },
-        mounted:function(){
-            this.$nextTick(function(){
-                if (this.obj_id!=null){
-                    this.current=this.$root.list[this.obj_id].name;
-                    this.addres_obj=this.$root.list[this.obj_id].adres;
-                    this.audits=this.$root.list[this.obj_id].audits;
-                    this.correct_css(this.$el);
-                }
-            })
+        computed:{
+            hasObject(){
+                return(this.select_list.length>0)
+            }
         },
         methods:{
             closePopUp(mode){
-                (!this.edit)?this.correct_css():'';
-                 this.clear_data();
-                 this.secod_correct_css();
-                 if (mode){
-                     this.$root.list=this.$ls.get('list');
-                     this.$emit('cancel',this.obj_id);
-                 }else{
-                     this.$root.update_ls()};
                 this.$emit('close')
             },
-            Add_audit_block(){
-                let new_aduit={
-                    "id":"Offline",
-                    "name":"",
-                    "status":"new",
-                    "create_date":this.GetCurrentDate(),
-                    "check_list":[]
-                }
-                this.new_audit.push(new_aduit)
-            },
+
             GetCurrentDate(){
                 let now= new Date();
                 let curSec=('0'+now.getSeconds()).substr(-2);
                 let curMin=('0'+now.getMinutes()).substr(-2);
-                let date_for_text=now.getDate()+"/"+now.getMonth()+1+"/"+now.getFullYear()+" "+now.getHours()+":"+curMin+":"+curSec;
+                let curDay=('0'+now.getDate()).substr(-2);
+                let date_for_text=curDay+"-"+now.getMonth()+1+"-"+now.getFullYear()+" "+now.getHours()+":"+curMin+":"+curSec;
                 return date_for_text;
-            },
-            add_check_lists(arr){
-                let self=this;
-                arr.forEach(function(item){
-                    (self.current_arr)?self.audits[self.current_audit_id].check_list.push(item):self.new_audit[self.current_audit_id].check_list.push(item);
-                })
             },
             change_id_audit(id,type){
                 this.current_arr=type;
                 this.current_audit_id=id;
             },
-            remove(mode,id){
-                (mode)?this.audits.splice(id,1):
-                    this.new_audit.splice(id,1);
-
-            },
-            submit(){
-                if (!this.edit){
-                    let result=true;
-                    let new_obj={
-                        "name":this.current,
-                        "adres":this.addres_obj,
-                        "status":"inProgres",
-                        "id":"offline",
-                        "created_date":this.GetCurrentDate(),
-                        "audits":this.new_audit
-                    }
-                    if (this.current==='') {this.$f7.alert(this.$root.localization.pop_up.empty_input_obj, this.$root.localization.pop_up.warning);
-                        result=false;
-                    }
-                    if (this.addres_obj===''&& result) {this.$f7.alert(this.$root.localization.pop_up.empty_input_address, this.$root.localization.pop_up.warning);
-                        result=false
-                    }
-                    result=(this.validate_arr())?result:false;
-                    (result)?this.push_new_obj(new_obj):'';
-                }else{
-                    let result=true;
-                    if (this.current==='') {this.$f7.alert(this.$root.localization.pop_up.empty_input_obj, this.$root.localization.pop_up.warning);
-                        result=false;
-                    }
-                    if (this.addres_obj===''&& result) {this.$f7.alert(this.$root.localization.pop_up.empty_input_address, this.$root.localization.pop_up.warning);
-                        result=false
-                    }
-                    result=(this.validate_arr())?result:false;
-                    (result)?this.edit_object():'';
+            selected_object_done(item,index){
+                let self=this;
+                if((Object.keys(item).length!=0)){
+                    this.selected_object=item;
+                    this.audits=this.get_audits(item.id)
+                    this.current=this.selected_object.title;
+                    this.addres_obj=this.selected_object.audit_object_group.address;
+                    this.correct_css();
                 }
             },
-            clear_data(){
-                this.current=(this.edit)?this.current:'';
-                this.addres_obj=(this.edit)?this.addres_obj:'';
-                this.audits=(this.edit)?this.audits:'';
-                this.new_audit=[];
-                this.current_audit_id=0;
-                this.current_arr=true;
+            get_audits(id){
+                let result=[];
+                this.$root.audits.forEach(function(item){
+                    if (item.object_id===id)result.push(item);
+                });
+                return result;
             },
-            validate_arr(){
-                let self=this;
-                let result=true;
-                let result_2=true;
-                this.new_audit.forEach(function(item){
-                    result=(item.name!='')?true:false;
-                })
-                this.audits.forEach(function(item){
-                    result_2=(item.name!='')?true:false;
-                })
-                if (!result||!result_2)this.$f7.alert(this.$root.localization.pop_up.empty_input,this.$root.localization.pop_up.warning );
-                return (result)?(result_2)?true:false:false;
+            add_audit(){
+              let new_audit={
+                  "id": -1,
+                  "title": "",
+                  "date_add": this.GetCurrentDate(),
+                  "user_id": this.$root.auth_info.user_id,
+                  "checklist_id": -1,
+                  "object_id": (Object.keys(this.selected_object).length!=0)?this.selected_object.id:-1,
+                  "created_at":  this.GetCurrentDate() ,
+                  "updated_at":  this.GetCurrentDate(),
+                  "checklist": { },
+                  "user": {
+                      "id": this.$root.user_info.id,
+                      "name": this.$root.user_info.name,
+                      "email": this.$root.user_info.email,
+                      "created_at": this.$root.user_info.created_at,
+                      "updated_at": this.$root.user_info.updated_at,
+                      "role_id": this.$root.user_info.role_id
+                  },
+                  "audit_object": {
+                      "id": (Object.keys(this.selected_object).length!=0)?this.selected_object.id:-1,
+                      "title": (Object.keys(this.selected_object).length!=0)?this.selected_object.title:'',
+                      "user_id": (Object.keys(this.selected_object).length!=0)?this.selected_object.user_id:-1,
+                      "audit_object_group_id": (Object.keys(this.selected_object).length!=0)?this.selected_object.audit_object_group_id:-1,
+                      "created_at": (Object.keys(this.selected_object).length!=0)?this.selected_object.created_at:this.GetCurrentDate(),
+                      "updated_at": (Object.keys(this.selected_object).length!=0)?this.selected_object.updated_at:this.GetCurrentDate()
+                  }
+              };
+              this.audits.push(new_audit);
             },
-            push_new_obj(obj){
-              this.$root.list.push(obj)
-              this.closePopUp(false);
-            },
-            edit_object(){
-                this.$root.list[this.obj_id].name=this.current;
-                this.$root.list[this.obj_id].adres=this.addres_obj;
-                this.push_new_audits();
-                this.closePopUp(false)
-            },
-            push_new_audits(){
-                let self=this;
-                this.new_audit.forEach(function(item){
-                    self.audits.push(item);
-                })
-            },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //CSS Доработка
             correct_css(){
                 let element=$$(this.$el).find('.correct_css');
                 let el=(element.find('.item-inner'));
@@ -269,6 +242,10 @@
     }
     .btn_pop_up_card:after{
         display:none;
+    }
+    .btn_select_obj{
+        color: #2196f3;
+        background-color:transparent;
     }
 
 </style>

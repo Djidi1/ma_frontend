@@ -45,6 +45,9 @@
                                 </f7-accordion-content>
                             </f7-list-item>
                         </f7-list>
+                <f7-card-footer>
+
+                </f7-card-footer>
                 </f7-card>
             <f7-card>
                 <f7-block inner>
@@ -251,7 +254,9 @@
         color:#ddd;
     }
 
-
+    .blck_info .accordion-item{
+        margin-bottom:0;
+    }
 
 
 

@@ -17,7 +17,7 @@
             <f7-fab color="blue"  class="fab_bottom" @click="popup_open=true">
                <f7-icon icon="icon-plus"></f7-icon>
             </f7-fab>
-            <popup_new :opendPopup="popup_open" @close="popup_open=false" :mode_audit="true" :mode_audit_edit="false"></popup_new>
+            <popup_new_object :opendPopup="popup_open" @close="popup_open=false" :mode="true" ></popup_new_object>
     </f7-page>
 </template>
 
@@ -35,6 +35,7 @@
               this.$http.post('https://test.bh-app.ru/api/get-details',{},{headers:{'Authorization':'Bearer ' + self.$root.token}}).then(
                   response=>{
                       self.$root.auth_info={name:response.body.success.name,email:response.body.success.email,user_id:response.body.success.id,auth:true};
+                      self.$root.user_info=response.body.success;
                   },
                   response=>{
                       console.log('error get')

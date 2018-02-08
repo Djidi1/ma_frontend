@@ -14,46 +14,44 @@
         <div class="blck_info popup_card">
             <f7-card v-show="!this.mode_audit_edit">
                 <f7-card-header>
-                    {{this.$root.localization.pop_up.object_info}}
+                    <f7-grid style="width:100%; padding:5px 0 5px 0;">
+                        <f7-col width="60">{{this.$root.localization.pop_up.object_info}}</f7-col>
+                        <f7-col width="40"> <f7-button fill class="btn_select_obj" open-popover=".exist_pop_over" :disabled="!hasObject"> {{this.$root.localization.pop_up.select_ex}}</f7-button></f7-col>
+                    </f7-grid>
                 </f7-card-header>
-                <f7-card-content>
-                    <f7-list form class="add_list">
-                        <f7-list-item class="correct_css">
-                            <f7-grid>
-                                <f7-col width="60">
-                                    <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
-                                    <f7-input type="text"  v-model="current" :disabled="mode_audit_edit" id="main_input">
-                                    </f7-input>
-                                </f7-col>
-                                <f7-col width="40" style="height: 58px; padding-top:18px;">
-                                    <f7-button fill open-popover=".exist_pop_over" :disabled="!hasObject"> {{this.$root.localization.pop_up.select_ex}}</f7-button>
-                                </f7-col>
-                            </f7-grid>
-                        </f7-list-item>
-                        <f7-list-item class="correct_css">
-                            <f7-label floating>{{this.$root.localization.pop_up.address}}</f7-label>
-                            <f7-input type="text" v-model="addres_obj" :disabled="mode_audit_edit"/>
-                        </f7-list-item>
-                    </f7-list>
+                <f7-card-content style="padding-bottom:15px;">
+                    <f7-card style="padding-bottom:10px;">
+                        <f7-list form class="add_list">
+                            <f7-list-item class="correct_css">
+                                        <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
+                                        <f7-input type="text"  v-model="current" :disabled="mode_audit_edit" id="main_input">
+                                        </f7-input>
+                            </f7-list-item>
+                            <f7-list-item class="correct_css">
+                                <f7-label floating>{{this.$root.localization.pop_up.address}}</f7-label>
+                                <f7-input type="text" v-model="addres_obj" :disabled="mode_audit_edit"/>
+                            </f7-list-item>
+                        </f7-list>
+                    </f7-card>
                 </f7-card-content>
                 <f7-card-footer></f7-card-footer>
             </f7-card>
             <f7-card>
                 <f7-card-header>
-                    <span v-if="!this.mode_audit_edit">{{this.$root.localization.pop_up.audits_info}} </span> <span v-else>{{this.$root.localization.pop_up.audits_info.substr(0,this.$root.localization.pop_up.audits_info.length -1)}} : <span v-if="hasAudit">{{this.audits[this.audit_id_save].name}} {{this.audits[this.audit_id_save].id}}</span> </span>
+                    <span>{{this.$root.localization.pop_up.audits_info}} </span>
                 </f7-card-header>
-                <f7-card-content class="card_audit_add">
-                       <audit_add v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index" @remove="remove(true,index)" :type="true" @popup_call="change_id_audit" :trash_btn="mode_audit_edit"></audit_add>
-                       <transition-group  appear mode="out-in" name="slide-app">
-                            <audit_add v-for="(items,index) in this.new_audit" :key="index" :audits="items" :id="index" @remove="remove(false,index)"  :type="false" @popup_call="change_id_audit" :trash_btn="mode_audit_edit"></audit_add>
-                       </transition-group>
-                    <f7-card v-show="!this.mode_audit_edit">
-                        <f7-grid style="width:100%">
-                            <f7-col width="100"> <f7-button fill @click="Add_audit_block">{{this.$root.localization.pop_up.add_audit}}</f7-button></f7-col>
-                        </f7-grid>
-                    </f7-card>
-                </f7-card-content>
-                <f7-card-footer></f7-card-footer>
+                <!--<f7-card-content class="card_audit_add">-->
+                       <!--<audit_add v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index" @remove="remove(true,index)" :type="true" @popup_call="change_id_audit" :trash_btn="mode_audit_edit"></audit_add>-->
+                       <!--<transition-group  appear mode="out-in" name="slide-app">-->
+                            <!--<audit_add v-for="(items,index) in this.new_audit" :key="index" :audits="items" :id="index" @remove="remove(false,index)"  :type="false" @popup_call="change_id_audit" :trash_btn="mode_audit_edit"></audit_add>-->
+                       <!--</transition-group>-->
+                    <!--<f7-card v-show="!this.mode_audit_edit">-->
+                        <!--<f7-grid style="width:100%">-->
+                            <!--<f7-col width="100"> <f7-button fill @click="Add_audit_block">{{this.$root.localization.pop_up.add_audit}}</f7-button></f7-col>-->
+                        <!--</f7-grid>-->
+                    <!--</f7-card>-->
+                <!--</f7-card-content>-->
+                <!--<f7-card-footer></f7-card-footer>-->
             </f7-card>
     <f7-card class="btn_pop_up_main">
         <f7-card class="btn_pop_up_card">
@@ -277,16 +275,23 @@
 
             selected_object_done(item,index){
                 let self=this;
-                if((Object.keys(item).length!=0)){
-                    let leng=Object.keys(this.selected_object).length;
-                    this.selected_object=item;
-                    this.addres_obj=this.selected_object.adres;
-                    this.current=this.selected_object.name;
-                    this.audits=[];
+                 if((Object.keys(item).length!=0)){
+                     this.selected_object=item;
+                     this.audits=this.get_audits(item.id)
+                     this.current=this.selected_object.title;
+                     this.addres_obj=this.selected_object.audit_object_group.address;
+                     this.correct_css();
                     //КОСТЫЛЬ
-                    setTimeout(function(){self.audits=self.$root.list[index].audits},75);
-                    (leng==0)?this.correct_css():'';
+                    // setTimeout(function(){self.audits=self.$root.list[index].audits},75);
+                    // (Object.keys(this.selected_object).length===0)?this.correct_css():'';
                 }
+            },
+            get_audits(id){
+                let result=[];
+                this.$root.audits.forEach(function(item){
+                  if (item.object_id===id)result.push(item);
+                });
+              return result;
             }
         }
     }
@@ -323,6 +328,9 @@
     .btn_pop_up_card:after{
         display:none;
     }
-
+    .btn_select_obj{
+        color: #2196f3;
+        background-color:transparent;
+    }
 
 </style>

@@ -44,15 +44,14 @@
 
 <style scoped>
 .comment_acrd{
-    padding: 0 !important;
+    padding: 0 10px 0 10px !important;
 
 }
 .acrd_custom{
     margin-top: 0 !important;
-    padding-bottom: 10px!important;
 }
-.acrd_custom .item-content:after{
-    color:red;
+.acrd_custom .accordion-item{
+    margin-bottom:0;
 }
 
 

@@ -5,41 +5,33 @@
             <f7-grid style="width:100%" class="css_cost">
                 <f7-col width="80">
                     <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
-                    <f7-input type="text" v-model="audit_name" @change="change_audit_name"></f7-input>
+                    <f7-input type="text" v-model="audit_name"></f7-input>
                 </f7-col>
                 <f7-col width="20" v-show="!trash_btn">
                    <f7-button @click=remove class="cross_button"><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
                 </f7-col>
             </f7-grid>
-
-        <div slot="root" class="add_check">
-            <f7-list accordion >
-                <f7-list-item accordion-item :title="this.$root.localization.pop_up.check_list" >
-                    <f7-accordion-content >
-                       <f7-list class="checks_to_add">
-                           <f7-list-item v-for="(item,index) in this.audits.check_list" :key="index" >
-                               <f7-grid>
-                                   <f7-col width="80">
-                                       {{item.name}}
-                                   </f7-col>
-                                   <f7-col width="20">
-                                       <f7-button class='cross_button in_list' @click=remove_Check(index)><i class='fa fa-trash-o fa-2x' aria-hidden='true' ></i></f7-button>
-                                   </f7-col>
-                               </f7-grid>
-                           </f7-list-item>
-                           <f7-list-item class="add_check_btn">
-                               <f7-grid style="width:100%">
-                                   <f7-col width="100"> <f7-button open-popover=".popover_add_obj" @click="change_id">{{this.$root.localization.pop_up.add_check}}</f7-button></f7-col>
-                               </f7-grid>
-                           </f7-list-item>
-                       </f7-list>
-                    </f7-accordion-content>
-                </f7-list-item>
-            </f7-list>
-        </div>
         </f7-list-item>
-
     </f7-list>
+        <f7-block-title>{{this.$root.localization.pop_up.check_list}}</f7-block-title>
+        <f7-block>
+            <f7-list>
+                    <f7-list-item v-for="(check_item,index) in get_check_list()" :key="index" :title="check_item.title" >
+                        <div slot="after">
+                            <f7-button @click=remove class="check_delete" ><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
+                        </div>
+                    </f7-list-item>
+                    <f7-list-item >
+                        <f7-grid style="width:100%">
+                            <f7-col width="100">
+                                <f7-button class="add_check_btn" open-popover=".popover_add_obj">{{this.$root.localization.pop_up.add_check}}</f7-button>
+                            </f7-col>
+                        </f7-grid>
+
+                    </f7-list-item>
+            </f7-list>
+        </f7-block>
+
 
     </f7-card>
 </template>
@@ -62,7 +54,7 @@
         },
         created(){
             this.audit_obj=this.audits;
-            this.audit_name=this.audit_obj.name;
+            this.audit_name=this.audit_obj.title;
 
         },
         mounted:function(){
@@ -86,20 +78,15 @@
             change_id(){
               this.$emit('popup_call',this.id,this.type)
             },
-            change_audit_name(){
-                this.audit_obj.name=this.audit_name;
+            get_check_list(){
+               let self=this;
+               let result=[];
+               console.log(this.$root.check_list);
+               this.$root.check_list.forEach(function(item){
+                   (item.id===self.audit_obj.checklist_id)?result.push(item):'';
+               });
+               return result;
             },
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -147,7 +134,10 @@
         text-align: center;
 
     }
-
+    .check_delete{
+        color:#9e9e9e;
+        font-size:22px;
+    }
 
 
 
