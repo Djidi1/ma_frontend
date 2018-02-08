@@ -36,7 +36,7 @@
                 </f7-card-content>
             </f7-card>
         </div>
-        <!--<popup_new_object :opendPopup="popup_open" @close="popup_open=false" :edit="true" :obj_id="this.id" @cancel="cancel_edit"></popup_new_object>-->
+        <popup_new_object :opendPopup="popup_open" @close="popup_open=false" :mode="false" :id="this.id"></popup_new_object>
 
     </f7-page>
 </template>

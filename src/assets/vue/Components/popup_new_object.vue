@@ -74,7 +74,8 @@
         name: "popup_new_object",
         props:{
             opendPopup:{type:Boolean,default:false},
-            mode:{type:Boolean,default:false}
+            mode:{type:Boolean,default:false},
+            id:{type:String,default:''}
         },
         data:function(){
           return{
@@ -88,8 +89,20 @@
           }
         },
         created(){
-            this.title=(this.edit)?this.$root.localization.pop_up.edit:this.$root.localization.pop_up.new;
+            this.title=(!this.mode)?this.$root.localization.pop_up.edit:this.$root.localization.pop_up.new;
             this.select_list=(this.$root.objects.length>0)?this.$root.objects:'';
+
+        },
+        mounted(){
+            this.$nextTick(function(){
+                if (this.id!=''){
+                    this.selected_object=this.get_object(this.id);
+                    this.audits=this.get_audits(Number(this.id));
+                    this.current=this.selected_object.title;
+                    this.addres_obj=this.selected_object.audit_object_group.address;
+                    this.correct_css();
+                };
+            });
         },
         computed:{
             hasObject(){
@@ -159,6 +172,14 @@
                   }
               };
               this.audits.push(new_audit);
+            },
+            get_object(id){
+                let self=this;
+                let result={};
+                this.$root.objects.forEach(function(item){
+                   result=(item.id===Number(id))?item:result;
+                });
+                return result;
             },
 
 

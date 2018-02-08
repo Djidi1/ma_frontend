@@ -63,7 +63,7 @@
 
             </f7-card>
         </div>
-        <!--<popup_audit_edit :opendPopup="popup_open" @close="popup_open=false"  @cancel="cancelEdit()"></popup_audit_edit>-->
+        <popup_audit_edit :opendPopup="popup_open" @close="popup_open=false"  :audit="this.audit""></popup_audit_edit>
     </f7-page>
 </template>
 
