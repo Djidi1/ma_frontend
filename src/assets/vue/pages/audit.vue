@@ -19,7 +19,7 @@
                                     <div class="col-100">{{audit.title}}</div>
                                     <div class="col-100">Id: {{audit.id}}</div>
                                     <div class="col-100">{{data_format}}</div>
-                                    <div class="col-100"><f7-link no-link-class :href="'/object/'+this.array_index_save+'/'">{{this.$root.objects[this.array_index_save].title}}</f7-link></div>
+                                    <div class="col-100"><f7-link no-link-class :href="'/object/'+this.audit.object_id+'/'">{{this.$root.objects[this.array_index_save].title}}</f7-link></div>
                                 </div>
                                 <div class="col-30 status" :style="this.block_height">
                                     <table>

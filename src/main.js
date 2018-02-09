@@ -273,7 +273,8 @@ new Vue({
                                 "title":audit.title,
                                 "date_add":audit.date_add,
                                 "created_at":audit.created_at,
-                                "check_list":[]
+                                "check_list":[],
+                                "object_id":object.id
                             };
                             result.audits.push(audit_result);
                           };

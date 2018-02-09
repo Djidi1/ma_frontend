@@ -17,7 +17,7 @@
                                 <div class="col-100">{{this.$root.localization.ObjectPage.name}}:{{object.title}}</div>
                                 <div class="col-100">Id: {{object.id}}</div>
                                 <div class="col-100">{{data_format()}}</div>
-                                <div class="col-100">{{object.audit_object_group.address}}</div>
+                                <div class="col-100">{{object.address}}</div>
                         </div>
                     </div>
                 </f7-card-header>
@@ -31,7 +31,7 @@
                 </f7-card-header>
                 <f7-card-content>
                     <f7-list media-list>
-                        <f7-list-item v-for="(acrd,acrd_index) in get_audits(this.id)" :key="acrd_index" :link="'/audit/'+acrd_index+'/'+acrd.id" :title="acrd.title" :subtitle="acrd.id"  :text="data_format(acrd.created_at)"  :media="realStatus(acrd.status)"></f7-list-item>
+                        <f7-list-item v-for="(acrd,acrd_index) in this.object.audits" :key="acrd_index" :link="'/audit/'+array_index+'/'+acrd_index" :title="acrd.title" :subtitle="acrd.id"  :text="data_format(acrd.created_at)"  :media="realStatus(acrd.status)"></f7-list-item>
                     </f7-list>
                 </f7-card-content>
             </f7-card>
@@ -50,22 +50,21 @@
         data:function(){
             return{
                 object:{},
+                array_index:0,
                 popup_open:false
             }
         },
         created(){
             let self=this;
-            this.$root.objects.forEach(function(item){
-                self.object=(item.id===Number(self.id))?item:self.object;
+            this.$root.objects.forEach(function(item,i){
+                if (item.id===Number(self.id)){self.object=item;
+                    self.array_index=i
+                };
             })
         },
         computed:{
             audit_count(){
-                let self=this;
-                let count=0;
-                this.$root.audits.forEach(function(item){
-                    count=(item.object_id===self.object.id)?++count:count;
-                });
+                let count=this.object.audits.length;
                 return (count>0)? this.$root.localization.ObjectPage.audits+': '+count:'';
             }
         },

@@ -81,7 +81,6 @@
             get_check_list(){
                let self=this;
                let result=[];
-               console.log(this.$root.check_list);
                this.$root.check_list.forEach(function(item){
                    (item.id===self.audit_obj.checklist_id)?result.push(item):'';
                });
