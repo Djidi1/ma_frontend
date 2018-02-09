@@ -5,7 +5,7 @@
             <f7-grid style="width:100%" class="css_cost">
                 <f7-col width="80">
                     <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
-                    <f7-input type="text" v-model="audit_name"></f7-input>
+                    <f7-input type="text" v-model="audit_name" @change="chanbe_name()"></f7-input>
                 </f7-col>
                 <f7-col width="20" v-show="!trash_btn">
                    <f7-button @click=remove class="cross_button"><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
@@ -83,6 +83,9 @@
                 this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
                     self.audit_obj.check_list.splice(index, 1)
                 })
+            },
+            chanbe_name(){
+                this.audit_obj.title=this.audit_name;
             },
 
 

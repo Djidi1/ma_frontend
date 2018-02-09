@@ -111,7 +111,6 @@
             closePopUp(mode){
                 this.$emit('close')
             },
-
             GetCurrentDate(){
                 let now= new Date();
                 let curSec=('0'+now.getSeconds()).substr(-2);
@@ -144,7 +143,7 @@
                   "date_add":this.GetCurrentDate(),
                   "created_at":this.GetCurrentDate(),
                   "check_list":[],
-                  "object_id":'Offline_'+this.getlastid()
+                  "object_id":(Object.keys(this.selected_object).length!=0)?this.selected_object.id:'Offline_'+this.getlastid()
               };
               this.audits.push(new_audit);
               console.log(this.audits);
@@ -164,14 +163,39 @@
                 return this.audits.length-1;
             },
             submit(){
-                if((Object.keys(this.selected_object).length!=0)){
-                    this.$set(this.selected_object,"audits",this.audits);
-                    this.$ls.set('objects',this.$root.objects);
-                }else{
+                if (this.validat()){
+                    if((Object.keys(this.selected_object).length!=0)){
+                        this.$set(this.selected_object,"audits",this.audits);
+                        this.$set(this.selected_object,"title",this.current);
+                        this.$set(this.selected_object,"address",this.addres_obj);
+                        this.$ls.set('objects',this.$root.objects);
+                        this.clear_data();
+                        this.closePopUp();
+                    }
+                    else{
 
-                };
-                console.log(this.$root.objects);
-                this.closePopUp();
+                    }
+                }else{ this.$f7.alert('Заполнены не все поля!',this.$root.localization.pop_up.warning);}
+            },
+            validat(){
+
+              let self=this;
+              let result=true;
+              result=(this.current!='')?result:false;
+              result=(this.addres_obj!=''&&this.addres_obj!=null)?result:false;
+              this.audits.forEach(function(item){
+                 result=(item.title!='')?result:false;
+              });
+              return result;
+            },
+            clear_data(){
+                this.correct_css();
+                this.secod_correct_css();
+              this.selected_object={};
+              this.current='';
+              this.addres_obj='';
+              this.audits=[];
+
             },
 
 
@@ -205,13 +229,12 @@
                 let need_cls;
                 el.attr('class').split(' ').forEach(function(item){
                     need_cls=(item!='not-empty-state')? true:false;
-                })
+                });
                 if(this.current!='')this.add_cls(el,'not-empty-state');
             },
             secod_correct_css(){
                 let element=$$(this.$el).find('.correct_css');
                 let el=(element.find('.item-input'));
-                let need_cls;
                 el.forEach(function(item){
                     $$(item).removeClass('not-empty-state')
                 })
