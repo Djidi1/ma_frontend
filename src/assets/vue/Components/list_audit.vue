@@ -1,18 +1,18 @@
 <template>
     <div class="blck_info">
-        <f7-card v-for="(item,index) in data_storage" :key="index" v-if="hasAudits(item.id)">
+        <f7-card v-for="(item,index) in this.$root.objects" :key="index" v-if="hasAudits(index)">
             <f7-card-header class="show_border">
                     <div class="obj_info">
                         <div class="row  no-gutter">
                             <div class="col-70"> <f7-link no-link-class :href="'/object/'+item.id+'/'">{{item.title}}</f7-link></div>
-                            <div class="col-70  dop_info">{{item.audit_object_group.address}}</div>
+                            <div class="col-70  dop_info">{{item.address}}</div>
                             <div class="col-30 dop_info count_info">{{countFrom(item)}}</div>
                         </div>
                     </div>
             </f7-card-header>
             <f7-card-content>
                 <f7-list media-list>
-                    <f7-list-item v-for="(acrd,acrd_index) in array_few(item.id)" :key="acrd_index" :link="'/audit/'+acrd_index+'/'+acrd.id" :title="acrd.title" :subtitle="'ID: '+acrd.id"  :text="data_formta(acrd.created_at)"  :media="realStatus(acrd.status)"></f7-list-item>
+                    <f7-list-item v-for="(acrd,acrd_index) in array_few(item)" :key="acrd_index" :link="'/audit/'+index+'/'+acrd_index" :title="acrd.title" :subtitle="'ID: '+acrd.id"  :text="data_formta(acrd.created_at)"  :media="realStatus(acrd.status)"></f7-list-item>
                 </f7-list>
             </f7-card-content>
         </f7-card>
@@ -50,22 +50,14 @@
               return result;
             },
             countFrom(item){
-              // let all=item.audits.length;
-            //    return (all>5)?"5 "+this.$root.localization.AuditPage_count +" "+all:'';
+                let all=item.audits.length;
+                return (all>5)?"5 "+this.$root.localization.AuditPage_count +" "+all:'';
             },
-            array_few(obj_id){
-               let self=this;
-               let count=0;
-               let array=[];
-                this.$root.audits.forEach(function(item){
-                   if (item.object_id===obj_id){
-                       (count++<5)?array.push(item):'';
-                   }
-               });
-                return array;
+            array_few(obj){
+                return obj.audits.slice(0,6);
             },
             hasAudits(id){
-                return(this.array_few(id).length>0);
+                return(this.$root.objects[id].audits.length>0);
             },
             data_formta(data){
                 data=new Date(data);

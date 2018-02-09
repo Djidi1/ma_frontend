@@ -99,71 +99,51 @@ new Vue({
 
   data: {
         objects : [],
-        audits:[],
         auth_info:{},
-        user_info:{},
         localization:{},
         check_list:{},
-        settings:{},
-        token:'empty'
+        settings:{}
     },
 
    watch:{
       auth_info: function(val){
           this.$ls.set('auth_info',val);
       },
-       user_info:function(val){
-           this.$ls.set('user_info',val);
-       },
+
        settings:function(val){
          this.$ls.set('settings',val);
        },
        objects:function(val){
             this.$ls.set('objects',val);
        },
-       audits:function(val){
-           this.$ls.set('audits',val);
-       },
        check_list:function(val){
            this.$ls.set('check_list',val);
-       },
-       token:function(val){
-            this.$ls.set('token',val);
        }
     },
+    created(){
+        let _this=this;
+        this.settings=this.$ls.get('settings','ru');
+        this.$ls.on('settings',function(val){
+            _this.settings=val;
+        });
 
-  created: function(){
-        this.auth_info =this.$ls.get('auth_info',{name:'',email:'',user_id:'',auth:false});
-        var _this=this;
+        this.lang_select(this.settings);
+    },
+    mounted: function(){
+        this.auth_info =this.$ls.get('auth_info',{auth:false,name:'',email:''});
+        let _this=this;
         this.$ls.on('auth_info',function(val){
             _this.auth_info=val;
         });
-        this.user_info =this.$ls.get('user_info',{});
-        var _this=this;
-        this.$ls.on('user_info',function(val){
-             _this.user_info=val;
-        });
-        this.settings=this.$ls.get('settings','ru');
-        this.$ls.on('settings',function(val){
-           _this.settings=val;
-        });
-        this.token=this.$ls.get('token','');
-        this.$ls.on('token',function(val){
-           _this.token=val;
-        });
+
         this.objects=this.$ls.get('objects',[]);
         this.$ls.on('objects',function(val){
           _this.list=val;
         });
-        this.audits=this.$ls.get('audits',[]);
-        this.$ls.on('audits',function(val){
-            _this.list=val;
-        });
         this.check_list=this.$ls.get('check_list','');
         this.$ls.on('check_list',function(val){
-          _this.check_list=val;
-      });
-        this.lang_select(this.settings);
+            _this.check_list=val;
+        });
 
     },
 
@@ -198,39 +178,111 @@ new Vue({
           },
         getData_from_server(){
             let self=this;
-            this.$f7.showPreloader(this.$root.localization.modal.preloader);
-            this.$http.post('https://test.bh-app.ru/api/get-checklists',{},{headers:{'Authorization':'Bearer ' + this.token}}).then(
-                response=>{
-                    this.check_list=response.body;
-                },
-                response=>{
-                    this.check_list=this.$ls.get('check_list');
-                }
-            );
+            return new Promise(function(resolve,reject){
+                let objects_arr=[];
+                let audits_arr=[];
+                let result=[];
+                self.get_check_list().then(
+                    ready=>{
+                        return self.get_objects();
+                    })
+                    .then(objects=>{
+                        objects_arr=objects;
+                       return self.get_audits();
+                     })
+                    .then(
+                        audits=>{
+                            audits_arr=audits;
+                            return self.create_object_list(objects_arr,audits_arr);
+                        }
+                    ).then(
+                        result_arr=>{
+                            result=result_arr;
+                            resolve(result);
+                        }
+                )
+            });
+        },
+        get_check_list(){
+            let self=this;
+            return new Promise(function(resolve,reject){
+                self.$http.post('https://test.bh-app.ru/api/get-checklists',{},{headers:{'Authorization':'Bearer ' + self.auth_info.token}}).then(
+                    response=>{
+                        self.check_list=response.body;
+                        resolve('ready');
+                    },
+                    response=>{
+                        self.check_list=[];
+                        resolve('ready');
+                    }
+                );
+            });
+        },
+        get_objects(){
+            let self=this;
+            let objects=[]
+            return new Promise(function(resolve,reject) {
+                self.$http.post('https://test.bh-app.ru/api/get-objects', {}, {headers: {'Authorization': 'Bearer ' + self.auth_info.token}}).then(
+                    response => {
+                        objects = response.body;
+                        resolve(objects)
+                    },
+                    response => {
+                        objects = [];
+                        resolve(objects)
+                    }
+                );
+            });
+        },
+        get_audits(){
+            let self=this;
+            let audits=[]
+            return new Promise(function(resolve,reject) {
+                self.$http.post('https://test.bh-app.ru/api/get-audits',{},{headers:{'Authorization':'Bearer ' + self.auth_info.token}}).then(
+                    response=>{
+                        audits=response.body;
+                        resolve(audits);
 
-            this.$http.post('https://test.bh-app.ru/api/get-audits',{},{headers:{'Authorization':'Bearer ' + this.token}}).then(
-                response=>{
+                    },
+                    response=>{
+                        audits=[];
+                        resolve(audits);
+                    }
+                );
+            });
 
-                    this.audits=response.body;
-                },
-                response=>{
+        },
 
-                    this.audits=this.$ls.get('audits');
-                }
-            );
-            this.$http.post('https://test.bh-app.ru/api/get-objects',{},{headers:{'Authorization':'Bearer ' + this.token}}).then(
-                response=>{
-                    self.$f7.hidePreloader();
-                    this.objects=response.body;
-                },
-                response=>{
-                    self.$f7.hidePreloader();
-                    this.objects=this.$ls.get('objects');
-                }
-            );
+        create_object_list(objects,audits){
+            let self=this;
+            let result_arr=[];
+            return new Promise(function(resolve){
+                   objects.forEach(function(object,i){
+                       let result={};
+                      result={
+                        "id":object.id,
+                        "title":object.title,
+                        "created_at":object.created_at,
+                        "audits":[],
+                        "address":object.audit_object_group.address
+                      }
+                      audits.forEach(function(audit,j){
+                          if (object.id===audit.object_id){
+                            let audit_result={
+                                "id":audit.id,
+                                "title":audit.title,
+                                "date_add":audit.date_add,
+                                "created_at":audit.created_at,
+                                "check_list":[]
+                            };
+                            result.audits.push(audit_result);
+                          };
+                      })
+                       result_arr.push(result);
+                   });
+                   resolve(result_arr);
+            });
         }
-
-
     }
 
 })

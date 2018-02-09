@@ -19,7 +19,7 @@
                                     <div class="col-100">{{audit.title}}</div>
                                     <div class="col-100">Id: {{audit.id}}</div>
                                     <div class="col-100">{{data_format}}</div>
-                                    <div class="col-100"><f7-link no-link-class :href="'/object/'+this.audit.audit_object.id+'/'">{{this.audit.audit_object.title}}</f7-link></div>
+                                    <div class="col-100"><f7-link no-link-class :href="'/object/'+this.array_index_save+'/'">{{this.$root.objects[this.array_index_save].title}}</f7-link></div>
                                 </div>
                                 <div class="col-30 status" :style="this.block_height">
                                     <table>
@@ -38,32 +38,36 @@
                    <f7-card-header>
                         {{this.$root.localization.AuditPage.check_list}}
                    </f7-card-header>
-                        <f7-list accordion>
-                            <f7-list-item   v-for="(check,id) in get_check_array(this.audit.checklist.id)"  :key="id"  :id="'acord'+check.id" accordion-item :title="check.title" :after="realStatus(check.status)">
-                                <f7-accordion-content>
-                                        <check_item v-for="(item,item_id) in check.requirement" :key="item_id"  :data_item="item" ></check_item>
-                                </f7-accordion-content>
-                            </f7-list-item>
+
+                        <f7-list accordion  v-if="hasCheck_list">
+                            <f7-list-item   v-for="(check,id) in this.audit.check_list"  :key="id"  :id="'acord'+check.id" accordion-item :title="check.title" :after="realStatus(check.status)">
+                            <f7-accordion-content>
+                                <check_item v-for="(item,item_id) in check.requirement" :key="item_id"  :data_item="item" ></check_item>
+                            </f7-accordion-content>
+                        </f7-list-item>
+                        </f7-list>
+                        <f7-list v-else>
+                            <f7-list-item  title="У данного аудита нет чек-листов."></f7-list-item>
                         </f7-list>
                 <f7-card-footer>
 
                 </f7-card-footer>
                 </f7-card>
-            <f7-card>
-                <f7-block inner>
-                    <f7-grid>
-                        <f7-col width="50">
-                            <f7-button @click="abort_check_list(id)" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>
-                        </f7-col>
-                        <f7-col width="50">
-                            <f7-button fill @click="check_list_status(id)"><i class="fa fa-check" aria-hidden="true"></i> </f7-button>
-                        </f7-col>
-                    </f7-grid>
-                </f7-block>
+            <!--<f7-card>-->
+                <!--<f7-block inner>-->
+                    <!--<f7-grid>-->
+                        <!--<f7-col width="50">-->
+                            <!--<f7-button @click="abort_check_list(id)" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>-->
+                        <!--</f7-col>-->
+                        <!--<f7-col width="50">-->
+                            <!--<f7-button fill @click="check_list_status(id)"><i class="fa fa-check" aria-hidden="true"></i> </f7-button>-->
+                        <!--</f7-col>-->
+                    <!--</f7-grid>-->
+                <!--</f7-block>-->
 
-            </f7-card>
+            <!--</f7-card>-->
         </div>
-        <popup_audit_edit :opendPopup="popup_open" @close="popup_open=false"  :audit="this.audit""></popup_audit_edit>
+        <popup_audit_edit :opendPopup="popup_open" @close="popup_open=false"  :audit="this.audit"></popup_audit_edit>
     </f7-page>
 </template>
 
@@ -83,7 +87,8 @@
                 audit:{},
                 acordianId:0,
                 block_height:'',
-                popup_open:false
+                popup_open:false,
+                array_index_save:this.array_index
             }
         },
         mounted:function(){
@@ -92,10 +97,7 @@
             })
         },
         created:function(){
-            let self=this;
-           this.$root.audits.forEach(function(item){
-               self.audit=(item.id===Number(self.id))?item:self.audit;
-           });
+            this.audit=this.$root.objects[this.array_index].audits[this.id];
         },
         computed:{
             status(){
@@ -119,8 +121,8 @@
                 }
                 return result;
             },
-            hasAttach(){
-                return (this.attachment.length>0);
+            hasCheck_list(){
+                return (this.audit.check_list.length>0);
             },
             data_format(){
                 let data=new Date(this.audit.created_at);

@@ -68,9 +68,7 @@
             exit:function () {
                 self=this;
                 this.$f7.confirm("",this.$root.localization.modal.modalTextConfExit, function () {
-                    let user_info={name:'',auth:false,lang:self.$root.auth_info.lang};
-                    self.$root.auth_info=user_info;
-                    self.$root.token='';
+                    self.$root.auth_info={auth:false,token:'',user_info:{name:'',email:''}};
                     self.$f7.closePanel();
                     self.go_to_login();
                 });

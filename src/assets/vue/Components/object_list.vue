@@ -3,7 +3,7 @@
         <f7-card>
             <f7-card-content>
                 <f7-list media-list>
-                    <f7-list-item v-for="(object,index) in data_storage" :key="index" :link="'/object/'+object.id+'/'" :title="title+': '+object.title" :subtitle="'ID: '+object.id"  :text="data_format(object.created_at)+'</br>'+object.audit_object_group.address" :after="audit_count(object.id)+'</br>'+new_audit_count(object.id)"></f7-list-item>
+                    <f7-list-item v-for="(object,index) in data_storage" :key="index" :link="'/object/'+object.id+'/'" :title="title+': '+object.title" :subtitle="'ID: '+object.id"  :text="data_format(object.created_at)+'</br>'+object.address" :after="audit_count(index)+'</br>'+new_audit_count(object.id)"></f7-list-item>
                 </f7-list>
             </f7-card-content>
         </f7-card>
@@ -32,12 +32,9 @@
             }
         },
         methods:{
-            audit_count(obj_id){
+            audit_count(obj_index){
                let self=this;
-               let count=0;
-               this.$root.audits.forEach(function(item){
-                   count=(item.id===obj_id)?++count:count;
-               });
+               let count=this.$root.objects[obj_index].audits.length;
                return (count>0)? this.$root.localization.ObjectPage.audits+': '+count:'';
             },
             new_audit_count(obj){

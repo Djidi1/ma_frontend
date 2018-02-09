@@ -31,22 +31,29 @@
         },
         created(){
           let self=this;
-          if (this.$root.auth_info.name===''){
-              this.$http.post('https://test.bh-app.ru/api/get-details',{},{headers:{'Authorization':'Bearer ' + self.$root.token}}).then(
-                  response=>{
-                      self.$root.auth_info={name:response.body.success.name,email:response.body.success.email,user_id:response.body.success.id,auth:true};
-                      self.$root.user_info=response.body.success;
-                  },
-                  response=>{
-                      console.log('error get')
+
+              if (this.$root.auth_info.name===''){
+                  this.$http.post('https://test.bh-app.ru/api/get-details', {}, {headers: {'Authorization': 'Bearer ' + self.$root.auth_info.token}}).then(
+                      response => {
+                          self.$set(self.$root.auth_info, "name", response.body.success.name);
+                          self.$set(self.$root.auth_info, "email", response.body.success.email);
+                          self.$set(self.$root.auth_info, "user_info", response.body.success);
+                      },
+                      response => {
+                          console.log('error get')
+                      });
+              };
+              if (!self.$root.objects.length>0){
+                  this.$f7.showPreloader(this.$root.localization.modal.preloader);
+                  this.$root.getData_from_server().then(result=>{
+                      self.$root.objects=result;
+                      this.$f7.hidePreloader()
                   });
-              this.$root.getData_from_server();
-          }
+              }
         },
        computed:{
            hasSomething(){
               let result=true;
-               result=(this.$root.audits.length>0)?result:false;
                result=(this.$root.objects.length>0)?result:false;
                return result
            }
