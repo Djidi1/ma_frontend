@@ -64,7 +64,7 @@
             </f7-card>
         </div>
         <curr_objects v-if="hasObject" :list="this.select_list"  :current="this.selected_object" @selected_object_done="selected_object_done"></curr_objects>
-        <popover_obj></popover_obj>
+
     </f7-popup>
 </template>
 
@@ -84,8 +84,6 @@
               current:'',
               addres_obj:'',
               audits:[],
-              current_audit_id:0,
-              current_arr:true,
           }
         },
         created(){
@@ -122,57 +120,35 @@
                 let date_for_text=curDay+"-"+now.getMonth()+1+"-"+now.getFullYear()+" "+now.getHours()+":"+curMin+":"+curSec;
                 return date_for_text;
             },
-            change_id_audit(id,type){
-                this.current_arr=type;
-                this.current_audit_id=id;
-            },
             selected_object_done(item,index){
                 let self=this;
                 if((Object.keys(item).length!=0)){
                     this.selected_object=item;
-                    this.audits=this.get_audits(item.id)
+                    this.audits=this.get_audits(this.selected_object.audits)
                     this.current=this.selected_object.title;
-                    this.addres_obj=this.selected_object.audit_object_group.address;
+                    this.addres_obj=this.selected_object.address;
                     this.correct_css();
                 }
             },
-            get_audits(id){
+            get_audits(audits){
                 let result=[];
-                this.$root.audits.forEach(function(item){
-                    if (item.object_id===id)result.push(item);
+                audits.forEach(function(item){
+                   result.push(item);
                 });
                 return result;
             },
             add_audit(){
               let new_audit={
-                  "id": -1,
-                  "title": "",
-                  "date_add": this.GetCurrentDate(),
-                  "user_id": this.$root.auth_info.user_id,
-                  "checklist_id": -1,
-                  "object_id": (Object.keys(this.selected_object).length!=0)?this.selected_object.id:-1,
-                  "created_at":  this.GetCurrentDate() ,
-                  "updated_at":  this.GetCurrentDate(),
-                  "checklist": { },
-                  "user": {
-                      "id": this.$root.user_info.id,
-                      "name": this.$root.user_info.name,
-                      "email": this.$root.user_info.email,
-                      "created_at": this.$root.user_info.created_at,
-                      "updated_at": this.$root.user_info.updated_at,
-                      "role_id": this.$root.user_info.role_id
-                  },
-                  "audit_object": {
-                      "id": (Object.keys(this.selected_object).length!=0)?this.selected_object.id:-1,
-                      "title": (Object.keys(this.selected_object).length!=0)?this.selected_object.title:'',
-                      "user_id": (Object.keys(this.selected_object).length!=0)?this.selected_object.user_id:-1,
-                      "audit_object_group_id": (Object.keys(this.selected_object).length!=0)?this.selected_object.audit_object_group_id:-1,
-                      "created_at": (Object.keys(this.selected_object).length!=0)?this.selected_object.created_at:this.GetCurrentDate(),
-                      "updated_at": (Object.keys(this.selected_object).length!=0)?this.selected_object.updated_at:this.GetCurrentDate()
-                  }
+                  "id":"Offline_audit_"+this.getlastid_audit(),
+                  "title":'',
+                  "date_add":this.GetCurrentDate(),
+                  "created_at":this.GetCurrentDate(),
+                  "check_list":[],
+                  "object_id":'Offline_'+this.getlastid()
               };
               this.audits.push(new_audit);
-            },
+              console.log(this.audits);
+    },
             get_object(id){
                 let self=this;
                 let result={};
@@ -180,6 +156,22 @@
                    result=(item.id===Number(id))?item:result;
                 });
                 return result;
+            },
+            getlastid(){
+              return this.$root.objects.length-1;
+            },
+            getlastid_audit(){
+                return this.audits.length-1;
+            },
+            submit(){
+                if((Object.keys(this.selected_object).length!=0)){
+                    this.$set(this.selected_object,"audits",this.audits);
+                    this.$ls.set('objects',this.$root.objects);
+                }else{
+
+                };
+                console.log(this.$root.objects);
+                this.closePopUp();
             },
 
 

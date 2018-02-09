@@ -13,10 +13,10 @@
             </f7-grid>
         </f7-list-item>
     </f7-list>
-        <f7-block-title>{{this.$root.localization.pop_up.check_list}}</f7-block-title>
+        <f7-block-title v-show="hasCheck">{{this.$root.localization.pop_up.check_list}}</f7-block-title>
         <f7-block>
             <f7-list>
-                    <f7-list-item v-for="(check_item,index) in get_check_list()" :key="index" :title="check_item.title" >
+                    <f7-list-item v-for="(check_item,index) in this.audit_obj.check_list" :key="index" :title="check_item.title" >
                         <div slot="after">
                             <f7-button @click=remove class="check_delete" ><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
                         </div>
@@ -24,15 +24,13 @@
                     <f7-list-item >
                         <f7-grid style="width:100%">
                             <f7-col width="100">
-                                <f7-button class="add_check_btn" open-popover=".popover_add_obj">{{this.$root.localization.pop_up.add_check}}</f7-button>
+                                <f7-button class="add_check_btn" :open-popover="'.popover_add_obj_'+this.audit_obj.id">{{this.$root.localization.pop_up.add_check}}</f7-button>
                             </f7-col>
                         </f7-grid>
-
                     </f7-list-item>
             </f7-list>
         </f7-block>
-
-
+        <popover_obj :id="this.audit_obj.id.toString()" @select_check_list="select_check_list"></popover_obj>
     </f7-card>
 </template>
 
@@ -55,12 +53,16 @@
         created(){
             this.audit_obj=this.audits;
             this.audit_name=this.audit_obj.title;
-
         },
         mounted:function(){
             this.$nextTick(function(){
                this.css_class_add(this.$el);
             })
+        },
+        computed:{
+            hasCheck(){
+                return (this.audit_obj.check_list.length>0);
+            }
         },
         methods:{
             remove(){
@@ -69,23 +71,20 @@
                     self.$emit('remove');
                 })
             },
+            select_check_list(arr){
+                let self=this;
+                arr.forEach(function(item){
+                    self.audit_obj.check_list.push(item);
+                });
+              console.log(this.audit_obj);
+            },
             remove_Check(index){
                 let self=this;
                 this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
                     self.audit_obj.check_list.splice(index, 1)
                 })
             },
-            change_id(){
-              this.$emit('popup_call',this.id,this.type)
-            },
-            get_check_list(){
-               let self=this;
-               let result=[];
-               this.$root.check_list.forEach(function(item){
-                   (item.id===self.audit_obj.checklist_id)?result.push(item):'';
-               });
-               return result;
-            },
+
 
 
 

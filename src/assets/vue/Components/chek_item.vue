@@ -1,10 +1,10 @@
 <template>
     <div>
         <f7-list form class="check_list_items" :id="'list_itm_'+this.data_item.id" :class="class_result">
-            <f7-list-item :id="this.data_item"  :title="data_item.title" >
+            <f7-list-item :id="this.data_item.id"  :title="data_item.title" >
                 <f7-grid no-gutter>
-                    <check_box_item :button_type="true" :item_status="this.status" @change_status="change_item_status"></check_box_item>
-                    <check_box_item :button_type="false" :item_status="this.status" @change_status="change_item_status"></check_box_item>
+                    <check_box_item :button_type="true" :item_status="this.data_item.status" @change_status="change_item_status"></check_box_item>
+                    <check_box_item :button_type="false" :item_status="this.data_item.status" @change_status="change_item_status"></check_box_item>
                 </f7-grid>
                 <div slot="root" >
                         <transition  mode="out-in" name="comment-show">
@@ -20,29 +20,24 @@
 <script>
     import Check_box_item from "src/assets/vue/Components/check_box_item";
 
-    var $$=Dom7;
     export default {
         components: {Check_box_item},
         name: "chek_item",
         props:{
             data_item:{ type: Object, default: '' },
         },
-        data:function(){
-            return{
-                status:0
-            }
-        },
         computed:{
             showComment(){
-                return (this.status===0)?false:(this.status===1)?false:true;
+                return (this.data_item.status===0)?false:(this.data_item.status===1)?false:true;
             },
             class_result(){
-                return (this.status===0)?"":(this.status===1)?"status_sucs":"status_false";
+                return (this.data_item.status===0)?"":(this.data_item.status===1)?"status_sucs":"status_false";
             }
         },
         methods: {
             change_item_status(val){
-                this.status=(this.status===val)?0:val;
+                this.data_item.status=(val===this.data_item.status)?0:val;
+                this.$ls.set('objects',this.$root.objects);
             }
         }
 

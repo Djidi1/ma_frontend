@@ -53,19 +53,19 @@
 
                 </f7-card-footer>
                 </f7-card>
-            <!--<f7-card>-->
-                <!--<f7-block inner>-->
-                    <!--<f7-grid>-->
-                        <!--<f7-col width="50">-->
-                            <!--<f7-button @click="abort_check_list(id)" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>-->
-                        <!--</f7-col>-->
-                        <!--<f7-col width="50">-->
-                            <!--<f7-button fill @click="check_list_status(id)"><i class="fa fa-check" aria-hidden="true"></i> </f7-button>-->
-                        <!--</f7-col>-->
-                    <!--</f7-grid>-->
-                <!--</f7-block>-->
+            <f7-card>
+                <f7-block inner>
+                    <f7-grid>
+                        <f7-col width="50">
+                            <f7-button @click="abort_check_list(id)" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>
+                        </f7-col>
+                        <f7-col width="50">
+                            <f7-button fill @click="check_list_status(id)"><i class="fa fa-check" aria-hidden="true"></i> </f7-button>
+                        </f7-col>
+                    </f7-grid>
+                </f7-block>
 
-            <!--</f7-card>-->
+            </f7-card>
         </div>
         <popup_audit_edit :opendPopup="popup_open" @close="popup_open=false"  :audit="this.audit"></popup_audit_edit>
     </f7-page>
