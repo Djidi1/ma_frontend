@@ -1,0 +1,88 @@
+{
+  "LoginScreen": {
+    "LoginHeader": "Вход",
+    "LoginPlaceholder": "Логин",
+    "PasswordPlaceholder": "Пароль",
+    "SubmitButton": "Войти",
+    "FogetButton": "Забыли пароль?",
+    "Empty_input_login":"Введите Email!",
+    "Empty_input_password":"Введите пароль!",
+    "warning":"Внимание!"
+  },
+  "LeftMenu": {
+    "Audit": "Аудиты",
+    "Object": "Объекты",
+    "Settings": "Настройки",
+    "Exit": "Выход"
+  },
+  "AuditPage_main": "Аудиты",
+  "AuditPage_count":"из",
+  "ObjectPage_main": "Объекты",
+  "AuditPage_nothing":"На данный момент нет ни одного 'Аудита'. Для получения информации используйте синхронизацию.",
+  "ObjectPage_nothing":"На данный момент нет ни одного 'Объекта'. Для получения информации используйте синхронизацию.",
+  "ObjectPage":{
+    "name":"Название",
+    "address":"Адрес",
+    "date_create":"дата создания",
+    "id":"ID",
+    "count":"из",
+    "audits":"Аудитов",
+    "audits_view":"Аудиты",
+    "new_audits":"Новых"
+  },
+  "SettingPage": "Настройки",
+  "AuditPage": {
+    "name": "Название",
+    "object": "Объект",
+    "address": "Адресс",
+    "date_create": "Дата создания",
+    "check_list": "Чек-листы",
+    "comments_title": "Комментарии",
+    "comment_placeholder": "Комментарий",
+    "comment_button": "Отправить"
+  },
+  "lang": {
+    "rus": "Русский",
+    "en": "Английский",
+    "submit": "Принять",
+    "abort": "Отмена",
+    "name": "Имя пользователя",
+    "tel":"Телефон/Пока выключен",
+    "user_block": "Инфо",
+    "lang_block": "Язык"
+  },
+  "modal":{
+    "modalOk":"Ок",
+    "modalCancel":"Отмена",
+    "modalHeaderError":"Внимание!",
+    "modalTextConf":"Вы уверены?",
+    "modalTextConfExit":"Выйти?",
+    "modalTextLoginErr":"Логин или пароль введены не верно",
+    "modalTextLoginEmp":"Заполните поля Логин и Пароль",
+    "preloader":"Выполнение запроса..."
+  },
+  "pop_up":{
+    "edit":"Редактирование",
+    "new":"Добавление",
+    "object_info":"Объект",
+    "audits_info":"Аудиты",
+    "name":"Название",
+    "address":"Адрес",
+    "check_list":"Чек-листы",
+    "add_audit":"Добавить Аудит",
+    "add_check":"Добавить Чек-листы",
+    "submit":"Принять",
+    "cancel":"Отмена",
+    "empty_obj":"Выберите объетк!",
+    "empty_input":"Заполните поля 'Название' у каждого аудита!",
+    "warning":"Ошибка!",
+    "erase_data":"Это приведет к потере данных.",
+    "add_object":"Добавить",
+    "select_object":"Выбрать",
+    "empty_input_obj":"Введите название объекта",
+    "empty_input_address":"Введите адрес объекта",
+    "select_ex":"Выбрать",
+    "select_pop_over": "Выбрать объект"
+
+  }
+}

@@ -1,0 +1,116 @@
+[
+  {
+
+        "status":"new",
+        "name":"Проверка первого цеха",
+        "list_to_check":[
+          {
+            "id":"1",
+            "discription":"Оборудование",
+            "status":false,
+            "type":true,
+            "comments":[ ]
+          },
+          {
+            "discription":"Стены",
+            "status":false,
+            "type":true,
+            "comments":[]
+          },
+          {
+            "discription":"Потолок",
+            "status":false,
+            "type":true,
+            "comments":[]
+          }
+        ]
+
+
+  },
+  {
+
+        "status":"new",
+        "name":"Проверка второго цеха",
+        "list_to_check":[
+          {
+            "id":"1",
+            "discription":"Оборудование",
+            "status":false,
+            "type":true,
+            "comments":[ ]
+          },
+          {
+            "discription":"Стены",
+            "status":false,
+            "type":true,
+            "comments":[]
+          },
+          {
+            "discription":"Потолок",
+            "status":false,
+            "type":true,
+            "comments":[]
+          }
+        ]
+
+  },
+  {
+
+        "status":"new",
+        "name":"Проверка третьего цеха",
+        "list_to_check":[
+          {
+            "id":"1",
+            "discription":"Оборудование",
+            "status":false,
+            "type":true,
+            "comments":[ ]
+          },
+          {
+            "discription":"Стены",
+            "status":false,
+            "type":true,
+            "comments":[]
+          },
+          {
+            "discription":"Потолок",
+            "status":false,
+            "type":true,
+            "comments":[]
+          }
+        ]
+
+  },{
+
+      "status":"new",
+      "name":"Проверка четвертого цеха",
+      "list_to_check":[
+        {
+          "id":"1",
+          "discription":"Оборудование",
+          "status":false,
+          "type":true,
+          "comments":[ ]
+        },
+        {
+          "discription":"Стены",
+          "status":false,
+          "type":true,
+          "comments":[]
+        },
+        {
+          "discription":"Потолок",
+          "status":false,
+          "type":true,
+          "comments":[]
+        }
+      ]
+
+}
+]
+
+
+
+
+
+
