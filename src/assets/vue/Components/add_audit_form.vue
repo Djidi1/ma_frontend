@@ -8,7 +8,7 @@
                     <f7-input type="text" v-model="audit_name" @change="chanbe_name()"></f7-input>
                 </f7-col>
                 <f7-col width="20" v-show="!trash_btn">
-                   <f7-button @click=remove class="cross_button"><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
+                   <f7-button @click=remove() class="cross_button"><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
                 </f7-col>
             </f7-grid>
         </f7-list-item>
@@ -18,7 +18,7 @@
             <f7-list>
                     <f7-list-item v-for="(check_item,index) in this.audit_obj.check_list" :key="index" :title="check_item.title" >
                         <div slot="after">
-                            <f7-button @click=remove class="check_delete" ><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
+                            <f7-button @click=remove_check(index) class="check_delete" ><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
                         </div>
                     </f7-list-item>
                     <f7-list-item >
@@ -68,7 +68,7 @@
             remove(){
                 let self=this;
                 this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
-                    self.$emit('remove');
+                    self.$emit('remove_audit')
                 })
             },
             select_check_list(arr){
@@ -78,7 +78,7 @@
                 });
               console.log(this.audit_obj);
             },
-            remove_Check(index){
+            remove_check(index){
                 let self=this;
                 this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
                     self.audit_obj.check_list.splice(index, 1)

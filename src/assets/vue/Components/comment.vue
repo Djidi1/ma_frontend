@@ -23,6 +23,9 @@
         props:{
            data_comments:{type: Array,default:function(){return[]}}
         },
+        created(){
+            console.log(this.data_comments);
+        },
         computed:{
             hasComment(){
                 return (this.data_comments.length>0);
@@ -33,10 +36,11 @@
                 let self=this;
                 this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
                     self.data_comments.splice(id,1);
-                    self.$root.update_ls();
+                     self.$ls.set('objects',self.$root.objects);
                 });
 
-            }
+            },
+
         }
 
     }

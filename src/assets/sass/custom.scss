@@ -274,10 +274,10 @@
 
 
 
-.slide-app-enter-active,.slide-fade-leave-active {
+.slide-app-enter-active,.slide-app-leave-active {
 	transition:   all .3s cubic-bezier(.65, 0.05, 0.36, 1.0); ;
 }
-.slide-app-enter, .slide-fade-leave-to
+.slide-app-enter, .slide-app-leave-to
 	/* .slide-fade-leave-active до версии 2.1.8 */ {
 	transform: translateY(20px);
 	opacity: 0;

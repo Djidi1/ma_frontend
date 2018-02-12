@@ -66,12 +66,8 @@
                 return (this.single_comment.attachments.length > 0)
             },
             myComment() {
-                return (this.single_comment.from === this.$root.auth_info.name)
-            },
-            attachImg(attach_img) {
-                return {
-                    'background-image': this.hasAttach() ? 'url(' + attach_img + ')' : 'none'
-                }
+                //console.log(this.single_comment);
+                 return (this.single_comment.user_info.id === this.$root.auth_info.user_info.id)
             },
             removeComment(id) {
                this.$emit('remove',id);

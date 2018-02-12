@@ -48,7 +48,7 @@
                         "title":self.checked_items[key].title,
                         "created_at":self.checked_items[key].created_at,
                         "requirement":[],
-                        "audit_id":self.id
+                        "audit_id":Number(self.id)
                     };
                     self.checked_items[key].requirement.forEach(function(req){
                         let new_req={

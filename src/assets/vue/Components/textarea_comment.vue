@@ -1,5 +1,5 @@
 <template>
-        <div class="comment_text_zone" :id="'edit_'+this.comment_id">
+        <div class="comment_text_zone" id="edit">
             <f7-list form>
                 <f7-list-item>
                     <f7-label floating>{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>
@@ -11,7 +11,7 @@
                         <div class="col-50 attachment_button">
                             <f7-col  class="comment-photupload comment-photos" width="20">
                                 <f7-icon size=28  fa="camera"></f7-icon>
-                                <input @change="upload" class="comment-file" type='file' multiple accept="image/*;capture=camera">
+                                <input @change="upload" class="comment-file" type="file" accept="image/*;capture=camera" multiple >
                             </f7-col>
                         </div>
                         <div class="col-50">
@@ -32,8 +32,8 @@
         props:{
            data_set:{type:Array,default:function(){return[]}},
            type:{type:Boolean,default:false},
-           comment_id:{type:Number,default:0},
-           comment:{type:Object,default:function(){return {}}}
+           comment:{type:Object,default:function(){return {}}},
+
         },
         data:function(){
           return{
@@ -86,34 +86,32 @@
             add_cls_to_form(form,cls){
                 form.addClass(cls);
             },
-
-            attachImg(attach_img) {
-                return {
-                    'background-image': this.hasAttach ? 'url(' + attach_img + ')' : 'none'
-                }
+            GetCurrentDate(){
+                let now= new Date();
+                let curSec=('0'+now.getSeconds()).substr(-2);
+                let curMin=('0'+now.getMinutes()).substr(-2);
+                let curDay=('0'+now.getDate()).substr(-2);
+                let date_for_text=curDay+"-"+now.getMonth()+1+"-"+now.getFullYear()+" "+now.getHours()+":"+curMin+":"+curSec;
+                return date_for_text;
             },
             send_comments(){
-                 let now= new Date();
-                 let curSec=('0'+now.getSeconds()).substr(-2);
-                 let date_for_text=now.getDate()+"/"+now.getMonth()+1+"/"+now.getFullYear()+" "+now.getHours()+":"+now.getMinutes()+":"+curSec;
                  if(this.type){
                      this.comment.id=this.getOfflineID(this.comment.id);
-                     this.comment.create_date=date_for_text;
-                     this.comment.from=this.$root.auth_info.name;
+                     this.comment.create_date=this.GetCurrentDate();
+                     this.comment.user_info=this.$root.auth_info.user_info;
                      this.comment.text=this.text;
                      this.comment.attachments=this.attachment;
                  }else{
                      let comment= {
                          "id":this.getOfflineID(),
-                         "create_date":date_for_text ,
-                         "from":this.$root.auth_info.name,
+                         "create_date":this.GetCurrentDate(),
+                         "user_info":this.$root.auth_info.user_info,
                          "text":this.text,
                          "attachments":this.attachment
                      }
-
-                     this.data_set.push(comment);
+                     this.data_comm.push(comment);
                  }
-                 this.$root.update_ls();
+                 this.$ls.set('objects',this.$root.objects);
                  this.$emit('edit_done')
             },
             removeAttachment(id){
@@ -128,7 +126,12 @@
             },
             upload(e){
                 e.preventDefault();
-                this.attachment.push(e.target.files[0].name);
+                let reader= new FileReader();
+                reader.onload=function(e){
+                    console.log(e.target.result);
+                };
+                //reader.readAsDataURL(e.target.file[0]);
+                this.attachment.push(e.target.files[0]);
                 console.log(this.attachment);
 
             }

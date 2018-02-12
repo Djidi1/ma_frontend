@@ -57,7 +57,7 @@
         created(){
             let self=this;
             this.$root.objects.forEach(function(item,i){
-                if (item.id===Number(self.id)){self.object=item;
+                if (item.id.toString()===self.id){self.object=item;
                     self.array_index=i
                 };
             })
@@ -93,24 +93,14 @@
             remove_obj(){
                 let self=this;
                 this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
-                    self.$root.list.splice(self.id, 1)
+                    self.$root.objects.splice(self.array_index, 1);
+                    self.$ls.set('objects',self.$root.objects);
                     self.$f7.views.main.back();
                 })
             },
             cancel_edit(index){
                 this.object.name=this.$root.list[index].name;
                 this.object.audits = this.$root.list[index].audits;
-            },
-            get_audits(id){
-                let self=this;
-                let count=0;
-                let array=[];
-                this.$root.audits.forEach(function(item){
-                    if (item.object_id===self.object.id){
-                       array.push(item)
-                    }
-                });
-                return array;
             },
             data_format(data_str){
                 let data=(data_str!=undefined)?new Date(data_str):new Date(this.object.created_at);

@@ -1,7 +1,7 @@
 <template>
     <div class="blck_info">
         <f7-card v-for="(item,index) in this.$root.objects" :key="index" v-if="hasAudits(index)">
-            <f7-card-header class="show_border">
+            <f7-card-header >
                     <div class="obj_info">
                         <div class="row  no-gutter">
                             <div class="col-70"> <f7-link no-link-class :href="'/object/'+item.id+'/'">{{item.title}}</f7-link></div>

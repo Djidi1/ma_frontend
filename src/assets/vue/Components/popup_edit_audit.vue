@@ -1,6 +1,6 @@
 <template>
     <f7-popup id="popup_add_audit" :opened="opendPopup">
-        <f7-navbar back-link="Back" sliding @back-click.stop="closePopUp(false)" >
+        <f7-navbar back-link="Back" sliding @back-click.stop="closePopUp(true)" >
             <f7-nav-center sliding> {{title}} </f7-nav-center>
             <f7-nav-right>
                 <f7-grid class="crud_header edit_menu">
@@ -34,14 +34,14 @@
                 <f7-card-content  style="padding-bottom:15px;">
                     <f7-card>
                         <f7-list>
-                            <f7-list-item v-for="(item,index) in get_check_list()" :key="index" :title="item.title" >
+                            <f7-list-item v-for="(item,index) in check_list_new" :key="index" :title="item.title" >
                                 <div slot="after">
-                                    <f7-button class='cross_button in_list'><i class='fa fa-trash-o' aria-hidden='true' ></i></f7-button>
+                                    <f7-button class='cross_button in_list'><i class='fa fa-trash-o' aria-hidden='true'@click="remove_check(index)"></i></f7-button>
                                 </div>
                             </f7-list-item>
                             <f7-list-item >
                                 <f7-grid style="width:100%">
-                                    <f7-col width="100"> <f7-button open-popover=".popover_add_obj" >{{this.$root.localization.pop_up.add_check}}</f7-button></f7-col>
+                                    <f7-col width="100"> <f7-button :open-popover="'.popover_add_obj_'+this.audit_current.id" >{{this.$root.localization.pop_up.add_check}}</f7-button></f7-col>
                                 </f7-grid>
                             </f7-list-item>
                         </f7-list>
@@ -53,14 +53,14 @@
                 <f7-card class="btn_pop_up_card">
                     <f7-card-header class="btn_pop_up_card">
                         <f7-grid class="btn_complete">
-                            <f7-col width="50"><f7-button  class="abort_button" @click="closePopUp(false)" > {{this.$root.localization.pop_up.cancel}}</f7-button></f7-col>
-                            <f7-col width="50"><f7-button fill>{{this.$root.localization.pop_up.submit}}</f7-button></f7-col>
+                            <f7-col width="50"><f7-button  class="abort_button" @click="closePopUp(true)" > {{this.$root.localization.pop_up.cancel}}</f7-button></f7-col>
+                            <f7-col width="50"><f7-button @click="submit()" fill>{{this.$root.localization.pop_up.submit}}</f7-button></f7-col>
                         </f7-grid>
                     </f7-card-header>
                 </f7-card>
             </f7-card>
         </div>
-        <popover_obj></popover_obj>
+        <popover_obj :id="audit_current.id.toString()" @select_check_list="select_check_list"></popover_obj>
     </f7-popup>
 </template>
 
@@ -73,29 +73,58 @@
         },
         data:function(){
             return{
-              title:this.$root.localization.pop_up.edit,
+                title:this.$root.localization.pop_up.edit,
                 audit_current:{},
                 current:'',
-                oldAudit:{}
+                check_list_new:[]
             }
         },
-
-        mounted(){
+        created(){
             this.audit_current=this.audit;
             this.current=this.audit_current.title;
+            this.check_list_new=this.get_check_list();
         },
         methods:{
             closePopUp(mode){
+                this.$root.objects=(mode)?this.$ls.get('objects'):this.$root.objects;
+                this.current=this.audit_current.title;
+                this.check_list_new=this.get_check_list();
                 this.$emit('close');
             },
             get_check_list(){
                 let self=this;
                 let result=[];
-                this.$root.check_list.forEach(function(item){
-                    (item.id===self.audit_current.checklist_id)?result.push(item):'';
+                this.audit_current.check_list.forEach(function(item){
+                   result.push(item);
                 });
                 return result;
-            }
+
+            },
+            select_check_list(arr){
+                let self=this;
+                arr.forEach(function(item){
+                    self.check_list_new.push(item);
+                });
+            },
+            remove_check(index){
+                let self=this;
+                this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
+                    self.check_list_new.splice(index,1);
+                });
+            },
+            submit(){
+                if(this.validat()){
+                    this.$set(this.audit_current,'title',this.current);
+                    this.$set(this.audit_current,'check_list',this.check_list_new);
+                    this.$ls.set('objects',this.$root.objects);
+                }else{
+                    this.$f7.alert('Заполнены не все поля!',this.$root.localization.pop_up.warning);
+                };
+                this.closePopUp(false);
+            },
+            validat(){
+                return (this.current!='')
+            },
 
         }
     }

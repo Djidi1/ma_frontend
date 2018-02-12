@@ -42,7 +42,7 @@
                 </f7-card-header>
                 <f7-card-content class="card_audit_add">
                     <transition-group  appear mode="out-in" name="slide-app">
-                        <audit_add v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index"  :type="true" :trash_btn="false"></audit_add>
+                        <audit_add v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index"  :type="true" :trash_btn="false" @remove_audit="remove_audit(index)"></audit_add>
                     </transition-group>
                     <f7-card >
                         <f7-grid style="width:100%">
@@ -84,6 +84,7 @@
               current:'',
               addres_obj:'',
               audits:[],
+              edit:false
           }
         },
         created(){
@@ -95,20 +96,23 @@
             this.$nextTick(function(){
                 if (this.id!=''){
                     this.selected_object=this.get_object(this.id);
-                    this.audits=this.get_audits(Number(this.id));
+                    this.audits=this.get_audits_root(this.id);
                     this.current=this.selected_object.title;
-                    this.addres_obj=this.selected_object.audit_object_group.address;
+                    this.addres_obj=this.selected_object.address;
+                    this.edit=true;
                     this.correct_css();
                 };
             });
         },
         computed:{
             hasObject(){
+                this.select_list=(this.$root.objects.length>0)?this.$root.objects:'';
                 return(this.select_list.length>0)
             }
         },
         methods:{
-            closePopUp(mode){
+            closePopUp(){
+                (!this.edit)? this.clear_data():'';
                 this.$emit('close')
             },
             GetCurrentDate(){
@@ -136,6 +140,14 @@
                 });
                 return result;
             },
+            get_audits_root(id){
+                let self=this;
+                let result=[];
+                this.$root.objects.forEach(function(item){
+                    result=(item.id.toString()===id)?item.audits:result;
+                });
+                return result
+            },
             add_audit(){
               let new_audit={
                   "id":"Offline_audit_"+this.getlastid_audit(),
@@ -146,13 +158,13 @@
                   "object_id":(Object.keys(this.selected_object).length!=0)?this.selected_object.id:'Offline_'+this.getlastid()
               };
               this.audits.push(new_audit);
-              console.log(this.audits);
+
     },
             get_object(id){
                 let self=this;
                 let result={};
                 this.$root.objects.forEach(function(item){
-                   result=(item.id===Number(id))?item:result;
+                   result=(item.id.toString()===id)?item:result;
                 });
                 return result;
             },
@@ -160,7 +172,7 @@
               return this.$root.objects.length-1;
             },
             getlastid_audit(){
-                return this.audits.length-1;
+                return this.audits.length;
             },
             submit(){
                 if (this.validat()){
@@ -169,16 +181,25 @@
                         this.$set(this.selected_object,"title",this.current);
                         this.$set(this.selected_object,"address",this.addres_obj);
                         this.$ls.set('objects',this.$root.objects);
-                        this.clear_data();
-                        this.closePopUp();
+                        this.$set(this.selected_object,"user_info",this.$root.auth_info.user_info);
+                        console.log(this.selected_object);
                     }
                     else{
-
+                        let new_object={
+                          "id":"Offline_"+this.getlastid(),
+                          "title":this.current,
+                          "address":this.addres_obj,
+                          "audits":this.audits,
+                          "created_at":this.GetCurrentDate()
+                        };
+                        console.log(new_object);
+                       this.$root.objects.push(new_object);
                     }
+
+                    this.closePopUp();
                 }else{ this.$f7.alert('Заполнены не все поля!',this.$root.localization.pop_up.warning);}
             },
             validat(){
-
               let self=this;
               let result=true;
               result=(this.current!='')?result:false;
@@ -189,13 +210,16 @@
               return result;
             },
             clear_data(){
-                this.correct_css();
-                this.secod_correct_css();
+              this.correct_css();
+              this.secod_correct_css();
               this.selected_object={};
               this.current='';
               this.addres_obj='';
               this.audits=[];
 
+            },
+            remove_audit(index){
+              this.audits.splice(index,1);
             },
 
 
@@ -240,7 +264,10 @@
                 })
             },
             add_cls(obj,cls){
-                obj.toggleClass(cls);
+               obj.attr('class').split(' ').forEach(function(item){
+                   (item!=cls)?obj.addClass(cls):obj.removeClass(cls);
+               });
+                // obj.toggleClass(cls);
             },
 
 
