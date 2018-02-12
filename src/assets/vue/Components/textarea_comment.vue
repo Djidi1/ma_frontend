@@ -21,8 +21,6 @@
                 </f7-block>
             </f7-list>
         </div>
-
-
 </template>
 
 <script>
@@ -126,11 +124,6 @@
             },
             upload(e){
                 e.preventDefault();
-                let reader= new FileReader();
-                reader.onload=function(e){
-                    console.log(e.target.result);
-                };
-                //reader.readAsDataURL(e.target.file[0]);
                 this.attachment.push(e.target.files[0]);
                 console.log(this.attachment);
 

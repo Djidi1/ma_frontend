@@ -23,9 +23,6 @@
         props:{
            data_comments:{type: Array,default:function(){return[]}}
         },
-        created(){
-            console.log(this.data_comments);
-        },
         computed:{
             hasComment(){
                 return (this.data_comments.length>0);

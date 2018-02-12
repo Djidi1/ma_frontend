@@ -1,7 +1,7 @@
 <template>
     <div class="attachments_comments">
         <transition-group name="attach_fade" v-on:after-leave="resize" v-on:enter="resize">
-        <div class="attach_block" v-for="(attach,index) in attachment" :key="attach">
+        <div class="attach_block" v-for="(attach,index) in attachment" :key="index">
             <div class="attach"  :style="attachImg(attach)" @click="photolook(attachment,index)"></div>
             <div class="remove_button_block" v-show="edit_mode">
                 <div class="remove_button" @click="remove_attach(index)"><i class="fa fa-times" aria-hidden="true"></i></div>

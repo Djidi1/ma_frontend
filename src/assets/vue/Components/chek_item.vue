@@ -36,10 +36,21 @@
         },
         methods: {
             change_item_status(val){
+                let self=this;
                 this.data_item.status=(val===this.data_item.status)?0:val;
+                this.$set(this.data_item,'checked_at',self.GetCurrentDate());
                 this.$ls.set('objects',this.$root.objects);
-            }
+            },
+            GetCurrentDate(){
+                let now= new Date();
+                let curSec=('0'+now.getSeconds()).substr(-2);
+                let curMin=('0'+now.getMinutes()).substr(-2);
+                let curDay=('0'+now.getDate()).substr(-2);
+                let date_for_text=curDay+"-"+now.getMonth()+1+"-"+now.getFullYear()+" "+now.getHours()+":"+curMin+":"+curSec;
+                return date_for_text;
+            },
         }
+
 
     }
 </script>

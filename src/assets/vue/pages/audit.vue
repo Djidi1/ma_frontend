@@ -57,10 +57,10 @@
                 <f7-block inner>
                     <f7-grid>
                         <f7-col width="50">
-                            <f7-button @click="abort_check_list(id)" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>
+                            <f7-button @click="abort_check_list()" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>
                         </f7-col>
                         <f7-col width="50">
-                            <f7-button fill @click="check_list_status(id)"><i class="fa fa-check" aria-hidden="true"></i> </f7-button>
+                            <f7-button fill @click="check_list_status()"><i class="fa fa-check" aria-hidden="true"></i> </f7-button>
                         </f7-col>
                     </f7-grid>
                 </f7-block>
@@ -140,43 +140,56 @@
             },
             check_list_status(id){
                 let self=this;
-                let result='ok';
-                let status=true;
+                let result=0;
+                let result_req_arr=[];
                 (this.audit.check_list).forEach(function(item,i,arr){
-                    item.list_to_check.forEach(function(list_item,g,arr){
-                        if (!list_item.status){
-                            status=false;
-                            result='wrong';
-                            list_item.type=false;
-                        }else{
-                            status=true;
-                        }
-                    })
+                    item.requirement.forEach(function(req,j){
+                        req.status=(req.status!=1)?-1:req.status;
+                        result=(req.status!=1)?-1:result;
+                        result=(req.status===1)?1:result;
+                        result_req_arr.push(self.get_req(req));
+                    });
                 });
-                this.audit.check_list[id].status=result;
-                this.audit_change_status();
+                let requs={
+                  "audit_id":this.audit.id,
+                  "audit":this.audit,
+                  "requirements":result_req_arr,
+                  "result":result,
+                  "result_date":this.GetCurrentDate()
+                };
+              console.log(requs);
+
             },
-            abort_check_list(id){
-                let self=this;
-                (this.audit.check_list).forEach(function(item,i,arr){
-                   item.list_to_check.forEach(function(list_item){
-                       list_item.status=false;
-                       list_item.type=true;
-                   })
-                });
-                let acord=$$('#acord'+id);
-                acord.each(function(){
-                    if ($$(this).length>0){
-                        let inputs=$$(this).find('form').find('li').find('input');
-                        inputs.each(function(){
-                            if($$(this).attr('type')==='checkbox') {
-                               ($$(this).prop('checked',false));
-                            }
-                        })
+            get_req(req){
+                let result_comment=[];
+                req.comments.forEach(function(item){
+                    let result_cm={
+                        "id":item.id,
+                        "text":item.text,
+                        "user_info":item.user_info,
+                        "created_at":item.create_date
                     }
-                })
-                self.audit.check_list[id].status='new';
-                this.audit_change_status();
+                    result_comment.push(result_cm);
+                });
+              let result_req={
+                  "id":req.id,
+                  "checked_at":req.checked_at,
+                  "comments":result_comment,
+                  "created_at":req.created_at,
+                  "status":req.status,
+                  "title":req.title,
+                  "warning_level":req.warning_level
+              }
+              return result_req;
+            },
+            abort_check_list(){
+                let self=this;
+                (this.audit.check_list).forEach(function(item,i,arr) {
+                    item.requirement.forEach(function(req,j){
+                        req.status=0;
+                        self.$ls.set('objects',self.$root.objects);
+                    });
+                });
             },
             audit_change_status(){
                let list =this.audit.check_list;
@@ -229,8 +242,17 @@
                     (item.id===check_id)?check_array.push(item):'';
                 });
                 return check_array;
-            }
-        },
+            },
+            GetCurrentDate(){
+                let now= new Date();
+                let curSec=('0'+now.getSeconds()).substr(-2);
+                let curMin=('0'+now.getMinutes()).substr(-2);
+                let curDay=('0'+now.getDate()).substr(-2);
+                let date_for_text=curDay+"-"+now.getMonth()+1+"-"+now.getFullYear()+" "+now.getHours()+":"+curMin+":"+curSec;
+                return date_for_text;
+            },
+        }
+
 
 
 
