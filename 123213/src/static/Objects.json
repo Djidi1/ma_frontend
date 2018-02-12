@@ -1,0 +1,67 @@
+[
+  {
+    "name":"Завод",
+    "adres":"Какой-то перееулок 51",
+    "status":"inProgres",
+    "id":"1",
+    "created_date":"15/11/2017",
+    "audits":[
+      {
+        "id":"345-A",
+        "name":"Первый цех",
+        "status":"new",
+        "create_date":"18/11/2017 10:00:00",
+        "check_list":[
+          {
+            "id":"1001",
+            "status":"new",
+            "name":"Проверка первого цеха",
+            "list_to_check":[
+              {
+                "id":"1",
+                "discription":"Оборудование",
+                "status":false,
+                "type":false,
+                "comments":[
+                  {
+                    "id":"3434",
+                    "create_date":"22/12/2017 11:00:00",
+                    "from":"Konik Nikita",
+                    "title":"Проверка связи",
+                    "text":"Проверяем работоспособность коментариев в приложении",
+                    "attachments":[
+                      "./static/depositphotos_99061296-stock-illustration-safety-at-work-icon-design.jpg",
+                      "https://i.pinimg.com/originals/43/a3/81/43a3818a0404a5acacc285ae6fc4be3a.jpg"
+
+                    ]
+                  }
+                ]
+              },
+              {
+                "id":"2",
+                "discription":"Стены",
+                "status":false,
+                "type":true,
+                "comments":[]
+              },
+              {
+                "id":"3",
+                "discription":"Потолок",
+                "status":false,
+                "type":true,
+                "comments":[]
+              }
+            ]
+          }
+        ]
+      }
+
+    ]
+  }
+]
+
+
+
+
+
+
