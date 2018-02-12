@@ -54,7 +54,7 @@
         mounted:function(){
             this.$nextTick(function(){
                 this.check_style_class(this.$el);
-                if (this.type)(this.$$('#edit_'+this.comment_id).find('textarea').focus());
+                if (this.type)(this.$$('#edit').find('textarea').focus());
             })
         },
         computed:{
@@ -84,6 +84,7 @@
             add_cls_to_form(form,cls){
                 form.addClass(cls);
             },
+
             GetCurrentDate(){
                 let now= new Date();
                 let curSec=('0'+now.getSeconds()).substr(-2);
