@@ -124,9 +124,29 @@
                 return lastId;
             },
             upload(e){
-                e.preventDefault();
-                this.attachment.push(e.target.files[0]);
-                console.log(this.attachment);
+                // e.preventDefault();
+                let self=this;
+                let files=e.target.files;
+                for (var i = 0; i<files.length; i++) {
+                   if (files[i].type.match('image.*')){
+                       let result_file={};
+                       let file_obj={
+                           "name":files[i].name,
+                           "type":files[i].type,
+                           "size":files[i].size,
+                       };
+                       self.$set(result_file,'caption',files[i].name);
+                       let reader = new FileReader();
+                       reader.onload=function(file){
+                           self.$set(result_file,'url',file.target.result);
+                           self.$set(file_obj,'file',file.target.result);
+                       };
+                       reader.readAsDataURL(files[i]);
+                       self.$set(result_file,'file',file_obj);
+                       self.attachment.push(result_file);
+                   }
+
+                }
 
             }
         }

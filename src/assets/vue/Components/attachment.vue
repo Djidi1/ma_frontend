@@ -2,7 +2,10 @@
     <div class="attachments_comments">
         <transition-group name="attach_fade" v-on:after-leave="resize" v-on:enter="resize">
         <div class="attach_block" v-for="(attach,index) in attachment" :key="index">
-            <div class="attach"  :style="attachImg(attach)" @click="photolook(attachment,index)"></div>
+            <div class="attach" :id="'img_'+index"  :style="attachImg(attach,index)" @click="photolook(attachment,index)">
+                <div class="header_img">{{attach.caption}}</div>
+                <div class="footter_img">{{get_size(attach.file.size)}}</div>
+            </div>
             <div class="remove_button_block" v-show="edit_mode">
                 <div class="remove_button" @click="remove_attach(index)"><i class="fa fa-times" aria-hidden="true"></i></div>
             </div>
@@ -12,6 +15,8 @@
 </template>
 
 <script>
+
+    var $$=Dom7;
     export default {
         name: "attachment",
         props:{
@@ -19,11 +24,18 @@
             edit_mode:{type:Boolean,default:false}
         },
         methods:{
-            attachImg(attach_img){
+            attachImg(attach_img,id){
                 return{
-                    'background-image': 'url(' + attach_img + ')'
+                    'background-image': 'url(' + attach_img.url + ')'
                 }
             },
+            get_size(size){
+              let norm_size;
+              norm_size=Math.ceil(size/1000);
+              let result_size=(norm_size>100)?(norm_size/1000).toFixed(1):norm_size;
+              return(norm_size>100)?result_size+'MB':result_size+'KB';
+            },
+
             photolook(attach,id){
                 let photos =this.$f7.photoBrowser({
                         type: 'popup',
@@ -81,7 +93,24 @@
     .attach:after{
         bottom: 0;
     }
-
+    .header_img,
+    .footter_img{
+        position:absolute;
+        width:60px;
+        height: 15px;
+        opacity: 1;
+        display:block;
+        overflow: hidden;
+        font-size: 10px;
+        text-align: center;
+    }
+    .header_img{
+        top:0;
+    }
+    .footter_img{
+        bottom:0;
+        z-index:1000;
+    }
 
 
 
