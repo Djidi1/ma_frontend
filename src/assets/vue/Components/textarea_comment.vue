@@ -94,24 +94,27 @@
                 return date_for_text;
             },
             send_comments(){
-                 if(this.type){
-                     this.comment.id=this.getOfflineID(this.comment.id);
-                     this.comment.create_date=this.GetCurrentDate();
-                     this.comment.user_info=this.$root.auth_info.user_info;
-                     this.comment.text=this.text;
-                     this.comment.attachments=this.attachment;
-                 }else{
-                     let comment= {
-                         "id":this.getOfflineID(),
-                         "create_date":this.GetCurrentDate(),
-                         "user_info":this.$root.auth_info.user_info,
-                         "text":this.text,
-                         "attachments":this.attachment
-                     }
-                     this.data_comm.push(comment);
-                 }
-                 this.$ls.set('objects',this.$root.objects);
-                 this.$emit('edit_done')
+                if (this.text!=''||this.attachment.length>0){
+                    if(this.type){
+                        this.comment.id=this.getOfflineID(this.comment.id);
+                        this.comment.create_date=this.GetCurrentDate();
+                        this.comment.user_info=this.$root.auth_info.user_info;
+                        this.comment.text=this.text;
+                        this.comment.attachments=this.attachment;
+                    }else{
+                        let comment= {
+                            "id":this.getOfflineID(),
+                            "create_date":this.GetCurrentDate(),
+                            "user_info":this.$root.auth_info.user_info,
+                            "text":this.text,
+                            "attachments":this.attachment
+                        }
+                        this.data_comm.push(comment);
+                    }
+                    this.$ls.set('objects',this.$root.objects);
+                    this.$emit('edit_done')
+                }
+
             },
             removeAttachment(id){
                 this.attachment.splice(id,1);
