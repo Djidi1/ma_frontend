@@ -1,5 +1,5 @@
 <template>
-    <f7-popover :class="'popover_add_obj_'+this.id">
+    <f7-popover :class="'popover_add_obj_'+this.id" @popover:open="get_current_list()">
         <f7-block-title> {{this.$root.localization.pop_up.add_check}}</f7-block-title>
         <f7-block>
             <f7-list form>
@@ -18,23 +18,27 @@
         name: "popover_obj",
         props:{
             id:{type:String,default:"0"},
-            check_list_from_audit:{type:Array,default:function(){return[]}}
+            check_list_from_audit:{type:Array,default:function(){return[]}},
+            current_check_list:{type:Object,default:function(){return {}}}
         },
         data:function(){
             return{
-                checked_items:{},
+                checked_items:this.current_check_list,
                 result_array:[]
             }
         },
-        computed:{
-
-        },
         methods:{
+            get_current_list(){
+               let self=this;
+               this.check_list_from_audit.forEach(function(item){
+                  self.$set(self.checked_items,item.id,item);
+               });
+            },
             Check_item(target,item){
-                (target)?this.$set(this.checked_items,item.id,item):this.$delete(this.checked_items,item.id);
+               (target)?this.$set(this.checked_items,item.id,item):this.$delete(this.checked_items,item.id);
             },
             checked_state(id){
-               let result=false;
+                let result=false;
                 this.check_list_from_audit.forEach(function(items){
                    result=(items.id===id)?true:result;
                });

@@ -60,7 +60,7 @@
                 </f7-card>
             </f7-card>
         </div>
-        <popover_obj :id="audit_current.id.toString()" @select_check_list="select_check_list"></popover_obj>
+        <popover_obj  :id="audit_current.id.toString()" @select_check_list="select_check_list" :check_list_from_audit="check_list_new"></popover_obj>
     </f7-popup>
 </template>
 
@@ -101,6 +101,8 @@
 
             },
             select_check_list(arr){
+               // this.check_current_list(arr);
+                this.check_list_new=[];
                 let self=this;
                 arr.forEach(function(item){
                     self.check_list_new.push(item);
@@ -113,9 +115,13 @@
                 });
             },
             submit(){
+                let self=this;
                 if(this.validat()){
                     this.$set(this.audit_current,'title',this.current);
-                    this.$set(this.audit_current,'check_list',this.check_list_new);
+                    this.$set(this.audit_current,'check_list',[]);
+                    this.check_list_new.forEach(function(itm){
+                        self.audit_current.check_list.push(itm);;
+                    });
                     this.$ls.set('objects',this.$root.objects);
                 }else{
                     this.$f7.alert('Заполнены не все поля!',this.$root.localization.pop_up.warning);
@@ -124,7 +130,8 @@
             },
             validat(){
                 return (this.current!='')
-            },
+            }
+
 
         }
     }
