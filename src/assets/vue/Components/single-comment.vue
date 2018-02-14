@@ -8,7 +8,7 @@
                                 <div class="col-60 title_comment">
                                 </div>
                                 <div class="col-40 date_comment">
-                                    <span class="data_text" >{{single_comment.create_date}}</span>
+                                    <span class="data_text" >{{data_forma(single_comment.create_date)}}</span>
                                 </div>
                             </div>
                         </div>
@@ -62,6 +62,15 @@
             }
         },
         methods: {
+            data_forma(data){
+                data=new Date(data);
+                let curSec=('0'+data.getSeconds()).substr(-2);
+                let curMin=('0'+data.getMinutes()).substr(-2);
+                let curDay=('0'+data.getDate()).substr(-2);
+                let curMounth=('0'+(data.getMonth()+1));
+                let date_for_text=curDay+"/"+curMounth+"/"+data.getFullYear()+" "+data.getHours()+":"+curMin+":"+curSec;
+                return date_for_text;
+            },
             hasAttach() {
                 return (this.single_comment.attachments.length > 0)
             },

@@ -87,11 +87,7 @@
 
             GetCurrentDate(){
                 let now= new Date();
-                let curSec=('0'+now.getSeconds()).substr(-2);
-                let curMin=('0'+now.getMinutes()).substr(-2);
-                let curDay=('0'+now.getDate()).substr(-2);
-                let date_for_text=curDay+"-"+now.getMonth()+1+"-"+now.getFullYear()+" "+now.getHours()+":"+curMin+":"+curSec;
-                return date_for_text;
+                return now;
             },
             send_comments(){
                 if (this.text!=''||this.attachment.length>0){
