@@ -5,16 +5,16 @@
                     <div  class="comment_block">
                         <div class="header_comment">
                             <div class="row no-gutter">
-                                <div class="col-60 title_comment">
-                                </div>
+                                <div class="col-50 title_comment"></div>
                                 <div class="col-40 date_comment">
                                     <span class="data_text" >{{data_forma(single_comment.create_date)}}</span>
                                 </div>
+                                <div class="col-10"></div>
                             </div>
                         </div>
                         <div class="content_comment">
                             {{single_comment.text}}
-                            <div v-show="hasAttach(id)" >
+                            <div v-show="hasAttach(id)">
                                 <attachment :attachment="single_comment.attachments" ></attachment>
                             </div>
                         </div>
@@ -117,7 +117,6 @@
     }
     .data_text{
         opacity: 0.7;
-        margin:0 7px 0 7px;
         position: relative;
     }
     .content_comment{
@@ -146,7 +145,8 @@
         margin:0 7px 0 5px;
         font-size: 16px;
     }
-    .header_comment .row div:after,
+    .header_comment .row .col-50:after,
+    .header_comment .row .col-10:after,
     .footer_comment .row .col-65:after,
     .footer_comment .row .col-10:after,
     .footer_comment .row .no_my_comment:after{
