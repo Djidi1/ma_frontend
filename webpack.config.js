@@ -49,7 +49,8 @@ let config = function (env) {
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
-          'NODE_ENV': JSON.stringify((env && typeof env !== "undefined" && env.release) ? 'production' : 'development')
+          //development
+           'NODE_ENV': JSON.stringify((env && typeof env !== "undefined" && env.release) ? 'production' : 'production')
         }
       }),
       new HtmlWebpackPlugin({
