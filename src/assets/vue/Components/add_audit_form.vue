@@ -30,7 +30,7 @@
                     </f7-list-item>
             </f7-list>
         </f7-block>
-        <popover_obj :id="this.audit_obj.id.toString()" @select_check_list="select_check_list"></popover_obj>
+        <popover_obj :id="this.audit_obj.id.toString()" @select_check_list="select_check_list" :check_list_from_audit="audit_obj.check_list"></popover_obj>
     </f7-card>
 </template>
 
@@ -47,7 +47,8 @@
         data:function(){
             return{
                 audit_name:'',
-                audit_obj:''
+                audit_obj:'',
+                check_list_new:[]
             }
         },
         created(){
@@ -73,10 +74,10 @@
             },
             select_check_list(arr){
                 let self=this;
+                this.audit_obj.check_list=[];
                 arr.forEach(function(item){
                     self.audit_obj.check_list.push(item);
                 });
-              console.log(this.audit_obj);
             },
             remove_check(index){
                 let self=this;

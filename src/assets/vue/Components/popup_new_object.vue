@@ -64,7 +64,6 @@
             </f7-card>
         </div>
         <curr_objects v-if="hasObject" :list="this.select_list"  :current="this.selected_object" @selected_object_done="selected_object_done"></curr_objects>
-
     </f7-popup>
 </template>
 
@@ -84,13 +83,13 @@
               current:'',
               addres_obj:'',
               audits:[],
-              edit:false
+              edit:false,
+              have_something:false
           }
         },
         created(){
             this.title=(!this.mode)?this.$root.localization.pop_up.edit:this.$root.localization.pop_up.new;
             this.select_list=(this.$root.objects.length>0)?this.$root.objects:'';
-
         },
         mounted(){
             this.$nextTick(function(){
@@ -111,26 +110,25 @@
             }
         },
         methods:{
-            closePopUp(){
+            closePopUp(mode){
                 (!this.edit)? this.clear_data():'';
+                (mode)? this.$root.objects=this.$ls.get('objects'):'';
                 this.$emit('close')
             },
             GetCurrentDate(){
                 let now= new Date();
-                let curSec=('0'+now.getSeconds()).substr(-2);
-                let curMin=('0'+now.getMinutes()).substr(-2);
-                let curDay=('0'+now.getDate()).substr(-2);
-                let date_for_text=curDay+"-"+now.getMonth()+1+"-"+now.getFullYear()+" "+now.getHours()+":"+curMin+":"+curSec;
-                return date_for_text;
+                return now;
             },
             selected_object_done(item,index){
                 let self=this;
                 if((Object.keys(item).length!=0)){
                     this.selected_object=item;
-                    this.audits=this.get_audits(this.selected_object.audits)
+                    this.audits=this.get_audits(this.selected_object.audits);
                     this.current=this.selected_object.title;
                     this.addres_obj=this.selected_object.address;
-                    this.correct_css();
+                    if (!this.have_something)this.correct_css();
+                    this.have_something=true;
+
                 }
             },
             get_audits(audits){
@@ -182,7 +180,6 @@
                         this.$set(this.selected_object,"address",this.addres_obj);
                         this.$ls.set('objects',this.$root.objects);
                         this.$set(this.selected_object,"user_info",this.$root.auth_info.user_info);
-                        console.log(this.selected_object);
                     }
                     else{
                         let new_object={
@@ -194,6 +191,7 @@
                         };
                         console.log(new_object);
                        this.$root.objects.push(new_object);
+                       console.log()
                     }
 
                     this.closePopUp();
@@ -216,6 +214,7 @@
               this.current='';
               this.addres_obj='';
               this.audits=[];
+              this.have_something=false;
 
             },
             remove_audit(index){

@@ -60,10 +60,10 @@
               let result;
                 switch (val){
                   case "ru":
-                      (this.curentLang==="ru")?result=true:result=false;
+                      result=(this.curentLang==="ru")?true:false;
                       break;
                   case "en":
-                      (this.curentLang==="en")?result=true:result=false;
+                      result= (this.curentLang==="en")?true:false;
                       break;
               }
               return result;
