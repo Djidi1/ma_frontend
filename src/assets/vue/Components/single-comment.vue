@@ -133,8 +133,7 @@
     .control_my_comment button{
         background-color: transparent;
         border:unset;
-        color: #868686;делатm
-
+        color: #868686;
         margin:0 10px 0 10px;
         font-size: 22px;
     }

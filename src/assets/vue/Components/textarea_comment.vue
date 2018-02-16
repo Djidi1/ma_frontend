@@ -55,6 +55,9 @@
             this.$nextTick(function(){
                 this.check_style_class(this.$el);
                 if (this.type)(this.$$('#edit').find('textarea').focus());
+                if((Object.keys(this.comment).length!=0)){
+                    this.correct_css();
+                }
             })
         },
         computed:{
@@ -157,6 +160,18 @@
                    let elem=( this.$$('#img_pr'+number).find('.progress'));
                     elem.css('width',percentLoaded);
                 }
+            },
+            //Css костыль
+            correct_css(){
+                let element=$$(this.$el).find('textarea');
+                 let el=(element.parent().parent());
+                 el.attr('class').split(' ').forEach(function(item){
+                     let need_cls=(item!='not-empty-state')? true:false;
+                 });
+                 this.add_cls(el,'not-empty-state');
+            },
+            add_cls(obj,cls) {
+                obj.addClass(cls);
             }
         }
     }
