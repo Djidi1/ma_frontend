@@ -50,7 +50,7 @@ let config = function (env) {
       new webpack.DefinePlugin({
         'process.env': {
           //development
-           'NODE_ENV': JSON.stringify((env && typeof env !== "undefined" && env.release) ? 'production' : 'production')
+           'NODE_ENV': JSON.stringify((env && typeof env !== "undefined" && env.release) ? 'production' : 'development')
         }
       }),
       new HtmlWebpackPlugin({

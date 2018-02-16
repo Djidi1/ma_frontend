@@ -123,11 +123,10 @@
                 return lastId;
             },
             upload(e){
-                // e.preventDefault();
                 let self=this;
                 let files=e.target.files;
                 for (var i = 0; i<files.length; i++) {
-                   if (files[i].type.match('image.*')){
+                  if (files[i].type.match('image.*')){
                        let result_file={};
                        let file_obj={
                            "name":files[i].name,
@@ -135,18 +134,29 @@
                            "size":files[i].size,
                        };
                        self.$set(result_file,'caption',files[i].name);
+                       self.attachment.push(result_file);
                        let reader = new FileReader();
+                       reader.onprogress=this.updateProgress;
                        reader.onload=function(file){
                            self.$set(result_file,'url',file.target.result);
                            self.$set(file_obj,'file',file.target.result);
                        };
+                       reader.onloadend=function(){
+                         self.$$('#img_pr'+(self.attachment.length-1)).hide();
+                       };
                        reader.readAsDataURL(files[i]);
                        self.$set(result_file,'file',file_obj);
-                       self.attachment.push(result_file);
                    }
-
                 }
-
+                e.target.value='';
+            },
+            updateProgress(evt){
+                let number=this.attachment.length-1;
+                if (evt.lengthComputable){
+                    let percentLoaded = (Math.round((evt.loaded / evt.total) * 100))+'%';
+                   let elem=( this.$$('#img_pr'+number).find('.progress'));
+                    elem.css('width',percentLoaded);
+                }
             }
         }
     }

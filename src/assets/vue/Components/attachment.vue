@@ -3,6 +3,9 @@
         <transition-group name="attach_fade" v-on:after-leave="resize" v-on:enter="resize">
         <div class="attach_block" v-for="(attach,index) in attachment" :key="index">
             <div class="attach" :id="'img_'+index"  :style="attachImg(attach,index)" @click="photolook(attachment,index)">
+                <div :id="'img_pr'+index" class="load_progress">
+                    <div class="bar_load"><div class="progress"></div></div>
+                </div>
                 <div class="header_img">{{attach.caption}}</div>
                 <div class="footter_img">{{get_size(attach.file.size)}}</div>
             </div>
@@ -68,10 +71,9 @@
         background-position: center;
         background-repeat: no-repeat;
         background-image: none;
-        margin:0 10px 0 10px;
+        margin:0 20px 0 10px;
         position: relative;
     }
-
     .attach_fade-enter-active,.attach_fade-leave-active{
         transition:  all .3s cubic-bezier(.65, 0.05, 0.36, 1.0);
     }
@@ -111,8 +113,27 @@
         bottom:0;
         z-index:1000;
     }
-
-
+    .load_progress{
+        position:absolute;
+        background-color: #FFFFFF;
+        width:100%;
+        height:100%;
+        z-index:1015;
+    }
+    .bar_load{
+        border:1px solid #ddd;
+        border-radius: 5px;
+        margin:24px 3px 0px 3px;
+        height:10px;
+        padding:1px;
+    }
+    .progress{
+        border-radius: 4px;
+        display:block;
+        background-color: #2196F3;
+        height:100%;
+        width:0;
+    }
 
 
 </style>

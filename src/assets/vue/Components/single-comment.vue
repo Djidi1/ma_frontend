@@ -5,7 +5,7 @@
                     <div  class="comment_block">
                         <div class="header_comment">
                             <div class="row no-gutter">
-                                <div class="col-50 title_comment"></div>
+                                <div class="col-50"></div>
                                 <div class="col-40 date_comment">
                                     <span class="data_text" >{{data_forma(single_comment.create_date)}}</span>
                                 </div>
@@ -20,9 +20,9 @@
                         </div>
                         <div class="footer_comment">
                             <div class="row no-gutter">
-                                <div class="col-65">
+                                <div class="col-50">
                                 </div>
-                                <div class="col-25 " v-if="myComment()">
+                                <div class="col-40" v-if="myComment()">
                                     <div class="control">
                                         <div class="control_my_comment" >
                                             <button @click="editComment($event)"> <i class="fa fa-pencil" aria-hidden="true"></i></button>
@@ -102,22 +102,13 @@
         margin-bottom:10px;
         position:relative;
     }
-    .title_comment{
-        position:relative;
-        font-weight: bold;
-        font-size: 15px;
-        word-wrap:normal;
-    }
     .date_comment{
-        position:relative;
         font-size: 12px;
         padding-top:4px!important;
-        overflow: auto;
-        background-color: transparent;
+        text-align: center;
     }
     .data_text{
         opacity: 0.7;
-        position: relative;
     }
     .content_comment{
         padding:15px 7px 15px 7px;
@@ -128,26 +119,30 @@
         padding:0 10px 0 10px;
     }
     .footer_comment,
+    .header_comment div,
     .footer_comment div{
         position:relative;
     }
 
     .control_my_comment{
         display:flex;
-        justify-content: flex-start;
+        justify-content: center;
         overflow: visible;
+
     }
     .control_my_comment button{
-        padding-top:5px;
         background-color: transparent;
         border:unset;
-        color: #868686;
-        margin:0 7px 0 5px;
-        font-size: 16px;
+        color: #868686;делатm
+
+        margin:0 10px 0 10px;
+        font-size: 22px;
     }
+
+
     .header_comment .row .col-50:after,
     .header_comment .row .col-10:after,
-    .footer_comment .row .col-65:after,
+    .footer_comment .row .col-50:after,
     .footer_comment .row .col-10:after,
     .footer_comment .row .no_my_comment:after{
         content: '';
