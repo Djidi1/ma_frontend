@@ -139,16 +139,33 @@
                        self.$set(result_file,'caption',files[i].name);
                        self.attachment.push(result_file);
                        let reader = new FileReader();
+                        reader.onloadstart=function(){
+                            self.$$('#img_pr'+(self.attachment.length-1)).show();
+                        };
                        reader.onprogress=this.updateProgress;
                        reader.onload=function(file){
                            self.$set(result_file,'url',file.target.result);
-                           self.$set(file_obj,'file',file.target.result);
+                      //     self.$set(file_obj,'file',file.target.result);
                        };
                        reader.onloadend=function(){
-                         self.$$('#img_pr'+(self.attachment.length-1)).hide();
+                           let progres_elem=self.$$('#img_pr'+(self.attachment.length-1)).find('.progress');
+                           if (progres_elem.width()!=50){
+                               progres_elem.animate({
+                                   'width':50
+                               },{
+                                   duration:'200',
+                                   easing:'swing',
+                                   complete: function (elements) {
+                                       self.$$('#img_pr'+(self.attachment.length-1)).hide();
+                                   }
+                               });
+                           }else{
+                               self.$$('#img_pr'+(self.attachment.length-1)).hide();
+                           }
                        };
                        reader.readAsDataURL(files[i]);
                        self.$set(result_file,'file',file_obj);
+
                    }
                 }
                 e.target.value='';
@@ -156,9 +173,15 @@
             updateProgress(evt){
                 let number=this.attachment.length-1;
                 if (evt.lengthComputable){
-                    let percentLoaded = (Math.round((evt.loaded / evt.total) * 100))+'%';
-                   let elem=( this.$$('#img_pr'+number).find('.progress'));
-                    elem.css('width',percentLoaded);
+                    let percentLoaded = (Math.round((evt.loaded / evt.total) * 100))-10;
+                    let elem=( this.$$('#img_pr'+number).find('.progress'));
+                    let  px_widht=(50/100)*percentLoaded;
+                    elem.animate({
+                        'width':px_widht
+                    },{
+                        duration:'200',
+                        easing:'swing'
+                    })
                 }
             },
             //Css костыль

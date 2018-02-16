@@ -114,6 +114,7 @@
         z-index:1000;
     }
     .load_progress{
+        display:none;
         position:absolute;
         background-color: #FFFFFF;
         width:100%;
