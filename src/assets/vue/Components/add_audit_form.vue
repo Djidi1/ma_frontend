@@ -5,10 +5,13 @@
             <f7-grid style="width:100%" class="css_cost">
                 <f7-col width="80">
                     <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
-                    <f7-input type="text" v-model="audit_name" @change="chanbe_name()"></f7-input>
+                    <f7-input type="text" v-model="audit_name" @change="chanbe_name()" :disabled="!sended"></f7-input>
                 </f7-col>
                 <f7-col width="20" v-show="!trash_btn">
-                   <f7-button @click=remove() class="cross_button"><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
+                   <f7-button v-if="sended" @click=remove() class="cross_button"><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
+                   <div v-else class="upload_img cross_button">
+                            <i class='fa fa-check  audit_good' aria-hidden='true'></i>
+                   </div>
                 </f7-col>
             </f7-grid>
         </f7-list-item>
@@ -18,12 +21,12 @@
             <f7-list>
                     <f7-list-item v-for="(check_item,index) in this.audit_obj.check_list" :key="index" :title="check_item.title" >
                         <div slot="after">
-                            <f7-button @click=remove_check(index) class="check_delete" ><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
+                            <f7-button  v-if="sended" @click=remove_check(index) class="check_delete" ><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
                         </div>
                     </f7-list-item>
-                    <f7-list-item >
+                    <f7-list-item  >
                         <f7-grid style="width:100%">
-                            <f7-col width="100">
+                            <f7-col width="100" v-if="sended">
                                 <f7-button class="add_check_btn" :open-popover="'.popover_add_obj_'+this.audit_obj.id">{{this.$root.localization.pop_up.add_check}}</f7-button>
                             </f7-col>
                         </f7-grid>
@@ -63,6 +66,9 @@
         computed:{
             hasCheck(){
                 return (this.audit_obj.check_list.length>0);
+            },
+            sended(){
+                return !this.audit_obj.upload;
             }
         },
         methods:{
@@ -140,6 +146,16 @@
         color:#9e9e9e;
         font-size:22px;
     }
+    .upload_img{
+        padding-top:0;
+        text-align: center;
+        font-size:22px;
+    }
+    .upload_img>i{
+        font-size:30px;
+        padding-top:20px;
+    }
+
 
 
 

@@ -4,7 +4,7 @@
         <f7-navbar back-link="Back" sliding  >
 
             <f7-nav-center sliding> {{audit.title}}</f7-nav-center>
-            <f7-nav-right>
+            <f7-nav-right v-if="!uploaded">
                 <f7-link @click="popup_open=true"><i class="fa fa-pencil" aria-hidden="true"></i></f7-link>
                    <f7-link @click="remove_audit"> <i class="fa fa-trash-o" aria-hidden="true"></i></f7-link>
             </f7-nav-right>
@@ -132,6 +132,9 @@
                 let curMounth=('0'+(data.getMonth()+1));
                 let date_for_text=curDay+"/"+curMounth+"/"+data.getFullYear()+" "+data.getHours()+":"+curMin+":"+curSec;
                 return date_for_text;
+            },
+            uploaded(){
+                return this.audit.upload;
             }
         },
         methods:{
@@ -156,7 +159,6 @@
                       "title":this.audit.title
                   },
                 };
-                console.log(requs);
                 self.send_data_to_sev(requs);
             },
             get_req(){
@@ -194,13 +196,13 @@
             },
 
             send_data_to_sev(data){
-                console.log(data);
                 let self=this;
                 this.$f7.showPreloader(this.$root.localization.modal.preloader);
                 this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
                     response=>{
                       self.$f7.hidePreloader();
                       self.$set(this.audit,"id",response.body);
+                      self.$set(this.audit,"upload",true);
                       self.$ls.set('objects',self.$root.objects);
                     },
                     response=>{
