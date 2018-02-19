@@ -31,7 +31,7 @@
                 </f7-card-header>
                 <f7-card-content>
                     <f7-list media-list>
-                        <f7-list-item v-for="(acrd,acrd_index) in this.object.audits" :key="acrd_index" :link="'/audit/'+array_index+'/'+acrd_index" :title="acrd.title" :subtitle="acrd.id"  :text="data_format(acrd.created_at)"  :media="realStatus(acrd.status)"></f7-list-item>
+                        <f7-list-item v-for="(acrd,acrd_index) in this.object.audits" :key="acrd_index" :link="'/audit/'+array_index+'/'+acrd_index" :title="acrd.title" :subtitle="'ID:'+acrd.id"  :text="data_format(acrd.created_at)"  :media="realStatus(acrd.status)"></f7-list-item>
                     </f7-list>
                 </f7-card-content>
             </f7-card>

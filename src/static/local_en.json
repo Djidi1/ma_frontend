@@ -59,7 +59,8 @@
     "modalTextConfExit":"Exit?",
     "modalTextLoginErr":"Login or password are wrong!",
     "modalTextLoginEmp":"Login or password are empty",
-    "preloader":"Loading..."
+    "preloader":"Loading...",
+    "modalConfirmSend":"Are you sure?After sending, the data can not be edited."
   },
   "pop_up":{
     "edit":"Edit",

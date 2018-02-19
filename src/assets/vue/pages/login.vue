@@ -1,10 +1,12 @@
 <template>
         <f7-page >
-        <div id="login-form">
+        <div id="login-form" class="login_form_stl">
             <!-- Login Screen -->
             <f7-card id="center_body">
+
                 <f7-login-screen-title >{{this.$root.localization.LoginScreen.LoginHeader}}</f7-login-screen-title>
-                <f7-list form>
+                <hr/>
+                <f7-list form class="login_list">
                     <f7-list-item>
                         <f7-label floating>{{this.$root.localization.LoginScreen.LoginPlaceholder}}</f7-label>
                         <f7-icon slot="media" fa="user" size="24px" ></f7-icon>
@@ -19,9 +21,12 @@
                         <f7-button @click="onLogin" fill class="button_login_form" type="submit"> {{this.$root.localization.LoginScreen.SubmitButton}}</f7-button>
                     </f7-list-item>
                     <f7-list-item class="foget_item" >
-                        <f7-button  class="button_login_form_foget" > {{this.$root.localization.LoginScreen.FogetButton}}</f7-button>
+                        <hr/>
+                        <!--<f7-button  class="button_login_form_foget" > {{this.$root.localization.LoginScreen.FogetButton}}</f7-button>-->
                     </f7-list-item>
                 </f7-list>
+
+
             </f7-card>
         </div>
         </f7-page>
@@ -69,5 +74,18 @@
 </script>
 
 <style scoped>
-
+    .login_form_stl{
+        background-size: cover;
+        background-image: url("../../../static/background_user.jpg");
+        }
+    .login_form_stl hr{
+        color:#9e9e9e;
+        opacity: 0.1;
+        margin-left:16px;
+        margin-right:16px;
+    }
+    .login_list hr{
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
 </style>
