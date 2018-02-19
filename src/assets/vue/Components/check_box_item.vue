@@ -2,7 +2,7 @@
         <f7-col width="50">
                 <label class="item-content label-checkbox " :class="button_cls">
                     <i :class="icon_cls" aria-hidden="true"></i>
-                    <input name="checkbox" type="checkbox" :checked="checked_status"  @change="checkbox_change(button_type)">
+                    <input name="checkbox" type="checkbox" :checked="checked_status"  @change="checkbox_change(button_type)" :disabled="read">
                     <div class="item-media">
                         <i class="icon icon-form-checkbox"></i>
                     </div>
@@ -15,7 +15,8 @@
         name: "check_box_item",
         props:{
             item_status:{type:Number,default:0},
-            button_type:{type:Boolean,default:true}
+            button_type:{type:Boolean,default:true},
+            read:{type:Boolean,default:false}
         },
         computed:{
             button_cls(){

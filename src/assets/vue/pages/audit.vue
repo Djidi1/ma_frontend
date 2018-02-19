@@ -42,7 +42,7 @@
                         <f7-list accordion  v-if="hasCheck_list">
                             <f7-list-item   v-for="(check,id) in this.audit.check_list"  :key="id"  :id="'acord'+check.id" accordion-item :title="check.title" :after="realStatus(check.status)">
                             <f7-accordion-content>
-                                <check_item v-for="(item,item_id) in check.requirement" :key="item_id"  :data_item="item" ></check_item>
+                                <check_item v-for="(item,item_id) in check.requirement" :key="item_id"  :data_item="item" :read="uploaded"></check_item>
                             </f7-accordion-content>
                         </f7-list-item>
                         </f7-list>
@@ -53,7 +53,7 @@
 
                 </f7-card-footer>
                 </f7-card>
-            <f7-card>
+            <f7-card v-if="!uploaded">
                 <f7-block inner>
                     <f7-grid>
                         <f7-col width="50">

@@ -22,7 +22,7 @@
                             <div class="row no-gutter">
                                 <div class="col-50">
                                 </div>
-                                <div class="col-40" v-if="myComment()">
+                                <div class="col-40" v-if="!myComment">
                                     <div class="control">
                                         <div class="control_my_comment" >
                                             <button @click="editComment($event)"> <i class="fa fa-pencil" aria-hidden="true"></i></button>
@@ -30,7 +30,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-25 no_my_comment" v-else></div>
+                                <div class="col-40 no_my_comment" v-else></div>
                                 <div class="col-10">
                                 </div>
                             </div>
@@ -54,11 +54,17 @@
                     return {}
                 }
             },
-            id: {type: Number, default: 0}
+            id: {type: Number, default: 0},
+            read:{type:Boolean,default:false}
         },
         data:function(){
             return{
                 mode:true
+            }
+        },
+        computed:{
+            myComment() {
+                return (this.read);
             }
         },
         methods: {
@@ -74,10 +80,7 @@
             hasAttach() {
                 return (this.single_comment.attachments.length > 0)
             },
-            myComment() {
-                //console.log(this.single_comment);
-                 return (this.single_comment.user_info.id === this.$root.auth_info.user_info.id)
-            },
+
             removeComment(id) {
                this.$emit('remove',id);
             },

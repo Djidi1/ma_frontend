@@ -3,12 +3,12 @@
         <f7-list form class="check_list_items" :id="'list_itm_'+this.data_item.id" :class="class_result">
             <f7-list-item :id="this.data_item.id"  :title="data_item.title" >
                 <f7-grid no-gutter class="item_grid">
-                    <check_box_item :button_type="true" :item_status="this.data_item.status" @change_status="change_item_status"></check_box_item>
-                    <check_box_item :button_type="false" :item_status="this.data_item.status" @change_status="change_item_status"></check_box_item>
+                    <check_box_item :button_type="true" :item_status="this.data_item.status" @change_status="change_item_status" :read="read"></check_box_item>
+                    <check_box_item :button_type="false" :item_status="this.data_item.status" @change_status="change_item_status" :read="read"></check_box_item>
                 </f7-grid>
-                <div slot="root" >
+                <div slot="root" v-if="uploaded_with">
                         <transition  mode="out-in" name="comment-show">
-                            <comment v-if="showComment" :data_comments="this.data_item.comments"></comment>
+                            <comment v-if="showComment" :data_comments="this.data_item.comments" :read="read"></comment>
                         </transition>
                 </div>
             </f7-list-item>
@@ -25,6 +25,7 @@
         name: "chek_item",
         props:{
             data_item:{ type: Object, default: '' },
+            read:{type:Boolean,default:false}
         },
         computed:{
             showComment(){
@@ -32,6 +33,9 @@
             },
             class_result(){
                 return (this.data_item.status===0)?"":(this.data_item.status===1)?"status_sucs":"status_false";
+            },
+            uploaded_with(){
+                return (this.read)?(this.data_item.comments.length>0)?true:false:true;
             }
         },
         methods: {
