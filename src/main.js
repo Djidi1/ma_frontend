@@ -171,10 +171,10 @@ new Vue({
         },
         onRefresh(event, done){
               var self = this;
-              setTimeout(function () {
-                  self.list=data_json;
-                  done();
-              }, 2000);
+            this.$root.getData_from_server().then(result=>{
+                self.$root.objects=result;
+                done()
+            })
           },
         getData_from_server(){
             let self=this;
