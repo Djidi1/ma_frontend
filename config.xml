@@ -22,7 +22,7 @@
     <platform name="android">
         <allow-intent href="market:*" />
         <icon src="src/static/icon_main.png" />
-        <preference name="SplashScreen" value="static/icon_main.png" />
+        <splash src="src/static/icon_main.png" />
         <preference name="SplashMaintainAspectRatio" value="true" />
     </platform>
     <platform name="browser">
@@ -36,7 +36,6 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <allow-navigation href="*" />
-    <preference name="SplashScreen" value="src/src/static/icon_main.png" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <engine name="browser" spec="^5.0.2" />
 </widget>
