@@ -1,7 +1,7 @@
 <template>
     <div class="attachments_comments">
         <transition-group name="attach_fade" v-on:after-leave="resize" v-on:enter="resize">
-        <div class="attach_block" v-for="(attach,index) in attachment" :key="index">
+        <div class="attach_block" v-for="(attach,index) in attachment" :key="attach.file.name">
             <div class="attach" :id="'img_'+index"  :style="attachImg(attach,index)" @click="photolook(attachment,index)">
                 <div :id="'img_pr'+index" class="load_progress">
                     <div class="bar_load"><div class="progress"></div></div>

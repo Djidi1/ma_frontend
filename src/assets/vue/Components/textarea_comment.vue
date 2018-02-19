@@ -144,8 +144,17 @@
                         };
                        reader.onprogress=this.updateProgress;
                        reader.onload=function(file){
-                           self.$set(result_file,'url',file.target.result);
-                      //     self.$set(file_obj,'file',file.target.result);
+                           let blob=new Blob([file.target.result]);
+                           window.URL=window.URL||window.webkitURL;
+                           let blobURL=window.URL.createObjectURL(blob);
+                           self.$set(result_file,'url',blobURL);
+                           let img=new Image();
+                           img.src=blobURL;
+                           img.onload=function(){
+                               let result=self.resizeImg(img);
+                               self.$set(result_file,'url',result);
+                           }
+
                        };
                        reader.onloadend=function(){
                            let progres_elem=self.$$('#img_pr'+(self.attachment.length-1)).find('.progress');
@@ -163,7 +172,8 @@
                                self.$$('#img_pr'+(self.attachment.length-1)).hide();
                            }
                        };
-                       reader.readAsDataURL(files[i]);
+                       reader.readAsArrayBuffer(files[i])
+                      // reader.readAsDataURL(files[i]);
                        self.$set(result_file,'file',file_obj);
 
                    }
@@ -184,6 +194,20 @@
                     })
                 }
             },
+            resizeImg(img){
+                let canvas=document.createElement('canvas');
+                let ctx=canvas.getContext("2d");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img,0,0,img.width,img.height);
+                return canvas.toDataURL("image/jpeg",0.7);
+            },
+
+
+
+
+
+
             //Css костыль
             correct_css(){
                 let element=$$(this.$el).find('textarea');

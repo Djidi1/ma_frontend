@@ -10,7 +10,6 @@
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Kon Team
     </author>
-    <preference name="SplashScreenDelay" value="10000" />
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
@@ -22,13 +21,22 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <splash src="src/static/icon_main.png" density="land-ldpi"/>
         <icon src="src/static/icon_main.png" />
+        <preference name="SplashScreen" value="static/icon_main.png" />
+        <preference name="SplashMaintainAspectRatio" value="true" />
+    </platform>
+    <platform name="browser">
+        <preference name="SplashScreen" value="static/icon_main.png" />
+        <preference name="SplashMaintainAspectRatio" value="false" />
+        <preference name="SplashScreenDelay" value="2000" />
+        <icon src="static/icon_main.png" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
     <allow-navigation href="*" />
+    <preference name="SplashScreen" value="src/src/static/icon_main.png" />
+    <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <engine name="browser" spec="^5.0.2" />
 </widget>
