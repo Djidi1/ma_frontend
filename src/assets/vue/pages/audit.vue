@@ -146,7 +146,7 @@
                 let self=this;
                 this.$f7.confirm(this.$root.localization.modal.modalConfirmSend,this.$root.localization.modal.modalTextConf, function () {
                     let result_req_arr=[];
-                    (this.audit.check_list).forEach(function(item,i,arr){
+                    (self.audit.check_list).forEach(function(item,i,arr){
                         item.requirement.forEach(function(req,j){
                             req.status=(req.status!=1)?-1:req.status;
                         });
@@ -154,10 +154,10 @@
                     let requs={
                         "audit":{
                             "check_list":self.get_req(),
-                            "id":this.audit.id,
-                            "object_id":this.audit.object_id,
+                            "id":self.audit.id,
+                            "object_id":self.audit.object_id,
                             "date_add":self.GetCurrentDate(),
-                            "title":this.audit.title
+                            "title":self.audit.title
                         },
                     };
                     self.send_data_to_sev(requs);
