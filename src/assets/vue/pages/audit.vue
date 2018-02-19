@@ -141,48 +141,80 @@
             },
             check_list_status(id){
                 let self=this;
-                let result=0;
                 let result_req_arr=[];
                 (this.audit.check_list).forEach(function(item,i,arr){
                     item.requirement.forEach(function(req,j){
                         req.status=(req.status!=1)?-1:req.status;
-                        result=(req.status!=1)?-1:result;
-                        result=(req.status===1)?1:result;
-                        result_req_arr.push(self.get_req(req));
                     });
                 });
                 let requs={
-                  "audit_id":this.audit.id,
-                  "audit":this.audit,
-                  "requirements":result_req_arr,
-                  "result":result,
-                  "result_date":this.GetCurrentDate()
+                  "audit":{
+                    "check_list":self.get_req(),
+                      "id":this.audit.id,
+                      "object_id":this.audit.object_id,
+                      "date_add":self.GetCurrentDate(),
+                      "title":this.audit.title
+                  },
                 };
-              console.log(requs);
-
+                console.log(requs);
+                self.send_data_to_sev(requs);
             },
-            get_req(req){
-                let result_comment=[];
-                req.comments.forEach(function(item){
-                    let result_cm={
-                        "id":item.id,
-                        "text":item.text,
-                        "user_info":item.user_info,
-                        "created_at":item.create_date
-                    }
-                    result_comment.push(result_cm);
+            get_req(){
+                let self=this;
+                let result=[];
+                this.audit.check_list.forEach(function(item){
+                   let check_obj={
+                       "audit_id":self.audit.id,
+                       "id":item.id,
+                       "title":item.title,
+                       "requirement":[]
+                    };
+                   item.requirement.forEach(function(req){
+                      let req_obj={
+                          "id":req.id,
+                          "status":req.status,
+                          "comments":self.get_comments(req)
+                      }
+                       check_obj.requirement.push(req_obj);
+                   });
+                   result.push(check_obj);
                 });
-              let result_req={
-                  "id":req.id,
-                  "checked_at":req.checked_at,
-                  "comments":result_comment,
-                  "created_at":req.created_at,
-                  "status":req.status,
-                  "title":req.title,
-                  "warning_level":req.warning_level
-              }
-              return result_req;
+            return result;
             },
+            get_comments(req){
+                let self=this;
+                let result=[];
+                    req.comments.forEach(function(comm){
+                        let comment_obj={
+                            'text':comm.text
+                        };
+                        result.push(comment_obj);
+                    });
+                return result;
+            },
+
+            send_data_to_sev(data){
+                console.log(data);
+                let self=this;
+                this.$f7.showPreloader(this.$root.localization.modal.preloader);
+                this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
+                    response=>{
+                      self.$f7.hidePreloader();
+                      self.$set(this.audit,"id",response.body);
+                      self.$ls.set('objects',self.$root.objects);
+                    },
+                    response=>{
+                        self.$f7.hidePreloader();
+                        console.log("Error");
+                    }
+                );
+            },
+
+
+
+
+
+
             abort_check_list(){
                 let self=this;
                 (this.audit.check_list).forEach(function(item,i,arr) {
@@ -245,11 +277,13 @@
                 return check_array;
             },
             GetCurrentDate(){
-                let now= new Date();
-                let curSec=('0'+now.getSeconds()).substr(-2);
-                let curMin=('0'+now.getMinutes()).substr(-2);
-                let curDay=('0'+now.getDate()).substr(-2);
-                let date_for_text=curDay+"-"+now.getMonth()+1+"-"+now.getFullYear()+" "+now.getHours()+":"+curMin+":"+curSec;
+                let data=new Date(this.audit.date_add);
+                let curSec=('0'+data.getSeconds()).substr(-2);
+                let curMin=('0'+data.getMinutes()).substr(-2);
+                let curDay=('0'+data.getDate()).substr(-2);
+                let curMounth=('0'+(data.getMonth()+1));
+                let date_for_text=curDay+"-"+curMounth+"-"+data.getFullYear()+" "+data.getHours()+":"+curMin+":"+curSec;
+                console.log()
                 return date_for_text;
             },
         }

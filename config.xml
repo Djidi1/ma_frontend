@@ -2,10 +2,11 @@
 <widget id="dir_vue.com" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <hook src="hooks/hookers.js" type="before_prepare" />
     <hook src="hooks/beforedep.js" type="before_deploy" />
-    <name>dir_vue.cls</name>
+    <name>MobileAudit</name>
     <description>
-        Brand new cordova project!
+        MobileAudit project!
     </description>
+    <icon src="src/static/icon_main.png" />
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
     </author>
