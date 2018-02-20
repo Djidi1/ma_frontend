@@ -56,11 +56,11 @@
 		computed:{
             count_new(){
                 let count=0;
-                // this.$root.list.forEach(function(item){
-					// item.audits.forEach(function(audit){
-					// 	(audit.status==='new')?count++:'';
-					// })
-                // })
+                this.$root.objects.forEach(function(obj){
+                    obj.audits.forEach(function(ad){
+						(!ad.upload)?count++:'';
+					})
+				});
 				return count;
 			}
 		},

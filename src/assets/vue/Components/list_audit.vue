@@ -12,7 +12,7 @@
             </f7-card-header>
             <f7-card-content>
                 <f7-list media-list>
-                    <f7-list-item v-for="(acrd,acrd_index) in array_few(item)" :key="acrd_index" :link="'/audit/'+index+'/'+acrd_index" :title="acrd.title" :subtitle="'ID: '+acrd.id"  :text="data_formta(acrd.created_at)"  :media="realStatus(acrd.status)"></f7-list-item>
+                    <f7-list-item v-for="(acrd,acrd_index) in array_few(item)" :key="acrd_index" :link="'/audit/'+index+'/'+acrd_index" :title="acrd.title" :subtitle="'ID: '+acrd.id"  :text="data_formta(acrd.created_at)"  :media="realStatus(acrd)"></f7-list-item>
                 </f7-list>
             </f7-card-content>
         </f7-card>
@@ -29,26 +29,27 @@
         },
         methods:{
             realStatus(str){
-              let result="";
-              //   switch (str){
-              //       case '':
-              //           result="";
-              //           break;
-              //       case 'new':
-              //           result="<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>";
-              //           break;
-              //       case 'ok':
-              //           result="<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>";
-              //           break;
-              //       case 'error':
-              //           result="<i class='fa fa-chain-broken fa-2x audit_error' aria-hidden='true'></i>";
-              //           break;
-              //       case 'wrong':
-              //           result="<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
-              //       break;
-              // }
-              return result;
+                let self=this;
+                let result;
+                result=(str.upload)?self.upload_st(str):self.stat(str);
+                console.log(result);
+                return result;
             },
+            upload_st(str){
+                let result=true;
+                let self=this;
+                str.check_list.forEach(function(itm){
+                    itm.requirement.forEach(function(req){
+                        result=(req.status!=1)?result:false;
+                    });
+                });
+                return (result)?"<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>":"<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
+            },
+            stat(str){
+                return "<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>"
+            },
+
+
             countFrom(item){
                 let all=item.audits.length;
                 return (all>5)?"5 "+this.$root.localization.AuditPage_count +" "+all:'';

@@ -40,7 +40,7 @@
                    </f7-card-header>
 
                         <f7-list accordion  v-if="hasCheck_list">
-                            <f7-list-item   v-for="(check,id) in this.audit.check_list"  :key="id"  :id="'acord'+check.id" accordion-item :title="check.title" :after="realStatus(check.status)">
+                            <f7-list-item   v-for="(check,id) in this.audit.check_list"  :key="id"  :id="'acord'+check.id" accordion-item :title="check.title" >
                             <f7-accordion-content>
                                 <check_item v-for="(item,item_id) in check.requirement" :key="item_id"  :data_item="item" :read="uploaded"></check_item>
                             </f7-accordion-content>
@@ -101,24 +101,9 @@
         },
         computed:{
             status(){
-                let result="";
-                switch (this.audit.status){
-                    case '':
-                        result='';
-                        break;
-                    case 'new':
-                        result="";
-                        break;
-                    case 'ok':
-                        result="fa fa-check fa-3x audit_good";
-                        break;
-                    case 'error':
-                        result="fa fa-chain-broken fa-3x audit_error>";
-                        break;
-                    case 'wrong':
-                        result="audit_wrong fa fa-times fa-3x >";
-                        break;
-                }
+                let self=this;
+                let result;
+                result=(self.audit.upload)?self.upload_st(self.audit):"";
                 return result;
             },
             hasCheck_list(){
@@ -240,27 +225,18 @@
                 this.audit.status=status;
                 this.$root.update_ls();
             },
-            realStatus(str){
-                let result="";
-                switch (str){
-                    case '':
-                        result="";
-                        break;
-                    case 'new':
-                        result="";
-                        break;
-                    case 'ok':
-                        result="<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>";
-                        break;
-                    case 'error':
-                        result="<i class='fa fa-chain-broken fa-2x audit_error' aria-hidden='true'></i>";
-                        break;
-                    case 'wrong':
-                        result="<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
-                        break;
-                }
-                return result;
+
+            upload_st(str){
+                let result=true;
+                let self=this;
+                str.check_list.forEach(function(itm){
+                    itm.requirement.forEach(function(req){
+                        result=(req.status!=1)?result:false;
+                    });
+                });
+                return (result)?"fa fa-check fa-3x audit_good":"fa fa-times fa-3x audit_wrong";
             },
+
             remove_audit(){
                 let self=this;
                 this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {

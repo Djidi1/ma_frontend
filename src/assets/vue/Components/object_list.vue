@@ -3,7 +3,7 @@
         <f7-card>
             <f7-card-content>
                 <f7-list media-list>
-                    <f7-list-item v-for="(object,index) in data_storage" :key="index" :link="'/object/'+object.id+'/'" :title="title+': '+object.title" :subtitle="'ID: '+object.id"  :text="data_format(object.created_at)+'</br>'+object.address" :after="audit_count(index)+'</br>'+new_audit_count(object.id)"></f7-list-item>
+                    <f7-list-item v-for="(object,index) in data_storage" :key="index" :link="'/object/'+object.id+'/'" :title="title+': '+object.title" :subtitle="'ID: '+object.id"  :text="data_format(object.created_at)+'</br>'+object.address" :after="audit_count(index)+'</br>'+new_audit_count(index)"></f7-list-item>
                 </f7-list>
             </f7-card-content>
         </f7-card>
@@ -38,12 +38,11 @@
                return (count>0)? this.$root.localization.ObjectPage.audits+': '+count:'';
             },
             new_audit_count(obj){
-                // let count=0;
-                // obj.audits.forEach(function(item){
-                //     (item.status==='new')?count++:'';
-                // })
-                // return (count>0)? '<div class="new_audits_count">'+this.$root.localization.ObjectPage.new_audits+': '+count+'</div>':'';
-                return 0;
+                let count=0;
+                this.$root.objects[obj].audits.forEach(function(audit){
+                    (!audit.upload)?count++:'';
+                });
+                return "<div class='new_audits_count'>"+this.$root.localization.ObjectPage.new_audits+': '+count+"</div>";
             },
             data_format(data){
                 data=new Date(data);
@@ -59,5 +58,7 @@
 </script>
 
 <style scoped>
-
+    .new_audit{
+        border:1px solid #2196F3;
+    }
 </style>
