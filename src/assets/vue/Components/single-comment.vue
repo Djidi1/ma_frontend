@@ -6,8 +6,8 @@
                         <div class="header_comment">
                             <div class="row no-gutter">
                                 <div class="col-50"></div>
-                                <div class="col-40 date_comment">
-                                    <span class="data_text" >{{data_forma(single_comment.create_date)}}</span>
+                                <div class="col-40">
+                                    <!--<span class="data_text" >{{data_forma(single_comment.create_date)}}</span>-->
                                 </div>
                                 <div class="col-10"></div>
                             </div>
@@ -144,6 +144,7 @@
 
     .header_comment .row .col-50:after,
     .header_comment .row .col-10:after,
+    .header_comment .row .col-40:after,
     .footer_comment .row .col-50:after,
     .footer_comment .row .col-10:after,
     .footer_comment .row .no_my_comment:after{

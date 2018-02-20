@@ -129,7 +129,6 @@
             },
             check_list_status(id){
                 let self=this;
-                console.log(this.audit);
                 this.$f7.confirm(this.$root.localization.modal.modalConfirmSend,this.$root.localization.modal.modalTextConf, function () {
                     let result_req_arr=[];
                     (self.audit.check_list).forEach(function(item,i,arr){

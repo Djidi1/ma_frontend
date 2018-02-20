@@ -32,7 +32,6 @@
                 let self=this;
                 let result;
                 result=(str.upload)?self.upload_st(str):self.stat(str);
-                console.log(result);
                 return result;
             },
             upload_st(str){
