@@ -181,6 +181,7 @@ new Vue({
             return new Promise(function(resolve,reject){
                 let objects_arr=[];
                 let audits_arr=[];
+                let result_audit=[];
                 let result=[];
                 self.get_check_list().then(
                     ready=>{
@@ -193,7 +194,17 @@ new Vue({
                     .then(
                         audits=>{
                             audits_arr=audits;
-                            return self.create_object_list(objects_arr,audits_arr);
+                            return self.get_results();
+                        }
+                    ).then(
+                         results=>{
+                            result_audit=results;
+                            return self.create_object_list(objects_arr,audits_arr,results,self.check_list);
+                        }
+                    ).then(
+                        object_arr=>{
+                            result=object_arr;
+                            return self.getresults(result,result_audit,self.check_list)
                         }
                     ).then(
                         result_arr=>{
@@ -236,7 +247,7 @@ new Vue({
         },
         get_audits(){
             let self=this;
-            let audits=[]
+            let audits=[];
             return new Promise(function(resolve,reject) {
                 self.$http.post('https://test.bh-app.ru/api/get-audits',{},{headers:{'Authorization':'Bearer ' + self.auth_info.token}}).then(
                     response=>{
@@ -252,10 +263,26 @@ new Vue({
             });
 
         },
+        get_results(){
+           let self=this;
+           let results=[];
+           return new Promise(function(resolve,regect){
+              self.$http.post('https://test.bh-app.ru/api/get-results',{},{headers:{'Authorization':'Bearer ' + self.auth_info.token}}).then(
+                  response=>{
+                      results=response.body;
+                      resolve(results);
+                  },
+                  response=>{
+                      results=[];
+                      resolve(results)
+                  }
+              )
+           });
+        },
 
-        create_object_list(objects,audits){
+        create_object_list(objects,audits,results,check_list){
             let self=this;
-            let result_arr=[];
+            let object_arr=[];
             return new Promise(function(resolve){
                    objects.forEach(function(object,i){
                        let result={};
@@ -265,7 +292,7 @@ new Vue({
                         "created_at":object.created_at,
                         "audits":[],
                         "address":object.audit_object_group.address
-                      }
+                      };
                       audits.forEach(function(audit,j){
                           if (object.id===audit.object_id){
                             let audit_result={
@@ -274,16 +301,110 @@ new Vue({
                                 "date_add":audit.date_add,
                                 "created_at":audit.created_at,
                                 "check_list":[],
-                                "object_id":object.id
+                                "object_id":object.id,
+                                "check_list_id":audit.checklist_id,
+                                "upload":false
                             };
                             result.audits.push(audit_result);
                           };
-                      })
-                       result_arr.push(result);
+                      });
+                       object_arr.push(result);
                    });
-                   resolve(result_arr);
+                   resolve(object_arr);
             });
-        }
+        },
+        getresults(result_arr,results,checklist){
+            let self=this;
+            let result=[];
+            return new Promise(function(resolve){
+                result_arr.forEach(function(obj){
+                    obj.audits.forEach(function(audits){
+                        checklist.forEach(function(cl){
+                          if(cl.id===audits.check_list_id){
+                              let new_cl={
+                                  "id": cl.id,
+                                  "title":cl.title,
+                                  "created_at":cl.created_at,
+                                  "requirement":[],
+                                  "audit_id":audits.id
+                              };
+                              cl.requirement.forEach(function(req){
+                                   self.get_comments_from_result(audits,results)
+                                     let new_req={
+                                         "id":req.id,
+                                         "title":req.title,
+                                         "status":self.get_status(audits,results,req.id),
+                                         "checklist_id": cl.id,
+                                         "warning_level":req.warning_level,
+                                         "created_at":req.created_at,
+                                         "comments":self.get_comments_from_result(audits,results,req.id)
+                                     };
+                                   new_cl.requirement.push(new_req);
+
+                              });
+                              audits.check_list.push(new_cl);
+                          }
+                        });
+                        self.check_status_upload(audits);
+                    });
+                });
+                resolve(result_arr);
+            });
+        },
+      get_status(audit,result,id){
+         let self=this;
+         let res=0;
+         result.forEach(function(itm) {
+                res=(itm.audit_id===audit.id)?(itm.requirement_id===id)?itm.result:res:res;
+         });
+         return res;
+      },
+      check_status_upload(arr){
+            let self=this;
+            let res=false;
+            let upload=true;
+                arr.check_list.forEach(function(cl){
+                    cl.requirement.forEach(function(req){
+                        upload=(req.status===0)?false:upload;
+                    });
+                    res=(upload)?true:false;
+                });
+                arr.upload=res;
+                console.log(arr);
+      },
+      get_comments_from_result(audit,result,id){
+            let self=this;
+            let res=[];
+            result.forEach(function(itm){
+               if (itm.audit_id===audit.id&&itm.requirement_id===id){
+                   let comm={
+                        "text":itm.comment,
+                        "attachments":[]
+                   };
+                   itm.audit_result_attache.forEach(function(att){
+                       let new_att={
+                            "caption":att.file_name,
+                           "file":{
+                               "name":att.file_name,
+                               "size":att.file_size,
+                               "type":att.file_mime
+                           },
+                           "url":"https://test.bh-app.ru"+att.file_path
+                       }
+                       // self.$http.get("https://test.bh-app.ru/img/attaches/attache-1519074845.png",{}).then(response=>{console.log(response)},response=>{console.log(response)})
+                      // let file_tr=new FileTransfer();
+                      //   let pathToFile = self.cordova;
+                      //   console.log(pathToFile);
+                      //
+                      //  let url=encodeURI("https://test.bh-app.ru/img/attaches/attache-1519074845.png");
+                    comm.attachments.push(new_att);
+                   })
+                 res.push(comm);
+               }
+            });
+
+            return res;
+      }
     }
 
 })

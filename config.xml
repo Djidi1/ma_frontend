@@ -21,9 +21,8 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon src="src/static/icon_main.png" />
-        <splash src="src/static/icon_main.png" />
-        <preference name="SplashMaintainAspectRatio" value="true" />
+        <icon density="land-ldpi" src="src/static/icon_main.png" />
+        <preference name="SplashScreenDelay" value="4000" />
     </platform>
     <platform name="browser">
         <preference name="SplashScreen" value="static/icon_main.png" />
@@ -37,5 +36,7 @@
     </platform>
     <allow-navigation href="*" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
+    <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
+    <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <engine name="browser" spec="^5.0.2" />
 </widget>

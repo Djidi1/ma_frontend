@@ -125,6 +125,8 @@
                     ++lastId;
                 return lastId;
             },
+
+
             upload(e){
                 let self=this;
                 let files=e.target.files;
