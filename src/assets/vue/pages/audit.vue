@@ -108,7 +108,7 @@
             status(){
                 let self=this;
                 let result;
-                result=(self.audit.upload)?self.upload_st(self.audit):"";
+                result=(self.audit.upload)?self.upload_st_low(self.audit):"";
                 return result;
             },
             hasCheck_list(){
@@ -233,12 +233,12 @@
                 this.$root.update_ls();
             },
 
-            upload_st(str){
+            upload_st_low(str){
                 let result=true;
                 let self=this;
                 str.check_list.forEach(function(itm){
                     itm.requirement.forEach(function(req){
-                        result=(req.status!=1)?result:false;
+                        result=(req.status=1)?result:false;
                     });
                 });
                 return (result)?"fa fa-check fa-3x audit_good":"fa fa-times fa-3x audit_wrong";
@@ -278,22 +278,20 @@
             realStatus(str){
                 let self=this;
                 let result;
-                result=(str.upload)?self.upload_st(str):self.stat(str);
+                result=self.upload_st(str);
                 return result;
             },
             upload_st(str){
                 let result=true;
+                let new_str;
                 let self=this;
-                str.check_list.forEach(function(itm){
-                    itm.requirement.forEach(function(req){
-                        result=(req.status!=1)?result:false;
+                    str.requirement.forEach(function(req){
+                        new_str=(req.status===0)?true:false;
+                        result=(req.status===1)?result:false;
                     });
-                });
-                return (result)?"<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>":"<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
+                return (new_str)?"<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>":(result)?"<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>":"<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
             },
-            stat(str){
-                return "<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>"
-            },
+
         }
 
 

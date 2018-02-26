@@ -8,7 +8,7 @@
             <f7-card-header>
                 <f7-grid style="width:100%">
                     <f7-col width="70">Требования к чек-листу</f7-col>
-                    <f7-col width="30" style="text-align: center"><i :class=status aria-hidden='true'></i> </f7-col>
+                    <f7-col width="30" style="text-align: center"><i :class="status" aria-hidden='true'></i> </f7-col>
                 </f7-grid>
             </f7-card-header>
             <f7-card-content class="check_content">
@@ -51,19 +51,21 @@
             status(){
                 let self=this;
                 let result;
-                result=(self.upload)?self.upload_st(self.check):'';
+                result=self.upload_st(self.check);
                 return result;
             }
         },
         methods:{
             upload_st(str){
-                let result=true;
+                 let result=true;
+                let new_str;
                 let self=this;
-                str.requirement.forEach(function(itm){
-                        result=(itm.status!=1)?result:false;
+                str.requirement.forEach(function(req){
+                    new_str=(req.status===0)?true:false;
+                    result=(req.status===1)?result:false;
                 });
-                return (result)?"<i class='fa fa-check fa-2x audit_good":"fa fa-times fa-2x audit_wrong";
-            }
+                return (new_str)?"":(result)?"fa fa-check fa-2x audit_good":"fa fa-times fa-2x audit_wrong";
+            },
         }
 
     }
