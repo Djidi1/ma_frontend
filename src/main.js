@@ -375,34 +375,37 @@ new Vue({
       get_comments_from_result(audit,result,id){
             let self=this;
             let res=[];
+            let result_com;
             result.forEach(function(itm){
                if (itm.audit_id===audit.id&&itm.requirement_id===id){
-                   let comm={
-                        "text":itm.comment,
-                        "attachments":[]
-                   };
-                   itm.audit_result_attache.forEach(function(att){
-                       let new_att={
-                            "caption":att.file_name,
-                           "file":{
-                               "name":att.file_name,
-                               "size":att.file_size,
-                               "type":att.file_mime
-                           },
-                           "url":"https://test.bh-app.ru"+att.file_path
-                       }
-                       // self.$http.get("https://test.bh-app.ru/img/attaches/attache-1519074845.png",{}).then(response=>{console.log(response)},response=>{console.log(response)})
-                      // let file_tr=new FileTransfer();
-                      //   let pathToFile = self.cordova;
-                      //   console.log(pathToFile);
-                      //
-                      //  let url=encodeURI("https://test.bh-app.ru/img/attaches/attache-1519074845.png");
-                    comm.attachments.push(new_att);
-                   })
-                 res.push(comm);
+
+                       let comm={
+                           "text":itm.comment,
+                           "attachments":[]
+                       };
+                       itm.audit_result_attache.forEach(function(att){
+                           let new_att={
+                               "caption":att.file_name,
+                               "file":{
+                                   "name":att.file_name,
+                                   "size":att.file_size,
+                                   "type":att.file_mime
+                               },
+                               "url":"https://test.bh-app.ru"+att.file_path
+                           }
+                           // self.$http.get("https://test.bh-app.ru/img/attaches/attache-1519074845.png",{}).then(response=>{console.log(response)},response=>{console.log(response)})
+                           // let file_tr=new FileTransfer();
+                           //   let pathToFile = self.cordova;
+                           //   console.log(pathToFile);
+                           //
+                           //  let url=encodeURI("https://test.bh-app.ru/img/attaches/attache-1519074845.png");
+                           comm.attachments.push(new_att);
+                       })
+                       result_com=comm;
+
                }
             });
-
+            res.push(result_com);
             return res;
       }
     }
