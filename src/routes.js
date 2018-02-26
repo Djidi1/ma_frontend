@@ -22,5 +22,9 @@ export default [
     {
       path:'/settings/',
       component:require('./assets/vue/Components/settings.vue')
+    },
+    {
+      path:'/check/:audit_id/:check_id',
+      component:require('./assets/vue/pages/check.vue')
     }
 ]

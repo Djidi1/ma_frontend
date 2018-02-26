@@ -42,7 +42,7 @@
                 this.$root.objects[obj].audits.forEach(function(audit){
                     (!audit.upload)?count++:'';
                 });
-                return "<div class='new_audits_count'>"+this.$root.localization.ObjectPage.new_audits+': '+count+"</div>";
+                return (count>0)?"<div class='new_audits_count'>"+this.$root.localization.ObjectPage.new_audits+': '+count+"</div>":'';
             },
             data_format(data){
                 data=new Date(data);

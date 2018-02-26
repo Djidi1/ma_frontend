@@ -2,7 +2,6 @@
     <f7-page  >
         <!-- Navbar -->
         <f7-navbar back-link="Back" sliding  >
-
             <f7-nav-center sliding> {{audit.title}}</f7-nav-center>
             <f7-nav-right v-if="!uploaded">
                 <f7-link @click="popup_open=true"><i class="fa fa-pencil" aria-hidden="true"></i></f7-link>
@@ -38,21 +37,27 @@
                    <f7-card-header>
                         {{this.$root.localization.AuditPage.check_list}}
                    </f7-card-header>
-
-                        <f7-list accordion  v-if="hasCheck_list">
-                            <f7-list-item   v-for="(check,id) in this.audit.check_list"  :key="id"  :id="'acord'+check.id" accordion-item :title="check.title" >
-                            <f7-accordion-content>
-                                <check_item v-for="(item,item_id) in check.requirement" :key="item_id"  :data_item="item" :read="uploaded"></check_item>
-                            </f7-accordion-content>
-                        </f7-list-item>
+                        <f7-list media-list style="margin-bottom: 0!important;" v-if="hasCheck_list">
+                            <f7-list-item v-for="(check,id) in this.audit.check_list" :key="id" :title="check.title" :link="'/check/'+audit.id+'/'+check.id" :media="realStatus(check)"></f7-list-item>
                         </f7-list>
-                        <f7-list v-else>
+                <f7-list v-else>
                             <f7-list-item  title="У данного аудита нет чек-листов."></f7-list-item>
                         </f7-list>
                 <f7-card-footer>
 
                 </f7-card-footer>
                 </f7-card>
+            <f7-card>
+                <f7-list accordion class="acrd_custom">
+                    <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_title" :after="comment_audit_count">
+                        <f7-accordion-content>
+                            <f7-block inner><text_area></text_area></f7-block>
+                        </f7-accordion-content>
+                    </f7-list-item>
+                </f7-list>
+            </f7-card>
+
+
             <f7-card v-if="!uploaded">
                 <f7-block inner>
                     <f7-grid>
@@ -120,6 +125,9 @@
             },
             uploaded(){
                 return this.audit.upload;
+            },
+            comment_audit_count(){
+                return (this.audit.comments)?"<i class='fa fa-commenting-o' aria-hidden='true'></i>"+this.audit.comments.length:"<i class='fa fa-commenting-o' aria-hidden='true'></i>";
             }
         },
         methods:{
@@ -267,8 +275,26 @@
                 console.log()
                 return date_for_text;
             },
+            realStatus(str){
+                let self=this;
+                let result;
+                result=(str.upload)?self.upload_st(str):self.stat(str);
+                return result;
+            },
+            upload_st(str){
+                let result=true;
+                let self=this;
+                str.check_list.forEach(function(itm){
+                    itm.requirement.forEach(function(req){
+                        result=(req.status!=1)?result:false;
+                    });
+                });
+                return (result)?"<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>":"<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
+            },
+            stat(str){
+                return "<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>"
+            },
         }
-
 
 
 
