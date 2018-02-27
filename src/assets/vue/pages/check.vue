@@ -6,8 +6,8 @@
         <div class="blck_info">
         <f7-card>
             <f7-card-header>
-                <f7-grid style="width:100%">
-                    <f7-col width="70">Требования к чек-листу</f7-col>
+                <f7-grid style="width:100%; min-height:34px">
+                    <f7-col width="70" style="line-height: 34px">Требования к чек-листу</f7-col>
                     <f7-col width="30" style="text-align: center"><i :class="status" aria-hidden='true'></i> </f7-col>
                 </f7-grid>
             </f7-card-header>
@@ -15,6 +15,21 @@
                 <check_item v-for="(item,item_id) in check.requirement" :key="item_id"  :data_item="item" :read="uploaded"></check_item>
             </f7-card-content>
         </f7-card>
+
+            <f7-card v-if="!uploaded">
+                <f7-block inner>
+                    <f7-grid>
+                        <f7-col width="50">
+                            <f7-button @click="abort_check_list()" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>
+                        </f7-col>
+                        <f7-col width="50">
+                            <f7-button fill @click="check_list_status()"><i class="fa fa-check" aria-hidden="true"></i> </f7-button>
+                        </f7-col>
+                    </f7-grid>
+                </f7-block>
+
+            </f7-card>
+
         </div>
 
 
@@ -58,10 +73,10 @@
         methods:{
             upload_st(str){
                  let result=true;
-                let new_str;
+                let new_str=true;
                 let self=this;
                 str.requirement.forEach(function(req){
-                    new_str=(req.status===0)?true:false;
+                    new_str=(req.status===0)?new_str:false;
                     result=(req.status===1)?result:false;
                 });
                 return (new_str)?"":(result)?"fa fa-check fa-2x audit_good":"fa fa-times fa-2x audit_wrong";

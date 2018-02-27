@@ -5,7 +5,7 @@
                 <f7-accordion-content>
                     <transition appear mode="out-in" name="slide-fade">
                     <single-comment  v-if="hasComment" v-for="(comment,id) in this.data_comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="read"></single-comment>
-                    <f7-block inner v-else class="custom_block_no_after" ><text_area :data_set="this.data_comments"></text_area></f7-block>
+                    <f7-block inner v-else><text_area :data_set="this.data_comments"></text_area></f7-block>
                     </transition>
                 </f7-accordion-content>
             </f7-list-item>

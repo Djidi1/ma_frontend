@@ -252,9 +252,18 @@
 }
 .status_sucs .item-content:first-child {
 	background-color:#D9FFDA;
+	transition: all 0.5s;
+}
+.status_disbl .item-content:first-child {
+	background-color: rgba(235, 235, 235, 0.56);
+	transition: all 0.5s;
+}
+.status_disbl .item-title{
+	opacity:0.6;
 }
 .status_false .item-content:first-child {
 	background-color:#FEE9E6;
+	transition: all 0.5s;
 }
 .comment_text_zone .item-content{
 	background-color:#FFFFFF!important;
@@ -368,5 +377,21 @@
 .check_content .card-content-inner{
 	padding:0;
 }
+.acrd_custom>ul{
+	padding: 0 !important;
+}
+.list-block .swipeout-actions-right>a{
 
-
+	background-color: #2196f3;
+	//#e0e0e0
+}
+.check_list_items .item-content{
+	min-height: 64px;
+}
+.check_list_items .item-content>.item-inner{
+	padding-top:0;
+	padding-bottom:0;
+}
+.swipeout-close{
+	transform: none!important;
+}

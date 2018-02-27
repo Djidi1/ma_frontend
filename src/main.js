@@ -337,7 +337,8 @@ new Vue({
                                          "checklist_id": cl.id,
                                          "warning_level":req.warning_level,
                                          "created_at":req.created_at,
-                                         "comments":self.get_comments_from_result(audits,results,req.id)
+                                         "comments":self.get_comments_from_result(audits,results,req.id),
+                                         "disabled":false
                                      };
                                    new_cl.requirement.push(new_req);
 
@@ -378,7 +379,6 @@ new Vue({
             let result_com;
             result.forEach(function(itm){
                if (itm.audit_id===audit.id&&itm.requirement_id===id){
-
                        let comm={
                            "text":itm.comment,
                            "attachments":[]
@@ -400,7 +400,7 @@ new Vue({
                            //
                            //  let url=encodeURI("https://test.bh-app.ru/img/attaches/attache-1519074845.png");
                            comm.attachments.push(new_att);
-                       })
+                       });
                        result_com=comm;
 
                }

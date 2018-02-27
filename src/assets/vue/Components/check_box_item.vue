@@ -1,6 +1,6 @@
 <template>
         <f7-col width="50">
-                <label class="item-content label-checkbox " :class="button_cls">
+                <label class="item-content label-checkbox" :class="button_cls">
                     <i :class="icon_cls" aria-hidden="true"></i>
                     <input name="checkbox" type="checkbox" :checked="checked_status"  @change="checkbox_change(button_type)" :disabled="read">
                     <div class="item-media">
@@ -49,6 +49,10 @@
     .sucsess_status input[type=checkbox]:checked+.item-media i,icon-form-checkbox{
         background-color: #019341 !important;
         border-color: #019341!important;
+    }
+    .sucsess_status:after,
+    .false_status:after{
+        display:none!important;
     }
 
 </style>
