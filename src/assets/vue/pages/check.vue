@@ -2,6 +2,9 @@
     <f7-page>
         <f7-navbar back-link="Back" sliding  >
             <f7-nav-center sliding> {{check.title}}</f7-nav-center>
+            <f7-nav-right v-if="!uploaded">
+                <f7-link @click="remove_check"> <i class="fa fa-trash-o" aria-hidden="true"></i></f7-link>
+            </f7-nav-right>
         </f7-navbar>
         <div class="blck_info">
         <f7-card>
@@ -96,6 +99,24 @@
                     req.status=(req.disabled)?req.status:(req.status===0)?-1:req.status;
                 });
                 this.$f7.views.main.back()
+            },
+            remove_check(){
+                let self=this;
+                this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
+                    self.$root.objects.forEach(function(obj){
+                        obj.audits.forEach(function(audit){
+                           if (Number(audit.id)===Number(self.audit_id)|| audit.id===self.audit_id) {
+                               audit.check_list.forEach(function(ch,j){
+                                  if (ch.id===Number(self.check_id)){
+                                      audit.check_list.splice(j,1);
+                                  }
+                               })
+                           }
+                        });
+                    });
+                    self.$ls.set('objects',self.$root.objects);
+                    self.$f7.views.main.back();
+                })
             }
         }
 
