@@ -81,6 +81,22 @@
                 });
                 return (new_str)?"":(result)?"fa fa-check fa-2x audit_good":"fa fa-times fa-2x audit_wrong";
             },
+            abort_check_list(){
+                let self=this;
+                self.check.requirement.forEach(function(req,j){
+                        req.status=0;
+                        self.$ls.set('objects',self.$root.objects);
+
+                });
+
+            },
+            check_list_status(){
+                let self=this;
+                self.check.requirement.forEach(function(req){
+                    req.status=(req.disabled)?req.status:(req.status===0)?-1:req.status;
+                });
+                this.$f7.views.main.back()
+            }
         }
 
     }

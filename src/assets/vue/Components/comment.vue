@@ -4,8 +4,8 @@
             <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_title" after="<i class='fa fa-commenting-o' aria-hidden='true'></i>">
                 <f7-accordion-content>
                     <transition appear mode="out-in" name="slide-fade">
-                    <single-comment  v-if="hasComment" v-for="(comment,id) in this.data_comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="read"></single-comment>
-                    <f7-block inner v-else><text_area :data_set="this.data_comments"></text_area></f7-block>
+                    <single-comment  v-for="(comment,id) in this.data_comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="read"></single-comment>
+                    <f7-block inner v-if="!hasComment"><text_area :data_set="this.data_comments"></text_area></f7-block>
                     </transition>
                 </f7-accordion-content>
             </f7-list-item>
@@ -26,7 +26,7 @@
         },
         computed:{
             hasComment(){
-                   return (this.data_comments[0].text!='' || this.data_comments[0].attachments.length>0);
+                   return (this.data_comments.length>0);
             }
         },
         methods:{

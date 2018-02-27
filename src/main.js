@@ -376,9 +376,10 @@ new Vue({
       get_comments_from_result(audit,result,id){
             let self=this;
             let res=[];
-            let result_com;
+            let result_com=[];
             result.forEach(function(itm){
                if (itm.audit_id===audit.id&&itm.requirement_id===id){
+                   if(itm.text!=undefined ||itm.audit_result_attache.length>0){
                        let comm={
                            "text":itm.comment,
                            "attachments":[]
@@ -402,10 +403,12 @@ new Vue({
                            comm.attachments.push(new_att);
                        });
                        result_com=comm;
-
+                   }
                }
             });
-            res.push(result_com);
+
+            (result_com.length===0)?'':res.push(result_com);
+
             return res;
       }
     }

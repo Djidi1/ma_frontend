@@ -138,12 +138,6 @@
             check_list_status(id){
                 let self=this;
                 this.$f7.confirm(this.$root.localization.modal.modalConfirmSend,this.$root.localization.modal.modalTextConf, function () {
-                    let result_req_arr=[];
-                    (self.audit.check_list).forEach(function(item,i,arr){
-                        item.requirement.forEach(function(req,j){
-                            req.status=(req.status!=1)?-1:req.status;
-                        });
-                    });
                     let requs={
                         "audit":{
                             "check_list":self.get_req(),
@@ -171,7 +165,8 @@
                       let req_obj={
                           "id":req.id,
                           "status":req.status,
-                          "comments":self.get_comments(req)
+                          "comments":self.get_comments(req),
+                          "disabled":req.disabled
                       }
                        check_obj.requirement.push(req_obj);
                    });
