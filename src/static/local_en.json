@@ -9,6 +9,10 @@
     "Empty_input_password":"Need password!",
     "warning":"Warning!"
   },
+  "SearchBar":{
+  "title":"Search",
+  "nothing":"Nothing found"
+},
   "LeftMenu":{
     "Audit":"Audits",
     "Object":"Objects",
@@ -39,7 +43,8 @@
     "check_list":"Check-lists",
     "comments_title":"Comments",
     "comment_placeholder":"Comment",
-    "comment_button":"Send"
+    "comment_button":"Send",
+    "check_list_position":"Requirements for check-list"
   },
   "lang": {
     "rus": "Russian",

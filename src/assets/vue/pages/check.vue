@@ -12,7 +12,7 @@
                     :init="true"
                     disable-link-text="Cancel"
                     searchList="#search-list"
-                    placeholder="Search in items"
+                    :placeholder="this.$root.localization.SearchBar.title"
                     :clear-button="true">
             </f7-searchbar>
 
@@ -23,14 +23,14 @@
         <f7-card>
             <f7-card-header>
                 <f7-grid style="width:100%; min-height:34px">
-                    <f7-col width="70" style="line-height: 34px">Требования к чек-листу</f7-col>
+                    <f7-col width="70" style="line-height: 34px">{{this.$root.localization.AuditPage.check_list_position}}</f7-col>
                     <f7-col width="30" style="text-align: center"><i :class="status" aria-hidden='true'></i> </f7-col>
                 </f7-grid>
             </f7-card-header>
             <f7-card-content class="check_content">
                 <check_item  :data_item="check.requirement" :read="uploaded"></check_item>
                 <f7-list class="searchbar-not-found check_list_items">
-                    <f7-list-item title="Nothing found"></f7-list-item>
+                    <f7-list-item :title="this.$root.localization.SearchBar.nothing"></f7-list-item>
                 </f7-list>
             </f7-card-content>
         </f7-card>

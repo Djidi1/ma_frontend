@@ -9,6 +9,10 @@
     "Empty_input_password":"Введите пароль!",
     "warning":"Внимание!"
   },
+  "SearchBar":{
+    "title":"Поиск",
+    "nothing":"Ничего не найдено"
+  },
   "LeftMenu": {
     "Audit": "Аудиты",
     "Object": "Объекты",
@@ -39,7 +43,8 @@
     "check_list": "Чек-листы",
     "comments_title": "Комментарии",
     "comment_placeholder": "Комментарий",
-    "comment_button": "Отправить"
+    "comment_button": "Отправить",
+    "check_list_position":"Требования к чек-листу"
   },
   "lang": {
     "rus": "Русский",

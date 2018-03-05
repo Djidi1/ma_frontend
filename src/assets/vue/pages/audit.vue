@@ -70,7 +70,7 @@
                             <!--<f7-button @click="abort_check_list()" class="abort_button" color="gray"><i class="fa fa-undo" aria-hidden="true"></i> </f7-button>-->
                         <!--</f7-col>-->
                         <f7-col width="100">
-                            <f7-button fill @click="check_list_status()"><i class="fa fa-check" aria-hidden="true"></i> Send</f7-button>
+                            <f7-button fill @click="check_list_status()"><i class="fa fa-check" aria-hidden="true"></i> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
                         </f7-col>
                     </f7-grid>
                 </f7-block>
