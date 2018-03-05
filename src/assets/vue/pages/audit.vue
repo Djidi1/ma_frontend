@@ -48,10 +48,15 @@
                 </f7-card-footer>
                 </f7-card>
             <f7-card>
-                <f7-list accordion class="acrd_custom">
+                <f7-list accordion class="acrd_custom text_main">
                     <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_title" :after="comment_audit_count">
                         <f7-accordion-content>
-                            <f7-block inner><text_area></text_area></f7-block>
+                            <transition-group appear mode="out-in" name="slide-fade" >
+                                <single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id"></single-comment>
+                            </transition-group>
+
+                            <!--<comment v-if="showComment" :data_comments="this.audit.comments" :read="uploaded"></comment>-->
+                            <f7-block inner><text_area :data_set="this.audit.comments"></text_area></f7-block>
                         </f7-accordion-content>
                     </f7-list-item>
                 </f7-list>
@@ -78,10 +83,13 @@
 
 <script>
     import Popup_audit_edit from "src/assets/vue/Components/popup_edit_audit";
+    import SingleComment from "src/assets/vue/Components/single-comment";
 
     var $$=Dom7;
     export default {
-        components: {Popup_audit_edit},
+        components: {Popup_audit_edit,
+                     SingleComment
+        },
         name: "audit",
         props: {
             id: { type: String},
@@ -114,6 +122,9 @@
             hasCheck_list(){
                 return (this.audit.check_list.length>0);
             },
+            showComment(){
+                return (this.audit.comments.length>0);
+            },
             data_format(){
                 let data=new Date(this.audit.created_at);
                 let curSec=('0'+data.getSeconds()).substr(-2);
@@ -127,7 +138,7 @@
                 return this.audit.upload;
             },
             comment_audit_count(){
-                return (this.audit.comments)?"<i class='fa fa-commenting-o' aria-hidden='true'></i>"+this.audit.comments.length:"<i class='fa fa-commenting-o' aria-hidden='true'></i>";
+                return (this.audit.comments.length>0)?"<i class='fa fa-commenting-o' aria-hidden='true'></i> "+this.audit.comments.length:"<i class='fa fa-commenting-o' aria-hidden='true'></i>";
             }
         },
         methods:{
@@ -203,7 +214,13 @@
                 );
             },
 
-
+            remove_comment(id){
+                let self=this;
+                this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
+                    self.audit.comments.splice(id,1);
+                    self.$ls.set('objects',self.$root.objects);
+                });
+            },
 
 
 

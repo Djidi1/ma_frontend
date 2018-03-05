@@ -9,10 +9,14 @@
                 <f7-block>
                     <div class="row ">
                         <div class="col-50 attachment_button">
+                            <div class="comment-photupload comment-photos">
+                                <f7-icon size=28  fa="camera" style="padding-top:3px;"></f7-icon>
+                            </div>
                             <f7-col  class="comment-photupload comment-photos" width="20">
-                                <f7-icon size=28  fa="camera"></f7-icon>
-                                <input @change="upload" class="comment-file" type="file" accept="image/*;capture=camera" multiple >
+                                <f7-icon size=30  fa="paperclip"></f7-icon>
+                                <input @change="upload" class="comment-file" type="file" accept="image/*" multiple >
                             </f7-col>
+
                         </div>
                         <div class="col-50">
                             <f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
@@ -110,10 +114,17 @@
                         }
                         this.data_comm.push(comment);
                     }
+                    this.clear_input();
                     this.$ls.set('objects',this.$root.objects);
                     this.$emit('edit_done')
                 }
 
+            },
+            clear_input(){
+                this.text='';
+                this.attachment=[];
+                this.$$(this.$el).find('.item-inner').removeClass('not-empty-state');
+                this.$$(this.$el).find('.item-inner').find('.item-input').removeClass('not-empty-state');
             },
             removeAttachment(id){
                 this.attachment.splice(id,1);
@@ -245,7 +256,7 @@
     .comment-photos {
         text-align: center;
         color: #868686;
-        margin:0 7px 0 5px;
+        margin:0 15px 0 5px;
         padding-top:5px;
         width:36px;
 

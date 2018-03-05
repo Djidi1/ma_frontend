@@ -301,6 +301,7 @@ new Vue({
                                 "date_add":audit.date_add,
                                 "created_at":audit.created_at,
                                 "check_list":[],
+                                "comments":[],
                                 "object_id":object.id,
                                 "check_list_id":audit.checklist_id,
                                 "upload":false
@@ -371,7 +372,6 @@ new Vue({
                     res=(upload)?true:false;
                 });
                 arr.upload=res;
-                console.log(arr);
       },
       get_comments_from_result(audit,result,id){
             let self=this;

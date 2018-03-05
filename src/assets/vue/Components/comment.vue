@@ -4,7 +4,7 @@
             <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_title" after="<i class='fa fa-commenting-o' aria-hidden='true'></i>">
                 <f7-accordion-content>
                     <transition appear mode="out-in" name="slide-fade">
-                    <single-comment  v-for="(comment,id) in this.data_comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="read"></single-comment>
+                    <single-comment  v-for="(comment,id) in this.data_comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="read" :id="id"></single-comment>
                     <f7-block inner v-if="!hasComment"><text_area :data_set="this.data_comments"></text_area></f7-block>
                     </transition>
                 </f7-accordion-content>
