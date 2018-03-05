@@ -15,10 +15,23 @@
 		content: '';
 	}
 }
-
+.check_list_items{
+	margin-top:0!important;
+	transition: all 0.5s;
+}
 .login-screen-title{
 
 }
+.custom_sub{
+	box-shadow: none!important;
+}
+.searchbar-not-found>ul>li{
+	padding-left: 16px !important;
+}
+.searchbar-not-found>ul>li>.item-content:after{
+	display:none!important;
+}
+
 .login_form{
 	position: relative;
 }

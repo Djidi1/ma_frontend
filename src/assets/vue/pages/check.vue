@@ -5,7 +5,20 @@
             <f7-nav-right v-if="!uploaded">
                 <f7-link @click="remove_check"> <i class="fa fa-trash-o" aria-hidden="true"></i></f7-link>
             </f7-nav-right>
+
         </f7-navbar>
+       <f7-subnavbar sliding class="custom_sub">
+            <f7-searchbar
+                    :init="true"
+                    disable-link-text="Cancel"
+                    searchList="#search-list"
+                    placeholder="Search in items"
+                    :clear-button="true">
+            </f7-searchbar>
+
+
+        </f7-subnavbar>
+        <div class="searchbar-overlay"></div>
         <div class="blck_info">
         <f7-card>
             <f7-card-header>
@@ -15,7 +28,10 @@
                 </f7-grid>
             </f7-card-header>
             <f7-card-content class="check_content">
-                <check_item v-for="(item,item_id) in check.requirement" :key="item_id"  :data_item="item" :read="uploaded"></check_item>
+                <check_item  :data_item="check.requirement" :read="uploaded"></check_item>
+                <f7-list class="searchbar-not-found check_list_items">
+                    <f7-list-item title="Nothing found"></f7-list-item>
+                </f7-list>
             </f7-card-content>
         </f7-card>
 
@@ -49,7 +65,12 @@
         data:function(){
             return{
                 check:{},
-                uploaded:false
+                uploaded:false,
+                items: (function () {
+                    var it = [];
+                    for (var i = 0; i < 5; i++) it.push(i+1);
+                    return it;
+                })()
             }
         },
         created(){
@@ -74,6 +95,12 @@
             }
         },
         methods:{
+            onSearch(searchbar, query, previousQuery){
+                console.log(searchbar);
+                console.log(query);
+                console.log(previousQuery);
+
+            },
             upload_st(str){
                  let result=true;
                 let new_str=true;

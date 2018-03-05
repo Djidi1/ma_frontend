@@ -16,7 +16,8 @@
         props:{
             item_status:{type:Number,default:0},
             button_type:{type:Boolean,default:true},
-            read:{type:Boolean,default:false}
+            read:{type:Boolean,default:false},
+            item:{type:Object}
         },
         computed:{
             button_cls(){
@@ -32,7 +33,7 @@
         methods:{
             checkbox_change(val){
                 val = (this.button_type)?1:-1;
-                this.$emit('change_status',val)
+                this.$emit('change_status',val,this.item)
             }
         }
     }
