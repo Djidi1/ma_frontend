@@ -153,7 +153,7 @@
             getPhoto(img){
                 this.text=img;
                 let new_file={
-                  "caption":'test_caption',
+                  "caption":img,
                   "file":{
                       'name':'test',
                       "size":"test_size",
