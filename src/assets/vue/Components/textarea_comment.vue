@@ -9,15 +9,15 @@
                 <f7-block>
                     <div class="row ">
                         <div class="col-50 attachment_button">
-                            <div class="comment-photupload comment-photos">
+                            <div class="comment-photupload comment-photos" @click="upload(true)">
                                 <f7-icon size=28  fa="camera" style="padding-top:3px;"></f7-icon>
-                                <input @click="upload(true)" class="comment-file" >
+                                <!--<input @click="upload(true)" class="comment-file" >-->
                             </div>
-                            <f7-col  class="comment-photupload comment-photos" width="20">
+                            <div  class="comment-photupload comment-photos" @click="upload(false)" >
                                 <f7-icon size=30  fa="paperclip"  ></f7-icon>
-                                <input @click="upload(false)" class="comment-file" >
+                                <!--<input @click="upload(false)" class="comment-file" >-->
                                 <!--type="file" accept="image/*" multiple-->
-                            </f7-col>
+                            </div>
 
                         </div>
                         <div class="col-50">
@@ -146,7 +146,7 @@
                     destinationType:Camera.DestinationType.FILE_URI,
                     sourceType:source,
                     encodingType:Camera.EncodingType.JPEG,
-                    mediaType:Camera.MediaType.PICTURE
+                    mediaType:Camera.MediaType.PICTURE,
                 })
 
             },
@@ -164,7 +164,7 @@
                 this.attachment.push(new_file)
             },
             getPhotoFail(message){
-              this.text=message;
+              this.$f7.alert('','Error');
             },
             // upload(e){
             //     let self=this;

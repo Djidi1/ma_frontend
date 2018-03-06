@@ -13,6 +13,7 @@
                 <div class="remove_button" @click="remove_attach(index)"><i class="fa fa-times" aria-hidden="true"></i></div>
             </div>
         </div>
+            {{this.attachment}}
         </transition-group>
         </div>
 </template>

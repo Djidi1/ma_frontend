@@ -410,8 +410,8 @@ new Vue({
           let self=this;
           let file_name=url.split('/');
           let result='';
-         // this.test_dir();
-          window.requestFileSystem(LocalFileSystem.PERSISTENT,0,function(fs){
+     //     this.test_dir();
+          window.resolveLocalFileSystemURI(cordova.file.dataDirectory,function(fs){
               console.log('file system open: ' + fs.name);
               let url_load="https://test.bh-app.ru"+url;
               fs.root.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
@@ -438,7 +438,7 @@ new Vue({
               },function(error){
                     console.log("download error source " + error.source);
                     console.log("download error target " + error.target);
-                    result='';
+                    result=error;
               },
                 true,
                 );
