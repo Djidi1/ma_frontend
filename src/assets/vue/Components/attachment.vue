@@ -15,7 +15,7 @@
         </div>
             {{attachment}}
         </transition-group>
-        </div>еще
+        </div>
 
 </template>
 
