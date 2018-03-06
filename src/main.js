@@ -410,7 +410,7 @@ new Vue({
           let self=this;
           let file_name=url.split('/');
           let result='';
-     //     this.test_dir();
+          this.test_dir();
           console.log(cordova.file.dataDirectory);
           window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry){
               console.log('file system open: ' + dirEntry.name);
