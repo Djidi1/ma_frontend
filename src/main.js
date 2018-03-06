@@ -392,14 +392,9 @@ new Vue({
                                    "size":att.file_size,
                                    "type":att.file_mime
                                },
-                               "url":"https://test.bh-app.ru"+att.file_path
+                                  "url":self.get_url_frome_base()
+                               // "url":"https://test.bh-app.ru"+att.file_path
                            }
-                           // self.$http.get("https://test.bh-app.ru/img/attaches/attache-1519074845.png",{}).then(response=>{console.log(response)},response=>{console.log(response)})
-                           // let file_tr=new FileTransfer();
-                           //   let pathToFile = self.cordova;
-                           //   console.log(pathToFile);
-                           //
-                           //  let url=encodeURI("https://test.bh-app.ru/img/attaches/attache-1519074845.png");
                            comm.attachments.push(new_att);
                        });
                        result_com=comm;
@@ -410,7 +405,44 @@ new Vue({
             (result_com.length===0)?'':res.push(result_com);
 
             return res;
+      },
+      get_url_frome_base(url){
+          let self=this;
+          let file_name=url.split('/');
+            let result='';
+          window.requestFileSystem(LocalFileSystem.PERSISTENT,0,function(fs){
+              console.log('file system open: ' + fs.name);
+              let url="https://test.bh-app.ru"+att.file_path;
+              fs.root.getFile(file_name,{create:true,exclusive:false},function(fileEntry){
+                  result=self.download(fileEntry,url,true);
+              },function(){
+                  self.$f7.alert('','Error_Load')
+              });
+          },function(){  self.$f7.alert('','File_systemfaild')});
+          return result;
+      },
+      download(fileEntry,uri,readB){
+            let self=this;
+            let file_tr=new FileTransfer();
+            let fileURL=fileEntry.toURL();
+            let result;
+            file_tr.download(
+              uri,
+              fileURL,
+              function(entry){
+                  console.log("Succsessful download...");
+                  console.log("Download complete:"+entry.toURL());
+                  result=entry.toURL();
+
+              },function(error){
+                    console.log("download error source " + error.source);
+                    console.log("download error target " + error.target);
+                    result='';
+              },
+                true,
+                );
+            return result;
       }
     }
 
-})
+});

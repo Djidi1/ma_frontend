@@ -11,10 +11,12 @@
                         <div class="col-50 attachment_button">
                             <div class="comment-photupload comment-photos">
                                 <f7-icon size=28  fa="camera" style="padding-top:3px;"></f7-icon>
+                                <input @click="upload(true)" class="comment-file" >
                             </div>
                             <f7-col  class="comment-photupload comment-photos" width="20">
-                                <f7-icon size=30  fa="paperclip"></f7-icon>
-                                <input @change="upload" class="comment-file" type="file" accept="image/*" multiple >
+                                <f7-icon size=30  fa="paperclip"  ></f7-icon>
+                                <input @click="upload(false)" class="comment-file" >
+                                <!--type="file" accept="image/*" multiple-->
                             </f7-col>
 
                         </div>
@@ -137,84 +139,110 @@
                 return lastId;
             },
 
+            upload(mode){
+                let source=(mode)?Camera.PictureSourceType.CAMERA:Camera.PictureSourceType.SAVEDPHOTOALBUM;
+                navigator.camera.getPicture(this.getPhoto,this.getPhotoFail,{
+                    quality:50,
+                    destinationType:Camera.DestinationType.FILE_URI,
+                    sourceType:source,
+                    encodingType:Camera.EncodingType.JPEG,
+                    mediaType:Camera.MediaType.PICTURE
+                })
 
-            upload(e){
-                let self=this;
-                let files=e.target.files;
-                for (var i = 0; i<files.length; i++) {
-                  if (files[i].type.match('image.*')){
-                       let result_file={};
-                       let file_obj={
-                           "name":files[i].name,
-                           "type":files[i].type,
-                           "size":files[i].size,
-                       };
-                       self.$set(result_file,'caption',files[i].name);
-                       self.attachment.push(result_file);
-                       let reader = new FileReader();
-                        reader.onloadstart=function(){
-                            self.$$('#img_pr'+(self.attachment.length-1)).show();
-                        };
-                       reader.onprogress=this.updateProgress;
-                       reader.onload=function(file){
-                           let blob=new Blob([file.target.result]);
-                           window.URL=window.URL||window.webkitURL;
-                           let blobURL=window.URL.createObjectURL(blob);
-                           self.$set(result_file,'url',blobURL);
-                           let img=new Image();
-                           img.src=blobURL;
-                           img.onload=function(){
-                               let result=self.resizeImg(img);
-                               self.$set(result_file,'url',result);
-                           }
-
-                       };
-                       reader.onloadend=function(){
-                           let progres_elem=self.$$('#img_pr'+(self.attachment.length-1)).find('.progress');
-                           if (progres_elem.width()!=50){
-                               progres_elem.animate({
-                                   'width':50
-                               },{
-                                   duration:'200',
-                                   easing:'swing',
-                                   complete: function (elements) {
-                                       self.$$('#img_pr'+(self.attachment.length-1)).hide();
-                                   }
-                               });
-                           }else{
-                               self.$$('#img_pr'+(self.attachment.length-1)).hide();
-                           }
-                       };
-                       reader.readAsArrayBuffer(files[i])
-                      // reader.readAsDataURL(files[i]);
-                       self.$set(result_file,'file',file_obj);
-
-                   }
-                }
-                e.target.value='';
             },
-            updateProgress(evt){
-                let number=this.attachment.length-1;
-                if (evt.lengthComputable){
-                    let percentLoaded = (Math.round((evt.loaded / evt.total) * 100))-10;
-                    let elem=( this.$$('#img_pr'+number).find('.progress'));
-                    let  px_widht=(50/100)*percentLoaded;
-                    elem.animate({
-                        'width':px_widht
-                    },{
-                        duration:'200',
-                        easing:'swing'
-                    })
-                }
+            getPhoto(img){
+                this.text=img;
+                let new_file={
+                  "caption":'test_caption',
+                  "file":{
+                      'name':'test',
+                      "size":"test_size",
+                      "type":"test_type"
+                  },
+                  "url":img
+                };
+                this.attachment.push(new_file)
             },
-            resizeImg(img){
-                let canvas=document.createElement('canvas');
-                let ctx=canvas.getContext("2d");
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img,0,0,img.width,img.height);
-                return canvas.toDataURL("image/jpeg",0.7);
+            getPhotoFail(message){
+              this.text=message;
             },
+            // upload(e){
+            //     let self=this;
+            //     let files=e.target.files;
+            //     for (var i = 0; i<files.length; i++) {
+            //       if (files[i].type.match('image.*')){
+            //            let result_file={};
+            //            let file_obj={
+            //                "name":files[i].name,
+            //                "type":files[i].type,
+            //                "size":files[i].size,
+            //            };
+            //            self.$set(result_file,'caption',files[i].name);
+            //            self.attachment.push(result_file);
+            //            let reader = new FileReader();
+            //             reader.onloadstart=function(){
+            //                 self.$$('#img_pr'+(self.attachment.length-1)).show();
+            //             };
+            //            reader.onprogress=this.updateProgress;
+            //            reader.onload=function(file){
+            //                let blob=new Blob([file.target.result]);
+            //                window.URL=window.URL||window.webkitURL;
+            //                let blobURL=window.URL.createObjectURL(blob);
+            //                self.$set(result_file,'url',blobURL);
+            //                let img=new Image();
+            //                img.src=blobURL;
+            //                img.onload=function(){
+            //                    let result=self.resizeImg(img);
+            //                    self.$set(result_file,'url',result);
+            //                }
+            //
+            //            };
+            //            reader.onloadend=function(){
+            //                let progres_elem=self.$$('#img_pr'+(self.attachment.length-1)).find('.progress');
+            //                if (progres_elem.width()!=50){
+            //                    progres_elem.animate({
+            //                        'width':50
+            //                    },{
+            //                        duration:'200',
+            //                        easing:'swing',
+            //                        complete: function (elements) {
+            //                            self.$$('#img_pr'+(self.attachment.length-1)).hide();
+            //                        }
+            //                    });
+            //                }else{
+            //                    self.$$('#img_pr'+(self.attachment.length-1)).hide();
+            //                }
+            //            };
+            //            reader.readAsArrayBuffer(files[i])
+            //           // reader.readAsDataURL(files[i]);
+            //            self.$set(result_file,'file',file_obj);
+            //
+            //        }
+            //     }
+            //     e.target.value='';
+            // },
+            // updateProgress(evt){
+            //     let number=this.attachment.length-1;
+            //     if (evt.lengthComputable){
+            //         let percentLoaded = (Math.round((evt.loaded / evt.total) * 100))-10;
+            //         let elem=( this.$$('#img_pr'+number).find('.progress'));
+            //         let  px_widht=(50/100)*percentLoaded;
+            //         elem.animate({
+            //             'width':px_widht
+            //         },{
+            //             duration:'200',
+            //             easing:'swing'
+            //         })
+            //     }
+            // },
+            // resizeImg(img){
+            //     let canvas=document.createElement('canvas');
+            //     let ctx=canvas.getContext("2d");
+            //     canvas.width = img.width;
+            //     canvas.height = img.height;
+            //     ctx.drawImage(img,0,0,img.width,img.height);
+            //     return canvas.toDataURL("image/jpeg",0.7);
+            // },
 
 
 
