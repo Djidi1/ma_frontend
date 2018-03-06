@@ -392,7 +392,7 @@ new Vue({
                                    "size":att.file_size,
                                    "type":att.file_mime
                                },
-                                  "url":self.get_url_frome_base()
+                                  "url":self.get_url_frome_base(att.file_path)
                                // "url":"https://test.bh-app.ru"+att.file_path
                            }
                            comm.attachments.push(new_att);
@@ -409,12 +409,14 @@ new Vue({
       get_url_frome_base(url){
           let self=this;
           let file_name=url.split('/');
-            let result='';
+          let result='';
+         // this.test_dir();
           window.requestFileSystem(LocalFileSystem.PERSISTENT,0,function(fs){
               console.log('file system open: ' + fs.name);
-              let url="https://test.bh-app.ru"+att.file_path;
-              fs.root.getFile(file_name,{create:true,exclusive:false},function(fileEntry){
-                  result=self.download(fileEntry,url,true);
+              let url_load="https://test.bh-app.ru"+url;
+              fs.root.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
+                  console.log(fileEntry);
+                  result=self.download(fileEntry,url_load,true);
               },function(){
                   self.$f7.alert('','Error_Load')
               });
@@ -433,7 +435,6 @@ new Vue({
                   console.log("Succsessful download...");
                   console.log("Download complete:"+entry.toURL());
                   result=entry.toURL();
-
               },function(error){
                     console.log("download error source " + error.source);
                     console.log("download error target " + error.target);
@@ -442,6 +443,37 @@ new Vue({
                 true,
                 );
             return result;
+      },
+      test_dir(){
+            let self=this;
+           window.requestFileSystem(LocalFileSystem.PERSISTENT,0,function(fs){
+             fs.root.getDirectory('NewDirInRoot',{create:true},function(dirEntry){
+                 console.log(dirEntry);
+                 dirEntry.getDirectory('images',{create:true},function(subDir){
+                         // Creates a new file or returns the file if it already exists.
+                         dirEntry.getFile('Test.txt', {create: true, exclusive: false}, function(fileEntry) {
+                            fileEntry.createWriter(function(fileWriter){
+                                fileWriter.onwriteend=function(){
+                                    console.log('Writeend');
+                                    self.readfile(fileEntry)
+                                }
+                                let dataobj=new Blob(['something'],{type:'text/plain'});
+                                fileWriter.write(dataobj);
+                            });
+                         }, function(){console.log('Error_create_dir')});
+                 })
+               }) ;
+           });
+      },
+      readfile(file){
+            file.file(function(file){
+                let reader= new FileReader();
+                reader.onloadend=function(){
+                    console.log(this.result);
+                }
+                reader.readAsText(file);
+            });
+
       }
     }
 
