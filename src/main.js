@@ -411,11 +411,12 @@ new Vue({
           let file_name=url.split('/');
           let result='';
      //     this.test_dir();
-          window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(fs){
-              console.log('file system open: ' + fs.name);
+          console.log(cordova.file.dataDirectory);
+          window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry){
+              console.log('file system open: ' + dirEntry.name);
               let url_load="https://test.bh-app.ru"+url;
               url_load=encodeURI(url_load);
-              fs.root.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
+              dirEntry.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
                   self.$f7.alert('',fileEntry);
                   result=self.download(fileEntry,url_load,true);
               },function(){
