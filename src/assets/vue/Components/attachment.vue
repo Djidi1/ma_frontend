@@ -13,9 +13,10 @@
                 <div class="remove_button" @click="remove_attach(index)"><i class="fa fa-times" aria-hidden="true"></i></div>
             </div>
         </div>
-            {{this.attachment}}
+            {{attachment}}
         </transition-group>
-        </div>
+        </div>еще
+
 </template>
 
 <script>
@@ -26,6 +27,9 @@
         props:{
             attachment:{type:Array,default:function(){return []}},
             edit_mode:{type:Boolean,default:false}
+        },
+        created(){
+            console.log('created');
         },
         methods:{
             attachImg(attach_img,id){
