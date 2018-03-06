@@ -411,7 +411,7 @@ new Vue({
           let file_name=url.split('/');
           let result='';
      //     this.test_dir();
-          window.requestFileSystem(window.TEMPORARY, 5 * 1024 * 1024,function(fs){
+          window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(fs){
               console.log('file system open: ' + fs.name);
               let url_load="https://test.bh-app.ru"+url;
               url_load=encodeURI(url_load);
@@ -437,9 +437,9 @@ new Vue({
                   console.log("Download complete:"+entry.toURL());
                   result=entry.toURL();
               },function(error){
-                    self.$f7.alert('',error);
+                    self.$f7.alert('',error.source);
                     console.log("download error target " + error.target);
-                    result=error;
+                    result=error.source;
               },
                 true,
                 );
