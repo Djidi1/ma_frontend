@@ -27,9 +27,6 @@
             attachment:{type:Array,default:function(){return []}},
             edit_mode:{type:Boolean,default:false}
         },
-        created(){
-            console.log('created');
-        },
         methods:{
             attachImg(attach_img,id){
                 return{

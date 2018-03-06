@@ -416,7 +416,7 @@ new Vue({
               let url_load="https://test.bh-app.ru"+url;
               url_load=encodeURI(url_load);
               fs.root.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
-                  console.log(fileEntry);
+                  self.$f7.alert('',fileEntry);
                   result=self.download(fileEntry,url_load,true);
               },function(){
                   self.$f7.alert('','Error_Load')
@@ -433,11 +433,11 @@ new Vue({
               uri,
               fileURL,
               function(entry){
-                  console.log("Succsessful download...");
+                  self.$f7.alert('',entry);
                   console.log("Download complete:"+entry.toURL());
                   result=entry.toURL();
               },function(error){
-                    console.log("download error source " + error.source);
+                    self.$f7.alert('',error);
                     console.log("download error target " + error.target);
                     result=error;
               },

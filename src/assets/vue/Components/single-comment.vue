@@ -116,6 +116,7 @@
     }
     .content_comment{
         padding:15px 7px 15px 7px;
+        word-wrap: break-word;
     }
 
     .footer_comment .control{
