@@ -15,7 +15,6 @@
                         <div class="content_comment">
                             {{single_comment.text}}
                             <div v-show="hasAttach(id)">
-                                <div> {{single_comment.attachments}}</div>
                                 <attachment :attachment="single_comment.attachments" ></attachment>
                             </div>
                         </div>

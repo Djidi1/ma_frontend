@@ -456,17 +456,14 @@ new Vue({
                                  if (itm.audit_id===ad.id&&itm.requirement_id===req.id){
                                      req.comments.forEach(function(comm){
                                          comm.attachments.forEach(function(att,k,att_arr){
-                                             self.$f7.alert('','get_to_correct_com');
                                              self.get_img_frome_base(att.url).then(
                                                  result=>{
                                                      att.url=result;
-                                                     self.$f7.alert('',result);
-                                                   //  self.$ls.set('objects',self.$root.objects);
+                                                     self.$ls.set('objects',self.$root.objects);
                                                  },
                                                  error=>{
                                                      att_arr.splice(k,1);
-                                                     self.$f7.alert('',error);
-                                                     //self.$ls.set('objects',self.$root.objects);
+                                                     self.$ls.set('objects',self.$root.objects);
                                                  }
                                              );
                                          });
@@ -556,10 +553,8 @@ new Vue({
           let self=this;
           let file_name=url.split('/');
           let result='';
-          self.$f7.alert('','get_to_method_start');
           return new Promise(function(resolve,reject){
                   window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry) {
-                      self.$f7.alert('', 'file system open: ' + dirEntry.toURL());
                       let url_load = "https://test.bh-app.ru" + url;
                       url_load = encodeURI(url_load);
                       dirEntry.getDirectory('Img',{create:true},function(dirEntry_sub){
@@ -567,7 +562,6 @@ new Vue({
                                     self.download(fileEntry,url_load).then(
                                         ready=>{
                                             result=ready;
-                                            self.$f7.alert('',"download complete: "+result);
                                             resolve(result)
                                         },
                                         error=>{
@@ -633,7 +627,6 @@ new Vue({
                     fileURL,
                     function(entry){;
                         ready=entry.toURL();
-                        self.$f7.alert('','Result_download:'+ready);
                         resolve(ready)
                     },function(error){
                         console.log("download error target " + error.target());
