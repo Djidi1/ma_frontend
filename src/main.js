@@ -207,6 +207,10 @@ new Vue({
                             return self.getresults(result,result_audit,self.check_list)
                         }
                     ).then(
+                    result_arr=>{
+                            return self.down_att(result_arr,result_audit);
+                        }
+                    ).then(
                         result_arr=>{
                             result=result_arr;
                             resolve(result);
@@ -279,7 +283,6 @@ new Vue({
               )
            });
         },
-
         create_object_list(objects,audits,results,check_list){
             let self=this;
             let object_arr=[];
@@ -416,7 +419,6 @@ new Vue({
                             };
                             self.attach_get(itm).then(result_att=>{
                                 comm.attachments=result_att;
-                                console.log(comm);
                                 res.push(comm);
                             });
                         }
@@ -425,13 +427,11 @@ new Vue({
                 resolve(res);
             });
       },
-      attach_get(itm){
+      attach_get(itm,){
            let self=this;
            let result_att=[];
            return new Promise(function(resolve){
                itm.audit_result_attache.forEach(function(att){
-                   self.get_img_frome_base(att.file_path).then(
-                       result=>{
                            let new_att={
                                "caption":att.file_name,
                                "file":{
@@ -439,30 +439,49 @@ new Vue({
                                    "size":att.file_size,
                                    "type":att.file_mime
                                },
-                               "url":result
+                               "url":att.file_path
                                // "url":"https://test.bh-app.ru"+att.file_path
                            };
                            result_att.push(new_att);
-                       },
-                       error=>{
-                           console.log(error);
-                           //test
-                           let new_att={
-                               "caption":att.file_name,
-                               "file":{
-                                   "name":att.file_name,
-                                   "size":att.file_size,
-                                   "type":att.file_mime
-                               },
-                               "url":error
-                               // "url":"https://test.bh-app.ru"+att.file_path
-                           };
-                           result_att.push(new_att);
-                       }
-                   );
                });
                resolve(result_att);
            })
+      },
+      down_att(result_arr,res){
+            let self=this;
+            return new Promise(function(resolve){
+                result_arr.forEach(function(obj){
+                   obj.audits.forEach(function(ad){
+                       ad.check_list.forEach(function(ch){
+                          ch.requirement.forEach(function(req){
+                             res.forEach(function(itm){
+                                 if (itm.audit_id===ad.id&&itm.requirement_id===req.id){
+                                     req.comments.forEach(function(comm){
+                                         comm.attachments.forEach(function(att){
+                                             self.get_img_frome_base(att.url).then(
+                                                 result=>{
+                                                     att.url=result;
+                                                     self.$f7.alert('',result);
+                                                     console.log(result_arr);
+                                                 },
+                                                 error=>{
+                                                     att.url=error;
+                                                     self.$f7.alert('',error);
+                                                     console.log(result_arr);
+                                                 }
+                                             );
+                                         });
+                                     });
+                                 }
+                             });
+
+                          });
+                       });
+                   });
+                });
+                self.$f7.alert('','forEach_done');
+                resolve(result_arr);
+          });
       },
       get_status(audit,result,id){
          let self=this;
@@ -536,7 +555,6 @@ new Vue({
      //        )
      //  },
       get_img_frome_base(url){
-
           let self=this;
           let file_name=url.split('/');
           let result='';
@@ -550,6 +568,7 @@ new Vue({
                                     self.download(fileEntry,url_load).then(
                                         ready=>{
                                             result=ready;
+                                            self.$f7.alert('',"download complete: "+result);
                                             resolve(result)
                                         },
                                         error=>{
@@ -616,10 +635,10 @@ new Vue({
                     fileURL,
                     function(entry){;
                         ready=entry.toURL();
-                        self.$f7.alert('','Result_download:'+result);
+                        self.$f7.alert('','Result_download:'+ready);
                         resolve(ready)
                     },function(error){
-                        console.log("download error target " + error.target);
+                        console.log("download error target " + error.target());
                         let error='error_download';
                         reject(error)
                     },
