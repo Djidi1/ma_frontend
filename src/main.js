@@ -559,7 +559,7 @@ new Vue({
                       url_load = encodeURI(url_load);
                       dirEntry.getDirectory('Img',{create:true},function(dirEntry_sub){
                               dirEntry_sub.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
-                                    self.download(fileEntry,url_load).then(
+                                    self.download(fileEntry,url_load,file_name[3]).then(
                                         ready=>{
                                             result=ready;
                                             resolve(result)
@@ -616,11 +616,12 @@ new Vue({
           //   }
           // );
       },
-      download(fileEntry,uri){
+      download(fileEntry,uri,name){
             let self=this;
             let file_tr=new FileTransfer();
-            let fileURL=fileEntry.toURL();
-            let ready;
+          //  let fileURL=fileEntry.toURL();
+           let fileURL="///storage/emulated/0/Android/data/dir_vue.vom/file/"+name;
+          let ready;
             return new Promise(function(resolve,reject){
                 file_tr.download(
                     uri,
