@@ -414,6 +414,7 @@ new Vue({
          window.requestFileSystem(LocalFileSystem.PERSISTENT,0,function(fs){
              self.$f7.alert('',fs.root);
           },function(){});
+         this.$f7.alert('',cordova.file.applicationStorageDirectory);
          this.$f7.alert('',cordova.file.dataDirectory);
           window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry){
             self.$f7.alert('','file system open: ' + dirEntry.toURL());
