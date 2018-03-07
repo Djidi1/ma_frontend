@@ -411,15 +411,18 @@ new Vue({
           let file_name=url.split('/');
           let result='';
          // this.test_dir();
+         windw.requestFileSystem(LocalFileSystem.PERSISTENT,0,function(fs){
+             this.$f7.alert('',fs.root);
+          },function(){});
          this.$f7.alert('',cordova.file.dataDirectory);
           window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry){
-            self.$f7.alert('','file system open: ' + dirEntry.name);
+            self.$f7.alert('','file system open: ' + dirEntry.toURL());
               let url_load="https://test.bh-app.ru"+url;
               url_load=encodeURI(url_load);
               dirEntry.getDirectory('Img',{create:true},function(dirEntry_sub){
-                      self.$f7.alert('','Directory created:'+dirEntry_sub.fullPath);
+                      self.$f7.alert('','Directory created:'+dirEntry_sub.toURL());
                       dirEntry_sub.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
-                          self.$f7.alert('','File system get'+fileEntry.name);
+                          self.$f7.alert('','File system get: '+fileEntry.name);
                           result=self.download(fileEntry,url_load);
                       },function(){
                           self.$f7.alert('','Canot get file');
@@ -441,8 +444,9 @@ new Vue({
               uri,
               fileURL,
               function(entry){
-                  self.$f7.alert('',"Download complete:"+entry.toURL());
+                  self.$f7.alert('',"Download complete: "+entry.toURL());
                   result=entry.toURL();
+                  self.$f7.alert('',result);
               },function(error){
                     self.$f7.alert('',error.source);
                     console.log("download error target " + error.target);
