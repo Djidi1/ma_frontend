@@ -164,7 +164,7 @@
                 this.attachment.push(new_file)
             },
             getPhotoFail(message){
-              this.$f7.alert('','Error');
+                console.log(message);
             },
             // upload(e){
             //     let self=this;

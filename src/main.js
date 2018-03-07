@@ -410,22 +410,29 @@ new Vue({
           let self=this;
           let file_name=url.split('/');
           let result='';
-          this.test_dir();
-          console.log(cordova.file.dataDirectory);
+         // this.test_dir();
+         this.$f7.alert('',cordova.file.dataDirectory);
           window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry){
-              console.log('file system open: ' + dirEntry.name);
+            self.$f7.alert('','file system open: ' + dirEntry.name);
               let url_load="https://test.bh-app.ru"+url;
               url_load=encodeURI(url_load);
-              dirEntry.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
-                  self.$f7.alert('',fileEntry);
-                  result=self.download(fileEntry,url_load,true);
-              },function(){
-                  self.$f7.alert('','Error_Load')
-              });
+              dirEntry.getDirectory('Img',{create:true},function(dirEntry_sub){
+                      self.$f7.alert('','Directory created:'+dirEntry_sub.fullPath);
+                      dirEntry_sub.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
+                          self.$f7.alert('','File system get'+fileEntry.name);
+                          result=self.download(fileEntry,url_load);
+                      },function(){
+                          self.$f7.alert('','Canot get file');
+                      });
+              },
+                  function(){
+                    self.$f7.alert('','Cannot create dir');
+                  });
+
           },function(){  self.$f7.alert('','File_systemfaild')});
           return result;
       },
-      download(fileEntry,uri,readB){
+      download(fileEntry,uri){
             let self=this;
             let file_tr=new FileTransfer();
             let fileURL=fileEntry.toURL();
@@ -434,15 +441,14 @@ new Vue({
               uri,
               fileURL,
               function(entry){
-                  self.$f7.alert('',entry);
-                  console.log("Download complete:"+entry.toURL());
+                  self.$f7.alert('',"Download complete:"+entry.toURL());
                   result=entry.toURL();
               },function(error){
                     self.$f7.alert('',error.source);
                     console.log("download error target " + error.target);
                     result=error.source;
               },
-                true,
+                false,
                 );
             return result;
       },
@@ -457,6 +463,9 @@ new Vue({
                             fileEntry.createWriter(function(fileWriter){
                                 fileWriter.onwriteend=function(){
                                     console.log('Writeend');
+                                    fileEntry.file(function(file){
+                                        console.log(file);
+                                    },function(error){console.log(error.code)})
                                     self.readfile(fileEntry)
                                 }
                                 let dataobj=new Blob(['something'],{type:'text/plain'});
