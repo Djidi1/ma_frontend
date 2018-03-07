@@ -320,39 +320,150 @@ new Vue({
             return new Promise(function(resolve){
                 result_arr.forEach(function(obj){
                     obj.audits.forEach(function(audits){
-                        checklist.forEach(function(cl){
-                          if(cl.id===audits.check_list_id){
-                              let new_cl={
-                                  "id": cl.id,
-                                  "title":cl.title,
-                                  "created_at":cl.created_at,
-                                  "requirement":[],
-                                  "audit_id":audits.id
-                              };
-                              cl.requirement.forEach(function(req){
-                                   self.get_comments_from_result(audits,results)
-                                     let new_req={
-                                         "id":req.id,
-                                         "title":req.title,
-                                         "status":self.get_status(audits,results,req.id),
-                                         "checklist_id": cl.id,
-                                         "warning_level":req.warning_level,
-                                         "created_at":req.created_at,
-                                         "comments":self.get_comments_from_result(audits,results,req.id),
-                                         "disabled":false
-                                     };
-                                   new_cl.requirement.push(new_req);
-
-                              });
-                              audits.check_list.push(new_cl);
-                          }
+                        checklist.forEach(function(cl) {
+                            if (cl.id === audits.check_list_id) {
+                                self.create_rq_promise(cl,audits,results).then(new_cl => {
+                                    audits.check_list.push(new_cl);
+                                    self.check_status_upload(audits);
+                                });
+                            }
                         });
-                        self.check_status_upload(audits);
                     });
                 });
                 resolve(result_arr);
             });
+            //                   let new_cl={
+            //                       "id": cl.id,
+            //                       "title":cl.title,
+            //                       "created_at":cl.created_at,
+            //                       "requirement":[],
+            //                       "audit_id":audits.id
+            //                   };
+            //                   cl.requirement.forEach(function(req){
+            //                          let new_req={
+            //                              "id":req.id,
+            //                              "title":req.title,
+            //                              "status":self.get_status(audits,results,req.id),
+            //                              "checklist_id": cl.id,
+            //                              "warning_level":req.warning_level,
+            //                              "created_at":req.created_at,
+            //                              "comments":self.get_comments_from_result(audits,results,req.id),
+            //                              "disabled":false
+            //                          };
+            //                        new_cl.requirement.push(new_req);
+            //
+            //                   });
+            //                   audits.check_list.push(new_cl);
+            //               }
+            //             });
+            //             self.check_status_upload(audits);
+            //         });
+            //     });
+            //     resolve(result_arr);
+            // });
         },
+
+      create_rq_promise(cl,audits,results){
+            let self=this;
+            return new Promise(function(resolve){
+                let new_cl={
+                    "id": cl.id,
+                    "title":cl.title,
+                    "created_at":cl.created_at,
+                    "requirement":[],
+                    "audit_id":audits.id
+                };
+                self.create_att_from_res(cl,audits,results).then(result=>{
+                    new_cl.requirement=result;
+                    resolve(new_cl)
+                });
+            });
+      },
+      create_att_from_res(cl,audits,results){
+            let self=this;
+            let result=[];
+            return new Promise(function(resolve){
+                    cl.requirement.forEach(function(req){
+                        let new_req={
+                            "id":req.id,
+                            "title":req.title,
+                            "status":self.get_status(audits,results,req.id),
+                            "checklist_id": cl.id,
+                            "warning_level":req.warning_level,
+                            "created_at":req.created_at,
+                            "comments":[],
+                            "disabled":false
+                        };
+                        self.create_comment(audits,results,req.id).then(res=>{
+                            new_req.comments=res;
+                        });
+                        result.push(new_req);
+                    });
+                    resolve(result)
+            });
+            },
+      create_comment(audits,results,id){
+            let self=this;
+            let res=[];
+            let result_com=[];
+            return new Promise(function(resolve){
+                results.forEach(function(itm){
+                    if (itm.audit_id===audits.id&&itm.requirement_id===id){
+                        if(itm.text!=undefined ||itm.audit_result_attache.length>0){
+                            let comm={
+                                "text":itm.comment,
+                                "attachments":[]
+                            };
+                            self.attach_get(itm).then(result_att=>{
+                                comm.attachments=result_att;
+                                console.log(comm);
+                                res.push(comm);
+                            });
+                        }
+                    }
+               });
+                resolve(res);
+            });
+      },
+      attach_get(itm){
+           let self=this;
+           let result_att=[];
+           return new Promise(function(resolve){
+               itm.audit_result_attache.forEach(function(att){
+                   self.get_img_frome_base(att.file_path).then(
+                       result=>{
+                           let new_att={
+                               "caption":att.file_name,
+                               "file":{
+                                   "name":att.file_name,
+                                   "size":att.file_size,
+                                   "type":att.file_mime
+                               },
+                               "url":result
+                               // "url":"https://test.bh-app.ru"+att.file_path
+                           };
+                           result_att.push(new_att);
+                       },
+                       error=>{
+                           console.log(error);
+                           //test
+                           let new_att={
+                               "caption":att.file_name,
+                               "file":{
+                                   "name":att.file_name,
+                                   "size":att.file_size,
+                                   "type":att.file_mime
+                               },
+                               "url":error
+                               // "url":"https://test.bh-app.ru"+att.file_path
+                           };
+                           result_att.push(new_att);
+                       }
+                   );
+               });
+               resolve(result_att);
+           })
+      },
       get_status(audit,result,id){
          let self=this;
          let res=0;
@@ -373,60 +484,63 @@ new Vue({
                 });
                 arr.upload=res;
       },
-      get_comments_from_result(audit,result,id){
-            let self=this;
-            let res=[];
-            let result_com=[];
-            result.forEach(function(itm){
-               if (itm.audit_id===audit.id&&itm.requirement_id===id){
-                   if(itm.text!=undefined ||itm.audit_result_attache.length>0){
-                       let comm={
-                           "text":itm.comment,
-                           "attachments":[]
-                       };
-                       itm.audit_result_attache.forEach(function(att){
-                           self.get_img_frome_base(att.file_path).then(
-                               result=>{
-                                   let new_att={
-                                       "caption":att.file_name,
-                                       "file":{
-                                           "name":att.file_name,
-                                           "size":att.file_size,
-                                           "type":att.file_mime
-                                       },
-                                       "url":result
-                                       // "url":"https://test.bh-app.ru"+att.file_path
-                                   };
-                                   console.log(new_att);
-                                   comm.attachments.push(new_att);
-                               }
-                           );
 
-                       });
-                       result_com=comm;
-                   }
-               }
-            });
 
-            (result_com.length===0)?'':res.push(result_com);
 
-            return res;
-      },
-      get_url_frome_base(url){
-            let res='';
-            this.get_img_frome_base(url).then(
-                result=>{
-                    console.log("Promise-result: "+result);
-                    return result;
-                }
-            )
-      },
+
+     // get_comments_from_result(audit,result,id){
+     //        let self=this;
+     //        let res=[];
+     //        let result_com=[];
+     //        result.forEach(function(itm){
+     //           if (itm.audit_id===audit.id&&itm.requirement_id===id){
+     //               if(itm.text!=undefined ||itm.audit_result_attache.length>0){
+     //                   let comm={
+     //                       "text":itm.comment,
+     //                       "attachments":[]
+     //                   };
+     //                   // itm.audit_result_attache.forEach(function(att){
+     //                   //     self.get_img_frome_base(att.file_path).then(
+     //                   //         result=>{
+     //                   //             let new_att={
+     //                   //                 "caption":att.file_name,
+     //                   //                 "file":{
+     //                   //                     "name":att.file_name,
+     //                   //                     "size":att.file_size,
+     //                   //                     "type":att.file_mime
+     //                   //                 },
+     //                   //                 "url":result
+     //                   //                 // "url":"https://test.bh-app.ru"+att.file_path
+     //                   //             };
+     //                   //             console.log(new_att);
+     //                   //             comm.attachments.push(new_att);
+     //                   //         }
+     //                   //     );
+     //                   //
+     //                   // });
+     //                   result_com=comm;
+     //               }
+     //           }
+     //        });
+     //
+     //        (result_com.length===0)?'':res.push(result_com);
+     //        return res;
+     //  },
+     //  get_url_frome_base(url){
+     //        let res='';
+     //        this.get_img_frome_base(url).then(
+     //            result=>{
+     //                console.log("Promise-result: "+result);
+     //                return result;
+     //            }
+     //        )
+     //  },
       get_img_frome_base(url){
-            console.log(1);
+
           let self=this;
           let file_name=url.split('/');
           let result='';
-          return new Promise(function(resolve){
+          return new Promise(function(resolve,reject){
                   window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry) {
                       self.$f7.alert('', 'file system open: ' + dirEntry.toURL());
                       let url_load = "https://test.bh-app.ru" + url;
@@ -439,24 +553,23 @@ new Vue({
                                             resolve(result)
                                         },
                                         error=>{
-                                            result=error;
-                                            resolve(result)
+                                            reject(error)
                                         }
                                     )
                                   },
                                   function(){
-                                      result='error_file_get';
-                                      resolve(result);
+                                      let error='error_file_get';
+                                      reject(error);
                                   })
                           },
                           function(){
-                              result='error_create_dir';
-                              resolve(result);
+                              let error='error_create_dir';
+                              reject(error);
                           });
                   },
                   function(){
                       result='error_file_system';
-                      resolve(result);
+                      reject(result);
                   });
           });
             // window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry){
@@ -493,7 +606,6 @@ new Vue({
           return result;
       },
       download(fileEntry,uri){
-          console.log(2);
             let self=this;
             let file_tr=new FileTransfer();
             let fileURL=fileEntry.toURL();
@@ -515,40 +627,40 @@ new Vue({
                 );
             });
       },
-      test_dir(){
-            let self=this;
-           window.requestFileSystem(window.TEMPORARY, 5 * 1024 * 1024,function(fs){
-             fs.root.getDirectory('NewDirInRoot',{create:true},function(dirEntry){
-                 console.log(dirEntry);
-                 dirEntry.getDirectory('images',{create:true},function(subDir){
-                         // Creates a new file or returns the file if it already exists.
-                         dirEntry.getFile('Test.txt', {create: true, exclusive: false}, function(fileEntry) {
-                            fileEntry.createWriter(function(fileWriter){
-                                fileWriter.onwriteend=function(){
-                                    console.log('Writeend');
-                                    fileEntry.file(function(file){
-                                        console.log(file);
-                                    },function(error){console.log(error.code)})
-                                    self.readfile(fileEntry)
-                                }
-                                let dataobj=new Blob(['something'],{type:'text/plain'});
-                                fileWriter.write(dataobj);
-                            });
-                         }, function(){console.log('Error_create_dir')});
-                 })
-               }) ;
-           });
-      },
-      readfile(file){
-            file.file(function(file){
-                let reader= new FileReader();
-                reader.onloadend=function(){
-                    console.log(this.result);
-                }
-                reader.readAsText(file);
-            });
-
-      }
+      // test_dir(){
+      //       let self=this;
+      //      window.requestFileSystem(window.TEMPORARY, 5 * 1024 * 1024,function(fs){
+      //        fs.root.getDirectory('NewDirInRoot',{create:true},function(dirEntry){
+      //
+      //            dirEntry.getDirectory('images',{create:true},function(subDir){
+      //                    // Creates a new file or returns the file if it already exists.
+      //                    dirEntry.getFile('Test.txt', {create: true, exclusive: false}, function(fileEntry) {
+      //                       fileEntry.createWriter(function(fileWriter){
+      //                           fileWriter.onwriteend=function(){
+      //                               console.log('Writeend');
+      //                               fileEntry.file(function(file){
+      //                                   console.log(file);
+      //                               },function(error){console.log(error.code)})
+      //                               self.readfile(fileEntry)
+      //                           }
+      //                           let dataobj=new Blob(['something'],{type:'text/plain'});
+      //                           fileWriter.write(dataobj);
+      //                       });
+      //                    }, function(){console.log('Error_create_dir')});
+      //            })
+      //          }) ;
+      //      });
+      // },
+      // readfile(file){
+      //       file.file(function(file){
+      //           let reader= new FileReader();
+      //           reader.onloadend=function(){
+      //               console.log(this.result);
+      //           }
+      //           reader.readAsText(file);
+      //       });
+      //
+      // }
     }
 
 });
