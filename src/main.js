@@ -412,7 +412,7 @@ new Vue({
           let result='';
          // this.test_dir();
          window.requestFileSystem(LocalFileSystem.PERSISTENT,0,function(fs){
-             this.$f7.alert('',fs.root);
+             self.$f7.alert('',fs.root);
           },function(){});
          this.$f7.alert('',cordova.file.dataDirectory);
           window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry){
@@ -424,6 +424,7 @@ new Vue({
                       dirEntry_sub.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
                           self.$f7.alert('','File system get: '+fileEntry.name);
                           result=self.download(fileEntry,url_load);
+                          self.$f7.alert('','Result:'+result);
                       },function(){
                           self.$f7.alert('','Canot get file');
                       });
