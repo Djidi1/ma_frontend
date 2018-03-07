@@ -172,7 +172,8 @@ new Vue({
         onRefresh(event, done){
               var self = this;
             this.$root.getData_from_server().then(result=>{
-                self.$root.objects=result;
+                self.$root.objects=result.obj;
+                self.down_att(result.res);
                 done()
             })
           },
@@ -207,12 +208,10 @@ new Vue({
                             return self.getresults(result,result_audit,self.check_list)
                         }
                     ).then(
-                    result_arr=>{
-                            return self.down_att(result_arr,result_audit);
-                        }
-                    ).then(
                         result_arr=>{
-                            result=result_arr;
+                            result={};
+                            self.$set(result,'obj',result_arr);
+                            self.$set(result,'res',result_audit);
                             resolve(result);
                         }
                 )
@@ -447,27 +446,27 @@ new Vue({
                resolve(result_att);
            })
       },
-      down_att(result_arr,res){
+      down_att(res){
             let self=this;
-            return new Promise(function(resolve){
-                result_arr.forEach(function(obj){
+               this.objects.forEach(function(obj){
                    obj.audits.forEach(function(ad){
                        ad.check_list.forEach(function(ch){
                           ch.requirement.forEach(function(req){
                              res.forEach(function(itm){
                                  if (itm.audit_id===ad.id&&itm.requirement_id===req.id){
                                      req.comments.forEach(function(comm){
-                                         comm.attachments.forEach(function(att){
+                                         comm.attachments.forEach(function(att,k,att_arr){
+                                             self.$f7.alert('','get_to_correct_com');
                                              self.get_img_frome_base(att.url).then(
                                                  result=>{
                                                      att.url=result;
                                                      self.$f7.alert('',result);
-                                                     console.log(result_arr);
+                                                   //  self.$ls.set('objects',self.$root.objects);
                                                  },
                                                  error=>{
-                                                     att.url=error;
+                                                     att_arr.splice(k,1);
                                                      self.$f7.alert('',error);
-                                                     console.log(result_arr);
+                                                     //self.$ls.set('objects',self.$root.objects);
                                                  }
                                              );
                                          });
@@ -479,9 +478,6 @@ new Vue({
                        });
                    });
                 });
-                self.$f7.alert('','forEach_done');
-                resolve(result_arr);
-          });
       },
       get_status(audit,result,id){
          let self=this;
@@ -554,10 +550,13 @@ new Vue({
      //            }
      //        )
      //  },
+
+
       get_img_frome_base(url){
           let self=this;
           let file_name=url.split('/');
           let result='';
+          self.$f7.alert('','get_to_method_start');
           return new Promise(function(resolve,reject){
                   window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry) {
                       self.$f7.alert('', 'file system open: ' + dirEntry.toURL());
@@ -645,6 +644,9 @@ new Vue({
                 );
             });
       },
+
+
+
       // test_dir(){
       //       let self=this;
       //      window.requestFileSystem(window.TEMPORARY, 5 * 1024 * 1024,function(fs){

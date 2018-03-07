@@ -46,7 +46,9 @@
               if (!self.$root.objects.length>0){
                   this.$f7.showPreloader(this.$root.localization.modal.preloader);
                   this.$root.getData_from_server().then(result=>{
-                      self.$root.objects=result;
+                      console.log(result.obj);
+                      self.$root.objects=result.obj;
+                      self.$root.down_att(result.res);
                       this.$f7.hidePreloader()
                   });
               }
