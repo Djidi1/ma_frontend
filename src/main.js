@@ -622,7 +622,6 @@ new Vue({
           //       return ready;
           //   }
           // );
-          return result;
       },
       download(fileEntry,uri){
             let self=this;
