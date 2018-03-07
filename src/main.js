@@ -385,17 +385,23 @@ new Vue({
                            "attachments":[]
                        };
                        itm.audit_result_attache.forEach(function(att){
-                           let new_att={
-                               "caption":att.file_name,
-                               "file":{
-                                   "name":att.file_name,
-                                   "size":att.file_size,
-                                   "type":att.file_mime
-                               },
-                                  "url":self.get_url_frome_base(att.file_path)
-                               // "url":"https://test.bh-app.ru"+att.file_path
-                           }
-                           comm.attachments.push(new_att);
+                           self.get_img_frome_base(att.file_path).then(
+                               result=>{
+                                   let new_att={
+                                       "caption":att.file_name,
+                                       "file":{
+                                           "name":att.file_name,
+                                           "size":att.file_size,
+                                           "type":att.file_mime
+                                       },
+                                       "url":result
+                                       // "url":"https://test.bh-app.ru"+att.file_path
+                                   };
+                                   console.log(new_att);
+                                   comm.attachments.push(new_att);
+                               }
+                           );
+
                        });
                        result_com=comm;
                    }
@@ -407,56 +413,107 @@ new Vue({
             return res;
       },
       get_url_frome_base(url){
+            let res='';
+            this.get_img_frome_base(url).then(
+                result=>{
+                    console.log("Promise-result: "+result);
+                    return result;
+                }
+            )
+      },
+      get_img_frome_base(url){
+            console.log(1);
           let self=this;
           let file_name=url.split('/');
           let result='';
-         // this.test_dir();
-         window.requestFileSystem(LocalFileSystem.PERSISTENT,0,function(fs){
-             self.$f7.alert('',fs.root);
-          },function(){});
-         this.$f7.alert('',cordova.file.applicationStorageDirectory);
-         this.$f7.alert('',cordova.file.dataDirectory);
-          window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry){
-            self.$f7.alert('','file system open: ' + dirEntry.toURL());
-              let url_load="https://test.bh-app.ru"+url;
-              url_load=encodeURI(url_load);
-              dirEntry.getDirectory('Img',{create:true},function(dirEntry_sub){
-                      self.$f7.alert('','Directory created:'+dirEntry_sub.toURL());
-                      dirEntry_sub.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
-                          self.$f7.alert('','File system get: '+fileEntry.name);
-                          result=self.download(fileEntry,url_load);
-                          self.$f7.alert('','Result:'+result);
-                      },function(){
-                          self.$f7.alert('','Canot get file');
-                      });
-              },
+          return new Promise(function(resolve){
+                  window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry) {
+                      self.$f7.alert('', 'file system open: ' + dirEntry.toURL());
+                      let url_load = "https://test.bh-app.ru" + url;
+                      url_load = encodeURI(url_load);
+                      dirEntry.getDirectory('Img',{create:true},function(dirEntry_sub){
+                              dirEntry_sub.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
+                                    self.download(fileEntry,url_load).then(
+                                        ready=>{
+                                            result=ready;
+                                            resolve(result)
+                                        },
+                                        error=>{
+                                            result=error;
+                                            resolve(result)
+                                        }
+                                    )
+                                  },
+                                  function(){
+                                      result='error_file_get';
+                                      resolve(result);
+                                  })
+                          },
+                          function(){
+                              result='error_create_dir';
+                              resolve(result);
+                          });
+                  },
                   function(){
-                    self.$f7.alert('','Cannot create dir');
+                      result='error_file_system';
+                      resolve(result);
                   });
-
-          },function(){  self.$f7.alert('','File_systemfaild')});
+          });
+            // window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry){
+            //       self.$f7.alert('','file system open: ' + dirEntry.toURL());
+            //       let url_load="https://test.bh-app.ru"+url;
+            //       url_load=encodeURI(url_load);
+            //       dirEntry.getDirectory('Img',{create:true},function(dirEntry_sub){
+            //           dirEntry_sub.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
+            //             let file_tr=new FileTransfer();
+            //             let fileURL=fileEntry.toURL();
+            //             file_tr.download(
+            //                 url_load,
+            //                 fileURL,
+            //                 function(entry){
+            //                     result= entry.toURL();
+            //                 },
+            //                 function(error){
+            //                     result= "download error:"+error.target;
+            //                 },
+            //                 false,
+            //             );
+            //           },function(){
+            //               result= 'error_file';
+            //           });
+            //       },function(){result= 'error_dir';});
+            //   },function(){result= 'error_filesystem';});
+         // this.test_dir();
+          // self.download(fileEntry,url_load).then(
+          //   ready=>{
+          //       result=ready;
+          //       return ready;
+          //   }
+          // );
           return result;
       },
       download(fileEntry,uri){
+          console.log(2);
             let self=this;
             let file_tr=new FileTransfer();
             let fileURL=fileEntry.toURL();
-            let result;
-            file_tr.download(
-              uri,
-              fileURL,
-              function(entry){
-                  self.$f7.alert('',"Download complete: "+entry.toURL());
-                  result=entry.toURL();
-                  self.$f7.alert('',result);
-              },function(error){
-                    self.$f7.alert('',error.source);
-                    console.log("download error target " + error.target);
-                    result=error.source;
-              },
-                false,
+            let ready;
+            return new Promise(function(resolve,reject){
+                file_tr.download(
+                    uri,
+                    fileURL,
+                    function(entry){;
+                        ready=entry.toURL();
+                        self.$f7.alert('','Result_download:'+result);
+                        resolve(ready)
+                    },function(error){
+                        console.log("download error target " + error.target);
+                        let error='error_download';
+                        reject(error)
+                    },
+                    false,
                 );
-            return result;
+            });
       },
       test_dir(){
             let self=this;
