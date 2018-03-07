@@ -620,7 +620,7 @@ new Vue({
             let self=this;
             let file_tr=new FileTransfer();
           //  let fileURL=fileEntry.toURL();
-           let fileURL="///storage/emulated/0/Android/data/dir_vue.vom/file/"+name;
+           let fileURL="///storage/emulated/0/Android/data/dir_vue.com/file/"+name;
           let ready;
             return new Promise(function(resolve,reject){
                 file_tr.download(
