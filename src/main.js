@@ -411,7 +411,7 @@ new Vue({
           let file_name=url.split('/');
           let result='';
          // this.test_dir();
-         windw.requestFileSystem(LocalFileSystem.PERSISTENT,0,function(fs){
+         window.requestFileSystem(LocalFileSystem.PERSISTENT,0,function(fs){
              this.$f7.alert('',fs.root);
           },function(){});
          this.$f7.alert('',cordova.file.dataDirectory);
