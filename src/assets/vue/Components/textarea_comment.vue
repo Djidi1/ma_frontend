@@ -158,6 +158,7 @@
                   },
                   "url":img
                 };
+                self.$f7.alert(this.attachment.length,'length')
                 this.attachment.push(new_file);
                 window.resolveLocalFileSystemURI(img,function(f){
                     f.file(function(file){
@@ -175,6 +176,7 @@
                         self.$f7.alert('','ErrorTest file');
                     })
                 });
+                self.$f7.alert(this.attachment.length,'length_end')
             },
 
             getPhotoFail(message){
