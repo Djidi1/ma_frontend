@@ -189,8 +189,11 @@
                         self.$f7.alert('',"got file entry:"+ fileEntry.toURL());
                         let fil={};
                         self.$set(fil,'file',fileEntry.file());
+                        let fileExt='/'+fileEntry.toURL().split('.').pop();
+                        self.$f7.alert('',fileExt);
+                        let newFileName=fil.file.name+fileExt;
                         window.resolveLocalFileSystemURI(cordova.file.externalDataDirectory+"img/",function(dirEntry){
-                            fileEntry.moveTo(dirEntry,function(entry){
+                            fileEntry.moveTo(dirEntry,newFileName,function(entry){
                                 self.$set(fil,'url',entry.toURL());
                                 resolve(fil);
                             },function(){
