@@ -190,7 +190,13 @@
                     window.resolveLocalFileSystemURI(imgUrl,function (fileEntry){
                         self.$f7.alert('',"got file entry:"+ fileEntry.toURL());
                         let fil={};
-                        self.$set(fil,'file',fileEntry.file());
+                        let file_obj;
+                        fileEntry.file(function(file_o){
+                            file_obj=file_o;
+                        },function(){
+                          self.$f7.alert('','connot_get_file_object');
+                        });
+                        self.$set(fil,'file',file_obj);
                         let fileExt='.'+fileEntry.toURL().split('.').pop();
                         self.$f7.alert('',fileExt);
                         let newFileName=fil.file.name+fileExt;
