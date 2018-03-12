@@ -149,24 +149,47 @@
             },
             getPhoto(img){
                 let self=this;
-                window.resolveLocalFileSystemURI(img,function(f){
-                    f.file(function(file){
-                        let new_file={
-                            "caption":file.name,
-                            "file":{
-                                'name':file.name,
-                                "size":file.size,
-                                "type":file.type
-                            },
-                            "url":img
-                        };
-                        self.attachment.push(new_file);
-                    },function(){
-                        self.$f7.alert('','ErrorTest file');
-                    })
-                });
+                self.attachment.push('somothing');
+                self.$f7.alert( this.$$('#img_pr'+(self.attachment.length-1)),'Length');
+                this.$$('#img_pr'+(self.attachment.length-1)).show();
+                self.get_file_data(img,self.attachment.length-1).then(
+                  result=>{
+                      self.$$('#img_pr'+(self.attachment.length-1)).hide();
+                  },
+                    error=>{
+                        self.attachment.splice(self.attachment.length-1,1);
+                        self.$$('#img_pr'+(self.attachment.length-1)).hide();
+                  }
+                );
+
             },
 
+            get_file_data(url,index){
+              let self=this;
+              return new Promise(function(resolve,reject){
+                  window.resolveLocalFileSystemURI(url,function(f){
+                      f.file(function(file){
+                          self.$f7.alert(file.name,'Name');
+                          let new_file={
+                              "caption":file.name,
+                              "file":{
+                                  'name':file.name,
+                                  "size":file.size,
+                                  "type":file.type
+                              },
+                              "url":img
+                          };
+                          let result=true;
+                          self.attachment[index]=new_file;
+                          resolve(result);
+                      },function(){
+                          self.$f7.alert('','ErrorTest file');
+                          let error='error';
+                          reject(error);
+                      })
+                  });
+              });
+            },
             getPhotoFail(message){
                 console.log('error:'+ message);
             },
