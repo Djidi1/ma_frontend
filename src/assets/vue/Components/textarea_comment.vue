@@ -178,7 +178,7 @@
                                   "size":file.size,
                                   "type":file.type
                               },
-                              "url":img
+                              "url":url
                           };
                           let result=true;
                           self.attachment[index]=new_file;
