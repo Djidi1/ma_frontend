@@ -184,14 +184,16 @@
             },
             camera_img_file(imgUrl){
                 let self=this;
+                self.$f7.alert('ComeToCorrectMethod',"Succsess");
                 return new Promise(function(resolve,reject){
-                    windwow.resolveLocalFileSystemURI(imgUrl,function success(fileEntry){
+                    windwow.resolveLocalFileSystemURI(imgUrl,function (fileEntry){
                         self.$f7.alert('',"got file entry:"+ fileEntry.toURL());
                         let fil={};
                         self.$set(fil,'file',fileEntry.file());
                         let fileExt='/'+fileEntry.toURL().split('.').pop();
                         self.$f7.alert('',fileExt);
                         let newFileName=fil.file.name+fileExt;
+                        self.$f7.alert('FileName',newFileName);
                         window.resolveLocalFileSystemURI(cordova.file.externalDataDirectory+"img/",function(dirEntry){
                             fileEntry.moveTo(dirEntry,newFileName,function(entry){
                                 self.$set(fil,'url',entry.toURL());
@@ -206,12 +208,11 @@
                             self.$set(fil,'url',imgUrl);
                             resolve(fil);
                         });
-                    },function error(){
+                    },function (){
                         let error="no fileEntry";
                         reject(error);
                     });
                 });
-
             },
             // upload(e){
             //     let self=this;
