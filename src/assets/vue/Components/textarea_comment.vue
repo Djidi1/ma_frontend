@@ -167,12 +167,13 @@
                           "size":fil.file.size,
                           "type":fil.file.type
                       };
-                      self.$set(new_file,'file',fl);
-                      self.$set(new_file,'caption',fil.file.name);
-                      self.$set(new_file,'url',fil.url);
-                      self.$$('#img_pr'+(self.attachment.length-1)).hide();
+                      self.$set(self.attachment[length-1],'file',fl);
+                      self.$set(self.attachment[length-1],'caption',fil.file.name);
+                      self.$set(self.attachment[length-1],'url',fil.url);
+                    //  self.$$('#img_pr'+(self.attachment.length-1)).hide();
                   },
                   error=>{
+                      self.$f7.alert('',error);
                       self.attachment.slice(self.attachment.length-1,1);
                       // self.$$('#img_pr'+(self.attachment.length-1)).hide();
                   }
@@ -185,10 +186,10 @@
                 let self=this;
                 return new Promise(function(resolve,reject){
                     windwow.resolveLocalFileSystemURI(imgUrl,function success(fileEntry){
-                        console.log("got file entry:"+ fileEntry.toURL());
-                        let fil
+                        self.$f7.alert('',"got file entry:"+ fileEntry.toURL());
+                        let fil={};
                         self.$set(fil,'file',fileEntry.file());
-                        window.resolveLocalFileSystemURI("///storage/emulated/0/Android/data/dir_vue.com/files/img/",function(dirEntry){
+                        window.resolveLocalFileSystemURI(cordova.file.externalDataDirectory+"img/",function(dirEntry){
                             fileEntry.moveTo(dirEntry,function(entry){
                                 self.$set(fil,'url',entry.toURL());
                                 resolve(fil);

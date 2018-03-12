@@ -475,18 +475,10 @@ new Vue({
           let file_name=url.split('/');
           let result='';
           return new Promise(function(resolve,reject){
-              self.$f7.alert('applicationDirectory',cordova.file.applicationDirectory);
-              self.$f7.alert('applicationStorageDirectory',cordova.file.applicationStorageDirectory);
-              self.$f7.alert('cacheDirectory',cordova.file.cacheDirectory);
-              self.$f7.alert('dataDirectory',cordova.file.dataDirectory);
-              self.$f7.alert('externalRootDirectory',cordova.file.externalRootDirectory);
-              self.$f7.alert('externalApplicationStorageDirectory',cordova.file.externalApplicationStorageDirectory);
-              self.$f7.alert('externalCacheDirectry',cordova.file.externalCacheDirectry);
-              self.$f7.alert('externalDataDirectory',cordova.file.externalDataDirectory);
-                  window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry) {
+                  window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory,function(dirEntry) {
                       let url_load = "https://test.bh-app.ru" + url;
                       url_load = encodeURI(url_load);
-                      dirEntry.getDirectory('Img',{create:true},function(dirEntry_sub){
+                      dirEntry.getDirectory('img',{create:true},function(dirEntry_sub){
                               dirEntry_sub.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
                                     self.download(fileEntry,url_load,file_name[3]).then(
                                         ready=>{
@@ -518,8 +510,8 @@ new Vue({
       download(fileEntry,uri,name){
             let self=this;
             let file_tr=new FileTransfer();
-          //  let fileURL=fileEntry.toURL(); на данный момент файлы копируются в папку с приложеением и оста.тся там.
-           let fileURL="///storage/emulated/0/Android/data/dir_vue.com/files/img/"+name;
+            let fileURL=fileEntry.toURL();// на данный момент файлы копируются в папку с приложеением и оста.тся там.
+          // let fileURL="///storage/emulated/0/Android/data/dir_vue.com/files/img/"+name;
           let ready;
             return new Promise(function(resolve,reject){
                 file_tr.download(
