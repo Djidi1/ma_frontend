@@ -159,7 +159,6 @@
                   "url":img
                 };
                 this.attachment.push(new_file);
-                this.$$('#img_pr'+(self.attachment.length-1)).show();
                 this.camera_img_file(img).then(
                     fil=>{
                         self.$f7.alert('',"GetdataFromeMethod_camera_img");
@@ -185,6 +184,7 @@
             },
             camera_img_file(imgUrl){
                 let self=this;
+                this.$$('#img_pr'+(self.attachment.length-1)).show();
                 self.$f7.alert('ComeToCorrectMethod',"Succsess");
                 return new Promise(function(resolve,reject){
                     window.resolveLocalFileSystemURI(imgUrl,function (fileEntry){
