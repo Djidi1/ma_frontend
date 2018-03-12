@@ -147,24 +147,23 @@
                 })
 
             },
-            getPhoto(img){
-                let self=this;
-                this.attachment.push('1');
-                this.$$('#img_pr'+(self.attachment.length-1)).show();
-                window.resolveLocalFileSystemURI(img,function(f){
-                    f.file(function(file){
-                        let new_file={
-                            "caption":file.name,
-                            "file":{
-                                'name':file.name,
-                                "size":file.size,
-                                "type":file.type
+            getPhoto: function (img) {
+                let self = this;
+                this.$$('#img_pr' + (self.attachment.length - 1)).show();
+                window.resolveLocalFileSystemURI(img, function (f) {
+                    f.file(function (file) {
+                        let new_file = {
+                            "caption": file.name,
+                            "file": {
+                                'name': file.name,
+                                "size": file.size,
+                                "type": file.type
                             },
-                            "url":img
+                            "url": img
                         };
-                        self.attachment[self.attachment.length-1]=new_file;
-                    },function(){
-                        self.$f7.alert('','ErrorTest file');
+                        self.attachment.push(new_file);
+                    }, function () {
+                        self.$f7.alert('', 'ErrorTest file');
                     })
                 });
             },
