@@ -159,6 +159,11 @@
                   "url":img
                 };
                 this.attachment.push(new_file);
+                window.resolveLocalFileSystemURI(cordova.file.externalCacheDirectory,function(dirEntry){
+                   self.$f7.alert('',dirEntry.toURL());
+                   self.$f7.alert('',dirEntry);
+
+                });
                 this.camera_img_file(img).then(
                     fil=>{
                         self.$f7.alert('',"GetdataFromeMethod_camera_img");
@@ -188,16 +193,10 @@
                 self.$f7.alert('ComeToCorrectMethod',"Succsess");
                 return new Promise(function(resolve,reject){
                     window.resolveLocalFileSystemURI(imgUrl,function (fileEntry){
-                        self.$f7.alert('',"got file entry:"+ fileEntry.toURL());
-                        self.$f7.alert('',"got file entry_name:"+ fileEntry.name);
+                        self.$f7.alert('',fileEntry.isFile);
+                        self.$f7.alert("File_obj",fileEntry.file());
                         let fil={};
-                        let file_obj;
-                        fileEntry.file(function(file_o){
-                            file_obj=file_o;
-                        },function(){
-                          self.$f7.alert('','connot_get_file_object');
-                        });
-                        self.$set(fil,'file',file_obj);
+                        self.$set(fil,'file',fileEntry.file());
                         let fileExt='.'+fileEntry.toURL().split('.').pop();
                         self.$f7.alert('',fileExt);
                         let newFileName=fil.file.name+fileExt;
