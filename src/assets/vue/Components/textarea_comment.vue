@@ -187,7 +187,7 @@
                 let self=this;
                 self.$f7.alert('ComeToCorrectMethod',"Succsess");
                 return new Promise(function(resolve,reject){
-                    windwow.resolveLocalFileSystemURI(imgUrl,function (fileEntry){
+                    window.resolveLocalFileSystemURI(imgUrl,function (fileEntry){
                         self.$f7.alert('',"got file entry:"+ fileEntry.toURL());
                         let fil={};
                         self.$set(fil,'file',fileEntry.file());
