@@ -158,12 +158,21 @@
                   },
                   "url":img
                 };
+                //TEST
                 this.attachment.push(new_file);
                 window.resolveLocalFileSystemURI(cordova.file.externalCacheDirectory,function(dirEntry){
                    self.$f7.alert('',dirEntry.toURL());
                    self.$f7.alert('',dirEntry);
 
                 });
+                window.resolveLocalFileSystemURI(img,function(f){
+                    f.file(function(file){
+                        self.$f7.alert('FileEntryTest',file.name);
+                    },function(){
+                        self.$f7.alert('','ErrorTest file');
+                    })
+                });
+                //TESTEND
                 this.camera_img_file(img).then(
                     fil=>{
                         self.$f7.alert('',"GetdataFromeMethod_camera_img");
