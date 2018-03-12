@@ -191,7 +191,7 @@
                         self.$f7.alert('',"got file entry:"+ fileEntry.toURL());
                         let fil={};
                         self.$set(fil,'file',fileEntry.file());
-                        let fileExt='/'+fileEntry.toURL().split('.').pop();
+                        let fileExt='.'+fileEntry.toURL().split('.').pop();
                         self.$f7.alert('',fileExt);
                         let newFileName=fil.file.name+fileExt;
                         self.$f7.alert('FileName',newFileName);
