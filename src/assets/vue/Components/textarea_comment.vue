@@ -189,6 +189,7 @@
                 return new Promise(function(resolve,reject){
                     window.resolveLocalFileSystemURI(imgUrl,function (fileEntry){
                         self.$f7.alert('',"got file entry:"+ fileEntry.toURL());
+                        self.$f7.alert('',"got file entry_name:"+ fileEntry.name);
                         let fil={};
                         let file_obj;
                         fileEntry.file(function(file_o){
