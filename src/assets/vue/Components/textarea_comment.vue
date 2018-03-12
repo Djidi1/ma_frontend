@@ -158,41 +158,25 @@
                   },
                   "url":img
                 };
-                //TEST
                 this.attachment.push(new_file);
-                window.resolveLocalFileSystemURI(cordova.file.externalCacheDirectory,function(dirEntry){
-                   self.$f7.alert('',dirEntry.toURL());
-                   self.$f7.alert('',dirEntry);
-
-                });
                 window.resolveLocalFileSystemURI(img,function(f){
                     f.file(function(file){
-                        self.$f7.alert('FileEntryTest',file.name);
+                        self.$f7.alert(file.name,'FileObje');
+                        self.$f7.alert(file.type,'Filetype');
+                        self.$f7.alert(file.size,'FileSyz');
+                        let fl={
+                            'name':file.name,
+                            "size":file.size,
+                            "type":file.type
+                        };
+                        self.$set(self.attachment[length-1],'file',fl);
+                        self.$set(self.attachment[length-1],'caption',file.name);
                     },function(){
                         self.$f7.alert('','ErrorTest file');
                     })
                 });
-                //TESTEND
-                this.camera_img_file(img).then(
-                    fil=>{
-                        self.$f7.alert('',"GetdataFromeMethod_camera_img");
-                      let fl={
-                          'name':fil.file.name,
-                          "size":fil.file.size,
-                          "type":fil.file.type
-                      };
-                      self.$set(self.attachment[length-1],'file',fl);
-                      self.$set(self.attachment[length-1],'caption',fil.file.name);
-                      self.$set(self.attachment[length-1],'url',fil.url);
-                    //  self.$$('#img_pr'+(self.attachment.length-1)).hide();
-                  },
-                  error=>{
-                      self.$f7.alert('',error);
-                      self.attachment.slice(self.attachment.length-1,1);
-                      // self.$$('#img_pr'+(self.attachment.length-1)).hide();
-                  }
-                );
             },
+
             getPhotoFail(message){
                 console.log('error:'+ message);
             },
@@ -207,24 +191,19 @@
                         let fil={};
                         self.$set(fil,'file',fileEntry.file());
                         let fileExt='.'+fileEntry.toURL().split('.').pop();
-                        self.$f7.alert('',fileExt);
-                        let newFileName=fil.file.name+fileExt;
-                        self.$f7.alert('FileName',newFileName);
-                        window.resolveLocalFileSystemURI(cordova.file.externalDataDirectory+"img/",function(dirEntry){
-                            sefl.$f7.alert('DirToMove',dirEntry.name);
-                            fileEntry.moveTo(dirEntry,newFileName,function(entry){
-                                self.$set(fil,'url',entry.toURL());
-                                resolve(fil);
-                            },function(){
-                                self.$f7.alert('',"Cannot Move");
-                                self.$set(fil,'url',imgUrl);
-                                resolve(fil);
+                        //TEST
+                        let file_name=fileEntry.toURL().split('/').pop();
+                        self.$f7.alert('',file_name);
+                        window.resolveLocalFileSystemURI(cordova.file.externalApplicationStorageDirectory,function(dir_chach){
+                            dir_chach.getDirectory('cache',{create:true},function(dirEntry_sub){
+                                dirEntry_sub.getFile(file_name,{create:true,exclusive:false},function(fileEntry_test){
+                                    fileEntry_test.file(function(file){
+                                        self.$f7.alert('',file.name);
+                                    });
+                                });
                             });
-                        },function(){
-                            self.$f7.alert('',"Cannot Get new Dir");
-                            self.$set(fil,'url',imgUrl);
-                            resolve(fil);
                         });
+                        //TESTEEE
                     },function (){
                         let error="no fileEntry";
                         reject(error);
