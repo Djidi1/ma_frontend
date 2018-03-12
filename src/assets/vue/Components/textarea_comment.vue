@@ -162,6 +162,7 @@
                 this.$$('#img_pr'+(self.attachment.length-1)).show();
                 this.camera_img_file(img).then(
                     fil=>{
+                        self.$f7.alert('',"GetdataFromeMethod_camera_img");
                       let fl={
                           'name':fil.file.name,
                           "size":fil.file.size,
