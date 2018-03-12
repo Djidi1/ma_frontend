@@ -196,6 +196,7 @@
                         let newFileName=fil.file.name+fileExt;
                         self.$f7.alert('FileName',newFileName);
                         window.resolveLocalFileSystemURI(cordova.file.externalDataDirectory+"img/",function(dirEntry){
+                            sefl.$f7.alert('DirToMove',dirEntry.name);
                             fileEntry.moveTo(dirEntry,newFileName,function(entry){
                                 self.$set(fil,'url',entry.toURL());
                                 resolve(fil);
