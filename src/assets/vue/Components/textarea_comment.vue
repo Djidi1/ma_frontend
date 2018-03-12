@@ -150,15 +150,16 @@
             getPhoto(img){
                 let self=this;
                 self.attachment.push('somothing');
-                self.$f7.alert( this.$$('#img_pr'+(self.attachment.length-1)),'Length');
+                self.$f7.alert(this.$$('#img_pr'+(self.attachment.length-1)),'Length');
                 this.$$('#img_pr'+(self.attachment.length-1)).show();
                 self.get_file_data(img,self.attachment.length-1).then(
-                  result=>{
+                    result=>{
                       self.$$('#img_pr'+(self.attachment.length-1)).hide();
                   },
                     error=>{
                         self.attachment.splice(self.attachment.length-1,1);
                         self.$$('#img_pr'+(self.attachment.length-1)).hide();
+                        self.$f7.alert("Camera Error","Warning!");
                   }
                 );
 
