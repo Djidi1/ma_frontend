@@ -149,34 +149,22 @@
             },
             getPhoto(img){
                 let self=this;
-                let new_file={
-                  "caption":"caption",
-                  "file":{
-                      'name':'test',
-                      "size":"test_size",
-                      "type":"test_type"
-                  },
-                  "url":img
-                };
-                self.$f7.alert(this.attachment.length,'length')
-                this.attachment.push(new_file);
                 window.resolveLocalFileSystemURI(img,function(f){
                     f.file(function(file){
-                        self.$f7.alert(file.name,'FileObje');
-                        self.$f7.alert(file.type,'Filetype');
-                        self.$f7.alert(file.size,'FileSyz');
-                        let fl={
-                            'name':file.name,
-                            "size":file.size,
-                            "type":file.type
+                        let new_file={
+                            "caption":file.name,
+                            "file":{
+                                'name':file.name,
+                                "size":file.size,
+                                "type":file.type
+                            },
+                            "url":img
                         };
-                        self.$set(self.attachment[length-1],'file',fl);
-                        self.$set(self.attachment[length-1],'caption',file.name);
+                        self.attachment.push(new_file);
                     },function(){
                         self.$f7.alert('','ErrorTest file');
                     })
                 });
-                self.$f7.alert(self.attachment.length,'length_end')
             },
 
             getPhotoFail(message){
