@@ -176,7 +176,7 @@
                         self.$f7.alert('','ErrorTest file');
                     })
                 });
-                self.$f7.alert(this.attachment.length,'length_end')
+                self.$f7.alert(self.attachment.length,'length_end')
             },
 
             getPhotoFail(message){
