@@ -411,3 +411,10 @@
 .text_main.content-block.content-block-inner:after{
 	display:block;
 }
+.porgress_block>.preloader{
+	justify-content: center !important;
+}
+.porgress_block>span,
+.porgress_block>.preloader span{
+	margin: 0 !important;
+}

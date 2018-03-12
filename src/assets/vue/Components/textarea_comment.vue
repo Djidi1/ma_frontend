@@ -11,12 +11,9 @@
                         <div class="col-50 attachment_button">
                             <div class="comment-photupload comment-photos" @click="upload(true)">
                                 <f7-icon size=28  fa="camera" style="padding-top:3px;"></f7-icon>
-                                <!--<input @click="upload(true)" class="comment-file" >-->
                             </div>
                             <div  class="comment-photupload comment-photos" @click="upload(false)" >
                                 <f7-icon size=30  fa="paperclip"  ></f7-icon>
-                                <!--<input @click="upload(false)" class="comment-file" >-->
-                                <!--type="file" accept="image/*" multiple-->
                             </div>
 
                         </div>
@@ -151,9 +148,9 @@
 
             },
             getPhoto(img){
-                this.text=img;
+                let self=this;
                 let new_file={
-                  "caption":img,
+                  "caption":"caption",
                   "file":{
                       'name':'test',
                       "size":"test_size",
@@ -161,10 +158,56 @@
                   },
                   "url":img
                 };
-                this.attachment.push(new_file)
+                this.attachment.push(new_file);
+                this.$$('#img_pr'+(self.attachment.length-1)).show();
+                this.camera_img_file(img).then(
+                    fil=>{
+                      let fl={
+                          'name':fil.file.name,
+                          "size":fil.file.size,
+                          "type":fil.file.type
+                      };
+                      self.$set(new_file,'file',fl);
+                      self.$set(new_file,'caption',fil.file.name);
+                      self.$set(new_file,'url',fil.url);
+                      self.$$('#img_pr'+(self.attachment.length-1)).hide();
+                  },
+                  error=>{
+                      self.attachment.slice(self.attachment.length-1,1);
+                      // self.$$('#img_pr'+(self.attachment.length-1)).hide();
+                  }
+                );
             },
             getPhotoFail(message){
-                console.log(message);
+                console.log('error:'+ message);
+            },
+            camera_img_file(imgUrl){
+                let self=this;
+                return new Promise(function(resolve,reject){
+                    windwow.resolveLocalFileSystemURI(imgUrl,function success(fileEntry){
+                        console.log("got file entry:"+ fileEntry.toURL());
+                        let fil
+                        self.$set(fil,'file',fileEntry.file());
+                        window.resolveLocalFileSystemURI("///storage/emulated/0/Android/data/dir_vue.com/files/img/",function(dirEntry){
+                            fileEntry.moveTo(dirEntry,function(entry){
+                                self.$set(fil,'url',entry.toURL());
+                                resolve(fil);
+                            },function(){
+                                self.$f7.alert('',"Cannot Move");
+                                self.$set(fil,'url',imgUrl);
+                                resolve(fil);
+                            });
+                        },function(){
+                            self.$f7.alert('',"Cannot Get new Dir");
+                            self.$set(fil,'url',imgUrl);
+                            resolve(fil);
+                        });
+                    },function error(){
+                        let error="no fileEntry";
+                        reject(error);
+                    });
+                });
+
             },
             // upload(e){
             //     let self=this;

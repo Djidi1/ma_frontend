@@ -334,35 +334,6 @@ new Vue({
                 });
                 resolve(result_arr);
             });
-            //                   let new_cl={
-            //                       "id": cl.id,
-            //                       "title":cl.title,
-            //                       "created_at":cl.created_at,
-            //                       "requirement":[],
-            //                       "audit_id":audits.id
-            //                   };
-            //                   cl.requirement.forEach(function(req){
-            //                          let new_req={
-            //                              "id":req.id,
-            //                              "title":req.title,
-            //                              "status":self.get_status(audits,results,req.id),
-            //                              "checklist_id": cl.id,
-            //                              "warning_level":req.warning_level,
-            //                              "created_at":req.created_at,
-            //                              "comments":self.get_comments_from_result(audits,results,req.id),
-            //                              "disabled":false
-            //                          };
-            //                        new_cl.requirement.push(new_req);
-            //
-            //                   });
-            //                   audits.check_list.push(new_cl);
-            //               }
-            //             });
-            //             self.check_status_upload(audits);
-            //         });
-            //     });
-            //     resolve(result_arr);
-            // });
         },
 
       create_rq_promise(cl,audits,results){
@@ -407,7 +378,6 @@ new Vue({
       create_comment(audits,results,id){
             let self=this;
             let res=[];
-            let result_com=[];
             return new Promise(function(resolve){
                 results.forEach(function(itm){
                     if (itm.audit_id===audits.id&&itm.requirement_id===id){
@@ -427,7 +397,6 @@ new Vue({
             });
       },
       attach_get(itm,){
-           let self=this;
            let result_att=[];
            return new Promise(function(resolve){
                itm.audit_result_attache.forEach(function(att){
@@ -462,8 +431,8 @@ new Vue({
                                                      self.$ls.set('objects',self.$root.objects);
                                                  },
                                                  error=>{
-                                                     att_arr.splice(k,1);
-                                                     self.$ls.set('objects',self.$root.objects);
+                                                    att_arr.splice(k,1);
+                                                    self.$ls.set('objects',self.$root.objects);
                                                  }
                                              );
                                          });
@@ -500,60 +469,20 @@ new Vue({
 
 
 
-     // get_comments_from_result(audit,result,id){
-     //        let self=this;
-     //        let res=[];
-     //        let result_com=[];
-     //        result.forEach(function(itm){
-     //           if (itm.audit_id===audit.id&&itm.requirement_id===id){
-     //               if(itm.text!=undefined ||itm.audit_result_attache.length>0){
-     //                   let comm={
-     //                       "text":itm.comment,
-     //                       "attachments":[]
-     //                   };
-     //                   // itm.audit_result_attache.forEach(function(att){
-     //                   //     self.get_img_frome_base(att.file_path).then(
-     //                   //         result=>{
-     //                   //             let new_att={
-     //                   //                 "caption":att.file_name,
-     //                   //                 "file":{
-     //                   //                     "name":att.file_name,
-     //                   //                     "size":att.file_size,
-     //                   //                     "type":att.file_mime
-     //                   //                 },
-     //                   //                 "url":result
-     //                   //                 // "url":"https://test.bh-app.ru"+att.file_path
-     //                   //             };
-     //                   //             console.log(new_att);
-     //                   //             comm.attachments.push(new_att);
-     //                   //         }
-     //                   //     );
-     //                   //
-     //                   // });
-     //                   result_com=comm;
-     //               }
-     //           }
-     //        });
-     //
-     //        (result_com.length===0)?'':res.push(result_com);
-     //        return res;
-     //  },
-     //  get_url_frome_base(url){
-     //        let res='';
-     //        this.get_img_frome_base(url).then(
-     //            result=>{
-     //                console.log("Promise-result: "+result);
-     //                return result;
-     //            }
-     //        )
-     //  },
-
 
       get_img_frome_base(url){
           let self=this;
           let file_name=url.split('/');
           let result='';
           return new Promise(function(resolve,reject){
+              self.$f7.alert('applicationDirectory',cordova.file.applicationDirectory);
+              self.$f7.alert('applicationStorageDirectory',cordova.file.applicationStorageDirectory);
+              self.$f7.alert('cacheDirectory',cordova.file.cacheDirectory);
+              self.$f7.alert('dataDirectory',cordova.file.dataDirectory);
+              self.$f7.alert('externalRootDirectory',cordova.file.externalRootDirectory);
+              self.$f7.alert('externalApplicationStorageDirectory',cordova.file.externalApplicationStorageDirectory);
+              self.$f7.alert('externalCacheDirectry',cordova.file.externalCacheDirectry);
+              self.$f7.alert('externalDataDirectory',cordova.file.externalDataDirectory);
                   window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry) {
                       let url_load = "https://test.bh-app.ru" + url;
                       url_load = encodeURI(url_load);
@@ -584,43 +513,13 @@ new Vue({
                       reject(result);
                   });
           });
-            // window.resolveLocalFileSystemURL(cordova.file.dataDirectory,function(dirEntry){
-            //       self.$f7.alert('','file system open: ' + dirEntry.toURL());
-            //       let url_load="https://test.bh-app.ru"+url;
-            //       url_load=encodeURI(url_load);
-            //       dirEntry.getDirectory('Img',{create:true},function(dirEntry_sub){
-            //           dirEntry_sub.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
-            //             let file_tr=new FileTransfer();
-            //             let fileURL=fileEntry.toURL();
-            //             file_tr.download(
-            //                 url_load,
-            //                 fileURL,
-            //                 function(entry){
-            //                     result= entry.toURL();
-            //                 },
-            //                 function(error){
-            //                     result= "download error:"+error.target;
-            //                 },
-            //                 false,
-            //             );
-            //           },function(){
-            //               result= 'error_file';
-            //           });
-            //       },function(){result= 'error_dir';});
-            //   },function(){result= 'error_filesystem';});
-         // this.test_dir();
-          // self.download(fileEntry,url_load).then(
-          //   ready=>{
-          //       result=ready;
-          //       return ready;
-          //   }
-          // );
+
       },
       download(fileEntry,uri,name){
             let self=this;
             let file_tr=new FileTransfer();
-          //  let fileURL=fileEntry.toURL();
-           let fileURL="///storage/emulated/0/Android/data/dir_vue.com/files/"+name;
+          //  let fileURL=fileEntry.toURL(); на данный момент файлы копируются в папку с приложеением и оста.тся там.
+           let fileURL="///storage/emulated/0/Android/data/dir_vue.com/files/img/"+name;
           let ready;
             return new Promise(function(resolve,reject){
                 file_tr.download(
@@ -640,41 +539,6 @@ new Vue({
       },
 
 
-
-      // test_dir(){
-      //       let self=this;
-      //      window.requestFileSystem(window.TEMPORARY, 5 * 1024 * 1024,function(fs){
-      //        fs.root.getDirectory('NewDirInRoot',{create:true},function(dirEntry){
-      //
-      //            dirEntry.getDirectory('images',{create:true},function(subDir){
-      //                    // Creates a new file or returns the file if it already exists.
-      //                    dirEntry.getFile('Test.txt', {create: true, exclusive: false}, function(fileEntry) {
-      //                       fileEntry.createWriter(function(fileWriter){
-      //                           fileWriter.onwriteend=function(){
-      //                               console.log('Writeend');
-      //                               fileEntry.file(function(file){
-      //                                   console.log(file);
-      //                               },function(error){console.log(error.code)})
-      //                               self.readfile(fileEntry)
-      //                           }
-      //                           let dataobj=new Blob(['something'],{type:'text/plain'});
-      //                           fileWriter.write(dataobj);
-      //                       });
-      //                    }, function(){console.log('Error_create_dir')});
-      //            })
-      //          }) ;
-      //      });
-      // },
-      // readfile(file){
-      //       file.file(function(file){
-      //           let reader= new FileReader();
-      //           reader.onloadend=function(){
-      //               console.log(this.result);
-      //           }
-      //           reader.readAsText(file);
-      //       });
-      //
-      // }
     }
 
 });

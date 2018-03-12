@@ -4,7 +4,10 @@
         <div class="attach_block" v-for="(attach,index) in attachment" :key="attach.file.name">
             <div class="attach" :id="'img_'+index"  :style="attachImg(attach,index)" @click="photolook(attachment,index)">
                 <div :id="'img_pr'+index" class="load_progress">
-                    <div class="bar_load"><div class="progress"></div></div>
+                  <div class="porgress_block">
+                    <f7-preloader color="blue" size="40"></f7-preloader>
+                      <!--<i class="fa fa-spin fa-circle-o-notch fa-4x" aria-hidden="true"></i>-->
+                  </div>
                 </div>
                 <div class="header_img">{{attach.caption}}</div>
                 <div class="footter_img">{{get_size(attach.file.size)}}</div>
@@ -14,7 +17,7 @@
             </div>
         </div>
         </transition-group>
-        </div>
+      </div>
 
 </template>
 
@@ -135,6 +138,10 @@
         background-color: #2196F3;
         height:100%;
         width:0;
+    }
+    .porgress_block{
+        padding:8px 10px;
+        opacity:.7;
     }
 
 
