@@ -138,8 +138,8 @@
 
             upload(mode){
                 let source=(mode)?Camera.PictureSourceType.CAMERA:Camera.PictureSourceType.SAVEDPHOTOALBUM;
-                navigator.camera.getPicture(this.getPhoto,this.getPhotoFail,{
-                    quality:50,
+                navigator.camera.getPicture(this.getPhoto(imageUri,mode),this.getPhotoFail,{
+                    quality:30,
                     destinationType:Camera.DestinationType.FILE_URI,
                     sourceType:source,
                     encodingType:Camera.EncodingType.JPEG,
@@ -147,7 +147,8 @@
                 })
 
             },
-            getPhoto: function (img) {
+            getPhoto: function (img,mode) {
+                this.$f7.alert(img,mode);
                 let self = this;
                 self.get_img_data(img).then(
                     f=>{
