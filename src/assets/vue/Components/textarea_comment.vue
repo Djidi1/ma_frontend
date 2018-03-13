@@ -154,11 +154,9 @@
                         self.$$('#img_pr'+(self.attachment.length-1)).show();
                         window.resolveLocalFileSystemURI(cordova.file.externalDataDirectory+"img/",function(dir){
                             f.moveTo(dir,f.name,function(entry){
-                                self.$f7.alert('Move to '+ entry.fullPath,'Succsess');
                                 self.attachment[self.attachment.length-1].url=entry.toURL();
                                 self.$$('#img_pr'+(self.attachment.length-1)).hide();
                             },function(error){
-                                self.$f7.alert('Cannot move file:'+error.code,"Warning!");
                                 self.attachment.splice(self.attachment.length-1,1);
                             });
                         });
