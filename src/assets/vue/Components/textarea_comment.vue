@@ -138,7 +138,7 @@
 
             upload(mode){
                 let source=(mode)?Camera.PictureSourceType.CAMERA:Camera.PictureSourceType.SAVEDPHOTOALBUM;
-                navigator.camera.getPicture(this.getPhoto(imageUri,mode),this.getPhotoFail,{
+                navigator.camera.getPicture(this.getPhoto,this.getPhotoFail,{
                     quality:30,
                     destinationType:Camera.DestinationType.FILE_URI,
                     sourceType:source,
@@ -147,14 +147,12 @@
                 })
 
             },
-            getPhoto: function (img,mode) {
-                this.$f7.alert(img,mode);
+            getPhoto: function (img) {
                 let self = this;
                 self.get_img_data(img).then(
                     f=>{
                         self.$$('#img_pr'+(self.attachment.length-1)).show();
                         let dir_url=cordova.file.externalDataDirectory+"img/";
-                        // let fileExt ="."+img.split('.').pop();
                         self.$f7.alert(dir_url);
                          dir_url=cordova.file.externalDataDirectory;
                         f.moveTo(dir_url,f.name,function(entry){
