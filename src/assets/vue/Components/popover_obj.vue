@@ -52,7 +52,7 @@
                         "title":self.checked_items[key].title,
                         "created_at":self.checked_items[key].created_at,
                         "requirement":[],
-                        "audit_id":Number(self.id)
+                        "audit_id":self.id
                     };
                     self.checked_items[key].requirement.forEach(function(req){
                         let new_req={
@@ -62,7 +62,8 @@
                             "checklist_id": self.checked_items[key].id,
                             "warning_level":req.warning_level,
                             "created_at":req.created_at,
-                            "comments":[]
+                            "comments":[],
+                            "disabled":false
                         };
                         check_list_new.requirement.push(new_req);
                     });

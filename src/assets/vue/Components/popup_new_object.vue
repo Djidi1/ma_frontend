@@ -152,8 +152,10 @@
                   "title":'',
                   "date_add":this.GetCurrentDate(),
                   "created_at":this.GetCurrentDate(),
+                  "comments":[],
                   "check_list":[],
-                  "object_id":(Object.keys(this.selected_object).length!=0)?this.selected_object.id:'Offline_'+this.getlastid()
+                  "object_id":(Object.keys(this.selected_object).length!=0)?this.selected_object.id:'Offline_'+this.getlastid(),
+                  "upload":false
               };
               this.audits.push(new_audit);
 
@@ -191,7 +193,6 @@
                         };
                         console.log(new_object);
                        this.$root.objects.push(new_object);
-                       console.log()
                     }
 
                     this.closePopUp();

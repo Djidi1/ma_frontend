@@ -155,7 +155,8 @@
                             "id":self.audit.id,
                             "object_id":self.audit.object_id,
                             "date_add":self.GetCurrentDate(),
-                            "title":self.audit.title
+                            "title":self.audit.title,
+                            "comment":[]
                         },
                     };
                   //  self.send_data_to_sev(requs);
@@ -186,6 +187,8 @@
             return result;
             },
             get_current_status_to_send(req){
+                req.status=(req.disabled)?req.status:(req.status===0)?-1:req.status;
+                this.$ls.set('objects',this.$root.objects);
                 return (req.disabled)?2:(req.status===0)?-1:req.status;
             },
             get_comments(req){

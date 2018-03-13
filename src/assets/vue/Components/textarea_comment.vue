@@ -57,9 +57,9 @@
         mounted:function(){
             this.$nextTick(function(){
                 this.check_style_class(this.$el);
-                if (this.type)(this.$$('#edit').find('textarea').focus());
                 if((Object.keys(this.comment).length!=0)){
-                    this.correct_css();
+                   this.correct_css();
+                  this.$$(this.$el).find('textarea').focus();
                 }
             })
         },
@@ -154,6 +154,7 @@
                         self.$$('#img_pr'+(self.attachment.length-1)).show();
                         let dir_url=cordova.file.externalDataDirectory+"img/";
                         // let fileExt ="."+img.split('.').pop();
+                        self.$f7.alert(dir_url);
                         f.moveTo(dir_url,f.name,function(entry){
                             self.$f7.alert('Move to '+ entry.fullPath,'Succsess');
                             self.attachment[self.attachment.length-1].url=entry.toURL();

@@ -83,6 +83,7 @@
                 this.audit_obj.check_list=[];
                 arr.forEach(function(item){
                     self.audit_obj.check_list.push(item);
+                    console.log(self.audit_obj);
                 });
             },
             remove_check(index){
