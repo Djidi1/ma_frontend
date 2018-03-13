@@ -154,8 +154,7 @@
                         self.$$('#img_pr'+(self.attachment.length-1)).show();
                         let dir_url=cordova.file.externalDataDirectory+"img/";
                         // let fileExt ="."+img.split('.').pop();
-                         self.$f7.alert(f.name,'name');
-                        f.moveTo(dir_url,function(entry){
+                        f.moveTo(dir_url,f.name,function(entry){
                             self.$f7.alert('Move to '+ entry.fullPath,'Succsess');
                             self.attachment[self.attachment.length-1].url=entry.toURL();
                             self.$$('#img_pr'+(self.attachment.length-1)).hide();

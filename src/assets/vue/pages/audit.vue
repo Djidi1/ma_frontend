@@ -158,7 +158,8 @@
                             "title":self.audit.title
                         },
                     };
-                    self.send_data_to_sev(requs);
+                  //  self.send_data_to_sev(requs);
+                    console.log(requs);
                 });
 
             },
@@ -175,15 +176,17 @@
                    item.requirement.forEach(function(req){
                       let req_obj={
                           "id":req.id,
-                          "status":req.status,
+                          "status":self.get_current_status_to_send(req),
                           "comments":self.get_comments(req),
-                          "disabled":req.disabled
-                      }
+                      };
                        check_obj.requirement.push(req_obj);
                    });
                    result.push(check_obj);
                 });
             return result;
+            },
+            get_current_status_to_send(req){
+                return (req.disabled)?2:(req.status===0)?-1:req.status;
             },
             get_comments(req){
                 let self=this;
@@ -264,19 +267,19 @@
                     self.$f7.views.main.back();
                 })
             },
-            cancelEdit(){
-               this.audit=this.$root.list[this.obj_id].audits[this.id];
-
-            },
-
-            get_check_array(check_id){
-                let self=this;
-                let check_array=[];
-                this.$root.check_list.forEach(function(item){
-                    (item.id===check_id)?check_array.push(item):'';
-                });
-                return check_array;
-            },
+            // cancelEdit(){
+            //    this.audit=this.$root.list[this.obj_id].audits[this.id];
+            //
+            // },
+            //
+            // get_check_array(check_id){
+            //     let self=this;
+            //     let check_array=[];
+            //     this.$root.check_list.forEach(function(item){
+            //         (item.id===check_id)?check_array.push(item):'';
+            //     });
+            //     return check_array;
+            // },
             GetCurrentDate(){
                 let data=new Date(this.audit.date_add);
                 let curSec=('0'+data.getSeconds()).substr(-2);
@@ -284,7 +287,6 @@
                 let curDay=('0'+data.getDate()).substr(-2);
                 let curMounth=('0'+(data.getMonth()+1));
                 let date_for_text=curDay+"-"+curMounth+"-"+data.getFullYear()+" "+data.getHours()+":"+curMin+":"+curSec;
-                console.log()
                 return date_for_text;
             },
             realStatus(str){
