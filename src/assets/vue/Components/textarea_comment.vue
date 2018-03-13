@@ -152,16 +152,15 @@
                 self.get_img_data(img).then(
                     f=>{
                         self.$$('#img_pr'+(self.attachment.length-1)).show();
-                        let dir_url=cordova.file.externalDataDirectory+"img/";
-                        self.$f7.alert(dir_url);
-                         dir_url=cordova.file.externalDataDirectory;
-                        f.moveTo(dir_url,f.name,function(entry){
-                            self.$f7.alert('Move to '+ entry.fullPath,'Succsess');
-                            self.attachment[self.attachment.length-1].url=entry.toURL();
-                            self.$$('#img_pr'+(self.attachment.length-1)).hide();
-                        },function(error){
-                           self.$f7.alert('Cannot move file:'+error.code,"Warning!");
-                           self.attachment.splice(self.attachment.length-1,1);
+                        window.resolveLocalFileSystemURI(cordova.file.externalDataDirectory+"img/",function(dir){
+                            f.moveTo(dir,f.name,function(entry){
+                                self.$f7.alert('Move to '+ entry.fullPath,'Succsess');
+                                self.attachment[self.attachment.length-1].url=entry.toURL();
+                                self.$$('#img_pr'+(self.attachment.length-1)).hide();
+                            },function(error){
+                                self.$f7.alert('Cannot move file:'+error.code,"Warning!");
+                                self.attachment.splice(self.attachment.length-1,1);
+                            });
                         });
                     },
                     error=>{
