@@ -149,57 +149,76 @@
             },
             getPhoto: function (img) {
                 let self = this;
-                this.$$('#img_pr' + (self.attachment.length - 1)).show();
-                window.resolveLocalFileSystemURI(img, function (f) {
-                    f.file(function (file) {
-                        let new_file = {
-                            "caption": file.name,
-                            "file": {
-                                'name': file.name,
-                                "size": file.size,
-                                "type": file.type
-                            },
-                            "url": img
-                        };
-                        self.attachment.push(new_file);
-                    }, function () {
-                        self.$f7.alert('', 'ErrorTest file');
-                    })
+                self.get_img_data(img).then(
+                    f=>{
+                        self.$$('#img_pr'+(self.attachment.length-1)).show();
+                        let dir_url=cordova.file.externalDataDirectory+"img/";
+                        // let fileExt ="."+img.split('.').pop();
+                         self.$f7.alert(f.name,'name');
+                        f.moveTo(dir_url,function(entry){
+                            self.$f7.alert('Move to '+ entry.fullPath,'Succsess');
+                            self.attachment[self.attachment.length-1].url=entry.toURL();
+                            self.$$('#img_pr'+(self.attachment.length-1)).hide();
+                        },function(error){
+                           self.$f7.alert('Cannot move file:'+error.code,"Warning!");
+                           self.attachment.splice(self.attachment.length-1,1);
+                        });
+                    },
+                    error=>{
+                       self.$f7.alert(error);
+                    }
+                );
+
+                // window.resolveLocalFileSystemURI(img, function (f) {
+                //     //Добавить перенос в другую папку фотографии. После успешного переноса возвращать путь к файлу через entry.toURL()
+                //     f.file(function (file) {
+                //         let new_file = {
+                //             "caption": file.name,
+                //             "file": {
+                //                 'name': file.name,
+                //                 "size": file.size,
+                //                 "type": file.type
+                //             },
+                //             "url": img
+                //         };
+                //         self.attachment.push(new_file);
+                //     }, function () {
+                //         self.$f7.alert('', 'ErrorTest file');
+                //     })
+                // });
+            },
+            get_img_data(url){
+                let self=this;
+                return new Promise(function(resolve,reject){
+                   window.resolveLocalFileSystemURI(url,function(f){
+                       f.file(function(file){
+                          let img_data={
+                              "caption": file.name,
+                              "file": {
+                                  'name': file.name,
+                                  "size": file.size,
+                                  "type": file.type
+                              },
+                              "url": url
+                          };
+                          self.attachment.push(img_data);
+                          resolve(f);
+                       },
+                       function(){
+                           let error='cant get file_obj';
+                           reject(error);
+                       });
+                   })
                 });
             },
+
+
+
             getPhotoFail(message){
                 console.log('error:'+ message);
             },
-            camera_img_file(imgUrl){
-                let self=this;
-                this.$$('#img_pr'+(self.attachment.length-1)).show();
-                self.$f7.alert('ComeToCorrectMethod',"Succsess");
-                return new Promise(function(resolve,reject){
-                    window.resolveLocalFileSystemURI(imgUrl,function (fileEntry){
-                        self.$f7.alert('',fileEntry.isFile);
-                        self.$f7.alert("File_obj",fileEntry.file());
-                        let fil={};
-                        self.$set(fil,'file',fileEntry.file());
-                        let fileExt='.'+fileEntry.toURL().split('.').pop();
-                        //TEST
-                        let file_name=fileEntry.toURL().split('/').pop();
-                        self.$f7.alert('',file_name);
-                        window.resolveLocalFileSystemURI(cordova.file.externalApplicationStorageDirectory,function(dir_chach){
-                            dir_chach.getDirectory('cache',{create:true},function(dirEntry_sub){
-                                dirEntry_sub.getFile(file_name,{create:true,exclusive:false},function(fileEntry_test){
-                                    fileEntry_test.file(function(file){
-                                        self.$f7.alert('',file.name);
-                                    });
-                                });
-                            });
-                        });
-                        //TESTEEE
-                    },function (){
-                        let error="no fileEntry";
-                        reject(error);
-                    });
-                });
-            },
+
+
             // upload(e){
             //     let self=this;
             //     let files=e.target.files;
