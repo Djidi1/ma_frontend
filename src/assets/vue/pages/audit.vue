@@ -149,7 +149,7 @@
             check_list_status(id){
                 let self=this;
                 this.$f7.confirm(this.$root.localization.modal.modalConfirmSend,this.$root.localization.modal.modalTextConf, function () {
-                    self.$f7.showPreloader(this.$root.localization.modal.preloader);
+                    self.$f7.showPreloader(self.$root.localization.modal.preloader);
                     let requs={
                         "audit":{
                             "check_list":self.get_req(),
@@ -160,7 +160,7 @@
                             "comment":"Test"
                         },
                     };
-
+                  console.log(requs.audit.check_list[0].requirement[1].comment[0].attachments[0].url);
                   self.send_data_to_sev(requs);
                 });
 
@@ -188,7 +188,7 @@
             return result;
             },
             get_current_status_to_send(req){
-                req.status=(req.disabled)?req.status:(req.status===0)?-1:req.status;
+                req.status=(req.disabled)?2:(req.status===0)?-1:req.status;
                 this.$ls.set('objects',this.$root.objects);
                 return (req.disabled)?2:(req.status===0)?-1:req.status;
             },
@@ -254,7 +254,7 @@
             new_encode_64: function (data) {
                 let self = this;
                 return new Promise(function (resolve) {
-                    data.check_list.forEach(function (ch) {
+                    data.audit.check_list.forEach(function (ch) {
                         ch.requirement.forEach(function (req) {
                             req.comments.forEach(function (comm) {
                                 comm.attachments.forEach(function (att) {
@@ -278,22 +278,19 @@
             },
             send_data_to_sev(data){
                 let self=this;
-                self.new_encode_64(data).then(
-                    data=>{
                         self.$f7.alert('GetToSendMethod',"Get");
                         this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
                             response=>{
                                 self.$f7.hidePreloader();
-                                self.$set(this.audit,"id",response.body);
-                                self.$set(this.audit,"upload",true);
+                                self.$set(self.audit,"id",response.body);
+                                self.$set(self.audit,"upload",true);
                                 self.$ls.set('objects',self.$root.objects);
                             },
                             response=>{
                                 self.$f7.hidePreloader();
                                 console.log("Error");
-                            }
-                        );
-                    });
+                            });
+
 
             },
 
@@ -333,7 +330,7 @@
                 let self=this;
                 str.check_list.forEach(function(itm){
                     itm.requirement.forEach(function(req){
-                        result=(req.status=1)?result:false;
+                        result=(req.status===1)?result:false;
                     });
                 });
                 return (result)?"fa fa-check fa-3x audit_good":"fa fa-times fa-3x audit_wrong";

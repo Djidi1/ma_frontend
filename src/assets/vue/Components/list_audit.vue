@@ -39,7 +39,9 @@
                 let self=this;
                 str.check_list.forEach(function(itm){
                     itm.requirement.forEach(function(req){
-                        result=(req.status!=1)?result:false;
+                        if (req.disabled) {
+                            result = (req.status===1) ? result : false;
+                        }
                     });
                 });
                 return (result)?"<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>":"<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
