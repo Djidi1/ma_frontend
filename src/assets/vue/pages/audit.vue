@@ -159,15 +159,8 @@
                             "comment":"Test"
                         },
                     };
-                    requs.check_list.forEach(function(ch){
-                        ch.requirement.forEach(function(rr){
-                            rr.comments.forEach(function(ccs){
-                                ccs.attachments.forEach(function(att){
-                                    self.$f7.alert(att.url,'RtesultView');
-                                })
-                            })
-                        })
-                    });
+                   self.$f7.alert(requs.check_list[0].requirement[1].comments[0].attachments[0].url,'ResultView');
+                   self.$f7.alert('','JobsDone');
 
                   //  self.send_data_to_sev(requs);
                 });
@@ -249,7 +242,6 @@
                                     self.$set(attachments[i], "url", ff.target.result);
                                 };
                                 reader.onloadend = function () {
-                                    self.$f7.alert(attachments[0].url);
                                     if(i===attachments.length-1) {
                                         self.$f7.alert(attachments[0].url,'Readyencode');
                                         resolve(attachments)}
