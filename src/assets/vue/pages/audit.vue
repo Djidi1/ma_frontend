@@ -159,9 +159,17 @@
                             "comment":"Test"
                         },
                     };
-                    self.$f7.alert(requs.check_list.requirement.comments.attachments.url);
+                    requs.check_list.forEach(function(ch){
+                        ch.requirement.forEach(function(rr){
+                            rr.comments.forEach(function(ccs){
+                                ccs.attachments.forEach(function(att){
+                                    self.$f7.alert(att.url,'RtesultView');
+                                })
+                            })
+                        })
+                    });
+
                   //  self.send_data_to_sev(requs);
-                    console.log(requs);
                 });
 
             },
@@ -222,7 +230,7 @@
                 this.encode_base64(result).then(
                     attachments=>{
                         result=attachments;
-                        self.$f7.alert(result.url,"ResultUrl");
+                        self.$f7.alert(result[0].url,"ResultUrl");
                         return result;
                     },
                 );
@@ -237,7 +245,7 @@
                                 let reader = new FileReader();
                                 //Читаем файл и получаем строку base64.
                                 reader.onload = function (ff) {
-                                    self.$f7.alert(ff.target.result, '');
+                                    self.$f7.alert(ff.target.result, 'GetreaderResult');
                                     self.$set(attachments[i], "url", ff.target.result);
                                 };
                                 reader.onloadend = function () {
