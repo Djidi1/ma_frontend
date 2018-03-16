@@ -157,6 +157,7 @@
                                 self.attachment[self.attachment.length-1].url=entry.toURL();
                                 self.$$('#img_pr'+(self.attachment.length-1)).hide();
                             },function(error){
+                                self.$f7.alert(error.code,this.$root.localization.pop_up.warning);
                                 self.attachment.splice(self.attachment.length-1,1);
                             });
                         });
@@ -165,24 +166,6 @@
                        self.$f7.alert(error);
                     }
                 );
-
-                // window.resolveLocalFileSystemURI(img, function (f) {
-                //     //Добавить перенос в другую папку фотографии. После успешного переноса возвращать путь к файлу через entry.toURL()
-                //     f.file(function (file) {
-                //         let new_file = {
-                //             "caption": file.name,
-                //             "file": {
-                //                 'name': file.name,
-                //                 "size": file.size,
-                //                 "type": file.type
-                //             },
-                //             "url": img
-                //         };
-                //         self.attachment.push(new_file);
-                //     }, function () {
-                //         self.$f7.alert('', 'ErrorTest file');
-                //     })
-                // });
             },
             get_img_data(url){
                 let self=this;
@@ -210,89 +193,11 @@
             },
 
 
-
             getPhotoFail(message){
-                console.log('error:'+ message);
+                this.$f7.alert('error:'+ message,this.$root.localization.pop_up.warning);
             },
 
 
-            // upload(e){
-            //     let self=this;
-            //     let files=e.target.files;
-            //     for (var i = 0; i<files.length; i++) {
-            //       if (files[i].type.match('image.*')){
-            //            let result_file={};
-            //            let file_obj={
-            //                "name":files[i].name,
-            //                "type":files[i].type,
-            //                "size":files[i].size,
-            //            };
-            //            self.$set(result_file,'caption',files[i].name);
-            //            self.attachment.push(result_file);
-            //            let reader = new FileReader();
-            //             reader.onloadstart=function(){
-            //                 self.$$('#img_pr'+(self.attachment.length-1)).show();
-            //             };
-            //            reader.onprogress=this.updateProgress;
-            //            reader.onload=function(file){
-            //                let blob=new Blob([file.target.result]);
-            //                window.URL=window.URL||window.webkitURL;
-            //                let blobURL=window.URL.createObjectURL(blob);
-            //                self.$set(result_file,'url',blobURL);
-            //                let img=new Image();
-            //                img.src=blobURL;
-            //                img.onload=function(){
-            //                    let result=self.resizeImg(img);
-            //                    self.$set(result_file,'url',result);
-            //                }
-            //
-            //            };
-            //            reader.onloadend=function(){
-            //                let progres_elem=self.$$('#img_pr'+(self.attachment.length-1)).find('.progress');
-            //                if (progres_elem.width()!=50){
-            //                    progres_elem.animate({
-            //                        'width':50
-            //                    },{
-            //                        duration:'200',
-            //                        easing:'swing',
-            //                        complete: function (elements) {
-            //                            self.$$('#img_pr'+(self.attachment.length-1)).hide();
-            //                        }
-            //                    });
-            //                }else{
-            //                    self.$$('#img_pr'+(self.attachment.length-1)).hide();
-            //                }
-            //            };
-            //            reader.readAsArrayBuffer(files[i])
-            //           // reader.readAsDataURL(files[i]);
-            //            self.$set(result_file,'file',file_obj);
-            //
-            //        }
-            //     }
-            //     e.target.value='';
-            // },
-            // updateProgress(evt){
-            //     let number=this.attachment.length-1;
-            //     if (evt.lengthComputable){
-            //         let percentLoaded = (Math.round((evt.loaded / evt.total) * 100))-10;
-            //         let elem=( this.$$('#img_pr'+number).find('.progress'));
-            //         let  px_widht=(50/100)*percentLoaded;
-            //         elem.animate({
-            //             'width':px_widht
-            //         },{
-            //             duration:'200',
-            //             easing:'swing'
-            //         })
-            //     }
-            // },
-            // resizeImg(img){
-            //     let canvas=document.createElement('canvas');
-            //     let ctx=canvas.getContext("2d");
-            //     canvas.width = img.width;
-            //     canvas.height = img.height;
-            //     ctx.drawImage(img,0,0,img.width,img.height);
-            //     return canvas.toDataURL("image/jpeg",0.7);
-            // },
 
 
 

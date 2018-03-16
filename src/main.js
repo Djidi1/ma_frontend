@@ -365,7 +365,7 @@ new Vue({
                             "warning_level":req.warning_level,
                             "created_at":req.created_at,
                             "comments":[],
-                            "disabled":false
+                            "disabled":(self.get_status(audits,results,req.id)===2)
                         };
                         self.create_comment(audits,results,req.id).then(res=>{
                             new_req.comments=res;

@@ -156,7 +156,7 @@
                             "object_id":self.audit.object_id,
                             "date_add":self.GetCurrentDate(),
                             "title":self.audit.title,
-                            "comment":[]
+                            "comment":"Test"
                         },
                     };
                   //  self.send_data_to_sev(requs);
@@ -196,13 +196,57 @@
                 let result=[];
                     req.comments.forEach(function(comm){
                         let comment_obj={
-                            'text':comm.text
+                            'text':comm.text,
+                            'attachments':self.get_attachments_comments(comm)
                         };
                         result.push(comment_obj);
                     });
                 return result;
             },
-
+            get_attachments_comments(comm){
+                let self =this;
+                let result=[];
+                comm.attachments.forEach(function(att){
+                    let new_att={
+                       "caption":att.caption,
+                       "file":{
+                           "name":att.name,
+                           "size":att.size,
+                           "type":att.type
+                       },
+                       "url":att.url
+                    };
+                    result.push(new_att);
+                });
+                this.encode_base64(result).then(
+                    attachments=>{
+                        result=attachments;
+                        return result;
+                    },
+                );
+            },
+            encode_base64(attachments) {
+                let self = this;
+                return new Promise(function (resolve, reject) {
+                    attachments.forEach(function (att,i) {
+                        //Берем файл
+                        window.resolveLocalFileSystemURI(att.url, function (f) {
+                            f.file(function (file) {
+                                let reader = new FileReader();
+                                reader.onload = function (ff) {
+                                    self.$f7.alert(ff.target.result, '');
+                                    self.$set(attachments, "url", ff.target.result);
+                                };
+                                reader.onloadend = function () {
+                                    self.$f7.alert(attachments[0].url);
+                                    if(i===attachments.length-1) resolve(attachments);
+                                };
+                                reader.readAsDataURL(file);
+                            });
+                        });
+                    });
+                })
+            },
             send_data_to_sev(data){
                 let self=this;
                 this.$f7.showPreloader(this.$root.localization.modal.preloader);
@@ -240,16 +284,16 @@
                     });
                 });
             },
-            audit_change_status(){
-               let list =this.audit.check_list;
-               let status="new";
-               list.forEach(function(item,i,arr){
-                       if(item.status==="ok") status="ok";
-                       if(item.status==="wrong") status="wrong";
-                })
-                this.audit.status=status;
-                this.$root.update_ls();
-            },
+            // audit_change_status(){
+            //    let list =this.audit.check_list;
+            //    let status="new";
+            //    list.forEach(function(item,i,arr){
+            //            if(item.status==="ok") status="ok";
+            //            if(item.status==="wrong") status="wrong";
+            //     })
+            //     this.audit.status=status;
+            //     this.$root.update_ls();
+            // },
 
             upload_st_low(str){
                 let result=true;
@@ -270,19 +314,6 @@
                     self.$f7.views.main.back();
                 })
             },
-            // cancelEdit(){
-            //    this.audit=this.$root.list[this.obj_id].audits[this.id];
-            //
-            // },
-            //
-            // get_check_array(check_id){
-            //     let self=this;
-            //     let check_array=[];
-            //     this.$root.check_list.forEach(function(item){
-            //         (item.id===check_id)?check_array.push(item):'';
-            //     });
-            //     return check_array;
-            // },
             GetCurrentDate(){
                 let data=new Date(this.audit.date_add);
                 let curSec=('0'+data.getSeconds()).substr(-2);
