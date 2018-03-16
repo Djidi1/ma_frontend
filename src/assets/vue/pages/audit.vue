@@ -160,6 +160,7 @@
                         },
                     };
                    self.$f7.alert(requs.check_list[0].requirement[1].comments[0].attachments[0].url,'ResultView');
+                   self.$f7.alert(requs.check_list.length,'CH');
                    self.$f7.alert('','JobsDone');
 
                   //  self.send_data_to_sev(requs);
