@@ -159,6 +159,7 @@
                             "comment":"Test"
                         },
                     };
+                    self.$f7.alert(requs.check_list.requirement.comments.attachments.url);
                   //  self.send_data_to_sev(requs);
                     console.log(requs);
                 });
@@ -233,6 +234,7 @@
                         window.resolveLocalFileSystemURI(att.url, function (f) {
                             f.file(function (file) {
                                 let reader = new FileReader();
+                                //Читаем файл и получаем строку base64.
                                 reader.onload = function (ff) {
                                     self.$f7.alert(ff.target.result, '');
                                     self.$set(attachments, "url", ff.target.result);
