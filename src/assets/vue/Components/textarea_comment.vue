@@ -163,7 +163,7 @@
                         });
                     },
                     error=>{
-                       self.$f7.alert(error);
+                       self.$f7.alert(error.code,this.$root.localization.pop_up.warning);
                     }
                 );
             },
@@ -184,8 +184,7 @@
                           self.attachment.push(img_data);
                           resolve(f);
                        },
-                       function(){
-                           let error='cant get file_obj';
+                       function(error){
                            reject(error);
                        });
                    })

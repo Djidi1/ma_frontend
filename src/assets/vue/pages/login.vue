@@ -64,7 +64,7 @@
                     this.$f7.views.main.router.load({url:'/page/'});
                 },response=>{
                     self.$f7.hidePreloader();
-                    self.$f7.alert('Somethin got wrong!', 'Warning');
+                    self.$f7.alert(self.$root.localization.LoginScreen.autherror, self.$root.localization.LoginScreen.warning);
                 });
             }
         }
