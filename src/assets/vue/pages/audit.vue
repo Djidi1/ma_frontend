@@ -149,7 +149,7 @@
             check_list_status(id){
                 let self=this;
                 this.$f7.confirm(this.$root.localization.modal.modalConfirmSend,this.$root.localization.modal.modalTextConf, function () {
-                    this.$f7.showPreloader(this.$root.localization.modal.preloader);
+                    self.$f7.showPreloader(this.$root.localization.modal.preloader);
                     let requs={
                         "audit":{
                             "check_list":self.get_req(),
@@ -160,11 +160,8 @@
                             "comment":"Test"
                         },
                     };
-                   self.$f7.alert(requs.check_list[0].requirement[1].comments[0].attachments[0].url,'ResultView');
-                   self.$f7.alert(requs.check_list.length,'CH');
-                   self.$f7.alert('','JobsDone');
 
-                    self.send_data_to_sev(requs);
+                  self.send_data_to_sev(requs);
                 });
 
             },
@@ -225,6 +222,7 @@
                 this.encode_base64(result).then(
                     attachments=>{
                         result=attachments;
+                        self.$f7.alert(result[0].url,"ResultUrl");
                         return result;
                     },
                 );
@@ -239,10 +237,12 @@
                                 let reader = new FileReader();
                                 //Читаем файл и получаем строку base64.
                                 reader.onload = function (ff) {
+                                    self.$f7.alert(ff.target.result, 'GetreaderResult');
                                     self.$set(attachments[i], "url", ff.target.result);
                                 };
                                 reader.onloadend = function () {
                                     if(i===attachments.length-1) {
+                                        self.$f7.alert(attachments[0].url,'Readyencode');
                                         resolve(attachments)}
                                 };
                                 reader.readAsDataURL(file);
@@ -251,20 +251,50 @@
                     });
                 })
             },
+            new_encode_64: function (data) {
+                let self = this;
+                return new Promise(function (resolve) {
+                    data.check_list.forEach(function (ch) {
+                        ch.requirement.forEach(function (req) {
+                            req.comments.forEach(function (comm) {
+                                comm.attachments.forEach(function (att) {
+                                    window.resolveLocalFileSystemURI(att.url, function (f) {
+                                        f.file(function (file) {
+                                            let reader = new FileReader();
+                                            reader.onload = function (ff) {
+                                                self.$f7.alert(att.url);
+                                                self.$set(att,"url",ff.target.result);
+                                                self.$f7.alert(att.url);
+                                            };
+                                            reader.readAsDataURL(file);
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                    resolve(data)
+                });
+            },
             send_data_to_sev(data){
                 let self=this;
-                this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
-                    response=>{
-                      self.$f7.hidePreloader();
-                      self.$set(this.audit,"id",response.body);
-                      self.$set(this.audit,"upload",true);
-                      self.$ls.set('objects',self.$root.objects);
-                    },
-                    response=>{
-                        self.$f7.hidePreloader();
-                        console.log("Error");
-                    }
-                );
+                self.new_encode_64(data).then(
+                    data=>{
+                        self.$f7.alert('GetToSendMethod',"Get");
+                        this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
+                            response=>{
+                                self.$f7.hidePreloader();
+                                self.$set(this.audit,"id",response.body);
+                                self.$set(this.audit,"upload",true);
+                                self.$ls.set('objects',self.$root.objects);
+                            },
+                            response=>{
+                                self.$f7.hidePreloader();
+                                console.log("Error");
+                            }
+                        );
+                    });
+
             },
 
             remove_comment(id){
@@ -334,12 +364,12 @@
             },
             upload_st(str){
                 let result=true;
-                let new_str;
+                let new_str=true;
                 let self=this;
-                    str.requirement.forEach(function(req){
-                        new_str=(req.status===0)?true:false;
-                        result=(req.status===1)?result:false;
-                    });
+                str.requirement.forEach(function(req){
+                    new_str=(req.status===0)?new_str:false;
+                    result=(req.status===1)?result:false;
+                });
                 return (new_str)?"<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>":(result)?"<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>":"<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
             },
 

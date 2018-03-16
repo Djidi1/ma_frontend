@@ -102,7 +102,7 @@
 
             },
             upload_st(str){
-                 let result=true;
+                let result=true;
                 let new_str=true;
                 let self=this;
                 str.requirement.forEach(function(req){
