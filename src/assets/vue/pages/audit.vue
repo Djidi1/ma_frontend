@@ -222,6 +222,7 @@
                 this.encode_base64(result).then(
                     attachments=>{
                         result=attachments;
+                        self.$f7.alert(result.url,"ResultUrl");
                         return result;
                     },
                 );
@@ -237,11 +238,13 @@
                                 //Читаем файл и получаем строку base64.
                                 reader.onload = function (ff) {
                                     self.$f7.alert(ff.target.result, '');
-                                    self.$set(attachments, "url", ff.target.result);
+                                    self.$set(attachments[i], "url", ff.target.result);
                                 };
                                 reader.onloadend = function () {
                                     self.$f7.alert(attachments[0].url);
-                                    if(i===attachments.length-1) resolve(attachments);
+                                    if(i===attachments.length-1) {
+                                        self.$f7.alert(attachments[0].url,'Readyencode');
+                                        resolve(attachments)}
                                 };
                                 reader.readAsDataURL(file);
                             });
