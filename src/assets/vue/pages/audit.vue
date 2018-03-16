@@ -149,6 +149,7 @@
             check_list_status(id){
                 let self=this;
                 this.$f7.confirm(this.$root.localization.modal.modalConfirmSend,this.$root.localization.modal.modalTextConf, function () {
+                    this.$f7.showPreloader(this.$root.localization.modal.preloader);
                     let requs={
                         "audit":{
                             "check_list":self.get_req(),
@@ -224,7 +225,6 @@
                 this.encode_base64(result).then(
                     attachments=>{
                         result=attachments;
-                        self.$f7.alert(result[0].url,"ResultUrl");
                         return result;
                     },
                 );
@@ -239,12 +239,10 @@
                                 let reader = new FileReader();
                                 //Читаем файл и получаем строку base64.
                                 reader.onload = function (ff) {
-                                    self.$f7.alert(ff.target.result, 'GetreaderResult');
                                     self.$set(attachments[i], "url", ff.target.result);
                                 };
                                 reader.onloadend = function () {
                                     if(i===attachments.length-1) {
-                                        self.$f7.alert(attachments[0].url,'Readyencode');
                                         resolve(attachments)}
                                 };
                                 reader.readAsDataURL(file);
@@ -255,7 +253,6 @@
             },
             send_data_to_sev(data){
                 let self=this;
-                this.$f7.showPreloader(this.$root.localization.modal.preloader);
                 this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
                     response=>{
                       self.$f7.hidePreloader();
