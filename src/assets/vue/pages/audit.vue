@@ -164,7 +164,7 @@
                    self.$f7.alert(requs.check_list.length,'CH');
                    self.$f7.alert('','JobsDone');
 
-                  //  self.send_data_to_sev(requs);
+                    self.send_data_to_sev(requs);
                 });
 
             },
