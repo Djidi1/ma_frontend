@@ -309,7 +309,7 @@ new Vue({
                                 "upload":false
                             };
                             result.audits.push(audit_result);
-                          };
+                          }
                       });
                        object_arr.push(result);
                    });
@@ -318,7 +318,6 @@ new Vue({
         },
         getresults(result_arr,results,checklist){
             let self=this;
-            let result=[];
             return new Promise(function(resolve){
                 result_arr.forEach(function(obj){
                     obj.audits.forEach(function(audits){
@@ -396,7 +395,7 @@ new Vue({
                 resolve(res);
             });
       },
-      attach_get(itm,){
+      attach_get(itm){
            let result_att=[];
            return new Promise(function(resolve){
                itm.audit_result_attache.forEach(function(att){
@@ -446,7 +445,6 @@ new Vue({
                 });
       },
       get_status(audit,result,id){
-         let self=this;
          let res=0;
          result.forEach(function(itm) {
                 res=(itm.audit_id===audit.id)?(itm.requirement_id===id)?itm.result:res:res;
@@ -454,22 +452,16 @@ new Vue({
          return res;
       },
       check_status_upload(arr){
-            let self=this;
             let res=false;
             let upload=true;
                 arr.check_list.forEach(function(cl){
                     cl.requirement.forEach(function(req){
                         upload=(req.status===0)?false:upload;
                     });
-                    res=(upload)?true:false;
+                    res=upload;
                 });
                 arr.upload=res;
       },
-
-
-
-
-
       get_img_frome_base(url){
           let self=this;
           let file_name=url.split('/');
@@ -517,15 +509,15 @@ new Vue({
                 file_tr.download(
                     uri,
                     fileURL,
-                    function(entry){;
+                    function(entry){
                         ready=entry.toURL();
                         resolve(ready)
                     },function(error){
                         console.log("download error target " + error.target());
-                        let error='error_download';
-                        reject(error)
+                        let error_msg='error_download';
+                        reject(error_msg)
                     },
-                    false,
+                    false
                 );
             });
       },

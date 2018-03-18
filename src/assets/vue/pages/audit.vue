@@ -224,7 +224,7 @@
                         result=attachments;
                         self.$f7.alert(result[0].url,"ResultUrl");
                         return result;
-                    },
+                    }
                 );
             },
             encode_base64(attachments) {
