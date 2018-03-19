@@ -131,9 +131,9 @@ new Vue({
         });
         //Вызов метода установки языка.
         this.lang_select(this.settings);
-        document.addEventListener('deviceready',function(){
-            document.addEventListener('backbutton',_this.go_back(),false);
-        },false)
+        // document.addEventListener('deviceready',function(){
+        //     document.addEventListener('backbutton',_this.go_back(),false);
+        // },false)
 
     },
 
@@ -156,6 +156,10 @@ new Vue({
         this.$ls.on('check_list',function(val){
             _this.check_list=val;
         });
+        document.addEventListener("backbutton",function(e){
+            e.preventDefault();
+            console.log('GetButtonClicked');
+        },false);
 
     },
     methods:{
