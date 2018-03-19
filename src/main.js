@@ -131,12 +131,13 @@ new Vue({
         });
         //Вызов метода установки языка.
         this.lang_select(this.settings);
+        //Слушаем когда нажимается кнопка назад.
+        document.addEventListener('backbutton',this.go_back(),false);
     },
     //При отресовки App устанавливаем основныые массивы и переменные. Они берутся из локалсторейджа, если там что-то есть.
     // Если там пусто по-умолчанию устанавливаем пусто для всех переменныех.
     mounted: function(){
 
-        document.addEventListener('backbutton',this.go_back(),false);
         //Бреме данные по пользователю.
         this.auth_info =this.$ls.get('auth_info',{auth:false,name:'',email:''});
         let _this=this;
@@ -153,31 +154,52 @@ new Vue({
         this.$ls.on('check_list',function(val){
             _this.check_list=val;
         });
-
     },
-
     methods:{
         go_back(e){
-          this.$f7.alert(1);
-          e.preventDefault();
+          this.$f7.alert("ButtonPress");
+          this.$f7.alert(e);
           let $$=Dom7;
-           let element=$$(this.$el);
-           if(element.find('.panel-left .active').length>0){
+          let element=$$(this.$el);
+          if(element.find('.panel-left').hasClass('active')){
+              this.$f7.alert(this.$f7.getCurrentView().activePage.name);
+              this.$f7.closePanel();
+              return false;
+          }else{
+              if (element.find('modal-in').length>0){
+                  this.$f7.alert('CloseModal');
+                  this.$f7.closeModal();
+                  return false;
+              }else {
+                  if ((this.$f7.getCurrentView().activePage.name==="audits_main")||(this.$f7.getCurrentView().activePage.name==="objects_main")){
+                      this.$f7.alert(this.$f7.getCurrentView().activePage.name);
+                      this.$f7.confirm("",this.$root.localization.modal.modalTextConfExit, function () {
+                          //navigator.app.clearHistory();
+                          //navigator.app.exitApp();
+                          this.$f7.alert('Вышли со страницы'+this.$f7.getCurrentView().activePage.name,"");
+                      });
+                  }else{
+                    this.$f7.alert('GoBack',"");
+                    this.$f7.mainView.back();
+                  }
+              }
 
-               this.go_back_panel();
-           }
-           else{
-               if (this.$f7.getCurrentView().activePage.name==="audits_main"||this.$f7.getCurrentView().activePage.name==="objects_main"){
-                    if(!this.check_modal(element)){
-                         navigator.app.clearHistory();
-                         navigator.app.exitApp();
-                    }
-               }else{
-                   if(!this.check_modal(element)){
-                       this.$f7.mainView.router.back()
-                   }
-               }
-           }
+          }
+          //  if(element.find('.panel-left .active').length>0){
+          //      this.go_back_panel();
+          //  }
+          //  else{
+          //      if (this.$f7.getCurrentView().activePage.name==="audits_main"||this.$f7.getCurrentView().activePage.name==="objects_main"){
+          //           if(!this.check_modal(element)){
+          //                navigator.app.clearHistory();
+          //                navigator.app.exitApp();
+          //           }
+          //      }else{
+          //          if(!this.check_modal(element)){
+          //              this.$f7.mainView.router.back()
+          //          }
+          //      }
+          //  }
         },
         go_back_panel(){
             this.$f7.alert(this.$f7.getCurrentView().activePage.name);
