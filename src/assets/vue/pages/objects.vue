@@ -1,5 +1,6 @@
 <template>
-    <f7-page pull-to-refresh @ptr:refresh="this.$root.onRefresh" >
+    <!--Страница объектов.-->
+    <f7-page name="objects_main" pull-to-refresh @ptr:refresh="this.$root.onRefresh" >
 
         <!-- Navbar -->
         <f7-navbar>

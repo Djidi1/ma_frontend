@@ -1,5 +1,6 @@
 <template>
-        <f7-page pull-to-refresh @ptr:refresh="this.$root.onRefresh">
+    <!--Страница аудитов-->
+        <f7-page name="audits_main" pull-to-refresh @ptr:refresh="this.$root.onRefresh" >
         <!-- Navbar -->
         <f7-navbar>
             <f7-nav-left>
@@ -30,8 +31,8 @@
             }
         },
         created(){
+            //При создании вызываем метод по получению данных о пользователе.
           let self=this;
-
               if (this.$root.auth_info.name===''){
                   this.$http.post('https://test.bh-app.ru/api/get-details', {}, {headers: {'Authorization': 'Bearer ' + self.$root.auth_info.token}}).then(
                       response => {
@@ -43,17 +44,21 @@
                           console.log('error get')
                       });
               };
+              //Если в локал сторейдже нет объектов(массив пустой), вызываем метод по получению данных от сервера.
               if (!self.$root.objects.length>0){
                   this.$f7.showPreloader(this.$root.localization.modal.preloader);
                   this.$root.getData_from_server().then(result=>{
                       self.$root.objects=result.obj;
+                      //Вызываем метод по загрузке вложений для комментариев.
                       self.$root.down_att(result.res);
                       this.$f7.hidePreloader()
                   });
               }
         },
        computed:{
+            //Проверка есть ли объекты с аудитами.
            hasSomething(){
+
               let result=true;
                result=(this.$root.objects.length>0)?result:false;
                return result

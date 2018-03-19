@@ -1,4 +1,5 @@
 <template>
+    <!--Редактирвоание аудитов-->
     <f7-popup id="popup_add_audit" :opened="opendPopup">
         <f7-navbar back-link="Back" sliding @back-click.stop="closePopUp(true)" >
             <f7-nav-center sliding> {{title}} </f7-nav-center>

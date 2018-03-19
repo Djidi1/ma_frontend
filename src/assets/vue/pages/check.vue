@@ -1,4 +1,5 @@
 <template>
+    <!--Страница чек-листа-->
     <f7-page>
         <f7-navbar back-link="Back" sliding  >
             <f7-nav-center sliding> {{check.title}}</f7-nav-center>

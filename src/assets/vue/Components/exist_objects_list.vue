@@ -1,4 +1,5 @@
 <template>
+    <!--Блок с выбором существующих объектов для редактирования-->
     <f7-popover class="exist_pop_over">
         <f7-block-title> {{this.$root.localization.pop_up.select_pop_over}}</f7-block-title>
         <f7-block >

@@ -1,4 +1,5 @@
 <template>
+    <!--Элементы списа чеклиста с требованием-->
     <div>
         <f7-list form class="check_list_items searchbar-found" id="search-list">
             <f7-list-item v-for="(item,item_id) in data_item" :key="item_id" :id="item.id"  :title="item.title"  swipeout   @swipeout:closed="change_btn(item)" :class="class_result(item)" >

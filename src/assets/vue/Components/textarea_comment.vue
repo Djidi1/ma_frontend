@@ -1,4 +1,5 @@
 <template>
+    <!--Блок с textarea для редактирования или создания нового комментария-->
         <div class="comment_text_zone" id="edit">
             <f7-list form>
                 <f7-list-item>

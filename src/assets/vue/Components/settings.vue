@@ -1,6 +1,7 @@
 <template>
+    <!--Панель с настройками-->
     <div>
-        <f7-page class="cost">
+        <f7-page name="settings" class="cost">
             <!-- Navbar -->
             <f7-navbar  sliding class="settings" >
                 <f7-nav-left back-link="Back" sliding @back-click.stop="cancelSetting()"></f7-nav-left>
@@ -54,6 +55,9 @@
                 user_name:this.$root.auth_info.name,
                 curentLang:this.$root.settings
             }
+        },
+        created(){
+            console.log(this.$f7.getCurrentView().activePage);
         },
         methods:{
             curLang:function(val){

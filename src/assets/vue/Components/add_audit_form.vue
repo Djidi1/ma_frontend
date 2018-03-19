@@ -1,4 +1,5 @@
 <template>
+    <!--форма добавления аудитов-->
     <f7-card>
     <f7-list form media>
         <f7-list-item  class="add_check">

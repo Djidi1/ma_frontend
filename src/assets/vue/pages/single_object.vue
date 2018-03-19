@@ -1,4 +1,5 @@
 <template>
+    <!--страница объекта-->
     <f7-page pull-to-refresh @ptr:refresh="this.$root.onRefresh"  >
         <!-- Navbar -->
         <f7-navbar back-link="Back" sliding  >

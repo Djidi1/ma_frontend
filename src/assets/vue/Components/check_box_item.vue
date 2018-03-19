@@ -1,4 +1,5 @@
 <template>
+     <!--Квадратные блоки чек-боксов для каждого требоваия чек-листа-->
         <f7-col width="50">
                 <label class="item-content label-checkbox" :class="button_cls">
                     <i :class="icon_cls" aria-hidden="true"></i>

@@ -1,4 +1,5 @@
 <template>
+    <!--Вложения в комментариях-->
     <div class="attachments_comments">
         <transition-group name="attach_fade" v-on:after-leave="resize" v-on:enter="resize">
         <div class="attach_block" v-for="(attach,index) in attachment" :key="attach.file.name">

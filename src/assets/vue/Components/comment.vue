@@ -1,4 +1,5 @@
 <template>
+    <!--Блок с комментариями-->
     <f7-block class="comment_acrd"  >
         <f7-list accordion class="acrd_custom">
             <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_title" after="<i class='fa fa-commenting-o' aria-hidden='true'></i>">

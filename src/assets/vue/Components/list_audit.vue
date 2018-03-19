@@ -1,4 +1,5 @@
 <template>
+    <!--Лист с объектами и аудитаи-->
     <div class="blck_info">
         <f7-card v-for="(item,index) in this.$root.objects" :key="index" v-if="hasAudits(index)">
             <f7-card-header >
@@ -28,12 +29,15 @@
             }
         },
         methods:{
+            //Статус для аудита. Графииский символ с боку от ссылки на аудит.
             realStatus(str){
                 let self=this;
                 let result;
                 result=(str.upload)?self.upload_st(str):self.stat(str);
                 return result;
             },
+
+            //Получение статуса аудита если он загружен.
             upload_st(str){
                 let result=true;
                 let self=this;
@@ -46,6 +50,7 @@
                 });
                 return (result)?"<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>":"<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
             },
+            //Если не загружен всегда считается новым.
             stat(str){
                 return "<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>"
             },
@@ -61,6 +66,7 @@
             hasAudits(id){
                 return(this.$root.objects[id].audits.length>0);
             },
+            //Ковертируем дату в удобный вид.
             data_formta(data){
                 data=new Date(data);
                 let curSec=('0'+data.getSeconds()).substr(-2);

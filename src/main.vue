@@ -26,8 +26,8 @@
 		<f7-views>
 			<f7-view id="main-view" navbar-through  main>
 				<!-- Pages -->
-
 				<f7-pages >
+
 				</f7-pages>
 			</f7-view>
 		</f7-views>
@@ -47,13 +47,18 @@
             avatar: Avatar,
 			user_name:User_name
 		},
+		//перед тем как отрисуется станица.
         beforeMount:function(){
             this.$nextTick(function(){
+
+                //Устанавливаем язык дял модальных окон.
 				this.$root.changeModalLang();
+				//Проверяем авторизован ли пользователь и перенаправляем его на нужную страницу.
                 (this.$root.check_user_auth()) ? this.go_to_page():this.go_to_login();
             })
         },
 		computed:{
+            //Подсчет НОВЫХ аудитов.
             count_new(){
                 let count=0;
                 this.$root.objects.forEach(function(obj){
@@ -65,6 +70,7 @@
 			}
 		},
 		methods:{
+            //Выход и очищение локал сторейджа.
             exit:function () {
                 self=this;
                 this.$f7.confirm("",this.$root.localization.modal.modalTextConfExit, function () {
@@ -74,9 +80,11 @@
                     self.go_to_login();
                 });
             },
+			//Переход на страницу с аудитами.
             go_to_page:function(){
                 this.$f7.views.main.router.load({url:'/page/'});
             },
+			//Переход на страницу авторизации.
 			go_to_login:function(){
                 this.$f7.views.main.router.load({url:'/login/'});
 			}
