@@ -132,7 +132,7 @@ new Vue({
         //Вызов метода установки языка.
         this.lang_select(this.settings);
         document.addEventListener('deviceready',function(){
-            document.addEventListener('backbutton',this.go_back(),false);
+            document.addEventListener('backbutton',_this.go_back(),false);
         },false)
 
     },
