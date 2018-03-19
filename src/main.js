@@ -157,7 +157,7 @@ new Vue({
         document.addEventListener('backbutton',this.go_back(),false);
     },
     methods:{
-        go_back(){
+        go_back(e){
           this.$f7.alert("ButtonPress");
           // let $$=Dom7;
           // let element=$$(this.$el);
