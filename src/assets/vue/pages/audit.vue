@@ -105,6 +105,7 @@
 
             //Установка высоты для блока с иконкой статусом аудита.
             this.$nextTick(function () {
+             
                 this.block_height=this.status_style()
             })
         },
@@ -295,6 +296,7 @@
             //Отправка даных на сервер.
             send_data_to_sev(data){
                 let self=this;
+                self.$f7.alert(data.audit.check_list[0].requirement[1].comments[0].attachments[0].url,'URltoSend');
                 this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
                     response=>{
                         //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.

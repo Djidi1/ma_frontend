@@ -56,9 +56,8 @@
                 curentLang:this.$root.settings
             }
         },
-        created(){
-            console.log(this.$f7.getCurrentView().activePage);
-        },
+
+
         methods:{
             curLang:function(val){
               let result;

@@ -158,8 +158,44 @@ new Vue({
 
     methods:{
         go_back(e){
-            console.log()
-          // this.$f7.alert(this.$f7.views.main);
+          this.$f7.alert(1);
+          e.preventDefault();
+          let $$=Dom7;
+           let element=$$(this.$el);
+           if(element.find('.panel-left .active').length>0){
+
+               this.go_back_panel();
+           }
+           else{
+               if (this.$f7.getCurrentView().activePage.name==="audits_main"||this.$f7.getCurrentView().activePage.name==="objects_main"){
+                    if(!this.check_modal(element)){
+                         navigator.app.clearHistory();
+                         navigator.app.exitApp();
+                    }
+               }else{
+                   if(!this.check_modal(element)){
+                       this.$f7.mainView.router.back()
+                   }
+               }
+           }
+        },
+        go_back_panel(){
+            this.$f7.alert(this.$f7.getCurrentView().activePage.name);
+            this.$f7.closePanel();
+        },
+        check_modal(element){
+            let $$=Dom7;
+            let result=false;
+            if(element.find('.popover').find('modal-in').length>0){
+                this.$f7.closeModal('.popover');
+                result=true;
+            }else{
+                if (element.find('.popup').find('modal-in')){
+                    this.$f7.closeModal('#popup')
+                    result=true;
+                }
+            }
+            return result;
         },
         //Проверка авторизован ли пользователь.
         check_user_auth:function(){
