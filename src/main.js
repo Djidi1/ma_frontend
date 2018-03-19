@@ -184,7 +184,7 @@ new Vue({
           //         }
           //     }
 
-          }
+
           //  if(element.find('.panel-left .active').length>0){
           //      this.go_back_panel();
           //  }
@@ -201,24 +201,7 @@ new Vue({
           //      }
           //  }
         },
-        go_back_panel(){
-            this.$f7.alert(this.$f7.getCurrentView().activePage.name);
-            this.$f7.closePanel();
-        },
-        check_modal(element){
-            let $$=Dom7;
-            let result=false;
-            if(element.find('.popover').find('modal-in').length>0){
-                this.$f7.closeModal('.popover');
-                result=true;
-            }else{
-                if (element.find('.popup').find('modal-in')){
-                    this.$f7.closeModal('#popup')
-                    result=true;
-                }
-            }
-            return result;
-        },
+
         //Проверка авторизован ли пользователь.
         check_user_auth:function(){
             return (this.auth_info.auth)
