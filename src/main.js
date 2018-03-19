@@ -158,7 +158,7 @@ new Vue({
         });
         document.addEventListener("backbutton",function(e){
             e.preventDefault();
-            console.log('GetButtonClicked');
+            _this.$f7.alert('GetButtonClicked','');
         },false);
 
     },
