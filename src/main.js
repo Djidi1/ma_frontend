@@ -131,6 +131,9 @@ new Vue({
         });
         //Вызов метода установки языка.
         this.lang_select(this.settings);
+        document.addEventListener('deviceready',function(){
+            document.addEventListener('backbutton',this.go_back(),false);
+        },false)
 
     },
 
@@ -153,12 +156,13 @@ new Vue({
         this.$ls.on('check_list',function(val){
             _this.check_list=val;
         });
-        //Слушаем когда нажимается кнопка назад.
-        document.addEventListener('backbutton',this.go_back(),false);
+
     },
     methods:{
         go_back(e){
-          this.$f7.alert("ButtonPress");
+            console.log(e);
+            e.preventDefault();
+            this.$f7.alert("ButtonPress");
           // let $$=Dom7;
           // let element=$$(this.$el);
           // if(element.find('.panel-left').hasClass('active')){
@@ -183,8 +187,6 @@ new Vue({
           //           this.$f7.mainView.back();
           //         }
           //     }
-
-
           //  if(element.find('.panel-left .active').length>0){
           //      this.go_back_panel();
           //  }
