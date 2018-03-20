@@ -5,7 +5,7 @@
         <f7-navbar back-link="Back" sliding  >
             <f7-nav-center sliding> {{audit.title}}</f7-nav-center>
             <f7-nav-right v-if="!uploaded">
-                <f7-link @click="popup_open=true"><i class="fa fa-pencil" aria-hidden="true"></i></f7-link>
+                <f7-link @click="open_modal()"><i class="fa fa-pencil" aria-hidden="true"></i></f7-link>
                 <f7-link @click="remove_audit"> <i class="fa fa-trash-o" aria-hidden="true"></i></f7-link>
             </f7-nav-right>
         </f7-navbar>
@@ -74,7 +74,7 @@
 
             </f7-card>
         </div>
-        <popup_audit_edit :opendPopup="popup_open" @close="popup_open=false"  :audit="this.audit"></popup_audit_edit>
+        <popup_audit_edit  :audit="this.audit"></popup_audit_edit>
     </f7-page>
 </template>
 
@@ -160,7 +160,7 @@
                     let requs={
                         "audit":{
                             "check_list":self.get_req(),//массив чек листов
-                            "id":self.audit.id,
+                            "id":0,
                             "object_id":self.audit.object_id,
                             "date_add":self.GetCurrentDate(),//Текущая дата.
                             "title":self.audit.title,
@@ -293,8 +293,7 @@
             //Отправка даных на сервер.
             send_data_to_sev(data){
                 let self=this;
-                slef.$f7.alert('Come_to_send_method');
-                self.$f7.alert(data.audit.check_list[0].requirement[1].comments[0].attachments[0].url,'URltoSend');
+                console.log(data);
                 // this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
                 //     response=>{
                 //         //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
@@ -367,6 +366,9 @@
                 });
                 return (new_str)?"<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>":(result)?"<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>":"<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
             },
+            open_modal(){
+                this.$f7.popup($$('#popup_add_audit'));
+            }
 
         }
 

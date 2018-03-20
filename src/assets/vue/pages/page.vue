@@ -15,10 +15,11 @@
                     {{this.$root.localization.AuditPage_nothing}}
                 </f7-block>
             </div>
-            <f7-fab color="blue"  class="fab_bottom" @click="popup_open=true">
+            <f7-fab color="blue"  class="fab_bottom" @click="open_modal_popup()">
+                <!--@click="popup_open=true"-->
                <f7-icon icon="icon-plus"></f7-icon>
             </f7-fab>
-            <popup_new_object :opendPopup="popup_open" @close="popup_open=false" :mode="true" ></popup_new_object>
+            <popup_new_object   :mode="true" ></popup_new_object>
     </f7-page>
 </template>
 
@@ -63,7 +64,13 @@
                result=(this.$root.objects.length>0)?result:false;
                return result
            }
-       }
+       },
+        methods:{
+            open_modal_popup(){
+                let $$=Dom7;
+               this.$f7.popup($$('#popup_add'));
+            }
+        }
     }
 </script>
 

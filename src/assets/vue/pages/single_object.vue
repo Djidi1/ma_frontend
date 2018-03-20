@@ -6,7 +6,7 @@
 
             <f7-nav-center sliding> {{object.title}}</f7-nav-center>
             <f7-nav-right>
-                <f7-link @click="popup_open=true"><i class="fa fa-pencil" aria-hidden="true"></i></f7-link>
+                <f7-link @click="open_popup()"><i class="fa fa-pencil" aria-hidden="true"></i></f7-link>
                 <f7-link @click="remove_obj"> <i class="fa fa-trash-o" aria-hidden="true"></i></f7-link>
             </f7-nav-right>
         </f7-navbar>
@@ -37,7 +37,7 @@
                 </f7-card-content>
             </f7-card>
         </div>
-        <popup_new_object :opendPopup="popup_open" @close="popup_open=false" :mode="false" :id="this.id"></popup_new_object>
+       <popup_edit_object :id="this.id"></popup_edit_object>
 
     </f7-page>
 </template>
@@ -97,9 +97,9 @@
                     self.$f7.views.main.back();
                 })
             },
-            cancel_edit(index){
-                this.object.name=this.$root.list[index].name;
-                this.object.audits = this.$root.list[index].audits;
+            open_popup(index){
+                let $$=Dom7;
+                this.$f7.popup($$('#popup_edit'));
             },
             data_format(data_str){
                 let data=(data_str!=undefined)?new Date(data_str):new Date(this.object.created_at);

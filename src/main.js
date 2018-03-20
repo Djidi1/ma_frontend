@@ -73,6 +73,8 @@ import curr_objects from './assets/vue/Components/exist_objects_list.vue'
 Vue.component('curr_objects',curr_objects);
 import popup_new_object from './assets/vue/Components/popup_new_object.vue'
 Vue.component('popup_new_object',popup_new_object);
+import popup_edit_object from './assets/vue/Components/popup_object_edit.vue'
+Vue.component('popup_edit_object',popup_edit_object);
 import popup_audit_edit from './assets/vue/Components/popup_edit_audit.vue'
 Vue.component('popup_audit_edit',popup_audit_edit);
 
@@ -163,13 +165,20 @@ new Vue({
           let $$=Dom7;
           let element=$$(this.$el);
           if(element.find('.panel-left').hasClass('active')){
-              (this.$f7.getCurrentView().activePage.name==="settings")?this.$f7.mainView.back():this.$f7.closePanel();
+              (this.$f7.getCurrentView().activePage.name==="settings")?this.$f7.views[0].back():this.$f7.closePanel();
               return false;
           }else{
               if (element.find('.modal-in').length>0){
-                  this.$f7.alert('CloseModal');
-                  this.$f7.closeModal();
-                  return false;
+                  this.$f7.alert(element.find('.modal-in').length);
+                  element.find('.modal-in').forEach(function(){
+                      if($$(this.hasClass('popover'))){
+                           this.$f7.closeModal($$(this));
+                           return false;
+                      }else{
+                           this.$f7.closeModal();
+                           return false;
+                      }
+                  });
               }else {
                   if ((this.$f7.getCurrentView().activePage.name==="audits_main")||(this.$f7.getCurrentView().activePage.name==="objects_main")){
                       this.$f7.alert(this.$f7.getCurrentView().activePage.name);
