@@ -171,12 +171,14 @@ new Vue({
           }else{
               if (element.find('.modal-in').length>0){
                   $$('.modal-in').forEach(function(){
+                      console.log($$(this));
+                      console.log($$(this).hasClass('popover'));
                       if($$(this).hasClass('popover')){
                           console.log('ClosePopover');
-                          self.$f7.closeModal($$(this));
+                          //self.$f7.closeModal($$(this));
                           return false;
                       }else{
-                           this.$f7.closeModal();
+                          //self.$f7.closeModal();
                            return false;
                       }
                   });

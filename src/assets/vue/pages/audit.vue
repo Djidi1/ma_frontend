@@ -220,13 +220,12 @@
 
                 let result=[];
                 comm.attachments.forEach(function(att){
-                    console.log(att);
                     let new_att={
                         "caption":att.caption,
                         "file":{
-                            "name":att.name,
-                            "size":att.size,
-                            "type":att.type
+                            "name":att.file.name,
+                            "size":att.file.size,
+                            "type":att.file.type
                         },
                         "url":att.url
                     };
@@ -287,7 +286,6 @@
             //Отправка даных на сервер.
             send_data_to_sev(data){
                 let self=this;
-                console.log(data);
                 self.new_encode_64(data).then(
                     data=>{
                         console.log(data);
