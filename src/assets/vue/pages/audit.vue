@@ -155,7 +155,7 @@
                 let self=this;
                 //Вызов модального подтвержедния действия.
                 this.$f7.confirm(this.$root.localization.modal.modalConfirmSend,this.$root.localization.modal.modalTextConf, function () {
-                    self.$f7.showPreloader(self.$root.localization.modal.preloader);
+                   // self.$f7.showPreloader(self.$root.localization.modal.preloader);
                     //Формирование массива на отправку.
                     let requs={
                         "audit":{
@@ -300,13 +300,13 @@
                 this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
                     response=>{
                         //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
-                        self.$f7.hidePreloader();
+                      //  self.$f7.hidePreloader();
                         self.$set(self.audit,"id",response.body);
                         self.$set(self.audit,"upload",true);
                         self.$ls.set('objects',self.$root.objects);
                     },
                     response=>{
-                        self.$f7.hidePreloader();
+                        //self.$f7.hidePreloader();
                         console.log("Error");
                     });
 

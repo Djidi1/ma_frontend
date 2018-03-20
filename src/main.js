@@ -131,8 +131,6 @@ new Vue({
         });
         //Вызов метода установки языка.
         this.lang_select(this.settings);
-
-
     },
 
     //При отресовки App устанавливаем основныые массивы и переменные. Они берутся из локалсторейджа, если там что-то есть.
@@ -171,6 +169,7 @@ new Vue({
           }else{
               if (element.find('modal-in').length>0){
                   this.$f7.alert('CloseModal');
+                  this.$f7.alert(this.$f7.views[0].activePage.name);
                   this.$f7.closeModal();
                   return false;
               }else {

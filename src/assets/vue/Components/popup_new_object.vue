@@ -192,7 +192,6 @@
                           "audits":this.audits,
                           "created_at":this.GetCurrentDate()
                         };
-                        console.log(new_object);
                        this.$root.objects.push(new_object);
                     }
 
