@@ -177,7 +177,7 @@ new Vue({
                       });
                            self.$f7.closeModal();
                            return false;
-                      }
+
 
               }else {
                   if ((this.$f7.getCurrentView().activePage.name==="audits_main")||(this.$f7.getCurrentView().activePage.name==="objects_main")){
