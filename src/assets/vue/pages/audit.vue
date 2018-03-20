@@ -235,7 +235,6 @@
                 this.encode_base64(result).then(
                     attachments=>{
                         result=attachments;
-                        self.$f7.alert(result[0].url,"ResultUrl");
                         return result;
                     }
                 );
@@ -253,13 +252,11 @@
                                 let reader = new FileReader();
                                 //Читаем файл и получаем строку base64.
                                 reader.onload = function (ff) {
-                                    self.$f7.alert(ff.target.result, 'GetreaderResult');
                                     self.$set(attachments[i], "url", ff.target.result);
                                 };
                                 reader.onloadend = function () {
                                     //Дополнительная проверка, которая возвращает resolve только в случае если это было последний эелемент в массиве вложений.
                                     if(i===attachments.length-1) {
-                                        self.$f7.alert(attachments[0].url,'Readyencode');
                                         resolve(attachments)}
                                 };
                                 reader.readAsDataURL(file);
@@ -296,6 +293,7 @@
             //Отправка даных на сервер.
             send_data_to_sev(data){
                 let self=this;
+                slef.$f7.alert('Come_to_send_method');
                 self.$f7.alert(data.audit.check_list[0].requirement[1].comments[0].attachments[0].url,'URltoSend');
                 // this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
                 //     response=>{
