@@ -231,13 +231,8 @@
                     };
                     result.push(new_att);
                 });
+                return result;
                 //Кодируем изображения в base_64
-                this.encode_base64(result).then(
-                    attachments=>{
-                        result=attachments;
-                        return result;
-                    }
-                );
             },
             //Для кодировки сначала получаем fienEntry объект из файловой системы устройства.
             encode_base64(attachments) {
@@ -276,9 +271,7 @@
                                         f.file(function (file) {
                                             let reader = new FileReader();
                                             reader.onload = function (ff) {
-                                                self.$f7.alert(att.url);
                                                 self.$set(att,"url",ff.target.result);
-                                                self.$f7.alert(att.url);
                                             };
                                             reader.readAsDataURL(file);
                                         });
@@ -293,21 +286,23 @@
             //Отправка даных на сервер.
             send_data_to_sev(data){
                 let self=this;
-                console.log(data);
-                // this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
-                //     response=>{
-                //         //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
-                //       //  self.$f7.hidePreloader();
-                //         self.$set(self.audit,"id",response.body);
-                //         self.$set(self.audit,"upload",true);
-                //         self.$ls.set('objects',self.$root.objects);
-                //     },
-                //     response=>{
-                //         //self.$f7.hidePreloader();
-                //         console.log("Error");
-                //     });
-
-
+                self.new_encode_64(data).then(
+                    data=>{
+                        console.log(data);
+                        this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
+                            response=>{
+                              //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
+                              //  self.$f7.hidePreloader();
+                                self.$set(self.audit,"id",response.body);
+                                self.$set(self.audit,"upload",true);
+                                self.$ls.set('objects',self.$root.objects);
+                            },
+                            response=>{
+                                //self.$f7.hidePreloader();
+                                console.log("Error");
+                            });
+                    }
+                )
             },
             //Удаление комментария.
             remove_comment(id){

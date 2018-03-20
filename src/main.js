@@ -162,6 +162,7 @@ new Vue({
     },
     methods:{
         go_back(){
+            let self=this;
           let $$=Dom7;
           let element=$$(this.$el);
           if(element.find('.panel-left').hasClass('active')){
@@ -169,10 +170,12 @@ new Vue({
               return false;
           }else{
               if (element.find('.modal-in').length>0){
-                  this.$f7.alert(element.find('.modal-in').length);
                   element.find('.modal-in').forEach(function(){
-                      if($$(this.hasClass('popover'))){
-                           this.$f7.closeModal($$(this));
+                      console.log(this);
+                      console.log($$(this));
+                      if($$(element.find('.modal-in').hasClass('popover'))){
+                          console.log('popover');
+                          self.$f7.closeModal();
                            return false;
                       }else{
                            this.$f7.closeModal();
@@ -181,11 +184,10 @@ new Vue({
                   });
               }else {
                   if ((this.$f7.getCurrentView().activePage.name==="audits_main")||(this.$f7.getCurrentView().activePage.name==="objects_main")){
-                      this.$f7.alert(this.$f7.getCurrentView().activePage.name);
-                      this.$f7.confirm("",this.$root.localization.modal.modalTextConfExit, function () {
+                      // this.$f7.confirm("",this.$root.localization.modal.modalTextConfExit, function () {
                           navigator.app.clearHistory();
                           navigator.app.exitApp();
-                      });
+                      // });
                   }else{
                     this.$f7.mainView.back();
                   }
