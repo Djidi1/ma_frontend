@@ -30,6 +30,7 @@
           }
         },
         methods:{
+
             selecte_item(item){
                return((item.id===this.current.id));
             },

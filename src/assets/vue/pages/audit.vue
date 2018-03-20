@@ -155,7 +155,7 @@
                 let self=this;
                 //Вызов модального подтвержедния действия.
                 this.$f7.confirm(this.$root.localization.modal.modalConfirmSend,this.$root.localization.modal.modalTextConf, function () {
-                   // self.$f7.showPreloader(self.$root.localization.modal.preloader);
+                    self.$f7.showPreloader(self.$root.localization.modal.preloader);
                     //Формирование массива на отправку.
                     let requs={
                         "audit":{
@@ -217,9 +217,10 @@
             //формируем вложения для комментариев. На данный момент тестируется можно ли сразу и получить base64 кодировку изображения.
             // В случае не успеха метод enccode_base64 будет вызватсья отедльно перед отправкой на сервер.
             get_attachments_comments(comm){
-                let self =this;
+
                 let result=[];
                 comm.attachments.forEach(function(att){
+                    console.log(att);
                     let new_att={
                         "caption":att.caption,
                         "file":{
@@ -232,7 +233,6 @@
                     result.push(new_att);
                 });
                 return result;
-                //Кодируем изображения в base_64
             },
             //Для кодировки сначала получаем fienEntry объект из файловой системы устройства.
             encode_base64(attachments) {
@@ -280,25 +280,27 @@
                             });
                         });
                     });
+                    console.log('After Encode :'+data);
                     resolve(data)
                 });
             },
             //Отправка даных на сервер.
             send_data_to_sev(data){
                 let self=this;
+                console.log(data);
                 self.new_encode_64(data).then(
                     data=>{
                         console.log(data);
                         this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
                             response=>{
                               //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
-                              //  self.$f7.hidePreloader();
+                               self.$f7.hidePreloader();
                                 self.$set(self.audit,"id",response.body);
                                 self.$set(self.audit,"upload",true);
                                 self.$ls.set('objects',self.$root.objects);
                             },
                             response=>{
-                                //self.$f7.hidePreloader();
+                                self.$f7.hidePreloader();
                                 console.log("Error");
                             });
                     }
