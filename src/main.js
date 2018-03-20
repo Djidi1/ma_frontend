@@ -170,15 +170,14 @@ new Vue({
               return false;
           }else{
               if (element.find('.modal-in').length>0){
-                      console.log($$('.modal-in'));
-                      console.log($$('.popover'));
                       $$('.popover').forEach(function(){
-                          console.log($$(this));
+                          if ($$(this).hasClass('modal-in')){
+                              self.$f7.closeModal($$(this));
+                              return false;
+                          }
                       });
                            self.$f7.closeModal();
                            return false;
-
-
               }else {
                   if ((this.$f7.getCurrentView().activePage.name==="audits_main")||(this.$f7.getCurrentView().activePage.name==="objects_main")){
                       // this.$f7.confirm("",this.$root.localization.modal.modalTextConfExit, function () {
