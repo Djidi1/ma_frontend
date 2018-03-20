@@ -269,7 +269,7 @@
                                     window.resolveLocalFileSystemURI(att.url, function (f) {
                                         f.file(function (file) {
                                             let reader = new FileReader();
-                                            reader.onload = function (ff) {
+                                            reader.onloadend = function (ff) {
                                                 self.$set(att,"url",ff.target.result);
                                             };
                                             reader.readAsDataURL(file);
@@ -279,7 +279,6 @@
                             });
                         });
                     });
-                    console.log('After Encode :'+data);
                     resolve(data)
                 });
             },
@@ -292,7 +291,7 @@
                         this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
                             response=>{
                               //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
-                               self.$f7.hidePreloader();
+                                self.$f7.hidePreloader();
                                 self.$set(self.audit,"id",response.body);
                                 self.$set(self.audit,"upload",true);
                                 self.$ls.set('objects',self.$root.objects);
