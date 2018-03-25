@@ -6,7 +6,7 @@
     <description>
         MobileAudit project!
     </description>
-    <icon src="src/static/icon_main.png" />
+    <icon src="src/static/ma_logo.png" />
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Kon Team
     </author>
@@ -21,14 +21,20 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon density="land-ldpi" src="src/static/icon_main.png" />
+        <icon density="land-ldpi" src="src/static/ma_logo.png" />
+        <splash density="land-hdpi" src="src/static/splash/screen-hdpi-landscape.png" />
+        <splash density="land-ldpi" src="src/static/splash/screen-ldpi-landscape.png" />
+        <splash density="land-mdpi" src="src/static/splash/screen-mdpi-landscape.png" />
+        <splash density="land-xhdpi" src="src/static/splash/screen-xhdpi-landscape.png" />
+        <splash density="port-hdpi" src="src/static/splash/screen-hdpi-portrait.png" />
+        <splash density="port-ldpi" src="src/static/splash/screen-ldpi-portrait.png" />
+        <splash density="port-mdpi" src="src/static/splash/screen-mdpi-portrait.png" />
+        <splash density="port-xhdpi" src="src/static/splash/screen-xhdpi-portrait.png" />
         <preference name="SplashScreenDelay" value="4000" />
+        <preference name="SplashMaintainAspectRatio" value="true" />
+        <preference name="AutoHideSplashScreen" value="true" />
     </platform>
     <platform name="browser">
-        <preference name="SplashScreen" value="static/icon_main.png" />
-        <preference name="SplashMaintainAspectRatio" value="false" />
-        <preference name="SplashScreenDelay" value="2000" />
-        <icon src="static/icon_main.png" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -39,5 +45,7 @@
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="cordova-plugin-camera" spec="^4.0.2" />
+    <plugin name="cordova-plugin-crosswalk-webview" spec="^2.4.0" />
     <engine name="browser" spec="^5.0.2" />
+    <engine name="android" spec="^7.0.0" />
 </widget>

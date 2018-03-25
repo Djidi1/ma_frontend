@@ -1,4 +1,5 @@
 <template>
+    <!--Лист объектов-->
     <div class="blck_info">
         <f7-card>
             <f7-card-content>

@@ -1,5 +1,6 @@
 <template>
-    <f7-page pull-to-refresh @ptr:refresh="this.$root.onRefresh" >
+    <!--Страница объектов.-->
+    <f7-page name="objects_main" pull-to-refresh @ptr:refresh="this.$root.onRefresh" >
 
         <!-- Navbar -->
         <f7-navbar>
@@ -10,11 +11,11 @@
 
         </f7-navbar>
         <list_object></list_object>
-        <f7-fab color="blue"  class="fab_bottom" @click="popup_open=true">
+        <f7-fab color="blue"  class="fab_bottom" @click="open_popup()">
             <f7-icon icon="icon-plus"></f7-icon>
         </f7-fab>
 
-        <popup_new_object :opendPopup="popup_open" @close="popup_open=false" ></popup_new_object>
+        <popup_new_object ></popup_new_object>
     </f7-page>
 </template>
 
@@ -26,6 +27,12 @@
         data:function(){
             return{
                 popup_open:false
+            }
+        },
+        methods:{
+            open_popup(){
+                let $$=Dom7;
+                this.$f7.popup($$('#popup_add'));
             }
         }
     }

@@ -1,4 +1,5 @@
 <template>
+    <!--Блок с аватаркой и именем пользователя-->
     <div class="row user_block">
         <div class="col-35">
             <div class="avatar" :style="style">

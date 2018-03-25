@@ -1,4 +1,5 @@
 <template>
+    <!--Страница авторизации-->
         <f7-page >
         <div id="login-form" class="login_form_stl">
             <!-- Login Screen -->

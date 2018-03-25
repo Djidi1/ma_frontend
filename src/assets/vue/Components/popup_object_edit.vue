@@ -1,6 +1,5 @@
 <template>
-    <!--Создание новго объкта с аудитами и чек листами-->
-    <f7-popup id="popup_add" >
+    <f7-popup id="popup_edit" >
         <f7-navbar back-link="Back" sliding @back-click.stop="closePopUp(true)" >
             <f7-nav-center sliding> {{this.title}} </f7-nav-center>
             <f7-nav-right>
@@ -17,29 +16,28 @@
                 <f7-card-header>
                     <f7-grid style="width:100%; padding:5px 0 5px 0;">
                         <f7-col width="60">{{this.$root.localization.pop_up.object_info}}</f7-col>
-                        <f7-col v-show="this.mode" width="40"> <f7-button  class="btn_select_obj" open-popover=".exist_pop_over" :disabled="!hasObject"> {{this.$root.localization.pop_up.select_ex}}</f7-button></f7-col>
                     </f7-grid>
                 </f7-card-header>
                 <f7-card-content style="padding-bottom:15px;">
                     <f7-card style="padding-bottom:10px;">
-                    <f7-list form class="add_list">
-                        <f7-list-item class="correct_css">
-                                    <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
-                                    <f7-input type="text"  v-model="current" id="main_input">
-                                    </f7-input>
-                        </f7-list-item>
-                        <f7-list-item class="correct_css">
-                            <f7-label floating>{{this.$root.localization.pop_up.address}}</f7-label>
-                            <f7-input type="text" v-model="addres_obj"></f7-input>
-                        </f7-list-item>
-                    </f7-list>
+                        <f7-list form class="add_list">
+                            <f7-list-item class="correct_css">
+                                <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
+                                <f7-input type="text"  v-model="current" id="main_input">
+                                </f7-input>
+                            </f7-list-item>
+                            <f7-list-item class="correct_css">
+                                <f7-label floating>{{this.$root.localization.pop_up.address}}</f7-label>
+                                <f7-input type="text" v-model="addres_obj"></f7-input>
+                            </f7-list-item>
+                        </f7-list>
                     </f7-card>
                 </f7-card-content>
                 <f7-card-footer></f7-card-footer>
             </f7-card>
             <f7-card>
                 <f7-card-header>
-                   {{this.$root.localization.pop_up.audits_info}}
+                    {{this.$root.localization.pop_up.audits_info}}
                 </f7-card-header>
                 <f7-card-content class="card_audit_add">
                     <transition-group  appear mode="out-in" name="slide-app">
@@ -64,53 +62,43 @@
                 </f7-card>
             </f7-card>
         </div>
-        <curr_objects v-if="hasObject" :list="this.select_list"  :current="this.selected_object" @selected_object_done="selected_object_done"></curr_objects>
+
     </f7-popup>
 </template>
 
 <script>
-    var $$=Dom7;
+    let $$=Dom7;
     export default {
-        name: "popup_new_object",
+        name: "popup_object_edit",
         props:{
-            mode:{type:Boolean,default:false},
             id:{type:String,default:''}
         },
         data:function(){
-          return{
-              title:'',
-              selected_object:{},
-              current:'',
-              addres_obj:'',
-              audits:[],
-              edit:false,
-              have_something:false
-          }
-        },
-        created(){
-            this.title=(!this.mode)?this.$root.localization.pop_up.edit:this.$root.localization.pop_up.new;
-            this.select_list=(this.$root.objects.length>0)?this.$root.objects:'';
-        },
-        mounted(){
-            this.$nextTick(function(){
-                // $$('.popover').forEach(function(){
-                //    console.log($$(this).hasClass('.modal-in'));
-                // });
-                if (this.id!=''){
-                    this.selected_object=this.get_object(this.id);
-                    this.audits=this.get_audits_root(this.id);
-                    this.current=this.selected_object.title;
-                    this.addres_obj=this.selected_object.address;
-                    this.edit=true;
-                    this.correct_css();
-                };
-            });
+            return{
+                title:this.$root.localization.pop_up.edit,
+                selected_object:{},
+                current:'',
+                addres_obj:'',
+                audits:[],
+                edit:false,
+                have_something:false
+            }
         },
         computed:{
             hasObject(){
                 this.select_list=(this.$root.objects.length>0)?this.$root.objects:'';
                 return(this.select_list.length>0)
             }
+        },
+        mounted(){
+            this.$nextTick(function() {
+                this.selected_object = this.get_object(this.id);
+                this.audits = this.get_audits_root(this.id);
+                this.current = this.selected_object.title;
+                this.addres_obj = this.selected_object.address;
+                this.edit = true;
+                this.correct_css();
+            });
         },
         methods:{
             closePopUp(mode){
@@ -122,22 +110,10 @@
                 let now= new Date();
                 return now;
             },
-            selected_object_done(item,index){
-                let self=this;
-                if((Object.keys(item).length!=0)){
-                    this.selected_object=item;
-                    this.audits=this.get_audits(this.selected_object.audits);
-                    this.current=this.selected_object.title;
-                    this.addres_obj=this.selected_object.address;
-                    if (!this.have_something)this.correct_css();
-                    this.have_something=true;
-
-                }
-            },
             get_audits(audits){
                 let result=[];
                 audits.forEach(function(item){
-                   result.push(item);
+                    result.push(item);
                 });
                 return result;
             },
@@ -150,29 +126,29 @@
                 return result
             },
             add_audit(){
-              let new_audit={
-                  "id":"Offline_audit_"+this.getlastid_audit(),
-                  "title":'',
-                  "date_add":this.GetCurrentDate(),
-                  "created_at":this.GetCurrentDate(),
-                  "comments":[],
-                  "check_list":[],
-                  "object_id":(Object.keys(this.selected_object).length!=0)?this.selected_object.id:'Offline_'+this.getlastid(),
-                  "upload":false
-              };
-              this.audits.push(new_audit);
+                let new_audit={
+                    "id":"Offline_audit_"+this.getlastid_audit(),
+                    "title":'',
+                    "date_add":this.GetCurrentDate(),
+                    "created_at":this.GetCurrentDate(),
+                    "comments":[],
+                    "check_list":[],
+                    "object_id":(Object.keys(this.selected_object).length!=0)?this.selected_object.id:'Offline_'+this.getlastid(),
+                    "upload":false
+                };
+                this.audits.push(new_audit);
 
-    },
+            },
             get_object(id){
                 let self=this;
                 let result={};
                 this.$root.objects.forEach(function(item){
-                   result=(item.id.toString()===id)?item:result;
+                    result=(item.id.toString()===id)?item:result;
                 });
                 return result;
             },
             getlastid(){
-              return this.$root.objects.length-1;
+                return this.$root.objects.length-1;
             },
             getlastid_audit(){
                 return this.audits.length;
@@ -188,54 +164,41 @@
                     }
                     else{
                         let new_object={
-                          "id":"Offline_"+this.getlastid(),
-                          "title":this.current,
-                          "address":this.addres_obj,
-                          "audits":this.audits,
-                          "created_at":this.GetCurrentDate()
+                            "id":"Offline_"+this.getlastid(),
+                            "title":this.current,
+                            "address":this.addres_obj,
+                            "audits":this.audits,
+                            "created_at":this.GetCurrentDate()
                         };
-                       this.$root.objects.push(new_object);
+                        this.$root.objects.push(new_object);
                     }
 
                     this.closePopUp();
                 }else{ this.$f7.alert('Заполнены не все поля!',this.$root.localization.pop_up.warning);}
             },
             validat(){
-              let self=this;
-              let result=true;
-              result=(this.current!='')?result:false;
-              result=(this.addres_obj!=''&&this.addres_obj!=null)?result:false;
-              this.audits.forEach(function(item){
-                 result=(item.title!='')?result:false;
-              });
-              return result;
+                let self=this;
+                let result=true;
+                result=(this.current!='')?result:false;
+                result=(this.addres_obj!=''&&this.addres_obj!=null)?result:false;
+                this.audits.forEach(function(item){
+                    result=(item.title!='')?result:false;
+                });
+                return result;
             },
             clear_data(){
-              this.correct_css();
-              this.secod_correct_css();
-              this.selected_object={};
-              this.current='';
-              this.addres_obj='';
-              this.audits=[];
-              this.have_something=false;
+                this.correct_css();
+                this.secod_correct_css();
+                this.selected_object={};
+                this.current='';
+                this.addres_obj='';
+                this.audits=[];
+                this.have_something=false;
 
             },
             remove_audit(index){
-              this.audits.splice(index,1);
+                this.audits.splice(index,1);
             },
-
-
-
-            test_close(){
-                let elem=$$('.modal-in');
-                console.log(elem);
-                this.$f7.closeModal();
-            },
-
-
-
-
-
 
 
 
@@ -270,10 +233,9 @@
                 })
             },
             add_cls(obj,cls){
-               obj.attr('class').split(' ').forEach(function(item){
-                   (item!=cls)?obj.addClass(cls):obj.removeClass(cls);
-               });
-                // obj.toggleClass(cls);
+                obj.attr('class').split(' ').forEach(function(item){
+                    (item!=cls)?obj.addClass(cls):obj.removeClass(cls);
+                });
             },
 
 
@@ -316,5 +278,4 @@
         color: #2196f3;
         background-color:transparent;
     }
-
 </style>

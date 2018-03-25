@@ -1,5 +1,6 @@
 <template>
-    <f7-popup id="popup_add_audit" :opened="opendPopup">
+    <!--Редактирвоание аудитов-->
+    <f7-popup id="popup_add_audit" >
         <f7-navbar back-link="Back" sliding @back-click.stop="closePopUp(true)" >
             <f7-nav-center sliding> {{title}} </f7-nav-center>
             <f7-nav-right>
@@ -89,7 +90,8 @@
                 this.$root.objects=(mode)?this.$ls.get('objects'):this.$root.objects;
                 this.current=this.audit_current.title;
                 this.check_list_new=this.get_check_list();
-                this.$emit('close');
+                let $$=Dom7;
+                this.$f7.closeModal($$('#popup_add_audit'));
             },
             get_check_list(){
                 let self=this;

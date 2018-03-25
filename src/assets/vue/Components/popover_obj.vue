@@ -1,4 +1,5 @@
 <template>
+    <!--Блок добавления чеклистов-->
     <f7-popover :class="'popover_add_obj_'+this.id" @popover:open="get_current_list()">
         <f7-block-title> {{this.$root.localization.pop_up.add_check}}</f7-block-title>
         <f7-block>

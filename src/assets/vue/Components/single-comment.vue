@@ -1,4 +1,5 @@
 <template>
+    <!--Единичный комментарий-->
     <f7-block inner class="custom_block_no_after">
         <transition  mode="out-in" name="slide-fade" >
                 <div v-if="mode" key="message">
