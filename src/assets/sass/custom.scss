@@ -405,7 +405,7 @@
 	padding-top:0;
 	padding-bottom:0;
 }
-.swipeout-close{
+.check_list_items .swipeout-close{
 	transform: none!important;
 }
 .text_main.content-block.content-block-inner:after{
@@ -417,4 +417,12 @@
 .porgress_block>span,
 .porgress_block>.preloader span{
 	margin: 0 !important;
+}
+.object_link{
+	text-align: left!important;
+	padding-left:0!important;
+}
+.swipe_btn{
+	color: #f6f6f6 !important;
+	font-size: 25px !important;
 }

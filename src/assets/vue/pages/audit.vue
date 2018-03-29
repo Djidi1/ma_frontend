@@ -10,29 +10,29 @@
             </f7-nav-right>
         </f7-navbar>
         <div class="blck_info">
-            <f7-card>
-                <f7-card-header>
-                    <div class="obj_info audit_obj">
-                        <div class="row  no-gutter">
-                            <div class="col-70">
-                                <div class="col-100">{{this.$root.localization.AuditPage.name}}:</div>
-                                <div class="col-100">{{audit.title}}</div>
-                                <div class="col-100">Id: {{audit.id}}</div>
-                                <div class="col-100">{{data_format}}</div>
-                                <div class="col-100"><f7-link no-link-class :href="'/object/'+this.audit.object_id+'/'">{{this.$root.objects[this.array_index_save].title}}</f7-link></div>
-                            </div>
-                            <div class="col-30 status" :style="this.block_height">
-                                <table>
-                                    <tr>
-                                        <td> <i :class="status" aria-hidden="true"></i></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </f7-card-header>
+            <!--<f7-card>-->
+                <!--<f7-card-header>-->
+                    <!--<div class="obj_info audit_obj">-->
+                        <!--<div class="row  no-gutter">-->
+                            <!--<div class="col-70">-->
+                                <!--&lt;!&ndash;<div class="col-100">{{this.$root.localization.AuditPage.name}}:</div>&ndash;&gt;-->
+                                <!--<div class="col-100">{{audit.title}}</div>-->
+                                <!--&lt;!&ndash;<div class="col-100">Id: {{audit.id}}</div>&ndash;&gt;-->
+                                <!--<div class="col-100">{{data_format}}</div>-->
+                                <!--&lt;!&ndash;<div class="col-100"><f7-link no-link-class :href="'/object/'+this.audit.object_id+'/'">{{this.$root.objects[this.array_index_save].title}}</f7-link></div>&ndash;&gt;-->
+                            <!--</div>-->
+                            <!--<div class="col-30 status" :style="this.block_height">-->
+                                <!--<table>-->
+                                    <!--<tr>-->
+                                        <!--<td> <i :class="status" aria-hidden="true"></i></td>-->
+                                    <!--</tr>-->
+                                <!--</table>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</f7-card-header>-->
 
-            </f7-card>
+            <!--</f7-card>-->
 
             <f7-card>
                 <f7-card-header>
@@ -50,7 +50,7 @@
             </f7-card>
             <f7-card>
                 <f7-list accordion class="acrd_custom text_main">
-                    <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_title" :after="comment_audit_count">
+                    <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_audit" :after="comment_audit_count">
                         <f7-accordion-content>
                             <transition-group appear mode="out-in" name="slide-fade" >
                                 <single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id"></single-comment>
@@ -67,14 +67,14 @@
                 <f7-block inner>
                     <f7-grid>
                         <f7-col width="100">
-                            <f7-button fill @click="check_list_status()"><i class="fa fa-check" aria-hidden="true"></i> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
+                            <f7-button fill @click="check_list_status()">{{this.$root.localization.AuditPage.comment_button}} <i class="fa fa-paper-plane" aria-hidden="true"></i></f7-button>
                         </f7-col>
                     </f7-grid>
                 </f7-block>
 
             </f7-card>
         </div>
-        <popup_audit_edit  :audit="this.audit"></popup_audit_edit>
+        <popup_audit_edit :audit="this.audit"></popup_audit_edit>
     </f7-page>
 </template>
 
@@ -361,7 +361,7 @@
                 return (new_str)?"<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>":(result)?"<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>":"<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
             },
             open_modal(){
-                this.$f7.popup($$('#popup_add_audit'));
+                this.$f7.popup($$('#popup_add_audit_'+this.audit.id));
             }
 
         }

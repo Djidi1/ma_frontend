@@ -5,7 +5,7 @@
             <f7-card-header >
                     <div class="obj_info">
                         <div class="row  no-gutter">
-                            <div class="col-70"> <f7-link no-link-class :href="'/object/'+item.id+'/'">{{item.title}}</f7-link></div>
+                            <div class="col-70"> <f7-link class="object_link"  :href="'/object/'+item.id+'/'">{{item.title}}</f7-link></div>
                             <div class="col-70  dop_info">{{item.address}}</div>
                             <div class="col-30 dop_info count_info">{{countFrom(item)}}</div>
                         </div>
@@ -13,7 +13,14 @@
             </f7-card-header>
             <f7-card-content>
                 <f7-list media-list>
-                    <f7-list-item v-for="(acrd,acrd_index) in array_few(item)" :key="acrd_index" :link="'/audit/'+index+'/'+acrd_index" :title="acrd.title" :subtitle="'ID: '+acrd.id"  :text="data_formta(acrd.created_at)"  :media="realStatus(acrd)"></f7-list-item>
+                    <f7-list-item v-for="(acrd,acrd_index) in array_few(item)" :key="acrd_index" :link="'/audit/'+index+'/'+acrd_index" :title="acrd.title" :id="'id_'+acrd.id"   :text="data_formta(acrd.created_at)"  :media="realStatus(acrd)" swipeout>
+                        <f7-swipeout-actions v-if="!acrd.upload">
+                            <f7-swipeout-button  @click="send_data(acrd,acrd.id)"> <i class="fa fa-paper-plane swipe_btn" aria-hidden="true" ></i> </f7-swipeout-button>
+                            <f7-swipeout-button  @click="edit_data(acrd.id)"> <i class="fa fa-pencil swipe_btn" aria-hidden="true" ></i> </f7-swipeout-button>
+                            <f7-swipeout-button  @click="delete_data(index,acrd.id,acrd_index)"> <i class="fa fa-trash-o swipe_btn" aria-hidden="true" ></i> </f7-swipeout-button>
+                        </f7-swipeout-actions>
+                        <popup_audit_edit  :audit="acrd"></popup_audit_edit>
+                    </f7-list-item>
                 </f7-list>
             </f7-card-content>
         </f7-card>
@@ -75,7 +82,26 @@
                 let curMounth=('0'+(data.getMonth()+1));
                 let date_for_text=curDay+"/"+curMounth+"/"+data.getFullYear()+" "+data.getHours()+":"+curMin+":"+curSec;
                 return date_for_text;
+            },
+            send_data(item,index){
+                let $$=Dom7;
+                this.$f7.swipeoutClose($$('#id_'+index));
+            },
+            edit_data(index){
+                let $$=Dom7;
+                this.$f7.swipeoutClose($$('#id_'+index));
+                this.$f7.popup($$('#popup_add_audit_'+index));
+            },
+            delete_data(obj,id,acrd_index){
+                let $$=Dom7;
+                let self=this;
+                this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
+                        self.$f7.swipeoutClose($$('#id_'+id));
+                         self.$root.objects[obj].audits.splice(acrd_index,1);
+                         self.$ls.set('objects',self.$root.objects);
+                });
             }
+
         }
     }
 </script>
@@ -91,5 +117,7 @@
     .show_border{
         border-bottom:1px solid #ddd
     }
+
+
 
 </style>
