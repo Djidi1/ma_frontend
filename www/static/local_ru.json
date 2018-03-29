@@ -45,9 +45,10 @@
     "comments_title": "Комментарии",
     "comments_audit":"Комментарии к аудиту",
     "comment_placeholder": "Комментарий",
-    "comment_button": "Сохранить комментарий",
+    "audit_send_btn":"Отправить",
+    "comment_button": "Сохранить",
     "check_list_position":"Требования к чек-листу",
-    "check_list_btn_ok":"Сохранить",
+    "check_list_btn_ok":"Принять",
     "check_list_btn_reset":"Сбросить"
   },
   "lang": {

@@ -45,9 +45,10 @@
     "comments_title":"Comments",
     "comment_placeholder":"Comment",
     "comments_audit":"Audits's comments",
-    "comment_button":"Send",
+    "audit_send_btn":"Send",
+    "comment_button":"Save",
     "check_list_position":"Requirements for check-list",
-    "check_list_btn_ok":"Save",
+    "check_list_btn_ok":"Accept",
     "check_list_btn_reset":"Reset"
   },
   "lang": {
