@@ -174,10 +174,11 @@ new Vue({
                           if ($$(this).hasClass('modal-in')){
                               self.$f7.closeModal($$(this));
                               return false;
+                          }else{
+                              self.$f7.closeModal();
+                              return false;
                           }
                       });
-                           self.$f7.closeModal();
-                           return false;
               }else {
                   if ((this.$f7.getCurrentView().activePage.name==="audits_main")||(this.$f7.getCurrentView().activePage.name==="objects_main")){
                       // this.$f7.confirm("",this.$root.localization.modal.modalTextConfExit, function () {

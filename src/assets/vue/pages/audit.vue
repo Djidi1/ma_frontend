@@ -287,19 +287,20 @@
                 let self=this;
                 self.new_encode_64(data).then(
                     data=>{
-                        console.log(data);
-                        this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
-                            response=>{
-                              //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
-                                self.$f7.hidePreloader();
-                                self.$set(self.audit,"id",response.body);
-                                self.$set(self.audit,"upload",true);
-                                self.$ls.set('objects',self.$root.objects);
-                            },
-                            response=>{
-                                self.$f7.hidePreloader();
-                                console.log("Error");
-                            });
+                        console.log(data.audit.check_list);
+                        self.$f7.hidePreloader();
+                        // this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
+                        //     response=>{
+                        //       //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
+                        //         self.$f7.hidePreloader();
+                        //         self.$set(self.audit,"id",response.body);
+                        //         self.$set(self.audit,"upload",true);
+                        //         self.$ls.set('objects',self.$root.objects);
+                        //     },
+                        //     response=>{
+                        //         self.$f7.hidePreloader();
+                        //         console.log("Error");
+                        //     });
                     }
                 )
             },

@@ -1,5 +1,5 @@
 <template>
-    <f7-popup id="popup_edit" >
+    <f7-popup :id="'popup_edit_'+id" >
         <f7-navbar back-link="Back" sliding @back-click.stop="closePopUp(true)" >
             <f7-nav-center sliding> {{this.title}} </f7-nav-center>
             <f7-nav-right>

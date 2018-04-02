@@ -91,7 +91,9 @@
                 let self=this;
                 str.check_list.forEach(function(itm){
                     itm.requirement.forEach(function(req){
-                        result=(req.status!=1)?result:false;
+                        if (req.disabled) {
+                            result = (req.status===1) ? result : false;
+                        }
                     });
                 });
                 return (result)?"<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>":"<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
@@ -109,7 +111,7 @@
             },
             open_popup(index){
                 let $$=Dom7;
-                this.$f7.popup($$('#popup_edit'));
+                this.$f7.popup($$('#popup_edit_'+this.id));
             },
             data_format(data_str){
                 let data=(data_str!=undefined)?new Date(data_str):new Date(this.object.created_at);
@@ -130,7 +132,6 @@
                 this.$f7.popup($$('#popup_add_audit_'+index));
             },
             delete_data(id,acrd_index){
-
                 let $$=Dom7;
                 let self=this;
                 this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
