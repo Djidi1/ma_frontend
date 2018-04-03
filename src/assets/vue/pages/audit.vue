@@ -283,18 +283,25 @@
                     //     }
                     // }
 
-                    data.audit.check_list.forEach(function (ch) {
-                        ch.requirement.forEach(function (req) {
-                            req.comments.forEach(function (comm) {
-                                comm.attachments.forEach(function (att) {
+                    data.audit.check_list.forEach(function (ch,i) {
+                        ch.requirement.forEach(function (req,g) {
+                            req.comments.forEach(function (comm,j) {
+                                comm.attachments.forEach(function (att,k) {
                                     promises.push(new Promise((resolve,reject)=>{
                                         window.resolveLocalFileSystemURL(att.url,function(f){
                                             f.file(function(file){
                                                 let reader= new FileReader();
                                                 reader.onloadend = function(ff){
-                                                    att.url=ff.target.result;
+                                                    let res={
+                                                       'url':ff.target.result,
+                                                        'ch':i,
+                                                        'req':g,
+                                                        'com':j,
+                                                        'at':k
+                                                    }
+                                                    console.log(att);
                                                     console.log(att.url);
-                                                    resolve(att);
+                                                    resolve(res);
                                                 };
                                                 reader.readAsDataURL(file);
                                             });
@@ -312,10 +319,9 @@
                 let self=this;
                 self.new_encode_64(data).then(
                     promises=>{
-                        console.log(promises);
-
-                        console.log(promises);
-                        Promise.all(promises).then(att=>{
+                        console.log(data);
+                        Promise.all(promises).then(values=>{
+                            console.log(values);
                             self.$f7.hidePreloader();
                             console.log(data);
                         });
