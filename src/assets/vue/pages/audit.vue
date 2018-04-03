@@ -271,6 +271,7 @@
                                             let reader = new FileReader();
                                             reader.onloadend = function (ff) {
                                                 self.$set(att,"url",ff.target.result);
+                                                console.log(ff.target.result);
                                             };
                                             reader.readAsDataURL(file);
                                         });
@@ -287,7 +288,7 @@
                 let self=this;
                 self.new_encode_64(data).then(
                     data=>{
-                        console.log(data.audit.check_list);
+                        console.log(data.audit.check_list[0].requirement[1].comments[0].attachments[0].url);
                         self.$f7.hidePreloader();
                         // this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
                         //     response=>{
