@@ -164,21 +164,24 @@ new Vue({
         go_back(){
             let self=this;
           let $$=Dom7;
+
           let element=$$(this.$el);
           if(element.find('.panel-left').hasClass('active')){
               (this.$f7.getCurrentView().activePage.name==="settings")?this.$f7.views[0].back():this.$f7.closePanel();
               return false;
           }else{
               if (element.find('.modal-in').length>0){
-                      $$('.popover').forEach(function(){
+                  console.log($$('.popover .modal-in'));
+                  console.log($$('.popover .modal-in').length);
+                      $$('.popover').forEach(function(itm,i,arr){
                           if ($$(this).hasClass('modal-in')){
                               self.$f7.closeModal($$(this));
-                              console.log(1);
-                              return false;
+                              console.log(2);
+                          }else
+                              if(i===arr.length-1){
+                              self.$f7.closeModal();
                           }
                       });
-                  console.log(2);
-                  self.$f7.closeModal();
                   return false;
               }else {
                   if ((this.$f7.getCurrentView().activePage.name==="audits_main")||(this.$f7.getCurrentView().activePage.name==="objects_main")){

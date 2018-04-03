@@ -262,25 +262,44 @@
             new_encode_64: function (data) {
                 let self = this;
                 return new Promise(function (resolve) {
-                    data.audit.check_list.forEach(function (ch) {
-                        ch.requirement.forEach(function (req) {
-                            req.comments.forEach(function (comm) {
-                                comm.attachments.forEach(function (att) {
-                                    window.resolveLocalFileSystemURI(att.url, function (f) {
-                                        f.file(function (file) {
+                    for(let i=0;i<data.audit.check_list.length;i++){
+                        for( let j=0;j<data.audit.check_list[i].requirement.length;j++){
+                            for (let d=0;d<data.audit.check_list[i].requirement[j].comments.length;d++){
+                                for (let z=0;d<data.audit.check_list[i].requirement[j].comments[d].attachments.length;z++){
+                                    window.resolveLocalFileSystemURI(data.audit.check_list[i].requirement[j].comments[d].attachments[z].url, function (f) {
+                                        f.file(function(file){
+                                            console.log(file);
                                             let reader = new FileReader();
-                                            reader.onloadend = function (ff) {
-                                                self.$set(att,"url",ff.target.result);
+                                            reader.onload=function(ff) {
+                                                self.$set(data.audit.check_list[i].requirement[j].comments[d].attachments[z].url,ff.target.result);
                                                 console.log(ff.target.result);
                                             };
                                             reader.readAsDataURL(file);
                                         });
                                     });
-                                });
-                            });
-                        });
-                    });
-                    resolve(data)
+                                }
+                            }
+                        }
+                    }
+                    resolve(data);
+                    // data.audit.check_list.forEach(function (ch) {
+                    //     ch.requirement.forEach(function (req) {
+                    //         req.comments.forEach(function (comm) {
+                    //             comm.attachments.forEach(function (att) {
+                    //                 window.resolveLocalFileSystemURI(att.url, function (f) {
+                    //                     f.file(function (file) {
+                    //                         let reader = new FileReader();
+                    //                         reader.onloadend = function (ff) {
+                    //                             self.$set(att,"url",ff.target.result);
+                    //                             console.log(ff.target.result);
+                    //                         };
+                    //                         reader.readAsDataURL(file);
+                    //                     });
+                    //                 });
+                    //             });
+                    //         });
+                    //     });
+                    // });
                 });
             },
             //Отправка даных на сервер.
@@ -288,7 +307,7 @@
                 let self=this;
                 self.new_encode_64(data).then(
                     data=>{
-                        console.log(data.audit.check_list[0].requirement[1].comments[0].attachments[0].url);
+                        console.log(data.audit.check_list[0]);
                         self.$f7.hidePreloader();
                         // this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
                         //     response=>{
