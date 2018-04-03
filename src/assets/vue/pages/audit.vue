@@ -287,7 +287,7 @@
                         ch.requirement.forEach(function (req) {
                             req.comments.forEach(function (comm) {
                                 comm.attachments.forEach(function (att) {
-                                    promises.push(new Promies((resolve,reject)=>{cor
+                                    promises.push(new Promise((resolve,reject)=>{
                                         window.resolveLocalFileSystemURL(att.url,function(f){
                                             f.file(function(file){
                                                 let reader= new FileReader();
@@ -300,29 +300,20 @@
                                             });
                                         });
                                     }));
-
-                                    // window.resolveLocalFileSystemURL(att.url, function (f) {
-                                    //     f.file(function (file) {
-                                    //         let reader = new FileReader();
-                                    //         reader.onloadend = function (ff) {
-                                    //             self.$set(att,"url",ff.target.result);
-                                    //             console.log(ff.target.result);
-                                    //         };
-                                    //         reader.readAsDataURL(file);
-                                    //     });
-                                    // });
                                 });
-                            });
-                        });
-                    });
+                            })
+                        })
+                    })
                 resolve(promises);
-                });
+                })
             },
             //Отправка даных на сервер.
             send_data_to_sev(data){
                 let self=this;
                 self.new_encode_64(data).then(
                     promises=>{
+                        console.log(promises);
+
                         console.log(promises);
                         Promise.all(promises).then(att=>{
                             self.$f7.hidePreloader();
