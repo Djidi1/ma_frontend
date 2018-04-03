@@ -320,8 +320,8 @@
                 self.new_encode_64(data).then(
                     promises=>{
                         console.log(data);
-                        Promise.all(promises).then(values=>{
-                            console.log(values);
+                        Promise.all(promises).then(res=>{
+                            console.log(res);
                             self.$f7.hidePreloader();
                             console.log(data);
                         });
