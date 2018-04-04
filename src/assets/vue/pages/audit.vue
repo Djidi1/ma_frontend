@@ -258,12 +258,7 @@
                         f.file(function(file){
                             let reader = new FileReader();
                             reader.onloadend = function(ff){
-                                console.log('encoding done');
-                                console.log(ff.target.result);
-                                console.log(att.url);
-
                                 att.url=ff.target.result;
-                                console.log(att.url);
                                 resolve(ff.target.result);
                             };
                             reader.readAsDataURL(file);
@@ -271,36 +266,14 @@
                     });
                 });
             },
-            // new Promise((resolve,reject)=>{
-            //     window.resolveLocalFileSystemURL(att.url,function(f){
-            //         f.file(function(file){
-            //             let reader= new FileReader();
-            //             reader.onloadend = function(ff){
-            //                 console.log('promise');
-            //                 att.url=ff.target.result;
-            //                 console.log(ff.target.result);
-            //                 let res={
-            //                     "ch":i,
-            //                     "req":g,
-            //                     "comm":j,
-            //                     "att":k,
-            //                     "url":ff.target.result,
-            //                 }
-            //                 resolve(res);
-            //             };
-            //             reader.readAsDataURL(file);
-            //         });
-            //     });
-            // })
+
             //Отправка даных на сервер.
             send_data_to_sev(data){
                 let self=this;
                 self.create_promises(data).then(
                     promises=>{
                         console.log(data);
-                        console.log('promises form');
                         Promise.all(promises).then(values=>{
-                            console.log('all promises done');
                             self.$f7.hidePreloader();
                             this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
                                 response=>{
