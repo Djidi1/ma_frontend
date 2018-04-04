@@ -271,8 +271,17 @@
                                             f.file(function(file){
                                                 let reader= new FileReader();
                                                 reader.onloadend = function(ff){
+                                                    console.log('promise');
                                                     att.url=ff.target.result;
-                                                    resolve(att);
+                                                    console.log(ff.target.result);
+                                                    let res={
+                                                        "ch":i,
+                                                        "req":g,
+                                                        "comm":j,
+                                                        "att":k,
+                                                        "url":ff.target.result,
+                                                    }
+                                                    resolve(res);
                                                 };
                                                 reader.readAsDataURL(file);
                                             });
@@ -290,10 +299,14 @@
                 let self=this;
                 self.new_encode_64(data).then(
                     promises=>{
-                        console.log(data.audit.check_list[0].requirement[1].comments[0].attachments[0]);
-                        Promise.all(promises).then(value=>{
-                            console.log(data.audit.check_list[0].requirement[1].comments[0].attachments[0]);
-                            console.log(value);
+                        console.log('promises form');
+                        console.log(data.audit.check_list[0].requirement[1].comments[0].attachments[0].url);
+                        Promise.all(promises).then(res=>{
+                            console.log('all promises done');
+                            console.log(res);
+                            res.forEach(function(results){
+                               data.audit.check_list[results.ch].requirement[results.req].comments[results.comm].attachments[results.att].url=results.url;
+                            });
                             self.$f7.hidePreloader();
                             console.log(data);
                         });

@@ -169,14 +169,10 @@ new Vue({
               (this.$f7.getCurrentView().activePage.name==="settings")?this.$f7.views[0].back():this.$f7.closePanel();
               return false;
           }else{
+              console.log(element.find('.popover .modal-in'));
+              console.log(element.find('.popover').find('.modal-in'));
               if (element.find('.modal-in').length>0){
-                  let popover=$$('.popover');
-                  popover.forEach(function(itm,i,arr){
-                      console.log(arr);
-                      console.log(itm);
-                  });
                       $$('.popover').forEach(function(){
-
                           if ($$(this).hasClass('modal-in')){
                               self.$f7.closeModal($$(this));
                               return false
