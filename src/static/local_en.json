@@ -1,4 +1,5 @@
 {
+  "authr":"First, Log in",
   "LoginScreen": {
     "LoginHeader": "Login IN",
     "LoginPlaceholder": "Login",

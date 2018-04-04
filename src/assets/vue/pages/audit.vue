@@ -260,8 +260,9 @@
                             reader.onloadend = function(ff){
                                 console.log('encoding done');
                                 console.log(ff.target.result);
-                                att.url=ff.target.result;
-                                resolve(att.url);
+                                console.log(att.url);
+                                att.url=ff.target.result);
+                                resolve(ff.target.result);
                             };
                             reader.readAsDataURL(file);
                         });
@@ -298,23 +299,20 @@
                         console.log('promises form');
                         Promise.all(promises).then(values=>{
                             console.log('all promises done');
-                            console.log(values);
                             self.$f7.hidePreloader();
-                            console.log(data);
+                            this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
+                                response=>{
+                                    //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
+                                    self.$f7.hidePreloader();
+                                    self.$set(self.audit,"id",response.body);
+                                    self.$set(self.audit,"upload",true);
+                                    self.$ls.set('objects',self.$root.objects);
+                                },
+                                response=>{
+                                    self.$f7.hidePreloader();
+                                    console.log("Error");
+                                });
                         });
-
-                        // this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
-                        //     response=>{
-                        //       //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
-                        //         self.$f7.hidePreloader();
-                        //         self.$set(self.audit,"id",response.body);
-                        //         self.$set(self.audit,"upload",true);
-                        //         self.$ls.set('objects',self.$root.objects);
-                        //     },
-                        //     response=>{
-                        //         self.$f7.hidePreloader();
-                        //         console.log("Error");
-                        //     });
                     }
                 )
             },
