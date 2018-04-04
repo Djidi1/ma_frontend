@@ -294,6 +294,7 @@
                 let self=this;
                 self.create_promises(data).then(
                     promises=>{
+                        console.log(data);
                         console.log('promises form');
                         Promise.all(promises).then(values=>{
                             console.log('all promises done');
