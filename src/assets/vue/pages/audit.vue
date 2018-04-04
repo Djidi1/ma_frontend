@@ -217,7 +217,6 @@
             //формируем вложения для комментариев. На данный момент тестируется можно ли сразу и получить base64 кодировку изображения.
             // В случае не успеха метод enccode_base64 будет вызватсья отедльно перед отправкой на сервер.
             get_attachments_comments(comm){
-
                 let result=[];
                 comm.attachments.forEach(function(att){
                     let new_att={
@@ -233,60 +232,17 @@
                 });
                 return result;
             },
-            //Для кодировки сначала получаем fienEntry объект из файловой системы устройства.
-            encode_base64(attachments) {
-                let self = this;
-                return new Promise(function (resolve, reject) {
-                    attachments.forEach(function (att,i) {
-                        //Берем файл
-                        window.resolveLocalFileSystemURL(att.url, function (f) {
-                            //Пробразуем в обычный file объект.
-                            f.file(function (file) {
-                                //Читаем этот файл. Reader в результате возвращает base_64 строку.
-                                let reader = new FileReader();
-                                //Читаем файл и получаем строку base64.
-                                reader.onload = function (ff) {
-                                    self.$set(attachments[i], "url", ff.target.result);
-                                };
-                                reader.onloadend = function () {
-                                    //Дополнительная проверка, которая возвращает resolve только в случае если это было последний эелемент в массиве вложений.
-                                    if(i===attachments.length-1) {
-                                        resolve(attachments)}
-                                };
-                                reader.readAsDataURL(file);
-                            });
-                        });
-                    });
-                })
-            },
-            new_encode_64: function (data) {
+
+
+            create_promises: function (data) {
+                let self =this;
                 let promises=[];
                 return new Promise(function (resolve,reject) {
                         data.audit.check_list.forEach(function (ch,i) {
                         ch.requirement.forEach(function (req,g) {
                             req.comments.forEach(function (comm,j) {
                                 comm.attachments.forEach(function (att,k) {
-                                    promises.push(new Promise((resolve,reject)=>{
-                                        window.resolveLocalFileSystemURL(att.url,function(f){
-                                            f.file(function(file){
-                                                let reader= new FileReader();
-                                                reader.onloadend = function(ff){
-                                                    console.log('promise');
-                                                    att.url=ff.target.result;
-                                                    console.log(ff.target.result);
-                                                    let res={
-                                                        "ch":i,
-                                                        "req":g,
-                                                        "comm":j,
-                                                        "att":k,
-                                                        "url":ff.target.result,
-                                                    }
-                                                    resolve(res);
-                                                };
-                                                reader.readAsDataURL(file);
-                                            });
-                                        });
-                                    }));
+                                    promises.push(self.encode_to_base64(att));
                                 });
                             })
                         })
@@ -294,19 +250,52 @@
                 resolve(promises);
                 })
             },
+            //Кодирование изображения
+            encode_to_base64(att){
+                let self=this;
+                return new Promise(function(resolve,reject){
+                    window.resolveLocalFileSystemURL(att.url,function(f){
+                        f.file(function(file){
+                            let reader = new FileReader();
+                            reader.onloadend = function(ff){
+                                att.url=ff.target.result;
+                                resolve(att);
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                    });
+                });
+            },
+            // new Promise((resolve,reject)=>{
+            //     window.resolveLocalFileSystemURL(att.url,function(f){
+            //         f.file(function(file){
+            //             let reader= new FileReader();
+            //             reader.onloadend = function(ff){
+            //                 console.log('promise');
+            //                 att.url=ff.target.result;
+            //                 console.log(ff.target.result);
+            //                 let res={
+            //                     "ch":i,
+            //                     "req":g,
+            //                     "comm":j,
+            //                     "att":k,
+            //                     "url":ff.target.result,
+            //                 }
+            //                 resolve(res);
+            //             };
+            //             reader.readAsDataURL(file);
+            //         });
+            //     });
+            // })
             //Отправка даных на сервер.
             send_data_to_sev(data){
                 let self=this;
-                self.new_encode_64(data).then(
+                self.create_promises(data).then(
                     promises=>{
                         console.log('promises form');
-                        console.log(data.audit.check_list[0].requirement[1].comments[0].attachments[0].url);
-                        Promise.all(promises).then(res=>{
+                        Promise.all(promises).then(values=>{
                             console.log('all promises done');
-                            console.log(res);
-                            res.forEach(function(results){
-                               data.audit.check_list[results.ch].requirement[results.req].comments[results.comm].attachments[results.att].url=results.url;
-                            });
+                            console.log(values);
                             self.$f7.hidePreloader();
                             console.log(data);
                         });
