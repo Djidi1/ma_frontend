@@ -260,30 +260,9 @@
                 })
             },
             new_encode_64: function (data) {
-                let self = this;
                 let promises=[];
                 return new Promise(function (resolve,reject) {
-                    // for(let i=0;i<data.audit.check_list.length;i++){
-                    //     for( let j=0;j<data.audit.check_list[i].requirement.length;j++){
-                    //         for (let d=0;d<data.audit.check_list[i].requirement[j].comments.length;d++){
-                    //             for (let z=0;d<data.audit.check_list[i].requirement[j].comments[d].attachments.length;z++){
-                    //                 window.resolveLocalFileSystemURL(data.audit.check_list[i].requirement[j].comments[d].attachments[z].url, function (f) {
-                    //                     f.file(function(file){
-                    //                         console.log(file);
-                    //                         let reader = new FileReader();
-                    //                         reader.onload=function(ff) {
-                    //                             self.$set(data.audit.check_list[i].requirement[j].comments[d].attachments[z].url,ff.target.result);
-                    //                             console.log(ff.target.result);
-                    //                         };
-                    //                         reader.readAsDataURL(file);
-                    //                     });
-                    //                 });
-                    //             }
-                    //         }
-                    //     }
-                    // }
-
-                    data.audit.check_list.forEach(function (ch,i) {
+                        data.audit.check_list.forEach(function (ch,i) {
                         ch.requirement.forEach(function (req,g) {
                             req.comments.forEach(function (comm,j) {
                                 comm.attachments.forEach(function (att,k) {
@@ -292,16 +271,8 @@
                                             f.file(function(file){
                                                 let reader= new FileReader();
                                                 reader.onloadend = function(ff){
-                                                    let res={
-                                                       'url':ff.target.result,
-                                                        'ch':i,
-                                                        'req':g,
-                                                        'com':j,
-                                                        'at':k
-                                                    }
-                                                    console.log(att);
-                                                    console.log(att.url);
-                                                    resolve(res);
+                                                    att.url=ff.target.result;
+                                                    resolve(att);
                                                 };
                                                 reader.readAsDataURL(file);
                                             });
@@ -319,9 +290,10 @@
                 let self=this;
                 self.new_encode_64(data).then(
                     promises=>{
-                        console.log(data);
-                        Promise.all(promises).then(res=>{
-                            console.log(res);
+                        console.log(data.audit.check_list[0].requirement[1].comments[0].attachments[0]);
+                        Promise.all(promises).then(value=>{
+                            console.log(data.audit.check_list[0].requirement[1].comments[0].attachments[0]);
+                            console.log(value);
                             self.$f7.hidePreloader();
                             console.log(data);
                         });
