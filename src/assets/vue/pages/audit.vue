@@ -261,7 +261,9 @@
                                 console.log('encoding done');
                                 console.log(ff.target.result);
                                 console.log(att.url);
+
                                 att.url=ff.target.result;
+                                console.log(att.url);
                                 resolve(ff.target.result);
                             };
                             reader.readAsDataURL(file);
