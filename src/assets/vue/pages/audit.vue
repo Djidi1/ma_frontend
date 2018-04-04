@@ -259,6 +259,7 @@
                             let reader = new FileReader();
                             reader.onloadend = function(ff){
                                 console.log('encoding done');
+                                console.log(ff.target.result);
                                 att.url=ff.target.result;
                                 resolve(att.url);
                             };

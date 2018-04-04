@@ -169,18 +169,18 @@ new Vue({
               (this.$f7.getCurrentView().activePage.name==="settings")?this.$f7.views[0].back():this.$f7.closePanel();
               return false;
           }else{
-              if (element.find('.modal-in').length>1){
-                  console.log(element.find('.modal-in').length);
-                      $$('.popover').forEach(function(){
-                          if ($$(this).hasClass('modal-in')){
+              if (element.find('.modal-in').length>0){
+                  if (element.find('.modal-in').length<1) {
+                      $$('.popover').forEach(function () {
+                          if ($$(this).hasClass('modal-in')) {
                               self.$f7.closeModal($$(this));
                               return false
                           }
                       });
-                      if (element.find('.modal-in').length<1){
-                          self.$f7.closeModal();
-                          return false;
-                      }
+                  }else{
+                      self.$f7.closeModal();
+                      return false;
+                  }
               }else {
                   if ((this.$f7.getCurrentView().activePage.name==="audits_main")||(this.$f7.getCurrentView().activePage.name==="objects_main")){
                       // this.$f7.confirm("",this.$root.localization.modal.modalTextConfExit, function () {
