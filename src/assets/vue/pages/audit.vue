@@ -10,6 +10,7 @@
             </f7-nav-right>
         </f7-navbar>
         <div class="blck_info">
+
             <!--<f7-card>-->
                 <!--<f7-card-header>-->
                     <!--<div class="obj_info audit_obj">-->
@@ -42,7 +43,7 @@
                     <f7-list-item v-for="(check,id) in this.audit.check_list" :key="id" :title="check.title" :link="'/check/'+audit.id+'/'+check.id" :media="realStatus(check)"></f7-list-item>
                 </f7-list>
                 <f7-list v-else>
-                    <f7-list-item  title="У данного аудита нет чек-листов."></f7-list-item>
+                    <f7-list-item  :title=this.$root.localization.pop_up.no_check_list></f7-list-item>
                 </f7-list>
                 <f7-card-footer>
 
@@ -67,7 +68,7 @@
                 <f7-block inner>
                     <f7-grid>
                         <f7-col width="100">
-                            <f7-button fill @click="check_list_status()">{{this.$root.localization.AuditPage.audit_send_btn}} <i class="fa fa-paper-plane" aria-hidden="true"></i></f7-button>
+                            <f7-button fill @click="send_results()">{{this.$root.localization.AuditPage.audit_send_btn}} <i class="fa fa-paper-plane" aria-hidden="true"></i></f7-button>
                         </f7-col>
                     </f7-grid>
                 </f7-block>
@@ -145,152 +146,18 @@
             }
         },
         methods:{
+            //Отправка данных по аудиту
+            send_results(){
+                (this.audit.check_list.length>0)?
+                    this.$root.send_to_serv_audit(this.audit):this.$f7.alert(this.$root.localization.pop_up.no_check_list,this.$root.localization.pop_up.warning);
+
+            },
             //Расчет высоты для блока с иконкой статусом аудита.
             status_style(){
                 let height_block=$$('.audit_obj').height();
                 return {"height":height_block+"px"}
             },
-            //Метод по отправке данных на сервер. Называется так исторически.
-            check_list_status(id){
-                let self=this;
-                //Вызов модального подтвержедния действия.
-                this.$f7.confirm(this.$root.localization.modal.modalConfirmSend,this.$root.localization.modal.modalTextConf, function () {
-                    self.$f7.showPreloader(self.$root.localization.modal.preloader);
-                    //Формирование массива на отправку.
-                    let requs={
-                        "audit":{
-                            "check_list":self.get_req(),//массив чек листов
-                            "id":0,
-                            "object_id":self.audit.object_id,
-                            "date_add":self.GetCurrentDate(),//Текущая дата.
-                            "title":self.audit.title,
-                            "comment":"Test"//ТЕСТ
-                        },
-                    };
-                    //Метод отправки на сервер.
-                    self.send_data_to_sev(requs);
-                });
 
-            },
-            //Метод создания массива чеклистов для отправки
-            get_req(){
-                let self=this;
-                let result=[];
-                this.audit.check_list.forEach(function(item){
-                    let check_obj={
-                        "audit_id":self.audit.id,
-                        "id":item.id,
-                        "title":item.title,
-                        "requirement":[]
-                    };
-                    item.requirement.forEach(function(req){
-                        let req_obj={
-                            "id":req.id,
-                            "status":self.get_current_status_to_send(req),
-                            "comments":self.get_comments(req),
-                        };
-                        check_obj.requirement.push(req_obj);
-                    });
-                    result.push(check_obj);
-                });
-                return result;
-            },
-            //Получаем текущий статус позиций чек листа. заодно все что 0 устанавливаем как -1.
-            get_current_status_to_send(req){
-                req.status=(req.disabled)?2:(req.status===0)?-1:req.status;
-                this.$ls.set('objects',this.$root.objects);
-                return (req.disabled)?2:(req.status===0)?-1:req.status;
-            },
-            //Сборка коментариев.
-            get_comments(req){
-                let self=this;
-                let result=[];
-                req.comments.forEach(function(comm){
-                    let comment_obj={
-                        'text':comm.text,
-                        'attachments':self.get_attachments_comments(comm)
-                    };
-                    result.push(comment_obj);
-                });
-                return result;
-            },
-            //формируем вложения для комментариев. На данный момент тестируется можно ли сразу и получить base64 кодировку изображения.
-            // В случае не успеха метод enccode_base64 будет вызватсья отедльно перед отправкой на сервер.
-            get_attachments_comments(comm){
-                let result=[];
-                comm.attachments.forEach(function(att){
-                    let new_att={
-                        "caption":att.caption,
-                        "file":{
-                            "name":att.file.name,
-                            "size":att.file.size,
-                            "type":att.file.type
-                        },
-                        "url":att.url
-                    };
-                    result.push(new_att);
-                });
-                return result;
-            },
-
-
-            create_promises: function (data) {
-                let self =this;
-                let promises=[];
-                return new Promise(function (resolve,reject) {
-                        data.audit.check_list.forEach(function (ch,i) {
-                        ch.requirement.forEach(function (req,g) {
-                            req.comments.forEach(function (comm,j) {
-                                comm.attachments.forEach(function (att,k) {
-                                    promises.push(self.encode_to_base64(att));
-                                });
-                            })
-                        })
-                    })
-                resolve(promises);
-                })
-            },
-            //Кодирование изображения
-            encode_to_base64(att){
-                let self=this;
-                return new Promise(function(resolve,reject){
-                    window.resolveLocalFileSystemURL(att.url,function(f){
-                        f.file(function(file){
-                            let reader = new FileReader();
-                            reader.onloadend = function(ff){
-                                att.url=ff.target.result;
-                                resolve(ff.target.result);
-                            };
-                            reader.readAsDataURL(file);
-                        });
-                    });
-                });
-            },
-
-            //Отправка даных на сервер.
-            send_data_to_sev(data){
-                let self=this;
-                self.create_promises(data).then(
-                    promises=>{
-                        console.log(data);
-                        Promise.all(promises).then(values=>{
-                            self.$f7.hidePreloader();
-                            this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
-                                response=>{
-                                    //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
-                                    self.$f7.hidePreloader();
-                                    self.$set(self.audit,"id",response.body);
-                                    self.$set(self.audit,"upload",true);
-                                    self.$ls.set('objects',self.$root.objects);
-                                },
-                                response=>{
-                                    self.$f7.hidePreloader();
-                                    console.log("Error");
-                                });
-                        });
-                    }
-                )
-            },
             //Удаление комментария.
             remove_comment(id){
                 let self=this;

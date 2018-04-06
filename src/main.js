@@ -618,6 +618,155 @@ new Vue({
             });
         },
 
+        //Отправка данных на сервер
+        send_to_serv_audit(audit){
+            let self=this;
+            //Вызов модального подтвержедния действия.
+            this.$f7.confirm(this.$root.localization.modal.modalConfirmSend,this.$root.localization.modal.modalTextConf, function () {
+                self.$f7.showPreloader(self.$root.localization.modal.preloader);
+                //Формирование массива на отправку.
+                let requs={
+                    "audit":{
+                        "check_list":self.get_req(audit),//массив чек листов
+                        "id":0,
+                        "object_id":0,
+                        "date_add":self.GetCurrentDate(audit),//Текущая дата.
+                        "title":audit.title,
+                        "comment":"Test"//ТЕСТ
+                    },
+                };
+                //Метод отправки на сервер.
+               self.send_data_to_sev(requs,audit);
+            });
+        },
+        //Метод создания массива чеклистов для отправки
+        get_req(audit){
+            let self=this;
+            let result=[];
+            audit.check_list.forEach(function(item){
+                let check_obj={
+                    "audit_id":audit.id,
+                    "id":item.id,
+                    "title":item.title,
+                    "requirement":[]
+                };
+                item.requirement.forEach(function(req){
+                    let req_obj={
+                        "id":req.id,
+                        "status":self.get_current_status_to_send(req),
+                        "comments":self.get_comments(req),
+                    };
+                    check_obj.requirement.push(req_obj);
+                });
+                result.push(check_obj);
+            });
+            return result;
+        },
+        //Получаем текущий статус позиций чек листа. заодно все что 0 устанавливаем как -1.
+        get_current_status_to_send(req){
+            req.status=(req.disabled)?2:(req.status===0)?-1:req.status;
+            this.$ls.set('objects',this.$root.objects);
+            return (req.disabled)?2:(req.status===0)?-1:req.status;
+        },
+        //Сборка коментариев.
+        get_comments(req){
+            let self=this;
+            let result=[];
+            req.comments.forEach(function(comm){
+                let comment_obj={
+                    'text':comm.text,
+                    'attachments':self.get_attachments_comments(comm)
+                };
+                result.push(comment_obj);
+            });
+            return result;
+        },
+        //формируем вложения для комментариев. На данный момент тестируется можно ли сразу и получить base64 кодировку изображения.
+        // В случае не успеха метод enccode_base64 будет вызватсья отедльно перед отправкой на сервер.
+        get_attachments_comments(comm){
+            let result=[];
+            comm.attachments.forEach(function(att){
+                let new_att={
+                    "caption":att.caption,
+                    "file":{
+                        "name":att.file.name,
+                        "size":att.file.size,
+                        "type":att.file.type
+                    },
+                    "url":att.url
+                };
+                result.push(new_att);
+            });
+            return result;
+        },
+        //Получить дату создания.
+        GetCurrentDate(audit){
+            let data=new Date(audit.date_add);
+            let curSec=('0'+data.getSeconds()).substr(-2);
+            let curMin=('0'+data.getMinutes()).substr(-2);
+            let curDay=('0'+data.getDate()).substr(-2);
+            let curMounth=('0'+(data.getMonth()+1));
+            let date_for_text=curDay+"-"+curMounth+"-"+data.getFullYear()+" "+data.getHours()+":"+curMin+":"+curSec;
+            return date_for_text;
+        },
+
+        //Отправка даных на сервер.
+        send_data_to_sev(data,audit){
+            let self=this;
+            self.create_promises(data).then(
+                promises=>{
+                    Promise.all(promises).then(values=>{
+                        this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.auth_info.token}}).then(
+                            response=>{
+                                //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
+                                self.$f7.hidePreloader();
+                                self.$set(audit,"id",response.body);
+                                self.$set(audit,"upload",true);
+                                self.$ls.set('objects',self.$root.objects);
+                            },
+                            response=>{
+                                self.$f7.hidePreloader();
+                                console.log("Error");
+                            });
+                    });
+                }
+            )
+        },
+
+        create_promises: function (data) {
+            let self =this;
+            let promises=[];
+            return new Promise(function (resolve,reject) {
+                data.audit.check_list.forEach(function (ch,i) {
+                    ch.requirement.forEach(function (req,g) {
+                        req.comments.forEach(function (comm,j) {
+                            comm.attachments.forEach(function (att,k) {
+                                promises.push(self.encode_to_base64(att));
+                            });
+                        })
+                    })
+                })
+                resolve(promises);
+            })
+        },
+        //Кодирование изображения
+        encode_to_base64(att){
+            let self=this;
+            return new Promise(function(resolve,reject){
+                window.resolveLocalFileSystemURL(att.url,function(f){
+                    f.file(function(file){
+                        let reader = new FileReader();
+                        reader.onloadend = function(ff){
+                            att.url=ff.target.result;
+                            resolve(ff.target.result);
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                });
+            });
+        }
+
+
 
     }
 

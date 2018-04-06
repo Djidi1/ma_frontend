@@ -25,7 +25,10 @@
 					<f7-page>
 						<div class="dop_login-form">
 							<f7-card class="center_body" >
-								<f7-link class="dop_link_login" @click="close_left_panel()"> {{this.$root.localization.authr}}</f7-link>
+								<f7-link class="dop_link_login" @click="close_left_panel()">
+									<div>Mobile Audit</div>
+									<div class="log_left"></div>
+                                </f7-link>
 							</f7-card>
 
 						</div>

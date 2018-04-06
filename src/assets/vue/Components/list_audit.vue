@@ -85,6 +85,8 @@
             },
             send_data(item,index){
                 let $$=Dom7;
+                (item.check_list.length>0)?
+                    this.$root.send_to_serv_audit(item):this.$f7.alert(this.$root.localization.pop_up.no_check_list,this.$root.localization.pop_up.warning);
                 this.$f7.swipeoutClose($$('#id_'+index));
             },
             edit_data(index){

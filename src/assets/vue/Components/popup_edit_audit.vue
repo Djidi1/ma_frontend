@@ -110,6 +110,7 @@
                 arr.forEach(function(item){
                     self.check_list_new.push(item);
                 });
+               this.audit_current.check_list=this.check_list_new;
             },
             remove_check(index){
                 let self=this;

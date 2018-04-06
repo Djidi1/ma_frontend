@@ -94,7 +94,8 @@
     "empty_input_obj":"Введите название объекта",
     "empty_input_address":"Введите адрес объекта",
     "select_ex":"Выбрать",
-    "select_pop_over": "Выбрать объект"
+    "select_pop_over": "Выбрать объект",
+    "no_check_list":"У данного аудита нет чек-листов."
 
   }
 }

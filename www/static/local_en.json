@@ -94,7 +94,8 @@
     "empty_input_obj":"Enter the name of the object",
     "empty_input_address":"Enter the address of the object",
     "select_ex":"Select",
-    "select_pop_over": "Selecte Object"
+    "select_pop_over": "Selecte Object",
+    "no_check_list":"No check-lists!"
   }
 }
 

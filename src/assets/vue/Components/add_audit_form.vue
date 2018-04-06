@@ -80,7 +80,7 @@
                 let self=this;
                 str.check_list.forEach(function(itm){
                     itm.requirement.forEach(function(req){
-                        if (req.disabled) {
+                        if (!req.disabled) {
                             result = (req.status===1) ? result : false;
                         }
                     });
