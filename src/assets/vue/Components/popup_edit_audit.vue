@@ -1,6 +1,6 @@
 <template>
     <!--Редактирвоание аудитов-->
-    <f7-popup id="popup_add_audit" >
+    <f7-popup :id="'popup_add_audit_'+audit.id" >
         <f7-navbar back-link="Back" sliding @back-click.stop="closePopUp(true)" >
             <f7-nav-center sliding> {{title}} </f7-nav-center>
             <f7-nav-right>
@@ -22,7 +22,7 @@
                         <f7-list form class="add_list">
                             <f7-list-item class="correct_css">
                                 <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
-                                <f7-input type="text"  v-model="current" id="main_input">
+                                <f7-input type="text"  v-model="current">
                                 </f7-input>
                             </f7-list-item>
                         </f7-list>
@@ -91,7 +91,8 @@
                 this.current=this.audit_current.title;
                 this.check_list_new=this.get_check_list();
                 let $$=Dom7;
-                this.$f7.closeModal($$('#popup_add_audit'));
+                // console.log('#popup_add_audit_'+this.audit.id);
+                this.$f7.closeModal();
             },
             get_check_list(){
                 let self=this;
@@ -109,6 +110,7 @@
                 arr.forEach(function(item){
                     self.check_list_new.push(item);
                 });
+               this.audit_current.check_list=this.check_list_new;
             },
             remove_check(index){
                 let self=this;

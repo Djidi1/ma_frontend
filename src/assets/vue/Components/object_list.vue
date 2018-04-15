@@ -4,7 +4,14 @@
         <f7-card>
             <f7-card-content>
                 <f7-list media-list>
-                    <f7-list-item v-for="(object,index) in data_storage" :key="index" :link="'/object/'+object.id+'/'" :title="title+': '+object.title" :subtitle="'ID: '+object.id"  :text="data_format(object.created_at)+'</br>'+object.address" :after="audit_count(index)+'</br>'+new_audit_count(index)"></f7-list-item>
+                    <f7-list-item swipeout v-for="(object,index) in data_storage" :key="index" :link="'/object/'+object.id+'/'" :title="title+': '+object.title" :subtitle="'ID: '+object.id" :id="'id_for_object_list_'+object.id"  :text="data_format(object.created_at)+'</br>'+object.address" :after="audit_count(index)+'</br>'+new_audit_count(index)">
+                        <f7-swipeout-actions>
+                            <f7-swipeout-button  @click="edit_data(object.id)"> <i class="fa fa-pencil swipe_btn" aria-hidden="true" ></i> </f7-swipeout-button>
+                            <f7-swipeout-button  @click="delete_obj(object.id,index)"> <i class="fa fa-trash-o swipe_btn" aria-hidden="true" ></i> </f7-swipeout-button>
+                        </f7-swipeout-actions>
+                        <popup_edit_object :id="object.id.toString()"></popup_edit_object>
+
+                    </f7-list-item>
                 </f7-list>
             </f7-card-content>
         </f7-card>
@@ -53,6 +60,20 @@
                 let curMounth=('0'+(data.getMonth()+1));
                 let date_for_text=curDay+"/"+curMounth+"/"+data.getFullYear()+" "+data.getHours()+":"+curMin+":"+curSec;
                 return date_for_text;
+            },
+            edit_data(index){
+                let $$=Dom7;
+                this.$f7.swipeoutClose($$('#id_for_object_list_'+index));
+                this.$f7.popup($$('#popup_edit_'+index));
+            },
+            delete_obj(id,index){
+                let $$=Dom7;
+                let self=this;
+                this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
+                    self.$f7.swipeoutClose($$('#id_for_object_list_'+id));
+                    self.$root.objects.splice(index,1);
+                    self.$ls.set('objects',self.$root.objects);
+                });
             }
         }
     }

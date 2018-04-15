@@ -11,7 +11,8 @@
                 <f7-col width="20" v-show="!trash_btn">
                    <f7-button v-if="sended" @click=remove() class="cross_button"><i class="fa fa-trash-o " aria-hidden="true" ></i></f7-button>
                    <div v-else class="upload_img cross_button">
-                            <i class='fa fa-check  audit_good' aria-hidden='true'></i>
+                            <!--fa fa-check  audit_good-->
+                       <i :class=status_sended(this.audit_obj) aria-hidden='true'></i>
                    </div>
                 </f7-col>
             </f7-grid>
@@ -70,9 +71,22 @@
             },
             sended(){
                 return !this.audit_obj.upload;
-            }
+            },
+
         },
         methods:{
+            status_sended(str){
+                let result=true;
+                let self=this;
+                str.check_list.forEach(function(itm){
+                    itm.requirement.forEach(function(req){
+                        if (!req.disabled) {
+                            result = (req.status===1) ? result : false;
+                        }
+                    });
+                });
+                return (result)?"fa fa-check fa-2x audit_good":"fa fa-times fa-2x audit_wrong";
+            },
             remove(){
                 let self=this;
                 this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {

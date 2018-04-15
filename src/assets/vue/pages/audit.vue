@@ -10,29 +10,30 @@
             </f7-nav-right>
         </f7-navbar>
         <div class="blck_info">
-            <f7-card>
-                <f7-card-header>
-                    <div class="obj_info audit_obj">
-                        <div class="row  no-gutter">
-                            <div class="col-70">
-                                <div class="col-100">{{this.$root.localization.AuditPage.name}}:</div>
-                                <div class="col-100">{{audit.title}}</div>
-                                <div class="col-100">Id: {{audit.id}}</div>
-                                <div class="col-100">{{data_format}}</div>
-                                <div class="col-100"><f7-link no-link-class :href="'/object/'+this.audit.object_id+'/'">{{this.$root.objects[this.array_index_save].title}}</f7-link></div>
-                            </div>
-                            <div class="col-30 status" :style="this.block_height">
-                                <table>
-                                    <tr>
-                                        <td> <i :class="status" aria-hidden="true"></i></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </f7-card-header>
 
-            </f7-card>
+            <!--<f7-card>-->
+                <!--<f7-card-header>-->
+                    <!--<div class="obj_info audit_obj">-->
+                        <!--<div class="row  no-gutter">-->
+                            <!--<div class="col-70">-->
+                                <!--&lt;!&ndash;<div class="col-100">{{this.$root.localization.AuditPage.name}}:</div>&ndash;&gt;-->
+                                <!--<div class="col-100">{{audit.title}}</div>-->
+                                <!--&lt;!&ndash;<div class="col-100">Id: {{audit.id}}</div>&ndash;&gt;-->
+                                <!--<div class="col-100">{{data_format}}</div>-->
+                                <!--&lt;!&ndash;<div class="col-100"><f7-link no-link-class :href="'/object/'+this.audit.object_id+'/'">{{this.$root.objects[this.array_index_save].title}}</f7-link></div>&ndash;&gt;-->
+                            <!--</div>-->
+                            <!--<div class="col-30 status" :style="this.block_height">-->
+                                <!--<table>-->
+                                    <!--<tr>-->
+                                        <!--<td> <i :class="status" aria-hidden="true"></i></td>-->
+                                    <!--</tr>-->
+                                <!--</table>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</f7-card-header>-->
+
+            <!--</f7-card>-->
 
             <f7-card>
                 <f7-card-header>
@@ -42,7 +43,7 @@
                     <f7-list-item v-for="(check,id) in this.audit.check_list" :key="id" :title="check.title" :link="'/check/'+audit.id+'/'+check.id" :media="realStatus(check)"></f7-list-item>
                 </f7-list>
                 <f7-list v-else>
-                    <f7-list-item  title="У данного аудита нет чек-листов."></f7-list-item>
+                    <f7-list-item  :title=this.$root.localization.pop_up.no_check_list></f7-list-item>
                 </f7-list>
                 <f7-card-footer>
 
@@ -50,7 +51,7 @@
             </f7-card>
             <f7-card>
                 <f7-list accordion class="acrd_custom text_main">
-                    <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_title" :after="comment_audit_count">
+                    <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_audit" :after="comment_audit_count">
                         <f7-accordion-content>
                             <transition-group appear mode="out-in" name="slide-fade" >
                                 <single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id"></single-comment>
@@ -67,14 +68,14 @@
                 <f7-block inner>
                     <f7-grid>
                         <f7-col width="100">
-                            <f7-button fill @click="check_list_status()"><i class="fa fa-check" aria-hidden="true"></i> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
+                            <f7-button fill @click="send_results()">{{this.$root.localization.AuditPage.audit_send_btn}} <i class="fa fa-paper-plane" aria-hidden="true"></i></f7-button>
                         </f7-col>
                     </f7-grid>
                 </f7-block>
 
             </f7-card>
         </div>
-        <popup_audit_edit  :audit="this.audit"></popup_audit_edit>
+        <popup_audit_edit :audit="this.audit"></popup_audit_edit>
     </f7-page>
 </template>
 
@@ -145,164 +146,18 @@
             }
         },
         methods:{
+            //Отправка данных по аудиту
+            send_results(){
+                (this.audit.check_list.length>0)?
+                    this.$root.send_to_serv_audit(this.audit):this.$f7.alert(this.$root.localization.pop_up.no_check_list,this.$root.localization.pop_up.warning);
+
+            },
             //Расчет высоты для блока с иконкой статусом аудита.
             status_style(){
                 let height_block=$$('.audit_obj').height();
                 return {"height":height_block+"px"}
             },
-            //Метод по отправке данных на сервер. Называется так исторически.
-            check_list_status(id){
-                let self=this;
-                //Вызов модального подтвержедния действия.
-                this.$f7.confirm(this.$root.localization.modal.modalConfirmSend,this.$root.localization.modal.modalTextConf, function () {
-                    self.$f7.showPreloader(self.$root.localization.modal.preloader);
-                    //Формирование массива на отправку.
-                    let requs={
-                        "audit":{
-                            "check_list":self.get_req(),//массив чек листов
-                            "id":0,
-                            "object_id":self.audit.object_id,
-                            "date_add":self.GetCurrentDate(),//Текущая дата.
-                            "title":self.audit.title,
-                            "comment":"Test"//ТЕСТ
-                        },
-                    };
-                    //Метод отправки на сервер.
-                    self.send_data_to_sev(requs);
-                });
 
-            },
-            //Метод создания массива чеклистов для отправки
-            get_req(){
-                let self=this;
-                let result=[];
-                this.audit.check_list.forEach(function(item){
-                    let check_obj={
-                        "audit_id":self.audit.id,
-                        "id":item.id,
-                        "title":item.title,
-                        "requirement":[]
-                    };
-                    item.requirement.forEach(function(req){
-                        let req_obj={
-                            "id":req.id,
-                            "status":self.get_current_status_to_send(req),
-                            "comments":self.get_comments(req),
-                        };
-                        check_obj.requirement.push(req_obj);
-                    });
-                    result.push(check_obj);
-                });
-                return result;
-            },
-            //Получаем текущий статус позиций чек листа. заодно все что 0 устанавливаем как -1.
-            get_current_status_to_send(req){
-                req.status=(req.disabled)?2:(req.status===0)?-1:req.status;
-                this.$ls.set('objects',this.$root.objects);
-                return (req.disabled)?2:(req.status===0)?-1:req.status;
-            },
-            //Сборка коментариев.
-            get_comments(req){
-                let self=this;
-                let result=[];
-                req.comments.forEach(function(comm){
-                    let comment_obj={
-                        'text':comm.text,
-                        'attachments':self.get_attachments_comments(comm)
-                    };
-                    result.push(comment_obj);
-                });
-                return result;
-            },
-            //формируем вложения для комментариев. На данный момент тестируется можно ли сразу и получить base64 кодировку изображения.
-            // В случае не успеха метод enccode_base64 будет вызватсья отедльно перед отправкой на сервер.
-            get_attachments_comments(comm){
-
-                let result=[];
-                comm.attachments.forEach(function(att){
-                    let new_att={
-                        "caption":att.caption,
-                        "file":{
-                            "name":att.file.name,
-                            "size":att.file.size,
-                            "type":att.file.type
-                        },
-                        "url":att.url
-                    };
-                    result.push(new_att);
-                });
-                return result;
-            },
-            //Для кодировки сначала получаем fienEntry объект из файловой системы устройства.
-            encode_base64(attachments) {
-                let self = this;
-                return new Promise(function (resolve, reject) {
-                    attachments.forEach(function (att,i) {
-                        //Берем файл
-                        window.resolveLocalFileSystemURI(att.url, function (f) {
-                            //Пробразуем в обычный file объект.
-                            f.file(function (file) {
-                                //Читаем этот файл. Reader в результате возвращает base_64 строку.
-                                let reader = new FileReader();
-                                //Читаем файл и получаем строку base64.
-                                reader.onload = function (ff) {
-                                    self.$set(attachments[i], "url", ff.target.result);
-                                };
-                                reader.onloadend = function () {
-                                    //Дополнительная проверка, которая возвращает resolve только в случае если это было последний эелемент в массиве вложений.
-                                    if(i===attachments.length-1) {
-                                        resolve(attachments)}
-                                };
-                                reader.readAsDataURL(file);
-                            });
-                        });
-                    });
-                })
-            },
-            new_encode_64: function (data) {
-                let self = this;
-                return new Promise(function (resolve) {
-                    data.audit.check_list.forEach(function (ch) {
-                        ch.requirement.forEach(function (req) {
-                            req.comments.forEach(function (comm) {
-                                comm.attachments.forEach(function (att) {
-                                    window.resolveLocalFileSystemURI(att.url, function (f) {
-                                        f.file(function (file) {
-                                            let reader = new FileReader();
-                                            reader.onloadend = function (ff) {
-                                                self.$set(att,"url",ff.target.result);
-                                            };
-                                            reader.readAsDataURL(file);
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-                    resolve(data)
-                });
-            },
-            //Отправка даных на сервер.
-            send_data_to_sev(data){
-                let self=this;
-                self.new_encode_64(data).then(
-                    data=>{
-                        console.log(data);
-                        this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.$root.auth_info.token}}).then(
-                            response=>{
-                              //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
-                                self.$f7.hidePreloader();
-                                self.$set(self.audit,"id",response.body);
-                                self.$set(self.audit,"upload",true);
-                                self.$ls.set('objects',self.$root.objects);
-                            },
-                            response=>{
-                                self.$f7.hidePreloader();
-                                console.log("Error");
-                            });
-                    }
-                )
-            },
             //Удаление комментария.
             remove_comment(id){
                 let self=this;
@@ -361,7 +216,7 @@
                 return (new_str)?"<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>":(result)?"<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>":"<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
             },
             open_modal(){
-                this.$f7.popup($$('#popup_add_audit'));
+                this.$f7.popup($$('#popup_add_audit_'+this.audit.id));
             }
 
         }

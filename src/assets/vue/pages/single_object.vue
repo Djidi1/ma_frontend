@@ -32,7 +32,17 @@
                 </f7-card-header>
                 <f7-card-content>
                     <f7-list media-list>
-                        <f7-list-item v-for="(acrd,acrd_index) in this.object.audits" :key="acrd_index" :link="'/audit/'+array_index+'/'+acrd_index" :title="acrd.title" :subtitle="'ID:'+acrd.id"  :text="data_format(acrd.created_at)"  :media="realStatus(acrd)"></f7-list-item>
+                        <f7-list-item swipeout v-for="(acrd,acrd_index) in this.object.audits" :key="acrd_index" :link="'/audit/'+array_index+'/'+acrd_index" :title="acrd.title"  :id="'id_for_audit_list_'+acrd.id"  :text="data_format(acrd.created_at)"  :media="realStatus(acrd)">
+
+                            <f7-swipeout-actions v-if="!acrd.upload">
+                                <f7-swipeout-button  @click="send_data(acrd,acrd.id)"> <i class="fa fa-paper-plane swipe_btn" aria-hidden="true" ></i> </f7-swipeout-button>
+                                <f7-swipeout-button  @click="edit_data(acrd.id)"> <i class="fa fa-pencil swipe_btn" aria-hidden="true" ></i> </f7-swipeout-button>
+                                <f7-swipeout-button  @click="delete_data(acrd.id,acrd_index)"> <i class="fa fa-trash-o swipe_btn" aria-hidden="true" ></i> </f7-swipeout-button>
+                            </f7-swipeout-actions>
+                            <popup_audit_edit  :audit="acrd"></popup_audit_edit>
+                        </f7-list-item>
+
+
                     </f7-list>
                 </f7-card-content>
             </f7-card>
@@ -81,7 +91,9 @@
                 let self=this;
                 str.check_list.forEach(function(itm){
                     itm.requirement.forEach(function(req){
-                        result=(req.status!=1)?result:false;
+                        if (!req.disabled) {
+                            result = (req.status===1) ? result : false;
+                        }
                     });
                 });
                 return (result)?"<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>":"<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
@@ -99,7 +111,7 @@
             },
             open_popup(index){
                 let $$=Dom7;
-                this.$f7.popup($$('#popup_edit'));
+                this.$f7.popup($$('#popup_edit_'+this.id));
             },
             data_format(data_str){
                 let data=(data_str!=undefined)?new Date(data_str):new Date(this.object.created_at);
@@ -109,6 +121,26 @@
                 let curMounth=('0'+(data.getMonth()+1));
                 let date_for_text=curDay+"/"+curMounth+"/"+data.getFullYear()+" "+data.getHours()+":"+curMin+":"+curSec;
                 return date_for_text;
+            },
+            send_data(item,index){
+                let $$=Dom7;
+                (item.check_list.length>0)?
+                    this.$root.send_to_serv_audit(item):this.$f7.alert(this.$root.localization.pop_up.no_check_list,this.$root.localization.pop_up.warning);
+                this.$f7.swipeoutClose($$('#id_for_audit_list_'+index));
+            },
+            edit_data(index){
+                let $$=Dom7;
+                this.$f7.swipeoutClose($$('#id_for_audit_list_'+index));
+                this.$f7.popup($$('#popup_add_audit_'+index));
+            },
+            delete_data(id,acrd_index){
+                let $$=Dom7;
+                let self=this;
+                this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
+                    self.$f7.swipeoutClose($$('#id_for_audit_list_'+id));
+                    self.$root.objects[self.array_index].audits.splice(acrd_index,1);
+                    self.$ls.set('objects',self.$root.objects);
+                });
             }
 
         }

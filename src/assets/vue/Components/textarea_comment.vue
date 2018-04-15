@@ -70,6 +70,10 @@
             },
         },
         methods:{
+
+
+
+
             //Костыль для отображения класов которые не цепляются если вызывать форму на редактирование
             check_style_class(el){
                 let element=$$(el);
@@ -153,7 +157,7 @@
                 self.get_img_data(img).then(
                     f=>{
                         self.$$('#img_pr'+(self.attachment.length-1)).show();
-                        window.resolveLocalFileSystemURI(cordova.file.externalDataDirectory+"img/",function(dir){
+                        window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory+"img/",function(dir){
                             f.moveTo(dir,f.name,function(entry){
                                 self.attachment[self.attachment.length-1].url=entry.toURL();
                                 self.$$('#img_pr'+(self.attachment.length-1)).hide();
@@ -171,7 +175,7 @@
             get_img_data(url){
                 let self=this;
                 return new Promise(function(resolve,reject){
-                   window.resolveLocalFileSystemURI(url,function(f){
+                   window.resolveLocalFileSystemURL(url,function(f){
                        f.file(function(file){
                           let img_data={
                               "caption": file.name,

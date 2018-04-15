@@ -25,7 +25,7 @@
                     <f7-list form class="add_list">
                         <f7-list-item class="correct_css">
                                     <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
-                                    <f7-input type="text"  v-model="current" id="main_input">
+                                    <f7-input type="text"  v-model="current" >
                                     </f7-input>
                         </f7-list-item>
                         <f7-list-item class="correct_css">
