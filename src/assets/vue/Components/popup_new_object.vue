@@ -201,7 +201,7 @@
                     }
 
                     this.closePopUp();
-                }else{ this.$f7.alert('Заполнены не все поля!',this.$root.localization.pop_up.warning);}
+                }else{ this.$f7.alert('Не выбран объект иди заполнены не все поля!',this.$root.localization.pop_up.warning);}
             },
             validat(){
               let self=this;
