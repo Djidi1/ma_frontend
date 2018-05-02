@@ -28,7 +28,6 @@
                         </f7-list>
                     </f7-card>
                 </f7-card-content>
-                <f7-card-footer style=""></f7-card-footer>
             </f7-card>
             <f7-card>
                 <f7-card-header>{{this.$root.localization.pop_up.check_list}}</f7-card-header>
@@ -48,7 +47,6 @@
                         </f7-list>
                     </f7-card>
                 </f7-card-content>
-                <f7-card-footer></f7-card-footer>
             </f7-card>
             <f7-card class="btn_pop_up_main">
                 <f7-card class="btn_pop_up_card">

@@ -16,28 +16,24 @@
             <f7-card>
                 <f7-card-header>
                     <f7-grid style="width:100%; padding:5px 0 5px 0;">
-                        <f7-col width="60">{{this.$root.localization.pop_up.object_info}}</f7-col>
-                        <f7-col v-show="this.mode" width="40"> <f7-button  class="btn_select_obj" open-popover=".exist_pop_over" :disabled="!hasObject"> {{this.$root.localization.pop_up.select_ex}}</f7-button></f7-col>
+                        <f7-col width="60"></f7-col>
+                        <f7-col v-show="this.mode" width="40"> <f7-button  class="btn_select_obj" open-popover=".exist_pop_over" :disabled="!hasObject"> {{this.$root.localization.pop_up.select_ex}} {{this.$root.localization.pop_up.object_info}}</f7-button></f7-col>
                     </f7-grid>
                 </f7-card-header>
                 <transition appear mode="out-in" name="slide-fade">
                 <f7-card-content style="padding-bottom:15px;"  v-show="have_something">
-                    <f7-card style="padding-bottom:10px;">
                     <f7-list form class="add_list">
                         <f7-list-item class="correct_css">
-                                    <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>У v
-                                    <f7-input type="text"  v-model="current" >
-                                    </f7-input>
+                                    <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
+                                    <f7-input type="text"  v-model="current"></f7-input>
                         </f7-list-item>
                         <f7-list-item class="correct_css">
                             <f7-label floating>{{this.$root.localization.pop_up.address}}</f7-label>
                             <f7-input type="text" v-model="addres_obj"></f7-input>
                         </f7-list-item>
                     </f7-list>
-                    </f7-card>
                 </f7-card-content>
                 </transition>
-                <f7-card-footer></f7-card-footer>
             </f7-card>
             <f7-card>
                 <f7-card-header>
