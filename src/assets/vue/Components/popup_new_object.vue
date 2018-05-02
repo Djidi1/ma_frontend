@@ -2,7 +2,7 @@
     <!--Создание новго объкта с аудитами и чек листами-->
     <f7-popup id="popup_add" >
         <f7-navbar back-link="Back" sliding @back-click.stop="closePopUp(true)" >
-            <f7-nav-center sliding> {{this.title}} </f7-nav-center>
+            <f7-nav-center sliding> {{this.title}}</f7-nav-center>
             <f7-nav-right>
                 <f7-grid class="crud_header edit_menu">
                     <f7-col width="30" ></f7-col>
@@ -20,11 +20,12 @@
                         <f7-col v-show="this.mode" width="40"> <f7-button  class="btn_select_obj" open-popover=".exist_pop_over" :disabled="!hasObject"> {{this.$root.localization.pop_up.select_ex}}</f7-button></f7-col>
                     </f7-grid>
                 </f7-card-header>
-                <f7-card-content style="padding-bottom:15px;">
+                <transition appear mode="out-in" name="slide-fade">
+                <f7-card-content style="padding-bottom:15px;"  v-show="have_something">
                     <f7-card style="padding-bottom:10px;">
                     <f7-list form class="add_list">
                         <f7-list-item class="correct_css">
-                                    <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
+                                    <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>У v
                                     <f7-input type="text"  v-model="current" >
                                     </f7-input>
                         </f7-list-item>
@@ -35,6 +36,7 @@
                     </f7-list>
                     </f7-card>
                 </f7-card-content>
+                </transition>
                 <f7-card-footer></f7-card-footer>
             </f7-card>
             <f7-card>
@@ -110,7 +112,8 @@
             hasObject(){
                 this.select_list=(this.$root.objects.length>0)?this.$root.objects:'';
                 return(this.select_list.length>0)
-            }
+            },
+
         },
         methods:{
             closePopUp(mode){
@@ -198,7 +201,7 @@
                     }
 
                     this.closePopUp();
-                }else{ this.$f7.alert('Заполнены не все поля!',this.$root.localization.pop_up.warning);}
+                }else{ this.$f7.alert('Не выбран объект иди заполнены не все поля!',this.$root.localization.pop_up.warning);}
             },
             validat(){
               let self=this;

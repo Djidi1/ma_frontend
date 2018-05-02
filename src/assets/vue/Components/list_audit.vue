@@ -5,7 +5,7 @@
             <f7-card-header >
                     <div class="obj_info">
                         <div class="row  no-gutter">
-                            <div class="col-70"> <f7-link class="object_link"  :href="'/object/'+item.id+'/'">{{item.title}}</f7-link></div>
+                            <div class="col-70"> {{item.title}}</div>
                             <div class="col-70  dop_info">{{item.address}}</div>
                             <div class="col-30 dop_info count_info">{{countFrom(item)}}</div>
                         </div>
