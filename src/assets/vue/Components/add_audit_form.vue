@@ -1,5 +1,5 @@
 <template>
-    <f7-card v-if="sended">
+    <f7-card>
         <!--форма добавления аудитов-->
         <f7-list form media>
             <f7-list-item class="add_check">

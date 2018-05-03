@@ -23,13 +23,13 @@
                 <transition appear mode="out-in" name="slide-fade">
                 <f7-card-content style="padding-bottom:15px;"  v-show="have_something">
                     <f7-list form class="add_list">
-                        <f7-list-item class="correct_css">
+                        <f7-list-item class="correct_css_name">
                                     <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
-                                    <f7-input type="text"  v-model="current"></f7-input>
+                                    <f7-input type="text"  v-model="current" :disabled=true class="disb_btn"></f7-input>
                         </f7-list-item>
-                        <f7-list-item class="correct_css">
+                        <f7-list-item class="correct_css_adr">
                             <f7-label floating>{{this.$root.localization.pop_up.address}}</f7-label>
-                            <f7-input type="text" v-model="addres_obj"></f7-input>
+                            <f7-input type="text" v-model="addres_obj" :disabled=true class="disb_btn"></f7-input>
                         </f7-list-item>
                     </f7-list>
                 </f7-card-content>
@@ -41,7 +41,7 @@
                 </f7-card-header>
                 <f7-card-content class="card_audit_add">
                     <transition-group  appear mode="out-in" name="slide-app">
-                        <audit_add v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index"  :type="true" :trash_btn="false" @remove_audit="remove_audit(index)"></audit_add>
+                        <audit_add v-if=sended(items) v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index"  :type="true" :trash_btn="false" @remove_audit="remove_audit(index)"></audit_add>
                     </transition-group>
                     <f7-card >
                         <f7-grid style="width:100%">
@@ -108,10 +108,14 @@
             hasObject(){
                 this.select_list=(this.$root.objects.length>0)?this.$root.objects:'';
                 return(this.select_list.length>0)
-            },
+            }
+
 
         },
         methods:{
+            sended( itm){
+                return !itm.upload;
+            },
             closePopUp(mode){
                 (!this.edit)? this.clear_data():'';
                 (mode)? this.$root.objects=this.$ls.get('objects'):'';
@@ -203,7 +207,7 @@
               let self=this;
               let result=true;
               result=(this.current!='')?result:false;
-              result=(this.addres_obj!=''&&this.addres_obj!=null)?result:false;
+              //result=(this.addres_obj!=''&&this.addres_obj!=null)?result:false;
               this.audits.forEach(function(item){
                  result=(item.title!='')?result:false;
               });
@@ -218,48 +222,18 @@
               this.audits=[];
               this.have_something=false;
 
+
             },
             remove_audit(index){
               this.audits.splice(index,1);
             },
 
-
-
-            test_close(){
-                let elem=$$('.modal-in');
-                console.log(elem);
-                this.$f7.closeModal();
-            },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //CSS Доработка
+           //CSS Доработка
             correct_css(){
-                let element=$$(this.$el).find('.correct_css');
-                let el=(element.find('.item-inner'));
-                let need_cls;
-                el.attr('class').split(' ').forEach(function(item){
-                    need_cls=(item!='not-empty-state')? true:false;
-                });
-                if(this.current!='')this.add_cls(el,'not-empty-state');
+                let element=$$(this.$el).find('.correct_css_name').find('.item-inner');
+                if(this.current!=null)this.add_cls(element,'not-empty-state');
+                element=$$(this.$el).find('.correct_css_adr').find('.item-inner');
+                if(this.addres_obj!=null)this.add_cls(element,'not-empty-state');
             },
             secod_correct_css(){
                 let element=$$(this.$el).find('.correct_css');
@@ -272,10 +246,7 @@
                obj.attr('class').split(' ').forEach(function(item){
                    (item!=cls)?obj.addClass(cls):obj.removeClass(cls);
                });
-                // obj.toggleClass(cls);
             },
-
-
         }
     }
 </script>
