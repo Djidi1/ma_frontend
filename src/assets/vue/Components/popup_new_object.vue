@@ -135,7 +135,7 @@
                 let self=this;
                 if((Object.keys(item).length!=0)){
                     this.selected_object=item;
-                    this.audits=this.get_audits(this.selected_object.audits);
+                    //this.audits=this.get_audits(this.selected_object.audits);
                     this.current=this.selected_object.title;
                     this.addres_obj=this.selected_object.address;
                     if (!this.have_something)this.correct_css();
