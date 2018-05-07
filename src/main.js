@@ -629,10 +629,10 @@ new Vue({
                     "audit":{
                         "check_list":self.get_req(audit),//массив чек листов
                         "id":0,
-                        "object_id":0,
+                        "object_id":audit.object_id,
                         "date_add":self.GetCurrentDate(audit),//Текущая дата.
                         "title":audit.title,
-                        "comment":"Test"//ТЕСТ
+                        "comment":self.get_audit_comments(audit)
                     },
                 };
                 //Метод отправки на сервер.
@@ -668,7 +668,18 @@ new Vue({
             this.$ls.set('objects',this.$root.objects);
             return (req.disabled)?2:(req.status===0)?-1:req.status;
         },
-        //Сборка коментариев.
+        //Сборка комментариев к аудиту
+        get_audit_comments(audit){
+            let result=[];
+            audit.comments.forEach(function(comm){
+                let com={
+                    "text":comm.text
+                };
+                result.push(com);
+            });
+            return result;
+        },
+        //Сборка коментариев к требованиям.
         get_comments(req){
             let self=this;
             let result=[];

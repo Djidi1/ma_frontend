@@ -6,23 +6,27 @@
                     <f7-label floating>{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>
                     <f7-input type="textarea"  v-model="text" ></f7-input>
                 </f7-list-item>
-                <attachment @removeAttach="this.removeAttachment" :attachment="attachment" :edit_mode="true" ></attachment>
-                <f7-block>
-                    <div class="row ">
-                        <div class="col-50 attachment_button">
-                            <div class="comment-photupload comment-photos" @click="upload(true)">
-                                <f7-icon size=28  fa="camera" style="padding-top:3px;"></f7-icon>
-                            </div>
-                            <div  class="comment-photupload comment-photos" @click="upload(false)" >
-                                <f7-icon size=30  fa="paperclip"  ></f7-icon>
-                            </div>
 
+                    <attachment @removeAttach="this.removeAttachment" :attachment="attachment" :edit_mode="true" v-if="comment_for_audit"></attachment>
+                    <f7-block >
+
+                        <div class="row ">
+                            <div class="col-50 attachment_button" >
+                                <div class="comment-photupload comment-photos" @click="upload(true)" v-if="comment_for_audit">
+                                    <f7-icon size=28  fa="camera" style="padding-top:3px;"></f7-icon>
+                                </div>
+                                <div  class="comment-photupload comment-photos" @click="upload(false)" v-if="comment_for_audit" >
+                                    <f7-icon size=30  fa="paperclip"  ></f7-icon>
+                                </div>
+
+                            </div>
+                            <div class="col-50">
+                                <f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
+                            </div>
                         </div>
-                        <div class="col-50">
-                            <f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
-                        </div>
-                    </div>
-                </f7-block>
+                    </f7-block>
+
+
             </f7-list>
         </div>
 </template>
@@ -34,7 +38,9 @@
         props:{
            data_set:{type:Array,default:function(){return[]}},
            type:{type:Boolean,default:false},
+           audit_comment:{type:Boolean,default:false},
            comment:{type:Object,default:function(){return {}}},
+
 
         },
         data:function(){
@@ -68,6 +74,9 @@
             hasAttach(){
                 return(this.attachment.length>0);
             },
+            comment_for_audit(){
+                return !(this.audit_comment);
+            }
         },
         methods:{
 

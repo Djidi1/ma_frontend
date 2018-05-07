@@ -38,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <text_area v-else key="edit" :comment="this.single_comment" @edit_done="edit_done()" :type="true" ></text_area>
+                <text_area v-else key="edit" :comment="this.single_comment" @edit_done="edit_done()" :type="true" :audit_comment="this.audit_comment"></text_area>
         </transition>
     </f7-block>
 
@@ -56,11 +56,13 @@
                 }
             },
             id: {type: Number, default: 0},
-            read:{type:Boolean,default:false}
+            read:{type:Boolean,default:false},
+            audit_comment:{type:Boolean,default:false}
         },
         data:function(){
             return{
-                mode:true
+                mode:true,
+                audit_comm:this.audit_comment
             }
         },
         computed:{
@@ -115,7 +117,7 @@
         opacity: 0.7;
     }
     .content_comment{
-        padding:15px 7px 15px 7px;
+        padding:25px 7px 15px 7px;
         word-wrap: break-word;
     }
 

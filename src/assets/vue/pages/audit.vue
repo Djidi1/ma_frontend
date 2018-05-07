@@ -51,13 +51,17 @@
             </f7-card>
             <f7-card>
                 <f7-list accordion class="acrd_custom text_main">
-                    <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_audit" :after="comment_audit_count">
+                    <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_audit" >
                         <f7-accordion-content>
-                            <transition-group appear mode="out-in" name="slide-fade" >
-                                <single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id"></single-comment>
-                            </transition-group>
+                            <transition appear mode="out-in" name="slide-fade">
+                                <single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id" :audit_comment="true"></single-comment>
+                                <f7-block inner v-if="!hasComment"><text_area :data_set="this.audit.comments" :audit_comment="true"></text_area></f7-block>
+                            </transition>
+                            <!--<transition-group appear mode="out-in" name="slide-fade" >-->
+                                <!--<single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id"></single-comment>-->
+                            <!--</transition-group>-->
 
-                            <f7-block inner><text_area :data_set="this.audit.comments"></text_area></f7-block>
+                            <!--<f7-block inner><text_area :data_set="this.audit.comments"></text_area></f7-block>-->
                         </f7-accordion-content>
                     </f7-list-item>
                 </f7-list>
@@ -143,6 +147,9 @@
             //Кол-во комментариве к аудиту.
             comment_audit_count(){
                 return (this.audit.comments.length>0)?"<i class='fa fa-commenting-o' aria-hidden='true'></i> "+this.audit.comments.length:"<i class='fa fa-commenting-o' aria-hidden='true'></i>";
+            },
+            hasComment(){
+                return (this.audit.comments.length>0);
             }
         },
         methods:{
