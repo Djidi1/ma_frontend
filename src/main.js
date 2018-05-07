@@ -275,11 +275,41 @@ new Vue({
                         //res - набор результатов аудитов полученный от сервера.
                         self.$set(result,'obj',result_arr);
                         self.$set(result,'res',result_audit);
-                        resolve(result);
+                       return self.sort_data(result) ;
+
+                    }
+                ).then(
+                    result_sort=>{
+                       resolve(result_sort)
                     }
                 )
             });
         },
+        //Сортировка данных по дате последнего аудита
+        sort_data(result_sort){
+            let self=this;
+            return new Promise(function(resolve){
+                result_sort.obj.forEach(function(itm){
+                    self.sort_audit_date(itm);
+                });
+                result_sort.obj.sort(function(a,b){
+                    return new Date(b.audits[0].created_at)-new Date(a.audits[0].created_at);
+                });
+               resolve(result_sort);
+            });
+        },
+        //Сортировка аудитов по дате
+        sort_audit_date(arr){
+            let self=this;
+            arr.audits.sort(function(a,b){
+               return  new Date(b.created_at)- new Date(a.created_at);
+            });
+
+        },
+
+
+
+
         //Метод получения от сервера списка чек-листов. POST
         get_check_list(){
             let self=this;
