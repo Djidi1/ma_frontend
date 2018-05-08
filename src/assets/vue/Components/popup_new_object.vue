@@ -27,10 +27,10 @@
                                     <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
                                     <f7-input type="text"  v-model="current" :disabled=true class="disb_btn"></f7-input>
                         </f7-list-item>
-                        <f7-list-item class="correct_css_adr">
-                            <f7-label floating>{{this.$root.localization.pop_up.address}}</f7-label>
-                            <f7-input type="text" v-model="addres_obj" :disabled=true class="disb_btn"></f7-input>
-                        </f7-list-item>
+                        <!--<f7-list-item class="correct_css_adr">-->
+                            <!--<f7-label floating>{{this.$root.localization.pop_up.address}}</f7-label>-->
+                            <!--<f7-input type="text" v-model="addres_obj" :disabled=true class="disb_btn"></f7-input>-->
+                        <!--</f7-list-item>-->
                     </f7-list>
                 </f7-card-content>
                 </transition>
@@ -44,9 +44,9 @@
                     <transition-group  appear mode="out-in" name="slide-app">
                         <audit_add v-if=sended(items) v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index"  :type="true" :trash_btn="false" @remove_audit="remove_audit(index)"></audit_add>
                     </transition-group>
-                    <f7-card >
+                    <f7-card  style="margin-bottom:30px;" v-if="!this.audit_was_add">
                         <f7-grid style="width:100%">
-                            <f7-col width="100"> <f7-button fill @click="add_audit()" v-if="!this.audit_was_add">{{this.$root.localization.pop_up.add_audit}}</f7-button></f7-col>
+                            <f7-col width="100"> <f7-button fill @click="add_audit()" >{{this.$root.localization.pop_up.add_audit}}</f7-button></f7-col>
                         </f7-grid>
                     </f7-card>
                 </f7-card-content>
