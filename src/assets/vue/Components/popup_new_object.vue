@@ -16,8 +16,9 @@
             <f7-card>
                 <f7-card-header>
                     <f7-grid style="width:100%; padding:5px 0 5px 0;">
-                        <!--<f7-col width="60"></f7-col>-->
-                        <f7-col v-show="this.mode" width="100"> <f7-button  class="btn_select_obj" open-popover=".exist_pop_over" :disabled="!hasObject"> {{this.$root.localization.pop_up.select_ex}} {{this.$root.localization.pop_up.object_info}}</f7-button></f7-col>
+                        <f7-col v-show="this.mode" width="100">
+                            <f7-button fill color="blue" open-popover=".exist_pop_over" :disabled="!hasObject"> {{this.$root.localization.pop_up.select_ex}} {{this.$root.localization.pop_up.object_info}}</f7-button>
+                        </f7-col>
                     </f7-grid>
                 </f7-card-header>
                 <transition appear mode="out-in" name="slide-app">
@@ -35,35 +36,19 @@
                 </f7-card-content>
                 </transition>
             </f7-card>
+            <audit_add v-if=sended(items) v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index"  :type="true" :trash_btn="false" @remove_audit="remove_audit(index)"></audit_add>
+
             <transition appear mode="out-in" name="slide-app">
-            <f7-card v-if="this.have_something">
-                <f7-card-header>
-                   {{this.$root.localization.pop_up.audits_info}}
-                </f7-card-header>
-                <f7-card-content class="card_audit_add" >
-                    <transition-group  appear mode="out-in" name="slide-app">
-                        <audit_add v-if=sended(items) v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index"  :type="true" :trash_btn="false" @remove_audit="remove_audit(index)"></audit_add>
-                    </transition-group>
-                    <f7-card  style="margin-bottom:30px;" v-if="!this.audit_was_add">
-                        <f7-grid style="width:100%">
-                            <f7-col width="100"> <f7-button fill @click="add_audit()" >{{this.$root.localization.pop_up.add_audit}}</f7-button></f7-col>
-                        </f7-grid>
+                <f7-card class="btn_pop_up_main" v-if="this.have_something">
+                    <f7-card class="btn_pop_up_card">
+                        <f7-card-header class="btn_pop_up_card">
+                            <f7-grid class="btn_complete">
+                                <f7-col width="50"><f7-button  class="abort_button" @click="closePopUp(true)" > {{this.$root.localization.pop_up.cancel}}</f7-button></f7-col>
+                                <f7-col width="50"><f7-button fill @click="submit()" >{{this.$root.localization.pop_up.save}}</f7-button></f7-col>
+                            </f7-grid>
+                        </f7-card-header>
                     </f7-card>
-                </f7-card-content>
-                <f7-card-footer></f7-card-footer>
-            </f7-card>
-            </transition>
-            <transition appear mode="out-in" name="slide-app">
-            <f7-card class="btn_pop_up_main" v-if="this.have_something">
-                <f7-card class="btn_pop_up_card">
-                    <f7-card-header class="btn_pop_up_card">
-                        <f7-grid class="btn_complete">
-                            <f7-col width="50"><f7-button  class="abort_button" @click="closePopUp(true)" > {{this.$root.localization.pop_up.cancel}}</f7-button></f7-col>
-                            <f7-col width="50"><f7-button fill @click="submit()" >{{this.$root.localization.pop_up.submit}}</f7-button></f7-col>
-                        </f7-grid>
-                    </f7-card-header>
                 </f7-card>
-            </f7-card>
             </transition>
         </div>
         <curr_objects v-if="hasObject" :list="this.select_list"  :current="this.selected_object" @selected_object_done="selected_object_done"></curr_objects>
@@ -71,7 +56,7 @@
 </template>
 
 <script>
-    var $$=Dom7;
+    let $$=Dom7;
     export default {
         name: "popup_new_object",
         props:{
@@ -128,19 +113,19 @@
                 this.$f7.closeModal();
             },
             GetCurrentDate(){
-                let now= new Date();
-                return now;
+                return new Date();
             },
-            selected_object_done(item,index){
-                let self=this;
-                if((Object.keys(item).length!=0)){
-                    this.selected_object=item;
-                    //this.audits=this.get_audits(this.selected_object.audits);
-                    this.current=this.selected_object.title;
-                    this.addres_obj=this.selected_object.address;
-                    if (!this.have_something)this.correct_css();
-                    this.have_something=true;
-
+            selected_object_done(item){
+                if((Object.keys(item).length > 0)){
+                    this.selected_object = item;
+                    this.current = this.selected_object.title;
+                    this.addres_obj = this.selected_object.address;
+                    if (!this.have_something) this.correct_css();
+                    this.have_something = true;
+                    // Если нет аудита, то создаем
+                    if (this.audits.length === 0) {
+                        this.add_audit();
+                    }
                 }
             },
             get_audits(audits){
@@ -189,7 +174,7 @@
             },
             submit(){
                 if (this.validat()){
-                    if((Object.keys(this.selected_object).length!=0)){
+                    if((Object.keys(this.selected_object).length > 0)){
                         this.$set(this.selected_object,"audits",this.audits);
                         this.$set(this.selected_object,"title",this.current);
                         this.$set(this.selected_object,"address",this.addres_obj);
@@ -211,13 +196,12 @@
                 }else{ this.$f7.alert('Не выбран объект иди заполнены не все поля!',this.$root.localization.pop_up.warning);}
             },
             validat(){
-              let self=this;
-              let result=true;
-              result=(this.current!='')?result:false;
+                let result = true;
+                result = (this.current !== '') ? result : false;
               //result=(this.addres_obj!=''&&this.addres_obj!=null)?result:false;
-              this.audits.forEach(function(item){
-                 result=(item.title!='')?result:false;
-              });
+              // this.audits.forEach(function(item){
+              //    result=(item.title!='')?result:false;
+              // });
               return result;
             },
             clear_data(){
@@ -239,9 +223,9 @@
            //CSS Доработка
             correct_css(){
                 let element=$$(this.$el).find('.correct_css_name').find('.item-inner');
-                if(this.current!=null)this.add_cls(element,'not-empty-state');
+                if(this.current != null && element.length > 0)this.add_cls(element,'not-empty-state');
                 element=$$(this.$el).find('.correct_css_adr').find('.item-inner');
-                if(this.addres_obj!=null)this.add_cls(element,'not-empty-state');
+                if(this.addres_obj != null && element.length > 0)this.add_cls(element,'not-empty-state');
             },
             secod_correct_css(){
                 let element=$$(this.$el).find('.correct_css');

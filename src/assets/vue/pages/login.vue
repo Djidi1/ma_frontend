@@ -59,7 +59,7 @@
             send_post_login(){
                 let self=this;
                this.$f7.showPreloader(this.$root.localization.modal.preloader);
-                this.$http.post('https://test.bh-app.ru/api/login',{email:this.form_login.login,password:this.form_login.password}).then(response=>{
+                this.$http.post(this.$root.be_server + '/api/login',{email:this.form_login.login,password:this.form_login.password}).then(response=>{
                     self.$f7.hidePreloader();
                     self.$root.auth_info={auth:true,token:response.body.success.token,name:'',email:''};
                     this.$f7.views.main.router.load({url:'/page/'});

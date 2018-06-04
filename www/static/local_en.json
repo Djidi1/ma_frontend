@@ -38,6 +38,7 @@
   },
   "SettingPage":"Settings",
   "AuditPage":{
+    "audit": "Audit",
     "name":"Name",
     "object":"Object",
     "address":"Address",
@@ -49,13 +50,14 @@
     "audit_send_btn":"Send",
     "comment_button":"Save",
     "check_list_position":"Requirements for check-list",
-    "check_list_btn_ok":"Accept",
+    "check_list_btn_ok":"Save",
     "check_list_btn_reset":"Reset"
   },
   "lang": {
     "rus": "Russian",
     "en": "English",
     "submit": "Submit",
+    "save": "Save",
     "abort": "Cancel",
     "name": "User name",
     "tel":"Phone number/disabled",
@@ -83,6 +85,8 @@
     "check_list":"Check-list",
     "add_audit":"Add Audit",
     "add_check":"Add Check-list's",
+    "save":"Save",
+    "select":"Select",
     "submit":"Submit",
     "cancel":"Cancel",
     "empty_obj":"Chose object!",

@@ -72,7 +72,7 @@
                 <f7-block inner>
                     <f7-grid>
                         <f7-col width="100">
-                            <f7-button fill @click="send_results()">{{this.$root.localization.AuditPage.audit_send_btn}} <i class="fa fa-paper-plane" aria-hidden="true"></i></f7-button>
+                            <f7-button fill @click="send_results()">{{this.$root.localization.AuditPage.audit_send_btn}}</f7-button>
                         </f7-col>
                     </f7-grid>
                 </f7-block>

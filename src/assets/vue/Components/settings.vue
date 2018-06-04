@@ -15,10 +15,10 @@
                     <f7-label floating>{{this.$root.localization.lang.name}}</f7-label>
                     <f7-input type="text" v-model="user_name"/>
                 </f7-list-item>
-                <f7-list-item>
-                    <f7-label floating>{{this.$root.localization.lang.tel}}</f7-label>
-                    <f7-input type="text" disabled />
-                </f7-list-item>
+                <!--<f7-list-item>-->
+                    <!--<f7-label floating>{{this.$root.localization.lang.tel}}</f7-label>-->
+                    <!--<f7-input type="text" disabled />-->
+                <!--</f7-list-item>-->
             </f7-list>
 
 
@@ -37,7 +37,7 @@
                         <f7-button @click="cancelSetting" class="abort_button" > {{this.$root.localization.lang.abort}}</f7-button>
                     </div>
                     <div class="col-50">
-                        <f7-button fill back @click="submitSetting"> {{this.$root.localization.lang.submit}}</f7-button>
+                        <f7-button fill back @click="submitSetting"> {{this.$root.localization.lang.save}}</f7-button>
                     </div>
                 </div>
             </f7-block>

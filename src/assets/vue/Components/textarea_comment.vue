@@ -1,232 +1,228 @@
 <template>
     <!--Блок с textarea для редактирования или создания нового комментария-->
-        <div class="comment_text_zone" id="edit">
-            <f7-list form>
-                <f7-list-item>
-                    <f7-label floating>{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>
-                    <f7-input type="textarea"  v-model="text" ></f7-input>
-                </f7-list-item>
+    <div class="comment_text_zone" id="edit">
+        <f7-list form>
+            <f7-list-item>
+                <f7-label floating>{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>
+                <f7-input type="textarea" v-model="text" @change="send_comments"></f7-input>
+            </f7-list-item>
 
-                    <attachment @removeAttach="this.removeAttachment" :attachment="attachment" :edit_mode="true" v-if="comment_for_audit"></attachment>
-                    <f7-block >
-
-                        <div class="row ">
-                            <div class="col-50 attachment_button" >
-                                <div class="comment-photupload comment-photos" @click="upload(true)" v-if="comment_for_audit">
-                                    <f7-icon size=28  fa="camera" style="padding-top:3px;"></f7-icon>
-                                </div>
-                                <div  class="comment-photupload comment-photos" @click="upload(false)" v-if="comment_for_audit" >
-                                    <f7-icon size=30  fa="paperclip"  ></f7-icon>
-                                </div>
-
-                            </div>
-                            <div class="col-50">
-                                <f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
-                            </div>
+            <attachment @removeAttach="this.removeAttachment" :attachment="attachment" :edit_mode="true" v-if="comment_for_audit"></attachment>
+            <f7-block>
+                <div class="row ">
+                    <div class="col-50 attachment_button">
+                        <div class="comment-photupload comment-photos" @click="upload(true)" v-if="comment_for_audit">
+                            <f7-icon size=28 fa="camera" style="padding-top:3px;"></f7-icon>
                         </div>
-                    </f7-block>
+                        <div class="comment-photupload comment-photos" @click="upload(false)" v-if="comment_for_audit">
+                            <f7-icon size=30 fa="paperclip"></f7-icon>
+                        </div>
+                    </div>
+                    <div class="col-50">
+                        <f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
+                    </div>
+                </div>
+            </f7-block>
 
-
-            </f7-list>
-        </div>
+        </f7-list>
+    </div>
 </template>
 
 <script>
-    var $$=Dom7;
+    var $$ = Dom7;
     export default {
         name: "textarea_comment",
-        props:{
-           data_set:{type:Array,default:function(){return[]}},
-           type:{type:Boolean,default:false},
-           audit_comment:{type:Boolean,default:false},
-           comment:{type:Object,default:function(){return {}}},
+        props: {
+            data_set: {
+                type: Array, default: function () {
+                    return []
+                }
+            },
+            type: {type: Boolean, default: false},
+            audit_comment: {type: Boolean, default: false},
+            comment: {
+                type: Object, default: function () {
+                    return {}
+                }
+            },
 
 
         },
-        data:function(){
-          return{
-              data_comm:'',
-              current_comment:'',
-              text:'',
-              attachment:[],
-          }
+        data: function () {
+            return {
+                data_comm: '',
+                current_comment: '',
+                text: '',
+                attachment: [],
+            }
         },
-        created:function(){
-            if((Object.keys(this.comment).length===0)){
-                this.data_comm=this.data_set;
-            }else{
-                this.current_comment=this.comment;
-                this.text=this.current_comment.text;
-                this.attachment=this.current_comment.attachments;
+        created: function () {
+            if ((Object.keys(this.comment).length === 0)) {
+                this.data_comm = this.data_set;
+            } else {
+                this.current_comment = this.comment;
+                this.text = this.current_comment.text;
+                this.attachment = this.current_comment.attachments;
             }
         },
 
-        mounted:function(){
-            this.$nextTick(function(){
+        mounted: function () {
+            this.$nextTick(function () {
                 this.check_style_class(this.$el);
-                if((Object.keys(this.comment).length!=0)){
-                   this.correct_css();
-                  this.$$(this.$el).find('textarea').focus();
+                if ((Object.keys(this.comment).length > 0)) {
+                    this.correct_css();
+                    this.$$(this.$el).find('textarea').focus();
                 }
             })
         },
-        computed:{
-            hasAttach(){
-                return(this.attachment.length>0);
+        computed: {
+            hasAttach() {
+                return (this.attachment.length > 0);
             },
-            comment_for_audit(){
+            comment_for_audit() {
                 return !(this.audit_comment);
             }
         },
-        methods:{
-
-
+        methods: {
 
 
             //Костыль для отображения класов которые не цепляются если вызывать форму на редактирование
-            check_style_class(el){
-                let element=$$(el);
+            check_style_class(el) {
+                let element = $$(el);
                 let form_cls;
                 let input_cls;
                 //костыль дял формы
-                let form=element.find('form');
-                form.attr('class').split(' ').forEach(function(item){
-                     form_cls=(item!='inputs-list')?true:false;
-                })
-                if (form_cls) this.add_cls_to_form(form,'inputs-list');
+                let form = element.find('form');
+                form.attr('class').split(' ').forEach(function (item) {
+                    form_cls = (item !== 'inputs-list');
+                });
+                if (form_cls) this.add_cls_to_form(form, 'inputs-list');
                 //костыль для инпута item-input-field
-                let input=element.find('.item-input');
-               input.attr('class').split(' ').forEach(function(item){
-                   input_cls=(item!='item-input-field')?true:false;
-               });
-                if (input_cls) this.add_cls_to_form(input,'item-input-field');
+                let input = element.find('.item-input');
+                input.attr('class').split(' ').forEach(function (item) {
+                    input_cls = (item !== 'item-input-field');
+                });
+                if (input_cls) this.add_cls_to_form(input, 'item-input-field');
             },
-            add_cls_to_form(form,cls){
+            add_cls_to_form(form, cls) {
                 form.addClass(cls);
             },
 
-            GetCurrentDate(){
-                let now= new Date();
-                return now;
+            GetCurrentDate() {
+                return new Date();
             },
-            send_comments(){
-                if (this.text!=''||this.attachment.length>0){
-                    if(this.type){
-                        this.comment.id=this.getOfflineID(this.comment.id);
-                        this.comment.create_date=this.GetCurrentDate();
-                        this.comment.user_info=this.$root.auth_info.user_info;
-                        this.comment.text=this.text;
-                        this.comment.attachments=this.attachment;
-                    }else{
-                        let comment= {
-                            "id":this.getOfflineID(),
-                            "create_date":this.GetCurrentDate(),
-                            "user_info":this.$root.auth_info.user_info,
-                            "text":this.text,
-                            "attachments":this.attachment
-                        }
+            send_comments() {
+                if (this.text !== '' || this.attachment.length > 0) {
+                    if (this.type) {
+                        this.comment.id = this.getOfflineID(this.comment.id);
+                        this.comment.create_date = this.GetCurrentDate();
+                        this.comment.user_info = this.$root.auth_info.user_info;
+                        this.comment.text = this.text;
+                        this.comment.attachments = this.attachment;
+                    } else {
+                        let comment = {
+                            "id": this.getOfflineID(),
+                            "create_date": this.GetCurrentDate(),
+                            "user_info": this.$root.auth_info.user_info,
+                            "text": this.text,
+                            "attachments": this.attachment
+                        };
                         this.data_comm.push(comment);
                     }
                     this.clear_input();
-                    this.$ls.set('objects',this.$root.objects);
+                    this.$ls.set('objects', this.$root.objects);
                     this.$emit('edit_done')
                 }
 
             },
-            clear_input(){
-                this.text='';
-                this.attachment=[];
+            clear_input() {
+                this.text = '';
+                this.attachment = [];
                 this.$$(this.$el).find('.item-inner').removeClass('not-empty-state');
                 this.$$(this.$el).find('.item-inner').find('.item-input').removeClass('not-empty-state');
             },
-            removeAttachment(id){
-                this.attachment.splice(id,1);
+            removeAttachment(id) {
+                this.attachment.splice(id, 1);
             },
-            getOfflineID(current){
-                let lastId=0;
-                (current!=undefined)?
-                    lastId=current.id:
+            getOfflineID(current) {
+                let lastId = 0;
+                (current != undefined) ?
+                    lastId = current.id :
                     ++lastId;
                 return lastId;
             },
 
-            upload(mode){
-                let source=(mode)?Camera.PictureSourceType.CAMERA:Camera.PictureSourceType.SAVEDPHOTOALBUM;
-                navigator.camera.getPicture(this.getPhoto,this.getPhotoFail,{
-                    quality:30,
-                    destinationType:Camera.DestinationType.FILE_URI,
-                    sourceType:source,
-                    encodingType:Camera.EncodingType.JPEG,
-                    mediaType:Camera.MediaType.PICTURE,
+            upload(mode) {
+                let source = (mode) ? Camera.PictureSourceType.CAMERA : Camera.PictureSourceType.SAVEDPHOTOALBUM;
+                navigator.camera.getPicture(this.getPhoto, this.getPhotoFail, {
+                    quality: 30,
+                    destinationType: Camera.DestinationType.FILE_URI,
+                    sourceType: source,
+                    encodingType: Camera.EncodingType.JPEG,
+                    mediaType: Camera.MediaType.PICTURE,
                 })
 
             },
             getPhoto: function (img) {
                 let self = this;
                 self.get_img_data(img).then(
-                    f=>{
-                        self.$$('#img_pr'+(self.attachment.length-1)).show();
-                        window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory+"img/",function(dir){
-                            f.moveTo(dir,f.name,function(entry){
-                                self.attachment[self.attachment.length-1].url=entry.toURL();
-                                self.$$('#img_pr'+(self.attachment.length-1)).hide();
-                            },function(error){
-                                self.$f7.alert(error.code,this.$root.localization.pop_up.warning);
-                                self.attachment.splice(self.attachment.length-1,1);
+                    f => {
+                        self.$$('#img_pr' + (self.attachment.length - 1)).show();
+                        window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory + "img/", function (dir) {
+                            f.moveTo(dir, f.name, function (entry) {
+                                self.attachment[self.attachment.length - 1].url = entry.toURL();
+                                self.$$('#img_pr' + (self.attachment.length - 1)).hide();
+                            }, function (error) {
+                                self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
+                                self.attachment.splice(self.attachment.length - 1, 1);
                             });
                         });
                     },
-                    error=>{
-                       self.$f7.alert(error.code,this.$root.localization.pop_up.warning);
+                    error => {
+                        self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
                     }
                 );
             },
-            get_img_data(url){
-                let self=this;
-                return new Promise(function(resolve,reject){
-                   window.resolveLocalFileSystemURL(url,function(f){
-                       f.file(function(file){
-                          let img_data={
-                              "caption": file.name,
-                              "file": {
-                                  'name': file.name,
-                                  "size": file.size,
-                                  "type": file.type
-                              },
-                              "url": url
-                          };
-                          self.attachment.push(img_data);
-                          resolve(f);
-                       },
-                       function(error){
-                           reject(error);
-                       });
-                   })
+            get_img_data(url) {
+                let self = this;
+                return new Promise(function (resolve, reject) {
+                    window.resolveLocalFileSystemURL(url, function (f) {
+                        f.file(function (file) {
+                                let img_data = {
+                                    "caption": file.name,
+                                    "file": {
+                                        'name': file.name,
+                                        "size": file.size,
+                                        "type": file.type
+                                    },
+                                    "url": url
+                                };
+                                self.attachment.push(img_data);
+                                resolve(f);
+                            },
+                            function (error) {
+                                reject(error);
+                            });
+                    })
                 });
             },
 
 
-            getPhotoFail(message){
-                this.$f7.alert('error:'+ message,this.$root.localization.pop_up.warning);
+            getPhotoFail(message) {
+                this.$f7.alert('error:' + message, this.$root.localization.pop_up.warning);
             },
-
-
-
-
-
-
 
 
             //Css костыль
-            correct_css(){
-                let element=$$(this.$el).find('textarea');
-                 let el=(element.parent().parent());
-                 el.attr('class').split(' ').forEach(function(item){
-                     let need_cls=(item!='not-empty-state')? true:false;
-                 });
-                 this.add_cls(el,'not-empty-state');
+            correct_css() {
+                let element = $$(this.$el).find('textarea');
+                let el = (element.parent().parent());
+                el.attr('class').split(' ').forEach(function (item) {
+                    let need_cls = (item != 'not-empty-state') ? true : false;
+                });
+                this.add_cls(el, 'not-empty-state');
             },
-            add_cls(obj,cls) {
+            add_cls(obj, cls) {
                 obj.addClass(cls);
             }
         }
@@ -234,38 +230,44 @@
 </script>
 
 <style scoped>
-    .attachment_button{
-        display:flex;
+    .attachment_button {
+        display: flex;
         justify-content: flex-start;
         height: 36px;
     }
-    .attachment_button button{
-        padding-top:5px;
+
+    .attachment_button button {
+        padding-top: 5px;
         background-color: transparent;
-        border:unset;
+        border: unset;
         color: #868686;
-        margin:0 7px 0 5px;
+        margin: 0 7px 0 5px;
     }
-    .comment_text_zone{
-        padding:10px 0 20px 0;
+
+    .comment_text_zone {
+        padding: 10px 0 20px 0;
     }
+
     .comment-photos {
         text-align: center;
         color: #868686;
-        margin:0 15px 0 5px;
-        padding-top:5px;
-        width:36px;
+        margin: 0 15px 0 5px;
+        padding-top: 5px;
+        width: 36px;
 
     }
+
     .comment-photupload {
         position: relative;
         overflow: hidden;
     }
+
     .comment-file {
         min-height: 0;
         width: 100%;
     }
-    .comment-photupload input{
+
+    .comment-photupload input {
         opacity: 0;
         position: absolute;
         top: 0;

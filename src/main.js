@@ -22,7 +22,7 @@ import Framework7ThemeColors from 'framework7/dist/css/framework7.material.color
 import AppStyles from './assets/sass/main.scss'
 import AppStylesCustom from './assets/sass/custom.scss'
 
-import  FAicon from 'font-awesome/css/font-awesome.css';
+import FAicon from 'font-awesome/css/font-awesome.css';
 import f7icons from 'framework7-icons/css/framework7-icons.css'
 
 //Vue-localstorage
@@ -39,8 +39,8 @@ import local_ru from "./static/local_ru"
 import local_en from "./static/local_en"
 
 //Test zone inmport json
-import data_json from './static/Objects.json'
-import check_json from './static/check_lists.json'
+// import data_json from './static/Objects.json'
+// import check_json from './static/check_lists.json'
 
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue);
@@ -50,35 +50,49 @@ Vue.use(VueResource);
 
 //Components
 import List from './assets/vue/Components/list_audit.vue'
-Vue.component('list',List);
+
+Vue.component('list', List);
 import Object_list from './assets/vue/Components/object_list.vue'
-Vue.component('list_object',Object_list);
+
+Vue.component('list_object', Object_list);
 import check_item from './assets/vue/Components/chek_item.vue'
-Vue.component('check_item',check_item);
+
+Vue.component('check_item', check_item);
 import textarea from './assets/vue/Components/textarea_comment.vue'
-Vue.component('text_area',textarea);
+
+Vue.component('text_area', textarea);
 import comment from './assets/vue/Components/comment.vue'
-Vue.component('comment',comment);
+
+Vue.component('comment', comment);
 import attachment from './assets/vue/Components/attachment.vue'
-Vue.component('attachment',attachment);
+
+Vue.component('attachment', attachment);
 import single_comment from './assets/vue/Components/single-comment.vue'
-Vue.component('single_comment',single_comment);
+
+Vue.component('single_comment', single_comment);
 import check_box from './assets/vue/Components/check_box_item.vue'
-Vue.component('check_box_item',check_box);
+
+Vue.component('check_box_item', check_box);
 import audit_add from './assets/vue/Components/add_audit_form.vue'
-Vue.component('audit_add',audit_add);
+
+Vue.component('audit_add', audit_add);
 import popover_obj from './assets/vue/Components/popover_obj.vue'
-Vue.component('popover_obj',popover_obj);
+
+Vue.component('popover_obj', popover_obj);
 import curr_objects from './assets/vue/Components/exist_objects_list.vue'
-Vue.component('curr_objects',curr_objects);
+
+Vue.component('curr_objects', curr_objects);
 import popup_new_object from './assets/vue/Components/popup_new_object.vue'
-Vue.component('popup_new_object',popup_new_object);
+
+Vue.component('popup_new_object', popup_new_object);
 import popup_edit_object from './assets/vue/Components/popup_object_edit.vue'
-Vue.component('popup_edit_object',popup_edit_object);
+
+Vue.component('popup_edit_object', popup_edit_object);
 import popup_audit_edit from './assets/vue/Components/popup_edit_audit.vue'
-Vue.component('popup_audit_edit',popup_audit_edit);
 
+Vue.component('popup_audit_edit', popup_audit_edit);
 
+// const be_server = "http://localhost:3000";
 
 // Init App
 new Vue({
@@ -90,9 +104,9 @@ new Vue({
         root: '#app',
         material: true,
         routes: Routes,
-        scrollTopOnNavbarClick:true,
-        hideNavbarOnPageScroll:true,
-        swipePanel:'left'
+        scrollTopOnNavbarClick: true,
+        hideNavbarOnPageScroll: true,
+        swipePanel: 'left'
     },
 
     // Register App Component
@@ -101,35 +115,36 @@ new Vue({
     },
 
     data: {
-        objects : [],
-        auth_info:{},
-        localization:{},
-        check_list:{},
-        settings:{}
+        objects: [],
+        auth_info: {},
+        localization: {},
+        check_list: {},
+        settings: {},
+        be_server: "https://server.mobit365.com:7443"
     },
 //наблюдаем за массивами, в случае изменения обновляем содержимое localstorage
-    watch:{
-        auth_info: function(val){
-            this.$ls.set('auth_info',val);
+    watch: {
+        auth_info: function (val) {
+            this.$ls.set('auth_info', val);
         },
 
-        settings:function(val){
-            this.$ls.set('settings',val);
+        settings: function (val) {
+            this.$ls.set('settings', val);
         },
-        objects:function(val){
-            this.$ls.set('objects',val);
+        objects: function (val) {
+            this.$ls.set('objects', val);
         },
-        check_list:function(val){
-            this.$ls.set('check_list',val);
+        check_list: function (val) {
+            this.$ls.set('check_list', val);
         }
     },
     //При создании App устанавлива язык из локал сторейджа, если, Если язык не установлен(локалсторейдж пуст) устанавливаем русский по умолчанию.
-    created(){
-        let _this=this;
+    created() {
+        let _this = this;
         //Берем переменную из локал сторейджа.
-        this.settings=this.$ls.get('settings','ru');
-        this.$ls.on('settings',function(val){
-            _this.settings=val;
+        this.settings = this.$ls.get('settings', 'ru');
+        this.$ls.on('settings', function (val) {
+            _this.settings = val;
         });
         //Вызов метода установки языка.
         this.lang_select(this.settings);
@@ -137,274 +152,256 @@ new Vue({
 
     //При отресовки App устанавливаем основныые массивы и переменные. Они берутся из локалсторейджа, если там что-то есть.
     // Если там пусто по-умолчанию устанавливаем пусто для всех переменныех.
-    mounted: function(){
+    mounted: function () {
         //Бреме данные по пользователю.
-        this.auth_info =this.$ls.get('auth_info',{auth:false,name:'',email:''});
-        let _this=this;
-        this.$ls.on('auth_info',function(val){
-            _this.auth_info=val;
+        this.auth_info = this.$ls.get('auth_info', {auth: false, name: '', email: ''});
+        let _this = this;
+        this.$ls.on('auth_info', function (val) {
+            _this.auth_info = val;
         });
         //Берем массив объектов, укаждого из которых есть свой массив аудитов, а у каждого аудита ест ьсвой массив чеклистов с позициями и комментариями.
-        this.objects=this.$ls.get('objects',[]);
-        this.$ls.on('objects',function(val){
-            _this.list=val;
+        this.objects = this.$ls.get('objects', []);
+        this.$ls.on('objects', function (val) {
+            _this.list = val;
         });
         //Статичный-чек лист. Необходим для выбора чек листа при редактирование/создание новго аудита.
-        this.check_list=this.$ls.get('check_list','');
-        this.$ls.on('check_list',function(val){
-            _this.check_list=val;
+        this.check_list = this.$ls.get('check_list', '');
+        this.$ls.on('check_list', function (val) {
+            _this.check_list = val;
         });
-        document.addEventListener("backbutton",function(e){
+        document.addEventListener("backbutton", function (e) {
             e.preventDefault();
             _this.go_back();
-        },false);
+        }, false);
 
     },
-    methods:{
-        go_back(){
-            let self=this;
-          let $$=Dom7;
-          let element=$$(this.$el);
-          if(element.find('.panel-left').hasClass('active')){
-              (this.$f7.getCurrentView().activePage.name==="settings")?this.$f7.views[0].back():this.$f7.closePanel();
-              return false;
-          }else{
-              if (element.find('.modal-in').length>0){
-                  if (element.find('.modal-in').length>1) {
-                      $$('.popover').forEach(function () {
-                          if ($$(this).hasClass('modal-in')) {
-                              self.$f7.closeModal($$(this));
-                              return false
-                          }
-                      });
-                  }else{
-                      self.$f7.closeModal();
-                      return false;
-                  }
-              }else {
-                  if ((this.$f7.getCurrentView().activePage.name==="audits_main")||(this.$f7.getCurrentView().activePage.name==="objects_main")){
-                      // this.$f7.confirm("",this.$root.localization.modal.modalTextConfExit, function () {
-                          navigator.app.clearHistory();
-                          navigator.app.exitApp();
-                      // });
-                  }else{
-                    this.$f7.mainView.back();
-                  }
-              }
+    methods: {
+        go_back() {
+            let self = this;
+            let $$ = Dom7;
+            let element = $$(this.$el);
+            if (element.find('.panel-left').hasClass('active')) {
+                (this.$f7.getCurrentView().activePage.name === "settings") ? this.$f7.views[0].back() : this.$f7.closePanel();
+                return false;
+            } else {
+                if (element.find('.modal-in').length > 0) {
+                    if (element.find('.modal-in').length > 1) {
+                        $$('.popover').forEach(function () {
+                            if ($$(this).hasClass('modal-in')) {
+                                self.$f7.closeModal($$(this));
+                                return false
+                            }
+                        });
+                    } else {
+                        self.$f7.closeModal();
+                        return false;
+                    }
+                } else {
+                    if ((this.$f7.getCurrentView().activePage.name === "audits_main") || (this.$f7.getCurrentView().activePage.name === "objects_main")) {
+                        // this.$f7.confirm("",this.$root.localization.modal.modalTextConfExit, function () {
+                        navigator.app.clearHistory();
+                        navigator.app.exitApp();
+                        // });
+                    } else {
+                        this.$f7.mainView.back();
+                    }
+                }
             }
         },
 
         //Проверка авторизован ли пользователь.
-        check_user_auth:function(){
+        check_user_auth: function () {
             return (this.auth_info.auth)
         },
 
         //Метод установки языка приложения.
-        lang_select:function(val){
-            switch (val){
+        lang_select: function (val) {
+            switch (val) {
                 case "ru":
-                    this.localization=local_ru;
+                    this.localization = local_ru;
                     break;
                 case "en":
-                    this.localization=local_en;
+                    this.localization = local_en;
                     break;
             }
-            (this.$f7!=undefined)? this.changeModalLang() :"";
+            (this.$f7 !== undefined) ? this.changeModalLang() : "";
         },
-        //Функция обновления локал сторейджа. Сейчас неактивна.
-        update_ls:function(){
-            this.$ls.set('objects',this.objects);
-        },
+        // //Функция обновления локал сторейджа. Сейчас неактивна.
+        // update_ls: function () {
+        //     this.$ls.set('objects', this.objects);
+        // },
         //Изменения языка для кнопок модальных окон. Пришлось делать отдельно, т.к. это тметод можно вызывать только полсе загрузки $f7.
-        changeModalLang:function(){
-            this.$f7.params.modalButtonOk=this.localization.modal.modalOk;
-            this.$f7.params.modalButtonCancel=this.localization.modal.modalCancel;
+        changeModalLang: function () {
+            this.$f7.params.modalButtonOk = this.localization.modal.modalOk;
+            this.$f7.params.modalButtonCancel = this.localization.modal.modalCancel;
         },
         //Метод обновления данных с сервера при пулестраницы вниз.
-        onRefresh(event, done){
+        onRefresh(event, done) {
             let self = this;
             //Вызов метода получения данных с сервера
-            this.$root.getData_from_server().then(result=>{
-                self.$root.objects=result.obj;
+            this.$root.getData_from_server().then(result => {
+                self.$root.objects = result.obj;
                 self.down_att(result.res);
                 done()
             })
         },
         //Метод получения данных от сервера.
-        getData_from_server(){
-            let self=this;
+        getData_from_server() {
+            let self = this;
             //Возвращает промис, пока функция не вернет resolve крутиться прелоадер.
-            return new Promise(function(resolve,reject){
-                let objects_arr=[];
-                let audits_arr=[];
-                let result_audit=[];
-                let result=[];
+            return new Promise(function (resolve) {
+                let objects_arr = [];
+                let audits_arr = [];
+                let result_audit = [];
+                let result = [];
                 //Вызов функции получения списка чек-листов.
                 self.get_check_list().then(
-                    ready=>{
+                    ready => {
                         //В случае успешного выполнения, вызов метода по получению списка объектов.
                         return self.get_objects();
                     })
-                    .then(objects=>{
-                        objects_arr=objects;
+                    .then(objects => {
+                        objects_arr = objects;
                         //Вызов метода по получению аудитов.
                         return self.get_audits();
                     })
                     .then(
-                        audits=>{
-                            audits_arr=audits;
+                        audits => {
+                            audits_arr = audits;
                             //Вызов метода по получению результатов по аудитам.
                             return self.get_results();
                         }
                     ).then(
-                    results=>{
-                        result_audit=results;
+                    results => {
+                        result_audit = results;
                         //Вызов метода по созданию массива объектов для фронт-енда прилоения. Все полученные данные компонуются в один массив.
-                        return self.create_object_list(objects_arr,audits_arr,results,self.check_list);
+                        return self.create_object_list(objects_arr, audits_arr, results, self.check_list);
                     }
                 ).then(
-                    object_arr=>{
-                        result=object_arr;
+                    object_arr => {
+                        result = object_arr;
                         //Вызов метода по установке результатов аудитов в итоговый массив объектов.
-                        return self.getresults(result,result_audit,self.check_list)
+                        return self.getresults(result, result_audit, self.check_list)
                     }
                 ).then(
-                    result_arr=>{
-                        result={};
+                    result_arr => {
+                        result = {};
                         //Когда все запросы прошли и итоговый массив готов возвращаем в result(resolve) объект с двумя поялми: obj- итоговый готовый массив объектов для App
                         //res - набор результатов аудитов полученный от сервера.
-                        self.$set(result,'obj',result_arr);
-                        self.$set(result,'res',result_audit);
-                       return self.sort_data(result) ;
+                        self.$set(result, 'obj', result_arr);
+                        self.$set(result, 'res', result_audit);
+                        return self.sort_data(result);
 
                     }
                 ).then(
-                    result_sort=>{
-                       resolve(result_sort)
+                    result_sort => {
+                        resolve(result_sort)
                     }
                 )
             });
         },
         //Сортировка данных по дате последнего аудита
-        sort_data(result_sort){
-            let self=this;
-            return new Promise(function(resolve){
-                result_sort.obj.forEach(function(itm){
+        sort_data(result_sort) {
+            let self = this;
+            return new Promise(function (resolve) {
+                result_sort.obj.forEach(function (itm) {
                     self.sort_audit_date(itm);
                 });
-                result_sort.obj.sort(function(a,b){
-                    return new Date(b.audits[0].created_at)-new Date(a.audits[0].created_at);
+                result_sort.obj.sort(function (a, b) {
+                    return (b.audits.hasOwnProperty(0) && a.audits.hasOwnProperty(0))
+                        ? new Date(b.audits[0].created_at) - new Date(a.audits[0].created_at)
+                        : false;
                 });
-               resolve(result_sort);
+                resolve(result_sort);
             });
         },
         //Сортировка аудитов по дате
-        sort_audit_date(arr){
-            let self=this;
-            arr.audits.sort(function(a,b){
-               return  new Date(b.created_at)- new Date(a.created_at);
+        sort_audit_date(arr) {
+            arr.audits.sort(function (a, b) {
+                return new Date(b.created_at) - new Date(a.created_at);
             });
 
         },
 
 
-
-
         //Метод получения от сервера списка чек-листов. POST
-        get_check_list(){
-            let self=this;
-            return new Promise(function(resolve,reject){
-                self.$http.post('https://test.bh-app.ru/api/get-checklists',{},{headers:{'Authorization':'Bearer ' + self.auth_info.token}}).then(
-                    response=>{
-                        self.check_list=response.body;
-                        resolve('ready');
-                    },
-                    response=>{
-                        self.check_list=[];
+        get_check_list() {
+            let self = this;
+            return new Promise(function (resolve) {
+                self.$http.post(self.be_server + '/api/get-checklists', {}, {headers: {'Authorization': 'Bearer ' + self.auth_info.token}}).then(
+                    response => {
+                        self.check_list = response.body;
                         resolve('ready');
                     }
                 );
             });
         },
         //Метод получения от сервера списка объектов. POST.
-        get_objects(){
-            let self=this;
-            let objects=[]
-            return new Promise(function(resolve,reject) {
-                self.$http.post('https://test.bh-app.ru/api/get-objects', {}, {headers: {'Authorization': 'Bearer ' + self.auth_info.token}}).then(
+        get_objects() {
+            let self = this;
+            let objects = [];
+            return new Promise(function (resolve) {
+                self.$http.post(self.be_server + '/api/get-objects', {}, {headers: {'Authorization': 'Bearer ' + self.auth_info.token}}).then(
                     response => {
                         objects = response.body;
-                        resolve(objects)
-                    },
-                    response => {
-                        objects = [];
                         resolve(objects)
                     }
                 );
             });
         },
         //Метод получения от сервера списка аудитов. POST.
-        get_audits(){
-            let self=this;
-            let audits=[];
-            return new Promise(function(resolve,reject) {
-                self.$http.post('https://test.bh-app.ru/api/get-audits',{},{headers:{'Authorization':'Bearer ' + self.auth_info.token}}).then(
-                    response=>{
-                        audits=response.body;
+        get_audits() {
+            let self = this;
+            let audits = [];
+            return new Promise(function (resolve) {
+                self.$http.post(self.be_server + '/api/get-audits', {}, {headers: {'Authorization': 'Bearer ' + self.auth_info.token}}).then(
+                    response => {
+                        audits = response.body;
                         resolve(audits);
 
-                    },
-                    response=>{
-                        audits=[];
-                        resolve(audits);
                     }
                 );
             });
 
         },
         //Метод получения от сервера результатов аудитов. POST.
-        get_results(){
-            let self=this;
-            let results=[];
-            return new Promise(function(resolve,regect){
-                self.$http.post('https://test.bh-app.ru/api/get-results',{},{headers:{'Authorization':'Bearer ' + self.auth_info.token}}).then(
-                    response=>{
-                        results=response.body;
+        get_results() {
+            let self = this;
+            let results = [];
+            return new Promise(function (resolve) {
+                self.$http.post(self.be_server + '/api/get-results', {}, {headers: {'Authorization': 'Bearer ' + self.auth_info.token}}).then(
+                    response => {
+                        results = response.body;
                         resolve(results);
-                    },
-                    response=>{
-                        results=[];
-                        resolve(results)
                     }
                 )
             });
         },
         //Метод создания итогового массива объектов. Все полученные ранее данные компануются в один массив.
-        create_object_list(objects,audits,results,check_list){
-            let self=this;
-            let object_arr=[];
-            return new Promise(function(resolve){
-                objects.forEach(function(object,i){
-                    let result={};
-                    result={
-                        "id":object.id,
-                        "title":object.title,
-                        "created_at":object.created_at,
-                        "audits":[],
-                        "address":object.audit_object_group.address
+        create_object_list(objects, audits) {
+            let object_arr = [];
+            return new Promise(function (resolve) {
+                objects.forEach(function (object) {
+                    let result = {};
+                    result = {
+                        "id": object.id,
+                        "title": object.title,
+                        "created_at": object.created_at,
+                        "audits": [],
+                        "address": object.audit_object_group.address
                     };
-                    audits.forEach(function(audit,j){
-                        if (object.id===audit.object_id){
-                            let audit_result={
-                                "id":audit.id,
-                                "title":audit.title,
-                                "date_add":audit.date_add,
-                                "created_at":audit.created_at,
-                                "check_list":[],
-                                "comments":[],
-                                "object_id":object.id,
-                                "check_list_id":audit.checklist_id,
-                                "upload":false
+                    audits.forEach(function (audit) {
+                        if (object.id === audit.object_id) {
+                            let audit_result = {
+                                "id": audit.id,
+                                "title": audit.title,
+                                "date_add": audit.date_add,
+                                "created_at": audit.created_at,
+                                "check_list": [],
+                                "comments": [],
+                                "object_id": object.id,
+                                "check_list_id": audit.checklist_id,
+                                "upload": false
                             };
                             result.audits.push(audit_result);
                         }
@@ -415,16 +412,16 @@ new Vue({
             });
         },
         //Метод установки для итогового массива результатов.
-        getresults(result_arr,results,checklist){
-            let self=this;
-            return new Promise(function(resolve){
-                result_arr.forEach(function(obj){
-                    obj.audits.forEach(function(audits){
-                        checklist.forEach(function(cl) {
+        getresults(result_arr, results, checklist) {
+            let self = this;
+            return new Promise(function (resolve) {
+                result_arr.forEach(function (obj) {
+                    obj.audits.forEach(function (audits) {
+                        checklist.forEach(function (cl) {
                             if (cl.id === audits.check_list_id) {
                                 //вызов метода сопоставления результатов и итоговог омассива. Чек-листы.
                                 //Вызов идет через промисы, т.к. я пытался тут же и загружать изображения с сервера через плагины Cordova. В итоге не получилось, но переписывать работающие методы не стал.
-                                self.create_rq_promise(cl,audits,results).then(new_cl => {
+                                self.create_rq_promise(cl, audits, results).then(new_cl => {
                                     audits.check_list.push(new_cl);
                                     self.check_status_upload(audits);
                                 });
@@ -437,40 +434,40 @@ new Vue({
         },
 
         //Метод собирает для итогового массива массив чеклистов для каждого аудита.
-        create_rq_promise(cl,audits,results){
-            let self=this;
-            return new Promise(function(resolve){
-                let new_cl={
+        create_rq_promise(cl, audits, results) {
+            let self = this;
+            return new Promise(function (resolve) {
+                let new_cl = {
                     "id": cl.id,
-                    "title":cl.title,
-                    "created_at":cl.created_at,
-                    "requirement":[],
-                    "audit_id":audits.id
+                    "title": cl.title,
+                    "created_at": cl.created_at,
+                    "requirement": [],
+                    "audit_id": audits.id
                 };
-                self.create_att_from_res(cl,audits,results).then(result=>{
-                    new_cl.requirement=result;
+                self.create_att_from_res(cl, audits, results).then(result => {
+                    new_cl.requirement = result;
                     resolve(new_cl)
                 });
             });
         },
         //Метод собирает для требвоания для чек-листов итогового массива.
-        create_att_from_res(cl,audits,results){
-            let self=this;
-            let result=[];
-            return new Promise(function(resolve){
-                cl.requirement.forEach(function(req){
-                    let new_req={
-                        "id":req.id,
-                        "title":req.title,
-                        "status":self.get_status(audits,results,req.id),
+        create_att_from_res(cl, audits, results) {
+            let self = this;
+            let result = [];
+            return new Promise(function (resolve) {
+                cl.requirement.forEach(function (req) {
+                    let new_req = {
+                        "id": req.id,
+                        "title": req.title,
+                        "status": self.get_status(audits, results, req.id),
                         "checklist_id": cl.id,
-                        "warning_level":req.warning_level,
-                        "created_at":req.created_at,
-                        "comments":[],
-                        "disabled":(self.get_status(audits,results,req.id)===2)
+                        "warning_level": req.warning_level,
+                        "created_at": req.created_at,
+                        "comments": [],
+                        "disabled": (self.get_status(audits, results, req.id) === 2)
                     };
-                    self.create_comment(audits,results,req.id).then(res=>{
-                        new_req.comments=res;
+                    self.create_comment(audits, results, req.id).then(res => {
+                        new_req.comments = res;
                     });
                     result.push(new_req);
                 });
@@ -478,19 +475,19 @@ new Vue({
             });
         },
         //Метод собирает комментари для требоаний итогового массива.
-        create_comment(audits,results,id){
-            let self=this;
-            let res=[];
-            return new Promise(function(resolve){
-                results.forEach(function(itm){
-                    if (itm.audit_id===audits.id&&itm.requirement_id===id){
-                        if(itm.text!=undefined ||itm.audit_result_attache.length>0){
-                            let comm={
-                                "text":itm.comment,
-                                "attachments":[]
+        create_comment(audits, results, id) {
+            let self = this;
+            let res = [];
+            return new Promise(function (resolve) {
+                results.forEach(function (itm) {
+                    if (itm.audit_id === audits.id && itm.requirement_id === id) {
+                        if (itm.text !== undefined || itm.audit_result_attache.length > 0) {
+                            let comm = {
+                                "text": itm.comment,
+                                "attachments": []
                             };
-                            self.attach_get(itm).then(result_att=>{
-                                comm.attachments=result_att;
+                            self.attach_get(itm).then(result_att => {
+                                comm.attachments = result_att;
                                 res.push(comm);
                             });
                         }
@@ -500,18 +497,18 @@ new Vue({
             });
         },
         //Метод собирае вложения для комментариев к требованиям.
-        attach_get(itm){
-            let result_att=[];
-            return new Promise(function(resolve){
-                itm.audit_result_attache.forEach(function(att){
-                    let new_att={
-                        "caption":att.file_name,
-                        "file":{
-                            "name":att.file_name,
-                            "size":att.file_size,
-                            "type":att.file_mime
+        attach_get(itm) {
+            let result_att = [];
+            return new Promise(function (resolve) {
+                itm.audit_result_attache.forEach(function (att) {
+                    let new_att = {
+                        "caption": att.file_name,
+                        "file": {
+                            "name": att.file_name,
+                            "size": att.file_size,
+                            "type": att.file_mime
                         },
-                        "url":att.file_path
+                        "url": att.file_path
                     };
                     result_att.push(new_att);
                 });
@@ -519,30 +516,30 @@ new Vue({
             })
         },
         //Метод загружает с сервера вложение.
-        down_att(res){
-            let self=this;
+        down_att(res) {
+            let self = this;
             //Пришлось делать этот метод отдельно. Сначала он перебирает итоговый массив и для тех по кому есть результаты грузит изображения.
-            this.objects.forEach(function(obj){
-                obj.audits.forEach(function(ad){
-                    ad.check_list.forEach(function(ch){
-                        ch.requirement.forEach(function(req){
-                            res.forEach(function(itm){
-                                if (itm.audit_id===ad.id&&itm.requirement_id===req.id){
-                                    req.comments.forEach(function(comm){
-                                        comm.attachments.forEach(function(att,k,att_arr){
+            this.objects.forEach(function (obj) {
+                obj.audits.forEach(function (ad) {
+                    ad.check_list.forEach(function (ch) {
+                        ch.requirement.forEach(function (req) {
+                            res.forEach(function (itm) {
+                                if (itm.audit_id === ad.id && itm.requirement_id === req.id) {
+                                    req.comments.forEach(function (comm) {
+                                        comm.attachments.forEach(function (att, k, att_arr) {
                                             //Метод загрузки вложений с сервера.
                                             //att.url - ссылка на изображения из базы.
                                             self.get_img_frome_base(att.url).then(
-                                                result=>{
+                                                result => {
                                                     //Когда получаем результат устанавливаем его в нужное поле для вложения в комментарие.
-                                                    att.url=result;
+                                                    att.url = result;
                                                     //Обновляем локал сторейдж, перезаписываем путь до картинки, которая теперь храниться в файловой системе устройства.
-                                                    self.$ls.set('objects',self.$root.objects);
+                                                    self.$ls.set('objects', self.$root.objects);
                                                 },
-                                                error=>{
+                                                error => {
                                                     //В случае ошибки загрузки, удаляем из массива вложений к коментарию то вложения которое не удалось загрузить.
-                                                    att_arr.splice(k,1);
-                                                    self.$ls.set('objects',self.$root.objects);
+                                                    att_arr.splice(k, 1);
+                                                    self.$ls.set('objects', self.$root.objects);
                                                 }
                                             );
                                         });
@@ -556,91 +553,91 @@ new Vue({
             });
         },
         //Метод по получению статуса для требования. -1 отрицательн, 0 новый, 1 положительно, 2 не применимо.
-        get_status(audit,result,id){
-            let res=0;
-            result.forEach(function(itm) {
-                res=(itm.audit_id===audit.id)?(itm.requirement_id===id)?itm.result:res:res;
+        get_status(audit, result, id) {
+            let res = 0;
+            result.forEach(function (itm) {
+                res = (itm.audit_id === audit.id) ? (itm.requirement_id === id) ? itm.result : res : res;
             });
             return res;
         },
         // Проверяем збыло ли загружены сведения по аудиту. На данный момент это проверяется через статус.
         // Если все позиции требовния чек-лиса имеют статус отличный от 0, то аудит считается загруженным, и его нельзя редактировать.
-        check_status_upload(arr){
-            let res=false;
-            let upload=true;
-            arr.check_list.forEach(function(cl){
-                cl.requirement.forEach(function(req){
-                    upload=(req.status===0)?false:upload;
+        check_status_upload(arr) {
+            let res = false;
+            let upload = true;
+            arr.check_list.forEach(function (cl) {
+                cl.requirement.forEach(function (req) {
+                    upload = (req.status === 0) ? false : upload;
                 });
-                res=upload;
+                res = upload;
             });
-            arr.upload=res;
+            arr.upload = res;
         },
 
         //Метод загрузки изображения через кордовавский плагин.
-        get_img_frome_base(url){
-            let self=this;
-            let file_name=url.split('/');
-            let result='';
-            return new Promise(function(resolve,reject){
+        get_img_frome_base(url) {
+            let self = this;
+            let file_name = url.split('/');
+            let result = '';
+            return new Promise(function (resolve, reject) {
                 //находим директорию в которую собираемся загружать картинку.
-                window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory,function(dirEntry) {
+                window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory, function (dirEntry) {
                         //Устанавливаем URl с которого будем грузить картинку.
-                        let url_load = "https://test.bh-app.ru" + url;
+                        let url_load = self.be_server + url;
                         url_load = encodeURI(url_load);
                         //Берем субдиректорию в каталоге приложения в файловой системе телефона.
                         //Если такой директории нет, то плагин ее создает.
-                        dirEntry.getDirectory('img',{create:true},function(dirEntry_sub){
+                        dirEntry.getDirectory('img', {create: true}, function (dirEntry_sub) {
                                 //Берем файл в указанной субдиректории, если файла нет, то создаем его.
-                                dirEntry_sub.getFile(file_name[3],{create:true,exclusive:false},function(fileEntry){
+                                dirEntry_sub.getFile(file_name[3], {create: true, exclusive: false}, function (fileEntry) {
                                         //Выозв метода загрузки вложения при помощи плагина Cordova
                                         //Передаем в метод объект ентри (файл в файловой системе устройства), URl откуда качать файл, имя файла.
-                                        self.download(fileEntry,url_load,file_name[3]).then(
-                                            ready=>{
+                                        self.download(fileEntry, url_load, file_name[3]).then(
+                                            ready => {
                                                 //В случаае успеха возвращаем ссылку на файл в файловой системе телефона.
-                                                result=ready;
+                                                result = ready;
                                                 resolve(result)
                                             },
-                                            error=>{
+                                            error => {
                                                 reject(error)
                                             }
                                         )
                                     },
-                                    function(){
-                                        let error='error_file_get';
+                                    function () {
+                                        let error = 'error_file_get';
                                         reject(error);
                                     })
                             },
-                            function(){
-                                let error='error_create_dir';
+                            function () {
+                                let error = 'error_create_dir';
                                 reject(error);
                             });
                     },
-                    function(){
-                        result='error_file_system';
+                    function () {
+                        result = 'error_file_system';
                         reject(result);
                     });
             });
 
         },
-        download(fileEntry,uri,name){
-            let self=this;
-            let file_tr=new FileTransfer();
+        download(fileEntry, uri) {
+            let self = this;
+            let file_tr = new FileTransfer();
             //Получаем ссылку на файл в файловой системе устройства из ентри объекта.
-            let fileURL=fileEntry.toURL();
+            let fileURL = fileEntry.toURL();
             let ready;
-            return new Promise(function(resolve,reject){
+            return new Promise(function (resolve, reject) {
                 //Загружаем файл.
                 file_tr.download(
                     uri,//откуда качаем.
                     fileURL,//Куда качаем.
-                    function(entry){
+                    function (entry) {
                         //Получаем путь до загруженного файла.
-                        ready=entry.toURL();
+                        ready = entry.toURL();
                         resolve(ready)
-                    },function(error){
+                    }, function (error) {
                         console.log("download error target " + error.target());
-                        let error_msg='error_download';
+                        let error_msg = 'error_download';
                         reject(error_msg)
                     },
                     false
@@ -649,42 +646,42 @@ new Vue({
         },
 
         //Отправка данных на сервер
-        send_to_serv_audit(audit){
-            let self=this;
+        send_to_serv_audit(audit) {
+            let self = this;
             //Вызов модального подтвержедния действия.
-            this.$f7.confirm(this.$root.localization.modal.modalConfirmSend,this.$root.localization.modal.modalTextConf, function () {
+            this.$f7.confirm(this.$root.localization.modal.modalConfirmSend, this.$root.localization.modal.modalTextConf, function () {
                 self.$f7.showPreloader(self.$root.localization.modal.preloader);
                 //Формирование массива на отправку.
-                let requs={
-                    "audit":{
-                        "check_list":self.get_req(audit),//массив чек листов
-                        "id":0,
-                        "object_id":audit.object_id,
-                        "date_add":self.GetCurrentDate(audit),//Текущая дата.
-                        "title":audit.title,
-                        "comment":self.get_audit_comments(audit)
+                let requs = {
+                    "audit": {
+                        "check_list": self.get_req(audit),//массив чек листов
+                        "id": 0,
+                        "object_id": audit.object_id,
+                        "date_add": self.GetCurrentDate(audit),//Текущая дата.
+                        "title": audit.title,
+                        "comment": self.get_audit_comments(audit)
                     },
                 };
                 //Метод отправки на сервер.
-               self.send_data_to_sev(requs,audit);
+                self.send_data_to_sev(requs, audit);
             });
         },
         //Метод создания массива чеклистов для отправки
-        get_req(audit){
-            let self=this;
-            let result=[];
-            audit.check_list.forEach(function(item){
-                let check_obj={
-                    "audit_id":audit.id,
-                    "id":item.id,
-                    "title":item.title,
-                    "requirement":[]
+        get_req(audit) {
+            let self = this;
+            let result = [];
+            audit.check_list.forEach(function (item) {
+                let check_obj = {
+                    "audit_id": audit.id,
+                    "id": item.id,
+                    "title": item.title,
+                    "requirement": []
                 };
-                item.requirement.forEach(function(req){
-                    let req_obj={
-                        "id":req.id,
-                        "status":self.get_current_status_to_send(req),
-                        "comments":self.get_comments(req),
+                item.requirement.forEach(function (req) {
+                    let req_obj = {
+                        "id": req.id,
+                        "status": self.get_current_status_to_send(req),
+                        "comments": self.get_comments(req),
                     };
                     check_obj.requirement.push(req_obj);
                 });
@@ -693,30 +690,30 @@ new Vue({
             return result;
         },
         //Получаем текущий статус позиций чек листа. заодно все что 0 устанавливаем как -1.
-        get_current_status_to_send(req){
-            req.status=(req.disabled)?2:(req.status===0)?-1:req.status;
-            this.$ls.set('objects',this.$root.objects);
-            return (req.disabled)?2:(req.status===0)?-1:req.status;
+        get_current_status_to_send(req) {
+            req.status = (req.disabled) ? 2 : (req.status === 0) ? -1 : req.status;
+            this.$ls.set('objects', this.$root.objects);
+            return (req.disabled) ? 2 : (req.status === 0) ? -1 : req.status;
         },
         //Сборка комментариев к аудиту
-        get_audit_comments(audit){
-            let result=[];
-            audit.comments.forEach(function(comm){
-                let com={
-                    "text":comm.text
+        get_audit_comments(audit) {
+            let result = [];
+            audit.comments.forEach(function (comm) {
+                let com = {
+                    "text": comm.text
                 };
                 result.push(com);
             });
             return result;
         },
         //Сборка коментариев к требованиям.
-        get_comments(req){
-            let self=this;
-            let result=[];
-            req.comments.forEach(function(comm){
-                let comment_obj={
-                    'text':comm.text,
-                    'attachments':self.get_attachments_comments(comm)
+        get_comments(req) {
+            let self = this;
+            let result = [];
+            req.comments.forEach(function (comm) {
+                let comment_obj = {
+                    'text': comm.text,
+                    'attachments': self.get_attachments_comments(comm)
                 };
                 result.push(comment_obj);
             });
@@ -724,50 +721,45 @@ new Vue({
         },
         //формируем вложения для комментариев. На данный момент тестируется можно ли сразу и получить base64 кодировку изображения.
         // В случае не успеха метод enccode_base64 будет вызватсья отедльно перед отправкой на сервер.
-        get_attachments_comments(comm){
-            let result=[];
-            comm.attachments.forEach(function(att){
-                let new_att={
-                    "caption":att.caption,
-                    "file":{
-                        "name":att.file.name,
-                        "size":att.file.size,
-                        "type":att.file.type
+        get_attachments_comments(comm) {
+            let result = [];
+            comm.attachments.forEach(function (att) {
+                let new_att = {
+                    "caption": att.caption,
+                    "file": {
+                        "name": att.file.name,
+                        "size": att.file.size,
+                        "type": att.file.type
                     },
-                    "url":att.url
+                    "url": att.url
                 };
                 result.push(new_att);
             });
             return result;
         },
         //Получить дату создания.
-        GetCurrentDate(audit){
-            let data=new Date(audit.date_add);
-            let curSec=('0'+data.getSeconds()).substr(-2);
-            let curMin=('0'+data.getMinutes()).substr(-2);
-            let curDay=('0'+data.getDate()).substr(-2);
-            let curMounth=('0'+(data.getMonth()+1));
-            let date_for_text=curDay+"-"+curMounth+"-"+data.getFullYear()+" "+data.getHours()+":"+curMin+":"+curSec;
-            return date_for_text;
+        GetCurrentDate(audit) {
+            let data = new Date(audit.date_add);
+            let curSec = ('0' + data.getSeconds()).substr(-2);
+            let curMin = ('0' + data.getMinutes()).substr(-2);
+            let curDay = ('0' + data.getDate()).substr(-2);
+            let curMounth = ('0' + (data.getMonth() + 1));
+            return curDay + "-" + curMounth + "-" + data.getFullYear() + " " + data.getHours() + ":" + curMin + ":" + curSec;
         },
 
         //Отправка даных на сервер.
-        send_data_to_sev(data,audit){
-            let self=this;
+        send_data_to_sev(data, audit) {
+            let self = this;
             self.create_promises(data).then(
-                promises=>{
-                    Promise.all(promises).then(values=>{
-                        this.$http.post('https://test.bh-app.ru/api/put-audits',data,{headers:{ 'Authorization':'Bearer ' + this.auth_info.token}}).then(
-                            response=>{
+                promises => {
+                    Promise.all(promises).then(values => {
+                        this.$http.post(self.be_server + '/api/put-audits', data, {headers: {'Authorization': 'Bearer ' + this.auth_info.token}}).then(
+                            response => {
                                 //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
                                 self.$f7.hidePreloader();
-                                self.$set(audit,"id",response.body);
-                                self.$set(audit,"upload",true);
-                                self.$ls.set('objects',self.$root.objects);
-                            },
-                            response=>{
-                                self.$f7.hidePreloader();
-                                console.log("Error");
+                                self.$set(audit, "id", response.body);
+                                self.$set(audit, "upload", true);
+                                self.$ls.set('objects', self.$root.objects);
                             });
                     });
                 }
@@ -775,30 +767,30 @@ new Vue({
         },
 
         create_promises: function (data) {
-            let self =this;
-            let promises=[];
-            return new Promise(function (resolve,reject) {
-                data.audit.check_list.forEach(function (ch,i) {
-                    ch.requirement.forEach(function (req,g) {
-                        req.comments.forEach(function (comm,j) {
-                            comm.attachments.forEach(function (att,k) {
+            let self = this;
+            let promises = [];
+            return new Promise(function (resolve) {
+                data.audit.check_list.forEach(function (ch) {
+                    ch.requirement.forEach(function (req) {
+                        req.comments.forEach(function (comm) {
+                            comm.attachments.forEach(function (att) {
                                 promises.push(self.encode_to_base64(att));
                             });
                         })
                     })
-                })
+                });
                 resolve(promises);
             })
         },
         //Кодирование изображения
-        encode_to_base64(att){
-            let self=this;
-            return new Promise(function(resolve,reject){
-                window.resolveLocalFileSystemURL(att.url,function(f){
-                    f.file(function(file){
+        encode_to_base64(att) {
+            let self = this;
+            return new Promise(function (resolve) {
+                window.resolveLocalFileSystemURL(att.url, function (f) {
+                    f.file(function (file) {
                         let reader = new FileReader();
-                        reader.onloadend = function(ff){
-                            att.url=ff.target.result;
+                        reader.onloadend = function (ff) {
+                            att.url = ff.target.result;
                             resolve(ff.target.result);
                         };
                         reader.readAsDataURL(file);
@@ -806,7 +798,6 @@ new Vue({
                 });
             });
         }
-
 
 
     }

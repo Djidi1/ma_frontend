@@ -40,10 +40,10 @@
                 <f7-block inner>
                     <f7-grid>
                         <f7-col width="50">
-                            <f7-button @click="abort_check_list()" class="abort_button" color="gray"> {{this.$root.localization.AuditPage.check_list_btn_reset}}  <i class="fa fa-undo" aria-hidden="true"></i> </f7-button>
+                            <f7-button @click="abort_check_list()" class="abort_button" color="grey"> {{this.$root.localization.AuditPage.check_list_btn_reset}}</f7-button>
                         </f7-col>
                         <f7-col width="50">
-                            <f7-button fill @click="check_list_status()"> {{this.$root.localization.AuditPage.check_list_btn_ok}}  <i class="fa fa-check" aria-hidden="true"></i> </f7-button>
+                            <f7-button fill @click="check_list_status()">{{this.$root.localization.AuditPage.check_list_btn_ok}}</f7-button>
                         </f7-col>
                     </f7-grid>
                 </f7-block>
