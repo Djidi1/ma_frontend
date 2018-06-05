@@ -4,7 +4,7 @@
         <f7-list form>
             <f7-list-item>
                 <f7-label floating>{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>
-                <f7-input type="textarea" v-model="text" @change="send_comments"></f7-input>
+                <f7-input type="textarea" v-model="text" @change="!comment_for_audit ? send_comments : true"></f7-input>
             </f7-list-item>
 
             <attachment @removeAttach="this.removeAttachment" :attachment="attachment" :edit_mode="true" v-if="comment_for_audit"></attachment>
@@ -18,7 +18,7 @@
                             <f7-icon size=30 fa="paperclip"></f7-icon>
                         </div>
                     </div>
-                    <div class="col-50">
+                    <div class="col-50" v-if="comment_for_audit">
                         <f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
                     </div>
                 </div>

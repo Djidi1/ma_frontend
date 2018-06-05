@@ -84,3 +84,9 @@
         margin-top: 30px;
     }
 </style>
+<style>
+    .list-block ul {
+        max-height:50vh !important;
+        overflow-Y:auto;
+    }
+</style>
