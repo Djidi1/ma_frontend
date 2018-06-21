@@ -6,7 +6,7 @@
             <f7-nav-right>
                 <f7-grid class="crud_header edit_menu">
                     <f7-col width="30" ></f7-col>
-                    <f7-col width="50" ><f7-link  @click="submit()"> <i class="fa fa-check" aria-hidden="true"></i></f7-link></f7-col>
+                    <f7-col width="50" ><f7-link  @click="submit()"><div style="font-size:30px; "> <check></check> </div></f7-link></f7-col>
                     <f7-col width="10" ></f7-col>
                 </f7-grid>
             </f7-nav-right>
@@ -36,7 +36,7 @@
                         <f7-list>
                             <f7-list-item v-for="(item,index) in check_list_new" :key="index" :title="item.title" >
                                 <div slot="after">
-                                    <f7-button class='cross_button in_list'><i class='fa fa-trash-o' aria-hidden='true'@click="remove_check(index)"></i></f7-button>
+                                    <f7-button class='cross_button in_list' @click="remove_check(index)"><div style="font-size: 24px"><trash></trash></div></f7-button>
                                 </div>
                             </f7-list-item>
                             <f7-list-item >
@@ -64,8 +64,14 @@
 </template>
 
 <script>
+    import  trash from "vue-material-design-icons/delete.vue"
+    import  check from "vue-material-design-icons/check.vue"
     export default {
         name: "popup_audit_edit",
+        components:{
+            trash,
+            check
+        },
         props:{
             audit:{type:Object,default:function(){return{}}},
             opendPopup:{type:Boolean,default:false},
@@ -85,6 +91,7 @@
         },
         methods:{
             closePopUp(mode){
+                console.log(1)
                 this.$root.objects=(mode)?this.$ls.get('objects'):this.$root.objects;
                 this.current=this.audit_current.title;
                 this.check_list_new=this.get_check_list();

@@ -10,12 +10,16 @@
                 <f7-list form class="login_list">
                     <f7-list-item>
                         <f7-label floating>{{this.$root.localization.LoginScreen.LoginPlaceholder}}</f7-label>
-                        <f7-icon slot="media" fa="user" size="24px" ></f7-icon>
+                        <div slot="media" size="24px"  style="font-size:24px; padding-left:5px">
+                            <user_ac></user_ac>
+                        </div>
                         <f7-input name="username"  type="text"v-model="form_login.login"  ></f7-input>
                     </f7-list-item>
                     <f7-list-item>
                         <f7-label floating>{{this.$root.localization.LoginScreen.PasswordPlaceholder}}</f7-label>
-                        <f7-icon slot="media" fa="lock" size="24px"></f7-icon>
+                        <div slot="media" size="20px" style="font-size:24px; padding-left:5px">
+                            <pass></pass>
+                        </div>
                         <f7-input name="password" type="password"   v-model="form_login.password" ></f7-input>
                     </f7-list-item>
                     <f7-list-item class="submit_item">
@@ -34,7 +38,13 @@
 </template>
 
 <script>
+    import  user_ac from "vue-material-design-icons/account.vue"
+    import  pass from "vue-material-design-icons/lock-question.vue"
     export default {
+        components:{
+            user_ac,
+            pass
+        },
         name: "login",
         data:function(){
             return{

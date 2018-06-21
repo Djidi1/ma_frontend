@@ -3,35 +3,35 @@
     <f7-page name="audit">
         <!-- Navbar -->
         <f7-navbar back-link="Back" sliding  >
-            <f7-nav-center sliding> {{audit.title}}</f7-nav-center>
+            <f7-nav-center sliding> {{audit.title || $root.localization.AuditPage.audit}}</f7-nav-center>
             <f7-nav-right v-if="!uploaded">
-                <f7-link @click="open_modal()"><i class="fa fa-pencil" aria-hidden="true"></i></f7-link>
-                <f7-link @click="remove_audit"> <i class="fa fa-trash-o" aria-hidden="true"></i></f7-link>
+                <f7-link @click="open_modal()" ><div style="font-size:24px"><pencil ></pencil></div></f7-link>
+                <f7-link @click="remove_audit"> <div style="font-size:24px"><trash></trash></div></f7-link>
             </f7-nav-right>
         </f7-navbar>
         <div class="blck_info">
 
             <!--<f7-card>-->
-                <!--<f7-card-header>-->
-                    <!--<div class="obj_info audit_obj">-->
-                        <!--<div class="row  no-gutter">-->
-                            <!--<div class="col-70">-->
-                                <!--&lt;!&ndash;<div class="col-100">{{this.$root.localization.AuditPage.name}}:</div>&ndash;&gt;-->
-                                <!--<div class="col-100">{{audit.title}}</div>-->
-                                <!--&lt;!&ndash;<div class="col-100">Id: {{audit.id}}</div>&ndash;&gt;-->
-                                <!--<div class="col-100">{{data_format}}</div>-->
-                                <!--&lt;!&ndash;<div class="col-100"><f7-link no-link-class :href="'/object/'+this.audit.object_id+'/'">{{this.$root.objects[this.array_index_save].title}}</f7-link></div>&ndash;&gt;-->
-                            <!--</div>-->
-                            <!--<div class="col-30 status" :style="this.block_height">-->
-                                <!--<table>-->
-                                    <!--<tr>-->
-                                        <!--<td> <i :class="status" aria-hidden="true"></i></td>-->
-                                    <!--</tr>-->
-                                <!--</table>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</f7-card-header>-->
+            <!--<f7-card-header>-->
+            <!--<div class="obj_info audit_obj">-->
+            <!--<div class="row  no-gutter">-->
+            <!--<div class="col-70">-->
+            <!--&lt;!&ndash;<div class="col-100">{{this.$root.localization.AuditPage.name}}:</div>&ndash;&gt;-->
+            <!--<div class="col-100">{{audit.title}}</div>-->
+            <!--&lt;!&ndash;<div class="col-100">Id: {{audit.id}}</div>&ndash;&gt;-->
+            <!--<div class="col-100">{{data_format}}</div>-->
+            <!--&lt;!&ndash;<div class="col-100"><f7-link no-link-class :href="'/object/'+this.audit.object_id+'/'">{{this.$root.objects[this.array_index_save].title}}</f7-link></div>&ndash;&gt;-->
+            <!--</div>-->
+            <!--<div class="col-30 status" :style="this.block_height">-->
+            <!--<table>-->
+            <!--<tr>-->
+            <!--<td> <i :class="status" aria-hidden="true"></i></td>-->
+            <!--</tr>-->
+            <!--</table>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</f7-card-header>-->
 
             <!--</f7-card>-->
 
@@ -39,8 +39,22 @@
                 <f7-card-header>
                     {{this.$root.localization.AuditPage.check_list}}
                 </f7-card-header>
-                <f7-list media-list style="margin-bottom: 0!important;" v-if="hasCheck_list">
-                    <f7-list-item v-for="(check,id) in this.audit.check_list" :key="id" :title="check.title" :link="'/check/'+audit.id+'/'+check.id" :media="realStatus(check)"></f7-list-item>
+                <f7-list media-list style="margin-bottom: 0!important;" v-if="hasCheck_list" class="no-link-icon">
+                    <f7-list-item v-for="(check,id) in this.audit.check_list" :key="id" :title="check.title" :link="'/check/'+audit.id+'/'+check.id">
+                        <div slot="content">
+                            <div style="padding-right:25px; font-size:30px;">
+                                <div v-if="new_str(check)" style="color:#2196F3; ">
+                                    <alert_box ></alert_box>
+                                </div>
+                                <div v-if="(new_str(check))?false:!upload_st(check)" style="color:#b51313;" >
+                                    <close_box ></close_box>
+                                </div>
+                                <div  v-if="upload_st(check)" style="color:#019341; ">
+                                    <ready_box ></ready_box>
+                                </div>
+                            </div>
+                        </div>
+                    </f7-list-item>
                 </f7-list>
                 <f7-list v-else>
                     <f7-list-item  :title=this.$root.localization.pop_up.no_check_list></f7-list-item>
@@ -58,7 +72,7 @@
                                 <f7-block inner v-if="!hasComment"><text_area :data_set="this.audit.comments" :audit_comment="true"></text_area></f7-block>
                             </transition>
                             <!--<transition-group appear mode="out-in" name="slide-fade" >-->
-                                <!--<single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id"></single-comment>-->
+                            <!--<single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id"></single-comment>-->
                             <!--</transition-group>-->
 
                             <!--<f7-block inner><text_area :data_set="this.audit.comments"></text_area></f7-block>-->
@@ -86,11 +100,20 @@
 <script>
     import Popup_audit_edit from "src/assets/vue/Components/popup_edit_audit";
     import SingleComment from "src/assets/vue/Components/single-comment";
-
+    import  pencil from "vue-material-design-icons/pencil.vue"
+    import  trash from "vue-material-design-icons/delete.vue"
+    import  alert_box from "vue-material-design-icons/alert-box.vue"
+    import  close_box from "vue-material-design-icons/close-box.vue"
+    import  ready_box from "vue-material-design-icons/checkbox-marked.vue"
     let $$=Dom7;
     export default {
         components: {Popup_audit_edit,
-            SingleComment
+            SingleComment,
+            pencil,
+            trash,
+            alert_box,
+            close_box,
+            ready_box
         },
         name: "audit",
         props: {
@@ -155,8 +178,12 @@
         methods:{
             //Отправка данных по аудиту
             send_results(){
-                (this.audit.check_list.length>0)?
-                    this.$root.send_to_serv_audit(this.audit):this.$f7.alert(this.$root.localization.pop_up.no_check_list,this.$root.localization.pop_up.warning);
+               (this.$root.check_audit_positions(this.audit))?
+                   (this.audit.check_list.length>0)?
+                    this.$root.send_to_serv_audit(this.audit)
+                       :this.$f7.alert(this.$root.localization.pop_up.no_check_list,this.$root.localization.pop_up.warning)
+                        :this.$f7.alert(this.$root.localization.AuditPage.check_not_complete, this.$root.localization.pop_up.warning)
+                ;
 
             },
             //Расчет высоты для блока с иконкой статусом аудита.
@@ -220,7 +247,17 @@
                     new_str=(req.status===0)?new_str:false;
                     result=(req.status===1)?result:false;
                 });
-                return (new_str)?"<i class='fa fa-circle fa-1x audit_new' aria-hidden='true'></i>":(result)?"<i class='fa fa-check fa-2x audit_good' aria-hidden='true'></i>":"<i class='fa fa-times fa-2x audit_wrong' aria-hidden='true'></i>";
+
+                return (new_str)?false:(result)?true:false;
+            },
+            new_str(str){
+
+                let result=true;
+                str.requirement.forEach(function(req){
+                    result=(req.status===0)?result:false;
+                });
+
+              return result
             },
             open_modal(){
                 this.$f7.popup($$('#popup_add_audit_'+this.audit.id));

@@ -34,6 +34,11 @@
 		content: '';
 	}
 }
+.no-link-icon >ul>li .item-title-row{
+	background-image:unset!important;
+}
+
+
 .disb_btn>input{
 	   opacity: 1 !important;
    }
@@ -118,6 +123,10 @@
 .audit_wrong{
 	color: #b51313;
 
+}
+.setting_ii span{
+	font-size:25px!important;
+	margin-left:0!important;
 }
 .blck_info .card{
 	margin:3% 0 0 0 ;

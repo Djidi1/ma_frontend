@@ -51,7 +51,8 @@
     "comment_button":"Save",
     "check_list_position":"Requirements for check-list",
     "check_list_btn_ok":"Save",
-    "check_list_btn_reset":"Reset"
+    "check_list_btn_reset":"Reset",
+    "check_not_complete":"Not all positions of this audit have been checked."
   },
   "lang": {
     "rus": "Russian",

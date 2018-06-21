@@ -26,8 +26,8 @@
                             <div class="col-40" v-if="!myComment">
                                 <div class="control">
                                     <div class="control_my_comment">
-                                        <button @click="editComment($event)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                                        <button @click.prevent="removeComment(id)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                        <button @click="editComment($event)" style="font-size:30px"><pencil></pencil></button>
+                                        <button @click.prevent="removeComment(id)" style="font-size:30px"><trash></trash></button>
                                     </div>
                                 </div>
                             </div>
@@ -46,7 +46,13 @@
 </template>
 
 <script>
+    import  pencil from "vue-material-design-icons/pencil.vue"
+    import  trash from "vue-material-design-icons/delete.vue"
     export default {
+        components:{
+            pencil,
+            trash
+        },
         name: "single-comment",
         props: {
             single_comment: {

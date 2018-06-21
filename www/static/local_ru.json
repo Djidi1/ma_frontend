@@ -51,7 +51,8 @@
     "comment_button": "Сохранить",
     "check_list_position":"Требования к чек-листу",
     "check_list_btn_ok":"Сохранить",
-    "check_list_btn_reset":"Сбросить"
+    "check_list_btn_reset":"Сбросить",
+    "check_not_complete":"Не все позиции данного аудита проверены."
   },
   "lang": {
     "rus": "Русский",

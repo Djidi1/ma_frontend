@@ -12,10 +12,22 @@
 									<avatar :fullname="this.$root.auth_info.name" :email="this.$root.auth_info.email" size="70" color="#c65c44"></avatar>
 						</div>
 						<f7-list class="mleft_menu_block">
-							<f7-list-item  link="/page/" :title="this.$root.localization.LeftMenu.Audit" link-view="#main-view" link-close-panel media="<i class='fa fa-calendar-check-o ' aria-hidden='true'></i>" :badge="count_new" badge-color="blue"></f7-list-item>
+							<f7-list-item  link="/page/" :title="this.$root.localization.LeftMenu.Audit" link-view="#main-view" link-close-panel  :badge="count_new" badge-color="blue">
+								<div slot="media" style="font-size:25px">
+									<audit_icon></audit_icon>
+								</div>
+							</f7-list-item>
 							<!--<f7-list-item link="/object/" :title="this.$root.localization.LeftMenu.Object" link-view="#main-view" link-close-panel media="<i class='fa fa-building-o' aria-hidden='true'></i>"></f7-list-item>-->
-							<f7-list-item link="/settings/" :title="this.$root.localization.LeftMenu.Settings"  media="<i class='fa fa-cog ' aria-hidden='true'></i>"></f7-list-item>
-							<f7-list-item  @click="exit" :title="this.$root.localization.LeftMenu.Exit" link-view="#main-view"  media="<i class='fa fa-sign-out' aria-hidden='true'></i>"></f7-list-item>
+							<f7-list-item link="/settings/" :title="this.$root.localization.LeftMenu.Settings" >
+								<div slot="media" class="setting_ii">
+									<setting_icon></setting_icon>
+								</div>
+							</f7-list-item>
+							<f7-list-item  @click="exit" :title="this.$root.localization.LeftMenu.Exit" link-view="#main-view" >
+								<div slot="media" style="font-size:25px">
+									<exit_icon></exit_icon>
+								</div>
+							</f7-list-item>
 						</f7-list>
 					</f7-page>
 				</f7-pages>
@@ -54,13 +66,20 @@
 <script>
     import Avatar from './assets/vue/Components/avatar.vue'
     import User_name from './assets/vue/Components/user_name.vue'
+    import  audit_icon from "vue-material-design-icons/calendar-multiple-check.vue"
+    import  setting_icon from "vue-material-design-icons/settings.vue"
+    import  exit_icon from "vue-material-design-icons/exit-to-app.vue"
 
 
 
     export default {
         components:{
             avatar: Avatar,
-			user_name:User_name
+			user_name:User_name,
+                audit_icon,
+                setting_icon,
+                exit_icon
+
 		},
 		//перед тем как отрисуется станица.
         beforeMount:function(){

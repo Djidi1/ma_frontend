@@ -5,10 +5,10 @@
             <f7-list-item v-for="(item,item_id) in data_item" :key="item_id" :id="item.id"  :title="item.title"  swipeout   @swipeout:closed="change_btn(item)" :class="class_result(item)" >
                 <f7-grid no-gutter class="item_grid" slot="inner">
                     <transition appear mode="out-in" name="slide-fade">
-                        <check_box_item :button_type="true" :item_status="item.status" :item="item" @change_status="change_item_status" :read="read" v-show="!item.disabled"></check_box_item>
+                        <check_box_item :button_type="true" :item_status="Number(item.status)" :item="item" @change_status="change_item_status" :read="read" v-show="!item.disabled"></check_box_item>
                     </transition>
                     <transition appear mode="out-in" name="slide-fade">
-                        <check_box_item :button_type="false" :item_status="item.status" :item="item" @change_status="change_item_status" :read="read"  v-show="!item.disabled"></check_box_item>
+                        <check_box_item :button_type="false" :item_status="Number(item.status)" :item="item" @change_status="change_item_status" :read="read"  v-show="!item.disabled"></check_box_item>
                     </transition>
                     <f7-swipeout-actions v-if="!read">
                         <f7-swipeout-button overswipe close v-if="!item.disabled"> <i class="fa fa-ban disable_btn" aria-hidden="true" ></i> </f7-swipeout-button>

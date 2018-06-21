@@ -11,11 +11,11 @@
             <f7-block>
                 <div class="row ">
                     <div class="col-50 attachment_button">
-                        <div class="comment-photupload comment-photos" @click="upload(true)" v-if="comment_for_audit">
-                            <f7-icon size=28 fa="camera" style="padding-top:3px;"></f7-icon>
+                        <div class="comment-photupload comment-photos" @click="upload(true)" v-if="comment_for_audit" >
+                            <camera></camera>
                         </div>
                         <div class="comment-photupload comment-photos" @click="upload(false)" v-if="comment_for_audit">
-                            <f7-icon size=30 fa="paperclip"></f7-icon>
+                            <image_multiply></image_multiply>
                         </div>
                     </div>
                     <div class="col-50" v-if="comment_for_audit">
@@ -30,7 +30,13 @@
 
 <script>
     var $$ = Dom7;
+    import  camera from "vue-material-design-icons/camera.vue"
+    import  image_multiply from "vue-material-design-icons/image-plus.vue"
     export default {
+        components:{
+            camera,
+            image_multiply
+        },
         name: "textarea_comment",
         props: {
             data_set: {
@@ -249,17 +255,19 @@
     }
 
     .comment-photos {
+        transform:translateY(-6px);
+        font-size: 36px;
+        line-height: 36px;
         text-align: center;
         color: #868686;
         margin: 0 15px 0 5px;
-        padding-top: 5px;
         width: 36px;
 
     }
 
     .comment-photupload {
         position: relative;
-        overflow: hidden;
+
     }
 
     .comment-file {

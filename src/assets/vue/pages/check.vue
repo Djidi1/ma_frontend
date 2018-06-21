@@ -4,7 +4,7 @@
         <f7-navbar back-link="Back" sliding  >
             <f7-nav-center sliding> {{check.title}}</f7-nav-center>
             <f7-nav-right v-if="!uploaded">
-                <f7-link @click="remove_check"> <i class="fa fa-trash-o" aria-hidden="true"></i></f7-link>
+                <f7-link @click="remove_check"><div style="font-size:24px"><trash></trash></div></f7-link>
             </f7-nav-right>
 
         </f7-navbar>
@@ -57,7 +57,13 @@
 </template>
 
 <script>
+    import  trash from "vue-material-design-icons/delete.vue"
+
     export default {
+        components:{
+            trash,
+
+        },
         name: "check",
         props:{
             audit_id:{type:String},
@@ -124,7 +130,7 @@
             check_list_status(){
                 let self=this;
                 self.check.requirement.forEach(function(req){
-                    req.status=(req.disabled)?req.status:(req.status===0)?-1:req.status;
+                    req.status=(req.disabled)?req.status:req.status;
                 });
                 this.$f7.views.main.back()
             },

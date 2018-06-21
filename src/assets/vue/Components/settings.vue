@@ -48,8 +48,10 @@
 </template>
 
 <script>
+
     export default {
         name: "settings",
+
         data:function(){
             return{
                 user_name:this.$root.auth_info.name,

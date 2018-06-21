@@ -23,7 +23,7 @@
             <f7-list>
                 <f7-list-item v-for="(check_item,index) in this.audit_obj.check_list" :key="index" :title="check_item.title">
                     <div slot="after">
-                        <f7-button v-if="sended" @click=remove_check(index) class="check_delete"><i class="fa fa-trash-o " aria-hidden="true"></i></f7-button>
+                        <f7-button v-if="sended" @click=remove_check(index) class="check_delete"><div style="font-size: 24px"><trash></trash></div></f7-button>
                     </div>
                 </f7-list-item>
                 <f7-list-item>
@@ -40,9 +40,13 @@
 </template>
 
 <script>
+    import  trash from "vue-material-design-icons/delete.vue"
     let $$ = Dom7;
     export default {
         name: "add_audit_form",
+        components:{
+            trash
+        },
         props: {
             id: {type: Number, default: 0},
             type: {type: Boolean, default: true},

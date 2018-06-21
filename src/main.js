@@ -18,12 +18,16 @@ import Framework7Theme from 'framework7/dist/css/framework7.material.min.css'
 import Framework7ThemeColors from 'framework7/dist/css/framework7.material.colors.min.css'
 
 
+
 // Import App Custom Styles
 import AppStyles from './assets/sass/main.scss'
 import AppStylesCustom from './assets/sass/custom.scss'
 
 import FAicon from 'font-awesome/css/font-awesome.css';
 import f7icons from 'framework7-icons/css/framework7-icons.css'
+//Material icons
+import "vue-material-design-icons/styles.css"
+
 
 //Vue-localstorage
 import VueLocalStorage from 'vue-ls'
@@ -388,7 +392,7 @@ new Vue({
                         "title": object.title,
                         "created_at": object.created_at,
                         "audits": [],
-                        "address": object.audit_object_group.address
+                        "address": (!object.audit_object_group)?"":object.audit_object_group.address
                     };
                     audits.forEach(function (audit) {
                         if (object.id === audit.object_id) {
@@ -644,6 +648,17 @@ new Vue({
                 );
             });
         },
+        //Метод проверки позицый аудита
+        check_audit_positions(audit){
+            let self=this;
+            let result=true;
+            audit.check_list.forEach(function(position){
+                position.requirement.forEach(function(req){
+                    result=(req.status===0)?false:result;
+                });
+            });
+            return result;
+        },
 
         //Отправка данных на сервер
         send_to_serv_audit(audit) {
@@ -666,6 +681,7 @@ new Vue({
                 self.send_data_to_sev(requs, audit);
             });
         },
+
         //Метод создания массива чеклистов для отправки
         get_req(audit) {
             let self = this;
