@@ -16,12 +16,12 @@
     "nothing":"Ничего не найдено"
   },
   "LeftMenu": {
-    "Audit": "Аудиты",
+    "Audit": "Cписок аудитов",
     "Object": "Объекты",
     "Settings": "Настройки",
     "Exit": "Выход"
   },
-  "AuditPage_main": "Аудиты",
+  "AuditPage_main": "Список аудитов",
   "AuditPage_count":"из",
   "ObjectPage_main": "Объекты",
   "AuditPage_nothing":"На данный момент нет ни одного 'Аудита'. Для получения информации используйте синхронизацию.",

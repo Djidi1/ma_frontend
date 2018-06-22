@@ -392,7 +392,9 @@ new Vue({
                         "title": object.title,
                         "created_at": object.created_at,
                         "audits": [],
-                        "address": (!object.audit_object_group)?"":object.audit_object_group.address
+                        "address": (!object.audit_object_group)?"":object.audit_object_group.address,
+                        "group_id":(!object.audit_object_group)?"":object.audit_object_group.id,
+                        "group_title":(!object.audit_object_group)?"Нет группы":object.audit_object_group.title
                     };
                     audits.forEach(function (audit) {
                         if (object.id === audit.object_id) {

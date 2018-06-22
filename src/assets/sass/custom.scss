@@ -34,7 +34,7 @@
 		content: '';
 	}
 }
-.no-link-icon >ul>li .item-title-row{
+.no-link-icon  .item-title-row{
 	background-image:unset!important;
 }
 
@@ -471,4 +471,24 @@
 .swipe_btn{
 	color: #f6f6f6 !important;
 	font-size: 25px !important;
+}
+.item-title-row, .item-subtitle{
+	color: #757575;
+	font-size:14px;
+}
+.list-group-title{
+	min-height:38px;
+	color:#000!important;
+	line-height: unset!important;
+	height:unset!important;
+	padding-top: 5px !important;
+	padding-bottom: 5px !important;
+}
+.deff {
+	line-height:48px!important;
+	height: 48px!important;
+}
+.new_text_comm .comment_text_zone>.list-block>ul{
+	padding-left:0;
+
 }

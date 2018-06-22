@@ -11,8 +11,8 @@
                         <check_box_item :button_type="false" :item_status="Number(item.status)" :item="item" @change_status="change_item_status" :read="read"  v-show="!item.disabled"></check_box_item>
                     </transition>
                     <f7-swipeout-actions v-if="!read">
-                        <f7-swipeout-button overswipe close v-if="!item.disabled"> <i class="fa fa-ban disable_btn" aria-hidden="true" ></i> </f7-swipeout-button>
-                        <f7-swipeout-button overswipe close v-else><i class="fa fa-check disable_btn" aria-hidden="true" ></i></f7-swipeout-button>
+                        <f7-swipeout-button overswipe close v-if="!item.disabled"><div style="font-size:34px"> <cancel></cancel> </div></f7-swipeout-button>
+                        <f7-swipeout-button overswipe close v-else><div style="font-size:34px"> <check></check> </div></f7-swipeout-button>
                     </f7-swipeout-actions>
                 </f7-grid>
 
@@ -29,9 +29,11 @@
 
 <script>
     import Check_box_item from "src/assets/vue/Components/check_box_item";
-
+    import  cancel from "vue-material-design-icons/cancel.vue"
+    import  check from "vue-material-design-icons/check.vue"
     export default {
-        components: {Check_box_item},
+        components: {Check_box_item,
+        cancel,check},
         name: "chek_item",
         props:{
             data_item:{ type: Array, default: function(){return[]} },

@@ -7,25 +7,49 @@
                 <f7-link icon="icon-bars" open-panel="left"></f7-link>
             </f7-nav-left>
             <f7-nav-center sliding>{{this.$root.localization.AuditPage_main}}</f7-nav-center>
-
+            <f7-nav-right>
+                <f7-link @click="open_modal_popup()" ><div style="font-size:30px"><plus ></plus></div></f7-link>
+            </f7-nav-right>
         </f7-navbar>
+        <f7-subnavbar sliding class="custom_sub">
+            <f7-searchbar
+                    :init="true"
+                    disable-link-text="Cancel"
+                    searchList="#list_of_objects"
+                    searchIn=".item-title,.item-text"
+                    :hideGroups="false"
+
+                    :placeholder="this.$root.localization.SearchBar.title"
+                    :clear-button="true">
+            </f7-searchbar>
+
+
+        </f7-subnavbar>
+        <div class="searchbar-overlay"></div>
         <list></list>
+        <f7-list class="searchbar-not-found check_list_items">
+            <f7-list-item :title="this.$root.localization.SearchBar.nothing"></f7-list-item>
+        </f7-list>
         <div v-if="!hasSomething">
             <f7-block inner class="nothing">
                 {{this.$root.localization.AuditPage_nothing}}
             </f7-block>
         </div>
-        <f7-fab color="blue" class="fab_bottom" @click="open_modal_popup()">
-            <!--@click="popup_open=true"-->
-            <f7-icon icon="icon-plus"></f7-icon>
-        </f7-fab>
+        <!--<f7-fab color="blue" class="fab_bottom" @click="">-->
+            <!--&lt;!&ndash;@click="popup_open=true"&ndash;&gt;-->
+            <!--<f7-icon icon="icon-plus"></f7-icon>-->
+        <!--</f7-fab>-->
         <popup_new_object :mode="true"></popup_new_object>
     </f7-page>
 </template>
 
 <script>
+    import  plus from "vue-material-design-icons/plus.vue"
     export default {
         name: "page",
+        components:{
+            plus
+        },
         data: function () {
             return {
                 popup_open: false

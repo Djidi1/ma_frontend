@@ -35,12 +35,11 @@
 
             <!--</f7-card>-->
 
-            <f7-card>
-                <f7-card-header>
-                    {{this.$root.localization.AuditPage.check_list}}
-                </f7-card-header>
-                <f7-list media-list style="margin-bottom: 0!important;" v-if="hasCheck_list" class="no-link-icon">
-                    <f7-list-item v-for="(check,id) in this.audit.check_list" :key="id" :title="check.title" :link="'/check/'+audit.id+'/'+check.id">
+
+            <f7-list media-list v-if="hasCheck_list"  style="margin-bottom: 0!important;"  class="no-link-icon">
+                    <f7-list-item class="deff"  group-title :title="this.$root.localization.AuditPage.check_list">
+                    </f7-list-item>
+                    <f7-list-item  v-for="(check,id) in this.audit.check_list" :key="id" :title="check.title" :link="'/check/'+audit.id+'/'+check.id">
                         <div slot="content">
                             <div style="padding-right:25px; font-size:30px;">
                                 <div v-if="new_str(check)" style="color:#2196F3; ">
@@ -55,38 +54,42 @@
                             </div>
                         </div>
                     </f7-list-item>
-                </f7-list>
-                <f7-list v-else>
-                    <f7-list-item  :title=this.$root.localization.pop_up.no_check_list></f7-list-item>
-                </f7-list>
-                <f7-card-footer>
 
-                </f7-card-footer>
-            </f7-card>
-            <f7-card>
-                <f7-list accordion class="acrd_custom text_main">
-                    <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_audit" >
-                        <f7-accordion-content>
-                            <transition appear mode="out-in" name="slide-fade">
-                                <single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id" :audit_comment="true"></single-comment>
-                                <f7-block inner v-if="!hasComment"><text_area :data_set="this.audit.comments" :audit_comment="true"></text_area></f7-block>
-                            </transition>
-                            <!--<transition-group appear mode="out-in" name="slide-fade" >-->
-                            <!--<single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id"></single-comment>-->
-                            <!--</transition-group>-->
 
-                            <!--<f7-block inner><text_area :data_set="this.audit.comments"></text_area></f7-block>-->
-                        </f7-accordion-content>
-                    </f7-list-item>
-                </f7-list>
-            </f7-card>
+                <f7-list-item class="new_text_comm" >
+                    <text_area :data_set="this.audit.comments" :audit_comment="true"></text_area>
+                </f7-list-item>
+            </f7-list>
+            <f7-list v-else>
+                <f7-list-item  :title=this.$root.localization.pop_up.no_check_list ></f7-list-item>
+            </f7-list>
+
+
+
+
+                <!--<f7-list accordion class="acrd_custom text_main">-->
+                    <!--<f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_audit" >-->
+                        <!--&lt;!&ndash;<f7-accordion-content>&ndash;&gt;-->
+                            <!--<transition appear mode="out-in" name="slide-fade">-->
+                                <!--<single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id" :audit_comment="true"></single-comment>-->
+                                <!--<f7-block inner v-if="!hasComment"><text_area :data_set="this.audit.comments" :audit_comment="true"></text_area></f7-block>-->
+                            <!--</transition>-->
+                            <!--&lt;!&ndash;<transition-group appear mode="out-in" name="slide-fade" >&ndash;&gt;-->
+                            <!--&lt;!&ndash;<single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id"></single-comment>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</transition-group>&ndash;&gt;-->
+
+                            <!--&lt;!&ndash;<f7-block inner><text_area :data_set="this.audit.comments"></text_area></f7-block>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</f7-accordion-content>&ndash;&gt;-->
+                    <!--</f7-list-item>-->
+                <!--</f7-list>-->
+
 
 
             <f7-card v-if="!uploaded">
                 <f7-block inner>
                     <f7-grid>
                         <f7-col width="100">
-                            <f7-button fill @click="send_results()">{{this.$root.localization.AuditPage.audit_send_btn}}</f7-button>
+                            <f7-button fill @click="send_results()"><div style="font-size:30px"><send></send></div></f7-button>
                         </f7-col>
                     </f7-grid>
                 </f7-block>
@@ -105,10 +108,12 @@
     import  alert_box from "vue-material-design-icons/alert-box.vue"
     import  close_box from "vue-material-design-icons/close-box.vue"
     import  ready_box from "vue-material-design-icons/checkbox-marked.vue"
+    import  send from "vue-material-design-icons/send.vue"
     let $$=Dom7;
     export default {
         components: {Popup_audit_edit,
             SingleComment,
+            send,
             pencil,
             trash,
             alert_box,

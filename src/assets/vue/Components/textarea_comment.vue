@@ -8,32 +8,35 @@
             </f7-list-item>
 
             <attachment @removeAttach="this.removeAttachment" :attachment="attachment" :edit_mode="true" v-if="comment_for_audit"></attachment>
-            <f7-block>
-                <div class="row ">
-                    <div class="col-50 attachment_button">
-                        <div class="comment-photupload comment-photos" @click="upload(true)" v-if="comment_for_audit" >
-                            <camera></camera>
-                        </div>
-                        <div class="comment-photupload comment-photos" @click="upload(false)" v-if="comment_for_audit">
-                            <image_multiply></image_multiply>
-                        </div>
-                    </div>
-                    <div class="col-50" v-if="comment_for_audit">
-                        <f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>
-                    </div>
-                </div>
-            </f7-block>
+            <!--<f7-block>-->
+                <!--<div class="row ">-->
+                    <!--<div class="col-50 attachment_button">-->
+                        <!--<div class="comment-photupload comment-photos" @click="upload(true)" v-if="comment_for_audit" >-->
+                            <!--<camera></camera>-->
+                        <!--</div>-->
+                        <!--<div class="comment-photupload comment-photos" @click="upload(false)" v-if="comment_for_audit">-->
+                            <!--<image_multiply></image_multiply>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-50" v-if="comment_for_audit">-->
+                        <!--<f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</f7-block>-->
 
         </f7-list>
     </div>
 </template>
 
 <script>
+
     var $$ = Dom7;
     import  camera from "vue-material-design-icons/camera.vue"
     import  image_multiply from "vue-material-design-icons/image-plus.vue"
+
     export default {
         components:{
+
             camera,
             image_multiply
         },
