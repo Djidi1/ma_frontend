@@ -3,9 +3,9 @@
     <f7-page with-subnavbar>
         <f7-navbar back-link="Back" sliding  >
             <f7-nav-center sliding> {{check.title}}</f7-nav-center>
-            <f7-nav-right v-if="!uploaded">
-                <f7-link @click="remove_check"><div style="font-size:24px"><trash></trash></div></f7-link>
-            </f7-nav-right>
+            <!--<f7-nav-right v-if="!uploaded">-->
+                <!--<f7-link @click="remove_check"><div style="font-size:24px"><trash></trash></div></f7-link>-->
+            <!--</f7-nav-right>-->
             <f7-subnavbar sliding class="custom_sub">
                 <f7-searchbar
                         :init="true"
