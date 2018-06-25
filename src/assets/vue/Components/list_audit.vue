@@ -1,18 +1,19 @@
 <template>
     <!--Лист с объектами и аудитаи-->
     <div class="blck_info">
-            <f7-list media-list  class="no-link-icon searchbar-found " id="list_of_objects">
+            <f7-list media-list  class=" searchbar-found " id="list_of_objects">
                 <f7-list-group v-if="objects.audits.length>0" v-for="(objects,index) in this.$root.objects" :key="index">
                     <f7-list-item
 
                             group-title>
-                        {{objects.group_title+', '+objects.title}}<br>
-                        {{objects.addres||"---"}}
+                        {{objects.group_title}}<br>
+                        {{objects.title||"---"}}
                     </f7-list-item>
                     <f7-list-item v-for="(acrd,acrd_index) in array_few(objects)" :key="acrd_index"
                                   :link="'/audit/'+index+'/'+acrd_index"
                                   :id="'id_'+acrd.id"
-                                  :title="'№ '+acrd.id"
+                                  :title="$root.localization.AuditPage.audit+' № '+acrd.id"
+                                  :subtitle="data_formta(acrd.created_at)"
                                   :text="check_list_names(acrd)"
                                   swipeout>
                         <!--:media="realStatus(acrd)"-->
@@ -21,19 +22,22 @@
                             <f7-swipeout-button @click="edit_data(acrd.id)"><div style="font-size:35px"><pencil></pencil></div></f7-swipeout-button>
                             <f7-swipeout-button @click="delete_data(index,acrd.id,acrd_index)"><div style="font-size:35px"><trash></trash></div></f7-swipeout-button>
                         </f7-swipeout-actions>
-                        <div slot="content">
+                        <div slot="media">
                             <div style="text-align: center">
                                 <!--<div v-if="(acrd.upload)? false:true" style="color:#2196F3; font-size:45px;">-->
                                     <!--<alert_box ></alert_box>-->
                                 <!--</div>-->
-                                <div v-if="(!acrd.upload)" style="color:#b51313; font-size:45px; ">
-                                    <close_box ></close_box>
+                                <!--b51313-->
+                                <div v-if="(!acrd.upload)" >
+                                    <div v-if="(check_audit_status(acrd))" class="new_audit_icon "><new_audit_icon></new_audit_icon> </div>
+                                    <i v-else class="icon cloud_no_sink cloud"> </i>
+                                    <!--<close_box ></close_box>-->
                                 </div>
-                                <div  v-if="(acrd.upload)" style="color:#019341; font-size:45px; ">
-                                    <ready_box ></ready_box>
+                                <div  v-else >
+                                    <i class="icon could_ok cloud"> </i>
                                 </div>
                             </div>
-                            <div class="item-title-row" style="font-size:0.6em; width:80px; padding-right:5px; margin-bottom:5px; transform:translateY(-7px)">{{data_formta(acrd.created_at)}}</div>
+                            <!--<div class="item-title-row" style="font-size:0.6em; width:80px; padding-right:5px; margin-bottom:5px; transform:translateY(-7px)">{{data_formta(acrd.created_at)}}</div>-->
                         </div>
                         <popup_audit_edit :audit="acrd"></popup_audit_edit>
                     </f7-list-item>
@@ -104,8 +108,7 @@
 </template>
 
 <script>
-    import  ready_box from "vue-material-design-icons/cloud-check.vue"
-    import  close_box from "vue-material-design-icons/cloud-off-outline.vue"
+    import  new_audit_icon from "vue-material-design-icons/alert-circle-outline.vue"
     import  pencil from "vue-material-design-icons/pencil.vue"
     import  send from "vue-material-design-icons/send.vue"
     import  trash from "vue-material-design-icons/delete.vue"
@@ -115,8 +118,7 @@
             pencil,
             send,
             trash,
-            close_box,
-            ready_box
+            new_audit_icon
         },
         name: "list_audit",
         data: function () {
@@ -126,25 +128,32 @@
         },
         methods: {
             //Статус для аудита. Графииский символ с боку от ссылки на аудит.
-            realStatus(str) {
-                let self = this;
-                let result;
-                result = (str.upload) ? self.upload_st(str) : self.stat(str);
-                return result;
-            },
+            // realStatus(str) {
+            //     let self = this;
+            //     let result;
+            //     result = (str.upload) ? self.upload_st(str) : self.stat(str);
+            //     return result;
+            // },
 
             //Получение статуса аудита если он загружен.
+            check_audit_status(str){
+                let self = this;
+                let result;
+                result = (!str.upload) ? self.upload_st(str) : false;
+                return result;
+            },
             upload_st(str) {
                 let result = true;
                 let self = this;
                 str.check_list.forEach(function (itm) {
                     itm.requirement.forEach(function (req) {
                         if (!req.disabled) {
-                            result = (req.status === 1) ? result : false;
+
+                            result = (req.status != 0) ? result : false;
                         }
                     });
                 });
-                return (result) ? true : false;
+                return (result) ? false : true;
             },
             //Если не загружен всегда считается новым.
             stat(str) {

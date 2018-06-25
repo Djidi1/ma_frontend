@@ -51,9 +51,9 @@
 
 		<!-- Main Views -->
 		<f7-views>
-			<f7-view id="main-view" navbar-through  main>
+			<f7-view id="main-view"   main>
 				<!-- Pages -->
-				<f7-pages >
+				<f7-pages  navbar-through>
 
 				</f7-pages>
 			</f7-view>

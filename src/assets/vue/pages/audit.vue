@@ -3,7 +3,7 @@
     <f7-page name="audit">
         <!-- Navbar -->
         <f7-navbar back-link="Back" sliding  >
-            <f7-nav-center sliding> {{audit.title || $root.localization.AuditPage.audit}}</f7-nav-center>
+            <f7-nav-center sliding> {{audit.title || $root.localization.AuditPage.audit+' № '+audit.id}}</f7-nav-center>
             <f7-nav-right v-if="!uploaded">
                 <f7-link @click="open_modal()" ><div style="font-size:24px"><pencil ></pencil></div></f7-link>
                 <f7-link @click="remove_audit"> <div style="font-size:24px"><trash></trash></div></f7-link>
@@ -36,13 +36,13 @@
             <!--</f7-card>-->
 
 
-            <f7-list media-list v-if="hasCheck_list"  style="margin-bottom: 0!important;"  class="no-link-icon">
+            <f7-list media-list v-if="hasCheck_list"  style="margin-bottom: 0!important;"  >
                     <f7-list-item class="deff"  group-title :title="this.$root.localization.AuditPage.check_list">
                     </f7-list-item>
-                    <f7-list-item  v-for="(check,id) in this.audit.check_list" :key="id" :title="check.title" :link="'/check/'+audit.id+'/'+check.id">
-                        <div slot="content">
-                            <div style="padding-right:25px; font-size:30px;">
-                                <div v-if="new_str(check)" style="color:#2196F3; ">
+                    <f7-list-item  class="item_audit" v-for="(check,id) in this.audit.check_list" :key="id" :title="check.title" :link="'/check/'+audit.id+'/'+check.id">
+                        <div slot="media" style="padding-top:2px;padding-bottom:2px">
+                            <div style="font-size:30px;">
+                                <div v-if="new_str(check)" style="color:#DAA520;">
                                     <alert_box ></alert_box>
                                 </div>
                                 <div v-if="(new_str(check))?false:!upload_st(check)" style="color:#b51313;" >
@@ -85,18 +85,24 @@
 
 
 
-            <f7-card v-if="!uploaded">
-                <f7-block inner>
-                    <f7-grid>
-                        <f7-col width="100">
-                            <f7-button fill @click="send_results()"><div style="font-size:30px"><send></send></div></f7-button>
-                        </f7-col>
-                    </f7-grid>
-                </f7-block>
+            <!--<f7-card v-if="!uploaded">-->
+                <!--<f7-block style="padding-bottom:10px;">-->
+                    <!--<f7-grid>-->
+                        <!--<f7-col width="100">-->
+                            <!--<f7-button fill @click="send_results()"><div style="font-size:30px"><send></send></div></f7-button>-->
+                        <!--</f7-col>-->
+                    <!--</f7-grid>-->
+                <!--</f7-block>-->
 
-            </f7-card>
+            <!--</f7-card>-->
+
         </div>
         <popup_audit_edit :audit="this.audit"></popup_audit_edit>
+        <f7-toolbar bottom :no-shadow="true" v-if="!uploaded">
+            <f7-link></f7-link>
+            <f7-link class="toolbar_custome_link" @click="send_results()"> <div style="font-size:30px"><send></send></div></f7-link>
+            <f7-link></f7-link>
+        </f7-toolbar>
     </f7-page>
 </template>
 
@@ -105,9 +111,9 @@
     import SingleComment from "src/assets/vue/Components/single-comment";
     import  pencil from "vue-material-design-icons/pencil.vue"
     import  trash from "vue-material-design-icons/delete.vue"
-    import  alert_box from "vue-material-design-icons/alert-box.vue"
-    import  close_box from "vue-material-design-icons/close-box.vue"
-    import  ready_box from "vue-material-design-icons/checkbox-marked.vue"
+    import  alert_box from "vue-material-design-icons/alert-circle-outline.vue"
+    import  close_box from "vue-material-design-icons/close.vue"
+    import  ready_box from "vue-material-design-icons/check.vue"
     import  send from "vue-material-design-icons/send.vue"
     let $$=Dom7;
     export default {
@@ -183,11 +189,12 @@
         methods:{
             //Отправка данных по аудиту
             send_results(){
-               (this.$root.check_audit_positions(this.audit))?
-                   (this.audit.check_list.length>0)?
+
+               ( this.audit.check_list.length>0)?
+                   (this.$root.check_audit_positions(this.audit))?
                     this.$root.send_to_serv_audit(this.audit)
-                       :this.$f7.alert(this.$root.localization.pop_up.no_check_list,this.$root.localization.pop_up.warning)
-                        :this.$f7.alert(this.$root.localization.AuditPage.check_not_complete, this.$root.localization.pop_up.warning)
+                       :this.$f7.alert(this.$root.localization.AuditPage.check_not_complete, this.$root.localization.pop_up.warning)
+                        : this.$f7.alert(this.$root.localization.pop_up.no_check_list,this.$root.localization.pop_up.warning)
                 ;
 
             },

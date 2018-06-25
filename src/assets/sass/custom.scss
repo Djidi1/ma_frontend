@@ -128,7 +128,7 @@
 	margin-left:0!important;
 }
 .blck_info .card{
-	margin:3% 0 0 0 ;
+	margin:0 0 0 0 ;
 
 }
 #login-form .card{
@@ -490,5 +490,103 @@
 }
 .new_text_comm .comment_text_zone>.list-block>ul{
 	padding-left:0;
+
+}
+.navbar-inner{
+	overflow:visible;
+}
+.cloud{
+	width:52px;
+	height:48px;
+}
+.could_ok{
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='255.12px' height='170.08px' viewBox='0 0 255.12 170.08' enable-background='new 0 0 255.12 170.08' xml:space='preserve'%3e%3cg%3e%3cg%3e%3cg%3e%3cpath fill='%23019341' d='M197.484,52.133l-8.803,10.876c0.058,0.483,0.104,0.97,0.143,1.459l9.018-11.259 C197.73,52.847,197.604,52.492,197.484,52.133z'/%3e%3cpath fill='%23019341' d='M201.96,65.696l-7.048,8.798c10.301,4.654,17.064,14.965,17.064,26.387 c0,15.069-11.789,27.757-26.84,28.885c-0.213,0.016-0.422,0.044-0.627,0.083H50.88c-8.43,0-15.288-6.858-15.288-15.289 c0-8.43,6.858-15.287,15.288-15.287c1.214,0,2.435,0.147,3.63,0.438c1.947,0.474,3.999-0.148,5.356-1.623 c1.357-1.476,1.806-3.571,1.172-5.473c-0.981-2.946-1.479-6.024-1.479-9.149c0-15.973,13.034-28.968,29.054-28.968 c6.586,0,12.796,2.142,17.959,6.191c1.457,1.144,3.392,1.479,5.148,0.891s3.101-2.019,3.577-3.81 c4.354-16.362,19.238-27.791,36.195-27.791c14.482,0,27.063,8.268,33.294,20.325l7.413-9.159 c-8.647-13.339-23.66-22.186-40.707-22.186c-19.445,0-36.785,11.616-44.404,29c-5.66-2.948-11.935-4.482-18.476-4.482 c-22.097,0-40.075,17.938-40.075,39.988c0,1.633,0.099,3.257,0.295,4.866c-13.554,1.048-24.263,12.412-24.263,26.229 c0,14.507,11.802,26.31,26.309,26.31h134.676c0.587,0,1.166-0.077,1.716-0.233c9.551-1.031,18.376-5.437,24.97-12.495 c6.936-7.424,10.754-17.105,10.754-27.26C222.996,86.06,214.75,72.595,201.96,65.696z'/%3e%3c/g%3e%3c/g%3e%3cpath fill='%23019341' d='M152.215,115.442c-1.915,0-3.713-0.925-4.826-2.483l-29.461-29.583c-1.907-2.666-1.291-6.371,1.374-8.277 c2.666-1.905,6.371-1.289,8.276,1.376l24.637,22.836l56.744-70.114c1.906-2.665,5.611-3.28,8.275-1.375 c2.666,1.905,3.281,5.61,1.375,8.276l-61.568,76.861C155.926,114.518,154.13,115.442,152.215,115.442L152.215,115.442z'/%3e%3c/g%3e%3c/svg%3e");
+
+}
+.cloud_no_sink{
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='255.12px' height='170.08px' viewBox='0 0 255.12 170.08' enable-background='new 0 0 255.12 170.08' xml:space='preserve'%3e%3cg%3e%3cg%3e%3cg%3e%3cpath fill='%23D7D6D7' d='M146.621,130.016H51.046c-8.441,0-15.309-6.868-15.309-15.309c0-8.439,6.868-15.31,15.309-15.31 c1.215,0,2.439,0.149,3.635,0.439c1.95,0.475,4.004-0.148,5.364-1.626c1.359-1.478,1.809-3.574,1.173-5.48 c-0.982-2.948-1.481-6.029-1.481-9.162c0-10.917,6.083-20.442,15.046-25.391l-8.025-8.024 c-10.869,7.171-18.056,19.469-18.056,33.416c0,1.636,0.098,3.263,0.295,4.873c-13.572,1.05-24.295,12.429-24.295,26.266 c0,14.526,11.818,26.346,26.344,26.346h106.61L146.621,130.016z'/%3e%3cpath fill='%23D7D6D7' d='M200.262,64.73c-1.448-25.474-22.635-45.754-48.465-45.754c-19.474,0-36.835,11.631-44.465,29.04 c-4.68-2.437-9.781-3.907-15.103-4.346l18.256,18.255c0.5-0.024,0.999-0.109,1.485-0.271c1.759-0.59,3.104-2.022,3.582-3.815 c4.36-16.385,19.264-27.829,36.245-27.829c20.684,0,37.51,16.825,37.51,37.508c0,0.256-0.005,0.512-0.011,0.766l-0.001,0.073 c-0.043,2.376,1.439,4.512,3.682,5.303c11.593,4.089,19.384,15.081,19.384,27.349c0,15.091-11.806,27.795-26.875,28.922 c-0.215,0.018-0.425,0.048-0.629,0.084h-6.278l10.598,10.601c8.965-1.321,17.208-5.626,23.451-12.311 c6.946-7.433,10.77-17.128,10.77-27.296C223.396,85.381,214.244,71.255,200.262,64.73z'/%3e%3c/g%3e%3c/g%3e%3cpath fill='%23D7D6D7' d='M196.857,169.794c-1.41,0-2.823-0.539-3.901-1.619L47.339,22.559c-2.154-2.155-2.154-5.648,0-7.803 c2.154-2.154,5.647-2.154,7.802,0L200.76,160.372c2.155,2.155,2.155,5.649,0,7.803 C199.683,169.255,198.271,169.794,196.857,169.794L196.857,169.794z'/%3e%3c/g%3e%3c/svg%3e");
+}
+.cloud_error{
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='255.12px' height='170.08px' viewBox='0 0 255.12 170.08' enable-background='new 0 0 255.12 170.08' xml:space='preserve'%3e%3cg%3e%3cg%3e%3cg%3e%3cg%3e%3cpath fill='%23FFD9D9' d='M203.96,64.696l-9.048,7.798c10.301,4.654,17.063,16.965,17.063,28.387 c0,15.069-11.789,27.757-26.84,28.886c-0.213,0.016-0.422,0.043-0.627,0.082H50.88c-8.43,0-15.288-6.857-15.288-15.289 c0-8.43,6.858-15.287,15.288-15.287c1.214,0,2.435,0.147,3.63,0.438c1.947,0.474,3.999-0.147,5.356-1.623 c1.356-1.476,1.806-3.571,1.172-5.473c-0.981-2.946-1.479-6.024-1.479-9.149c0-15.973,13.034-28.968,29.054-28.968 c6.587,0,12.797,2.142,17.959,6.191c1.457,1.144,3.393,1.479,5.148,0.891s3.101-2.019,3.577-3.81 c4.354-16.362,19.238-27.791,36.195-27.791c14.481,0,26.063,8.268,32.294,20.325l8.413-7.159 c-8.647-13.339-23.66-24.186-40.707-24.186c-19.445,0-36.785,11.616-44.404,29c-5.66-2.948-11.936-4.482-18.477-4.482 c-22.097,0-40.074,17.938-40.074,39.988c0,1.633,0.099,3.257,0.295,4.866c-13.555,1.048-24.264,12.412-24.264,26.229 c0,14.508,11.803,26.311,26.31,26.311h134.676c0.587,0,1.166-0.077,1.716-0.233c9.551-1.03,18.376-5.437,24.971-12.495 c6.936-7.424,10.754-17.104,10.754-27.26C222.996,86.06,216.75,71.595,203.96,64.696z'/%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/g%3e%3cline fill='none' stroke='%23FFD9D9' stroke-width='13' stroke-linecap='round' stroke-linejoin='round' x1='215.604' y1='38.632' x2='131.56' y2='110.923'/%3e%3cline fill='none' stroke='%23FFD9D9' stroke-width='13' stroke-linecap='round' stroke-linejoin='round' x1='135.311' y1='54.614' x2='196.173' y2='112.498'/%3e%3c/svg%3e");
+}
+.new_audit_icon svg{
+	color:#DAA520;
+
+
+
+}
+.new_audit_icon{
+	width:52px;
+	height:48px;
+	font-size:40px;
+	line-height:48px;
+}
+.item_audit .item-media{
+	padding-top: 2px !important;
+	padding-bottom: 2px !important;
+}
+.custom_checkbox .icon-form-checkbox{
+	border-color:  transparent !important;
+	background-color:  rgba(248, 248, 248, 0.5) !important;
+	border-radius:100% !important;
+	width: 38px !important;
+	height: 38px !important;
+}
+.custom_checkbox .icon-form-checkbox:after {
+	opacity: 1 !important;
+	width: 30px !important;
+	height: 30px !important;
+	left: 2px !important;
+	top: 2px !important;
+	right: 2px !important;
+
+}
+.sucsess_status  .icon-form-checkbox:after{
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20fill%3D'%23B9B9B9'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M9%2016.17L4.83%2012l-1.42%201.41L9%2019%2021%207l-1.41-1.41z'%2F%3E%3C%2Fsvg%3E") !important;
+}
+
+.false_status .icon-form-checkbox:after{
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='24' height='24' viewBox='0 0 24 24'%3e%3cpath fill='%23B9B9B9' d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z' /%3e%3c/svg%3e") !important;
+}
+.sucsess_status input[type=checkbox]:checked+.item-media .icon-form-checkbox:after{
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20fill%3D'%23019341'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M9%2016.17L4.83%2012l-1.42%201.41L9%2019%2021%207l-1.41-1.41z'%2F%3E%3C%2Fsvg%3E") !important;
+}
+.false_status input[type=checkbox]:checked+.item-media .icon-form-checkbox:after{
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='24' height='24' viewBox='0 0 24 24'%3e%3cpath fill='%23b51313' d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z' /%3e%3c/svg%3e") !important;
+}
+.bottom_group_btn{
+	position:fixed;
+	bottom:0;
+	width:100%;
+}
+.bottom_group_btn .content-block-inner{
+	padding-bottom:30px;
+	padding-top:30px;
+}
+//.toolbar-bottom{
+//	box-shadow: unset !important;
+//}
+.toolbar_custome_link{
+	width:125px;
+}
+.searchbar-overlay{
+	position:fixed!important;
+}
+.comment_acrd{
+	padding: 0 10px 0 10px !important;
+
+}
+.acrd_custom{
+	margin-top: 0 !important;
+}
+.acrd_custom .accordion-item{
+	margin-bottom:0;
+}
+.inner_check_connetent .item-content{
+	background-color:transparent!important;
+
+}
+.comment_text_zone>.list-block>ul{
+	padding-left: 0 !important;
 
 }

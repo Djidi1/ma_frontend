@@ -3,8 +3,8 @@
     <div class="comment_text_zone" id="edit">
         <f7-list form>
             <f7-list-item>
-                <f7-label floating>{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>
-                <f7-input type="textarea" v-model="text" @change="!comment_for_audit ? send_comments : true"></f7-input>
+                <!--<f7-label floating>{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>-->
+                <f7-input type="textarea" v-model="text" @change="send_comments"></f7-input>
             </f7-list-item>
 
             <attachment @removeAttach="this.removeAttachment" :attachment="attachment" :edit_mode="true" v-if="comment_for_audit"></attachment>
@@ -18,9 +18,9 @@
                             <!--<image_multiply></image_multiply>-->
                         <!--</div>-->
                     <!--</div>-->
-                    <!--<div class="col-50" v-if="comment_for_audit">-->
-                        <!--<f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>-->
-                    <!--</div>-->
+                    <!--&lt;!&ndash;<div class="col-50" v-if="comment_for_audit">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
                 <!--</div>-->
             <!--</f7-block>-->
 
@@ -66,13 +66,27 @@
             }
         },
         created: function () {
-            if ((Object.keys(this.comment).length === 0)) {
-                this.data_comm = this.data_set;
-            } else {
-                this.current_comment = this.comment;
-                this.text = this.current_comment.text;
-                this.attachment = this.current_comment.attachments;
+
+            if (this.data_set.length>0) {
+                this.current_comment = this.data_set;
+                this.text = this.current_comment[0].text;
+                this.attachment = this.current_comment[0].attachments;
+
+            }else{
+                this.current_comment=this.data_set;
+                // this.current_comment.push(
+                //     {
+                //         'id':'',
+                //         'text':'',
+                //         'user_info':'',
+                //         'create_date':'',
+                //         'attachments':[]
+                //     }
+                // );
+
+
             }
+
         },
 
         mounted: function () {
@@ -121,27 +135,32 @@
                 return new Date();
             },
             send_comments() {
-                if (this.text !== '' || this.attachment.length > 0) {
-                    if (this.type) {
-                        this.comment.id = this.getOfflineID(this.comment.id);
-                        this.comment.create_date = this.GetCurrentDate();
-                        this.comment.user_info = this.$root.auth_info.user_info;
-                        this.comment.text = this.text;
-                        this.comment.attachments = this.attachment;
-                    } else {
-                        let comment = {
-                            "id": this.getOfflineID(),
-                            "create_date": this.GetCurrentDate(),
-                            "user_info": this.$root.auth_info.user_info,
-                            "text": this.text,
-                            "attachments": this.attachment
-                        };
-                        this.data_comm.push(comment);
-                    }
-                    this.clear_input();
+                    if ((this.text!='') || (this.attachment.length>0))
+                {
+                    if (this.current_comment){
+
+                    this.current_comment.push(
+                        {
+                            'id':'',
+                            'text':'',
+                            'user_info':'',
+                            'create_date':'',
+                            'attachments':[]
+                        }
+                    );
+                }
+                    this.current_comment[0].id = this.getOfflineID(this.comment.id);
+                    this.current_comment[0].create_date = this.GetCurrentDate();
+                    this.current_comment[0].user_info = this.$root.auth_info.user_info;
+                    this.current_comment[0].text = this.text;
+                    this.current_comment[0].attachments = this.attachment;
+                }else{
+                        this.current_comment.splice(0,this.current_comment.length);
+                }
+                    //this.clear_input();
                     this.$ls.set('objects', this.$root.objects);
                     this.$emit('edit_done')
-                }
+
 
             },
             clear_input() {

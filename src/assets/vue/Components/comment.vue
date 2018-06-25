@@ -5,8 +5,8 @@
             <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_title" after="<i class='fa fa-commenting-o' aria-hidden='true'></i>">
                 <f7-accordion-content>
                     <transition appear mode="out-in" name="slide-fade">
-                    <single-comment  v-for="(comment,id) in this.data_comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="read" :id="id"></single-comment>
-                    <f7-block inner v-if="!hasComment"><text_area :data_set="this.data_comments"></text_area></f7-block>
+                    <!--<single-comment  v-for="(comment,id) in this.data_comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="read" :id="id"></single-comment>-->
+                    <f7-block inner><text_area :data_set="this.data_comments"></text_area></f7-block>
                     </transition>
                 </f7-accordion-content>
             </f7-list-item>
@@ -46,16 +46,7 @@
 </script>
 
 <style scoped>
-.comment_acrd{
-    padding: 0 10px 0 10px !important;
 
-}
-.acrd_custom{
-    margin-top: 0 !important;
-}
-.acrd_custom .accordion-item{
-    margin-bottom:0;
-}
 
 
 .comment_fade-enter-active,.attach_fade-leave-active{

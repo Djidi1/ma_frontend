@@ -1,6 +1,6 @@
 <template>
     <!--Страница аудитов-->
-    <f7-page name="audits_main" pull-to-refresh @ptr:refresh="this.$root.onRefresh">
+    <f7-page name="audits_main" pull-to-refresh @ptr:refresh="this.$root.onRefresh" with-subnavbar>
         <!-- Navbar -->
         <f7-navbar>
             <f7-nav-left>
@@ -10,21 +10,23 @@
             <f7-nav-right>
                 <f7-link @click="open_modal_popup()" ><div style="font-size:30px"><plus ></plus></div></f7-link>
             </f7-nav-right>
+
+            <f7-subnavbar sliding class="custom_sub">
+                <f7-searchbar
+                        :init="true"
+                        disable-link-text="Cancel"
+                        searchList="#list_of_objects"
+                        searchIn=".item-title,.item-text"
+                        :hideGroups="false"
+
+                        :placeholder="this.$root.localization.SearchBar.title"
+                        :clear-button="true">
+                </f7-searchbar>
+
+
+            </f7-subnavbar>
         </f7-navbar>
-        <f7-subnavbar sliding class="custom_sub">
-            <f7-searchbar
-                    :init="true"
-                    disable-link-text="Cancel"
-                    searchList="#list_of_objects"
-                    searchIn=".item-title,.item-text"
-                    :hideGroups="false"
 
-                    :placeholder="this.$root.localization.SearchBar.title"
-                    :clear-button="true">
-            </f7-searchbar>
-
-
-        </f7-subnavbar>
         <div class="searchbar-overlay"></div>
         <list></list>
         <f7-list class="searchbar-not-found check_list_items">

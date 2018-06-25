@@ -1,24 +1,24 @@
 <template>
     <!--Страница чек-листа-->
-    <f7-page>
+    <f7-page with-subnavbar>
         <f7-navbar back-link="Back" sliding  >
             <f7-nav-center sliding> {{check.title}}</f7-nav-center>
             <f7-nav-right v-if="!uploaded">
                 <f7-link @click="remove_check"><div style="font-size:24px"><trash></trash></div></f7-link>
             </f7-nav-right>
+            <f7-subnavbar sliding class="custom_sub">
+                <f7-searchbar
+                        :init="true"
+                        disable-link-text="Cancel"
+                        searchList="#search-list"
+                        :placeholder="this.$root.localization.SearchBar.title"
+                        :clear-button="true">
+                </f7-searchbar>
 
+
+            </f7-subnavbar>
         </f7-navbar>
-       <f7-subnavbar sliding class="custom_sub">
-            <f7-searchbar
-                    :init="true"
-                    disable-link-text="Cancel"
-                    searchList="#search-list"
-                    :placeholder="this.$root.localization.SearchBar.title"
-                    :clear-button="true">
-            </f7-searchbar>
 
-
-        </f7-subnavbar>
         <div class="searchbar-overlay"></div>
         <div class="blck_info">
         <f7-card>
@@ -36,32 +36,42 @@
             </f7-card-content>
         </f7-card>
 
-            <f7-card v-if="!uploaded">
-                <f7-block inner>
-                    <f7-grid>
-                        <f7-col width="50">
-                            <f7-button @click="abort_check_list()" class="abort_button" color="grey"> {{this.$root.localization.AuditPage.check_list_btn_reset}}</f7-button>
-                        </f7-col>
-                        <f7-col width="50">
-                            <f7-button fill @click="check_list_status()">{{this.$root.localization.AuditPage.check_list_btn_ok}}</f7-button>
-                        </f7-col>
-                    </f7-grid>
-                </f7-block>
 
-            </f7-card>
+
+            <!--<f7-card v-if="!uploaded"  class="bottom_group_btn">-->
+                <!--<f7-block inner >-->
+                    <!--<f7-grid>-->
+                        <!--<f7-col width="50">-->
+                            <!--<f7-button @click="abort_check_list()" class="abort_button" color="grey"> <div><restore></restore></div></f7-button>-->
+                        <!--</f7-col>-->
+                        <!--<f7-col width="50">-->
+                            <!--<f7-button fill @click="check_list_status()">{{this.$root.localization.AuditPage.check_list_btn_ok}}</f7-button>-->
+                        <!--</f7-col>-->
+                    <!--</f7-grid>-->
+                <!--</f7-block>-->
+
+            <!--</f7-card>-->
 
         </div>
-
+        <f7-toolbar bottom :no-shadow="true" v-if="!uploaded">
+            <f7-link class="toolbar_custome_link" @click="abort_check_list()"><div style="font-size:30px"><restore></restore></div></f7-link>
+            <f7-link class="toolbar_custome_link" @click="check_list_status()"><div style="font-size:30px"><send></send></div></f7-link>
+        </f7-toolbar>
 
     </f7-page>
 </template>
 
 <script>
     import  trash from "vue-material-design-icons/delete.vue"
+    import  send from "vue-material-design-icons/content-save-all.vue"
+    import  restore from "vue-material-design-icons/backup-restore.vue"
+
 
     export default {
         components:{
             trash,
+            send,
+            restore
 
         },
         name: "check",
@@ -119,6 +129,7 @@
                 return (new_str)?"":(result)?"fa fa-check fa-2x audit_good":"fa fa-times fa-2x audit_wrong";
             },
             abort_check_list(){
+
                 let self=this;
                 self.check.requirement.forEach(function(req,j){
                         req.status=0;
@@ -128,6 +139,7 @@
 
             },
             check_list_status(){
+
                 let self=this;
                 self.check.requirement.forEach(function(req){
                     req.status=(req.disabled)?req.status:req.status;

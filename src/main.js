@@ -110,6 +110,7 @@ new Vue({
         routes: Routes,
         scrollTopOnNavbarClick: true,
         hideNavbarOnPageScroll: true,
+        hideToolbarOnPageScroll:true,
         swipePanel: 'left'
     },
 
