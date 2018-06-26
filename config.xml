@@ -6,7 +6,7 @@
     <description>
         MobileAudit project!
     </description>
-    <icon src="src/static/nansen_mobit-365_logo.svg_W.svg" />
+    <icon src="src/static/nansen_mobit-365_logo_W.svg" />
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Kon Team
     </author>
@@ -24,7 +24,7 @@
     <allow-navigation data-href="http://*/*" href="*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon density="land-ldpi" src="src/static/nansen_mobit-365_logo.svg_W.svg" />
+        <icon density="land-ldpi" src="src/static/nansen_mobit-365_logo_W.svg" />
         <splash density="land-hdpi" src="src/static/nansen_mobit-365_logo.svg" />
         <splash density="land-ldpi" src="src/static/nansen_mobit-365_logo.svg" />
         <splash density="land-mdpi" src="src/static/nansen_mobit-365_logo.svg" />
