@@ -41,7 +41,7 @@
             <!--&lt;!&ndash;@click="popup_open=true"&ndash;&gt;-->
             <!--<f7-icon icon="icon-plus"></f7-icon>-->
         <!--</f7-fab>-->
-        <popup_new_object :mode="true"></popup_new_object>
+
     </f7-page>
 </template>
 

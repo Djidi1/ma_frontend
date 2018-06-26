@@ -18,28 +18,29 @@
 
                 <div slot="root" v-if="(uploaded_with(item)?showComment(item):false)">
                         <transition  mode="out-in" name="comment-show">
-                            <f7-block class="comment_acrd"  >
-                                <f7-list  class="acrd_custom">
-                                    <f7-list-item  class="inner_check_connetent"  :title="$root.localization.AuditPage.comments_title">
-                                        <div slot="after">
-                                            <div style="font-size:30px; display:inline-block; transition:all .3s; padding:0 10px; transform:translateY(-5px)"  > <camera></camera></div>
-                                            <div style="font-size:30px; display:inline-block; transition:all .3s; padding:0 10px; transform:translateY(-5px)"  > <image_multiply></image_multiply></div>
-                                            <div style="font-size:20px; display:inline-block; transition:all .3s; transform:translateY(-10px)"  > <comment_icon></comment_icon> {{item.comments.length}}</div>
+                            <comment :data_comments="item.comments"></comment>
+                            <!--<f7-block class="comment_acrd"  >-->
+                                <!--<f7-list  class="acrd_custom">-->
+                                    <!--<f7-list-item  class="inner_check_connetent"  :title="$root.localization.AuditPage.comments_title">-->
+                                        <!--<div slot="after">-->
+                                            <!--<div @click="upload(true,item)" style="font-size:30px; display:inline-block; transition:all .3s; padding:0 10px; transform:translateY(-5px)"  > <camera_icon></camera_icon></div>-->
+                                            <!--<div @click="upload(false,item)" style="font-size:30px; display:inline-block; transition:all .3s; padding:0 10px; transform:translateY(-5px)" > <image_multiply></image_multiply></div>-->
+                                            <!--<div style="font-size:25px; display:inline-block; transition:all .3s; transform:translateY(-7px)"  > <comment_icon></comment_icon> {{item.comments.length}}</div>-->
 
-                                                <!--<camera></camera>-->
-                                                <!--<image_multiply></image_multiply>-->
+                                                <!--&lt;!&ndash;<camera></camera>&ndash;&gt;-->
+                                                <!--&lt;!&ndash;<image_multiply></image_multiply>&ndash;&gt;-->
 
 
-                                        </div>
-                                        <div slot="root">
-                                            <!--<transition appear mode="out-in" name="slide-fade">-->
-                                                <!--<single-comment  v-for="(comment,id) in this.data_comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="read" :id="id"></single-comment>-->
-                                                <f7-block inner><text_area  :data_set="item.comments" :audit_comment="false"></text_area></f7-block>
-                                            <!--</transition>-->
-                                        </div>
-                                    </f7-list-item>
-                                </f7-list>
-                            </f7-block>
+                                        <!--</div>-->
+                                        <!--<div slot="root">-->
+                                            <!--&lt;!&ndash;<transition appear mode="out-in" name="slide-fade">&ndash;&gt;-->
+                                                <!--&lt;!&ndash;<single-comment  v-for="(comment,id) in this.data_comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="read" :id="id"></single-comment>&ndash;&gt;-->
+                                                <!--<f7-block inner><text_area  :data_set="item.comments" :audit_comment="false"></text_area></f7-block>-->
+                                            <!--&lt;!&ndash;</transition>&ndash;&gt;-->
+                                        <!--</div>-->
+                                    <!--</f7-list-item>-->
+                                <!--</f7-list>-->
+                            <!--</f7-block>-->
                             <!--<text_area v-if="showComment(item)" :data_set="item.comments" :audit_comment="false"></text_area>-->
                             <!--<comment v-if="showComment(item)" :data_set="item.comments" :read="read" :audit_comment="false"></comment>-->
                         </transition>
@@ -54,17 +55,14 @@
     import Check_box_item from "src/assets/vue/Components/check_box_item";
     import  cancel from "vue-material-design-icons/cancel.vue"
     import  check from "vue-material-design-icons/check.vue"
-    import  comment_icon from "vue-material-design-icons/comment-outline.vue"
-    import  camera from "vue-material-design-icons/camera.vue"
-    import  image_multiply from "vue-material-design-icons/image-plus.vue"
+
+    var $$ = Dom7;
     export default {
         components: {
             Check_box_item,
             cancel,
             check,
-            comment_icon,
-            camera,
-            image_multiply
+
         },
         name: "chek_item",
         props:{
@@ -106,7 +104,14 @@
             },
             check_cls(item){
                 return (item.disabled)?"status_disbl":(item.status===0)?"":(item.status===1)?"status_sucs":"status_false";
-            }
+            },
+
+
+
+
+            getPhotoFail(message) {
+                this.$f7.alert('error:' + message, this.$root.localization.pop_up.warning);
+            },
         }
 
 
@@ -152,8 +157,5 @@
     /* .slide-fade-leave-active до версии 2.1.8 */ {
     opacity: 0;
 }
-    .blue_cls{
-        color:#2196F3;
-    }
 
 </style>

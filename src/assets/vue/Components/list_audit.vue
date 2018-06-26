@@ -174,7 +174,7 @@
             },
 
             array_few(obj) {
-                return obj.audits;
+                return this.$_.sortBy(obj.audits,"created_at").reverse();
             },
             hasAudits(id) {
                 return (this.$root.objects[id].audits.length > 0);
@@ -190,8 +190,12 @@
             },
             send_data(item, index) {
                 let $$ = Dom7;
+                let self=this;
                 (item.check_list.length > 0) ?
-                    this.$root.send_to_serv_audit(item) : this.$f7.alert(this.$root.localization.pop_up.no_check_list, this.$root.localization.pop_up.warning);
+                    (self.$root.check_audit_positions(item))?
+                         self.$root.send_to_serv_audit(item)
+                        :self.$f7.alert(self.$root.localization.AuditPage.check_not_complete, self.$root.localization.pop_up.warning)
+                         : self.$f7.alert(self.$root.localization.pop_up.no_check_list,self.$root.localization.pop_up.warning);
                 this.$f7.swipeoutClose($$('#id_' + index));
             },
             edit_data(index) {

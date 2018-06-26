@@ -42,15 +42,18 @@ import App from './main.vue'
 import local_ru from "./static/local_ru"
 import local_en from "./static/local_en"
 
-//Test zone inmport json
-// import data_json from './static/Objects.json'
-// import check_json from './static/check_lists.json'
+
 
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue);
 // Init Vue-ls
 Vue.use(VueLocalStorage);
 Vue.use(VueResource);
+
+//Underscore.js
+import underscore from 'vue-underscore'
+Vue.use(underscore);
+
 
 //Components
 import List from './assets/vue/Components/list_audit.vue'

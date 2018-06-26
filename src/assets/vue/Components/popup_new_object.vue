@@ -1,57 +1,68 @@
 <template>
     <!--Создание новго объкта с аудитами и чек листами-->
     <f7-popup id="popup_add" >
-        <f7-navbar back-link="Back" sliding @back-click.stop="closePopUp(true)" >
-            <f7-nav-center sliding> {{this.title}}</f7-nav-center>
-            <f7-nav-right>
-                <f7-grid class="crud_header edit_menu">
-                    <f7-col width="30" ></f7-col>
-                    <f7-col width="50" ><f7-link  @click="submit()"> <div style="font-size:30px; "> <check></check> </div></f7-link></f7-col>
-                    <f7-col width="10" ></f7-col>
-                </f7-grid>
-            </f7-nav-right>
-        </f7-navbar>
+        <f7-view id="popup-view">
+            <f7-pages navbar-through>
+            <f7-page>
+                <f7-navbar back-link="Back" sliding @back-click.stop="closePopUp(true)" >
+                    <f7-nav-center sliding> {{this.title}}</f7-nav-center>
+                    <f7-nav-right>
+                        <f7-grid class="crud_header edit_menu">
+                            <f7-col width="30" ></f7-col>
+                            <f7-col width="50" ><f7-link  @click="submit()"> <div style="font-size:30px; "> <check></check> </div></f7-link></f7-col>
+                            <f7-col width="10" ></f7-col>
+                        </f7-grid>
+                    </f7-nav-right>
+                </f7-navbar>
 
-        <div class="blck_info popup_card">
-            <f7-card>
-                <f7-card-header>
-                    <f7-grid style="width:100%; padding:5px 0 5px 0;">
-                        <f7-col v-show="this.mode" width="100">
-                            <f7-button fill color="blue" open-popover=".exist_pop_over" :disabled="!hasObject"> {{this.$root.localization.pop_up.select_ex}} {{this.$root.localization.pop_up.object_info}}</f7-button>
-                        </f7-col>
-                    </f7-grid>
-                </f7-card-header>
-                <transition appear mode="out-in" name="slide-app">
-                <f7-card-content style="padding-bottom:15px;"  v-show="have_something">
-                    <f7-list form class="add_list">
-                        <f7-list-item class="correct_css_name">
-                                    <f7-label floating>{{this.$root.localization.pop_up.name}}</f7-label>
-                                    <f7-input type="text"  v-model="current" :disabled=true class="disb_btn"></f7-input>
+                <div class="blck_info popup_card">
+                    <f7-list form>
+                        <f7-list-item smart-select :title="this.$root.localization.pop_up.select_ex" :smart-select-back-on-select="true"
+                                      :smart-select-searchbar="true"
+                                      :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
+                                      class="no-padding">
+
+                            <select  :name="this.$root.localization.pop_up.select_ex" @change="selected_object_done">
+                                <optgroup v-for="(group) in sorted_array" :key="group.group_id" :label="group[0].group_title">
+                                    <option  v-for="(obj) in group" :key="obj.id" :value="obj.id" selected >{{obj.title}}  </option>
+                                </optgroup>
+                            </select>
+                            <div slot="after">{{text_for_after}}</div>
                         </f7-list-item>
-                        <!--<f7-list-item class="correct_css_adr">-->
-                            <!--<f7-label floating>{{this.$root.localization.pop_up.address}}</f7-label>-->
-                            <!--<f7-input type="text" v-model="addres_obj" :disabled=true class="disb_btn"></f7-input>-->
-                        <!--</f7-list-item>-->
                     </f7-list>
-                </f7-card-content>
-                </transition>
-            </f7-card>
-            <audit_add v-if=sended(items) v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index"  :type="true" :trash_btn="false" @remove_audit="remove_audit(index)"></audit_add>
 
-            <transition appear mode="out-in" name="slide-app">
-                <f7-card class="btn_pop_up_main" v-if="this.have_something">
-                    <f7-card class="btn_pop_up_card">
-                        <f7-card-header class="btn_pop_up_card">
-                            <f7-grid class="btn_complete">
-                                <f7-col width="50"><f7-button  class="abort_button" @click="closePopUp(true)" > {{this.$root.localization.pop_up.cancel}}</f7-button></f7-col>
-                                <f7-col width="50"><f7-button fill @click="submit()" >{{this.$root.localization.pop_up.save}}</f7-button></f7-col>
-                            </f7-grid>
-                        </f7-card-header>
-                    </f7-card>
-                </f7-card>
-            </transition>
-        </div>
-        <curr_objects v-if="hasObject" :list="this.select_list"  :current="this.selected_object" @selected_object_done="selected_object_done"></curr_objects>
+                    <!--<audit_add v-if=sended(items) v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index"  :type="true" :trash_btn="false" @remove_audit="remove_audit(index)"></audit_add>-->
+                    <transition appear mode="out-in" name="slide-app">
+                        <f7-list form v-if="Object.keys(selected_object).length > 0">
+                            <f7-list-item v-if="this.$root.check_list.length===0" :title="this.$root.localization.pop_up.no_check_list">
+                                <div slot="root" style="padding:8px 16px;">{{this.$root.localization.pop_up.no_check_list_text}}</div>
+                            </f7-list-item>
+                            <f7-list-item  smart-select :title="this.$root.localization.pop_up.add_check" :smart-select-back-on-select="true" v-else
+                                          :smart-select-searchbar="true"
+                                          :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
+                                          class="no-padding">
+                                <select  :name="this.$root.localization.pop_up.add_check"  multiple="multiple" @change="check_select_done" >
+                                        <option v-for="(check_item,check_ind) in check_list_arr" :key="check_ind" :value="check_ind"> {{check_item.title}}</option>
+                                </select>
+                                <div slot="after">{{text_for_after}}</div>
+                            </f7-list-item>
+                        </f7-list>
+                        <!--<f7-card class="btn_pop_up_main" v-if="this.have_something">-->
+                            <!--<f7-card class="btn_pop_up_card">-->
+                                <!--<f7-card-header class="btn_pop_up_card">-->
+                                    <!--<f7-grid class="btn_complete">-->
+                                        <!--<f7-col width="50"><f7-button  class="abort_button" @click="closePopUp(true)" > {{this.$root.localization.pop_up.cancel}}</f7-button></f7-col>-->
+                                        <!--<f7-col width="50"><f7-button fill @click="submit()" >{{this.$root.localization.pop_up.save}}</f7-button></f7-col>-->
+                                    <!--</f7-grid>-->
+                                <!--</f7-card-header>-->
+                            <!--</f7-card>-->
+                        <!--</f7-card>-->
+                    </transition>
+                </div>
+                <!--<curr_objects v-if="hasObject" :list="this.select_list"  :current="this.selected_object" @selected_object_done="selected_object_done"></curr_objects>-->
+            </f7-page>
+            </f7-pages>
+        </f7-view>
     </f7-popup>
 </template>
 
@@ -69,50 +80,35 @@
             mode:{type:Boolean,default:false},
             id:{type:String,default:''}
         },
+
         data:function(){
           return{
               title:'',
+              sorted_array:{},
+              check_list_arr:[],
               selected_object:{},
-              current:'',
-              addres_obj:'',
+              current:0,
               audits:[],
               edit:false,
               have_something:false,
               audit_was_add:false,
-              object_selected:false
+              object_selected:false,
+              text_for_after:'',
+              check_list_selected:[]
           }
         },
         created(){
+
             this.title=(!this.mode)?this.$root.localization.pop_up.edit:this.$root.localization.pop_up.new;
             this.select_list=(this.$root.objects.length>0)?this.$root.objects:'';
         },
         mounted(){
             this.$nextTick(function(){
-                // $$('.popover').forEach(function(){
-                //    console.log($$(this).hasClass('.modal-in'));
-                // });
-                if (this.id!=''){
-                    this.selected_object=this.get_object(this.id);
-                    this.audits=this.get_audits_root(this.id);
-                    this.current=this.selected_object.title;
-                    this.addres_obj=this.selected_object.address;
-                    this.edit=true;
-                    this.correct_css();
-                };
+                this.sorted_array=this.$_.groupBy(this.$root.objects,'group_id');
+                this.check_list_arr=this.$root.check_list;
             });
         },
-        computed:{
-            hasObject(){
-                this.select_list=(this.$root.objects.length>0)?this.$root.objects:'';
-                return(this.select_list.length>0)
-            }
-
-
-        },
         methods:{
-            sended( itm){
-                return !itm.upload;
-            },
             closePopUp(mode){
                 (!this.edit)? this.clear_data():'';
                 (mode)? this.$root.objects=this.$ls.get('objects'):'';
@@ -122,17 +118,54 @@
                 return new Date();
             },
             selected_object_done(item){
-                if((Object.keys(item).length > 0)){
-                    this.selected_object = item;
-                    this.current = this.selected_object.title;
-                    this.addres_obj = this.selected_object.address;
-                    if (!this.have_something) this.correct_css();
-                    this.have_something = true;
-                    // Если нет аудита, то создаем
-                    if (this.audits.length === 0) {
-                        this.add_audit();
-                    }
+                let self=this;
+                let result_search={}
+                result_search=(self.$_.findWhere(self.$root.objects,{id:Number(item.target.value)}));
+                (!result_search)?this.error_search():this.show_selected(result_search);
+            },
+            show_selected(item){
+                this.selected_object=item;
+                // if (!this.have_something) this.correct_css();
+                // this.have_something = true;
+                if (this.audits.length === 0) {
+                    this.add_audit();
                 }
+            },
+            error_search(){
+              console.log("Ошибка поиска");
+            },
+            check_select_done(item){
+                this.audits[0].check_list=[];
+                let self=this;
+                let arr = Array.from(item.target.selectedOptions);
+                arr.forEach(function(opt){
+                    self.audits[0].check_list.push(self.add_check_list_to($$(opt).val()))
+              });
+
+            },
+            add_check_list_to(key){
+                let self=this;
+                let check_list_new={
+                    "id": self.$root.check_list[key].id,
+                    "title":self.$root.check_list[key].title,
+                    "created_at":self.$root.check_list[key].created_at,
+                    "requirement":[],
+                    "audit_id":self.audits[0].id
+                };
+                self.$root.check_list[key].requirement.forEach(function(req){
+                    let new_req={
+                        "id":req.id,
+                        "title":req.title,
+                        "status":0,
+                        "checklist_id": self.$root.check_list[key].id,
+                        "warning_level":req.warning_level,
+                        "created_at":req.created_at,
+                        "comments":[],
+                        "disabled":false
+                    };
+                    check_list_new.requirement.push(new_req);
+                });
+                return check_list_new;
             },
             get_audits(audits){
                 let result=[];
@@ -179,72 +212,53 @@
                 return this.audits.length;
             },
             submit(){
-                if (this.validat()){
                     if((Object.keys(this.selected_object).length > 0)){
-                        this.$set(this.selected_object,"audits",this.audits);
-                        this.$set(this.selected_object,"title",this.current);
-                        this.$set(this.selected_object,"address",this.addres_obj);
-                        this.$ls.set('objects',this.$root.objects);
-                        this.$set(this.selected_object,"user_info",this.$root.auth_info.user_info);
-                    }
-                    else{
-                        let new_object={
-                          "id":"Offline_"+this.getlastid(),
-                          "title":this.current,
-                          "address":this.addres_obj,
-                          "audits":this.audits,
-                          "created_at":this.GetCurrentDate()
-                        };
-                       this.$root.objects.push(new_object);
-                    }
+                        this.selected_object.audits.push(this.audits[0]);
 
+
+
+                        // this.$set(this.selected_object,"audits",this.audits);
+                        //
+                        // this.$ls.set('objects',this.$root.objects);
+                    }
                     this.closePopUp();
-                }else{ this.$f7.alert('Не выбран объект иди заполнены не все поля!',this.$root.localization.pop_up.warning);}
-            },
-            validat(){
-                let result = true;
-                result = (this.current !== '') ? result : false;
-              //result=(this.addres_obj!=''&&this.addres_obj!=null)?result:false;
-              // this.audits.forEach(function(item){
-              //    result=(item.title!='')?result:false;
-              // });
-              return result;
+
             },
             clear_data(){
-              this.correct_css();
-              this.secod_correct_css();
+              // this.correct_css();
+              // this.secod_correct_css();
               this.selected_object={};
-              this.current='';
-              this.addres_obj='';
+              this.current=0;
+              // this.sorted_array={'2':[1,2,3]};
               this.audits=[];
               this.have_something=false;
               this.audit_was_add=false;
 
 
             },
-            remove_audit(index){
-              this.audits.splice(index,1);
-            },
+            // remove_audit(index){
+            //   this.audits.splice(index,1);
+            // },
 
            //CSS Доработка
-            correct_css(){
-                let element=$$(this.$el).find('.correct_css_name').find('.item-inner');
-                if(this.current != null && element.length > 0)this.add_cls(element,'not-empty-state');
-                element=$$(this.$el).find('.correct_css_adr').find('.item-inner');
-                if(this.addres_obj != null && element.length > 0)this.add_cls(element,'not-empty-state');
-            },
-            secod_correct_css(){
-                let element=$$(this.$el).find('.correct_css');
-                let el=(element.find('.item-input'));
-                el.forEach(function(item){
-                    $$(item).removeClass('not-empty-state')
-                })
-            },
-            add_cls(obj,cls){
-               obj.attr('class').split(' ').forEach(function(item){
-                   (item!=cls)?obj.addClass(cls):obj.removeClass(cls);
-               });
-            },
+           //  correct_css(){
+           //      let element=$$(this.$el).find('.correct_css_name').find('.item-inner');
+           //      if(this.current != null && element.length > 0)this.add_cls(element,'not-empty-state');
+           //      element=$$(this.$el).find('.correct_css_adr').find('.item-inner');
+           //      if(this.addres_obj != null && element.length > 0)this.add_cls(element,'not-empty-state');
+           //  },
+           //  secod_correct_css(){
+           //      let element=$$(this.$el).find('.correct_css');
+           //      let el=(element.find('.item-input'));
+           //      el.forEach(function(item){
+           //          $$(item).removeClass('not-empty-state')
+           //      })
+           //  },
+           //  add_cls(obj,cls){
+           //     obj.attr('class').split(' ').forEach(function(item){
+           //         (item!=cls)?obj.addClass(cls):obj.removeClass(cls);
+           //     });
+           //  },
         }
     }
 </script>

@@ -189,13 +189,11 @@
         methods:{
             //Отправка данных по аудиту
             send_results(){
-
                ( this.audit.check_list.length>0)?
                    (this.$root.check_audit_positions(this.audit))?
                     this.$root.send_to_serv_audit(this.audit)
                        :this.$f7.alert(this.$root.localization.AuditPage.check_not_complete, this.$root.localization.pop_up.warning)
-                        : this.$f7.alert(this.$root.localization.pop_up.no_check_list,this.$root.localization.pop_up.warning)
-                ;
+                        : this.$f7.alert(this.$root.localization.pop_up.no_check_list,this.$root.localization.pop_up.warning);
 
             },
             //Расчет высоты для блока с иконкой статусом аудита.

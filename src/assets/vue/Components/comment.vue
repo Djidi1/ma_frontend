@@ -1,14 +1,16 @@
 <template>
     <!--Блок с комментариями-->
     <f7-block class="comment_acrd"  >
-        <f7-list accordion class="acrd_custom">
-            <f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_title" after="<i class='fa fa-commenting-o' aria-hidden='true'></i>">
-                <f7-accordion-content>
-                    <transition appear mode="out-in" name="slide-fade">
-                    <!--<single-comment  v-for="(comment,id) in this.data_comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="read" :id="id"></single-comment>-->
-                    <f7-block inner><text_area :data_set="this.data_comments"></text_area></f7-block>
-                    </transition>
-                </f7-accordion-content>
+        <f7-list  class="acrd_custom">
+            <f7-list-item  class="inner_check_connetent"  :title="$root.localization.AuditPage.comments_title">
+                <div slot="after">
+                    <div style="font-size:25px; display:inline-block; transition:all .3s; padding:0 10px; transform:translateY(-7px)" :class="(data_comments.length>0)?'blue_cls':''"  > <comment_icon></comment_icon> </div>
+                    <div @click="upload(false)" style="font-size:30px; display:inline-block; transition:all .3s; padding:0 10px; transform:translateY(-5px)" > <image_multiply></image_multiply></div>
+                    <div @click="upload(true)" style="font-size:30px; display:inline-block; transition:all .3s; padding:0 10px; transform:translateY(-5px)"  > <camera_icon></camera_icon></div>
+                </div>
+                <div slot="root">
+                    <f7-block inner><text_area  :data_set="this.data_comments" :audit_comment="false"></text_area></f7-block>
+                </div>
             </f7-list-item>
         </f7-list>
     </f7-block>
@@ -16,19 +18,21 @@
 
 <script>
 
-    import SingleComment from "src/assets/vue/Components/single-comment";
+
+    import  comment_icon from "vue-material-design-icons/comment.vue"
+    import  camera_icon from "vue-material-design-icons/camera.vue"
+    import  image_multiply from "vue-material-design-icons/image-plus.vue"
 
     export default {
-        components: {SingleComment},
+        components: {
+            comment_icon,
+            camera_icon,
+            image_multiply
+        },
         name: "comment",
         props:{
            data_comments:{type: Array,default:function(){return[]}},
             read:{type:Boolean,default:false}
-        },
-        computed:{
-            hasComment(){
-                   return (this.data_comments.length>0);
-            }
         },
         methods:{
             remove_comment(id){
@@ -40,6 +44,84 @@
 
             },
 
+            //методы для обработки фото
+            upload(mode) {
+                let source = (mode) ? Camera.PictureSourceType.CAMERA : Camera.PictureSourceType.SAVEDPHOTOALBUM;
+                navigator.Camera.getPicture(this.getPhoto, this.getPhotoFail, {
+                    quality: 30,
+                    destinationType: Camera.DestinationType.FILE_URI,
+                    sourceType: source,
+                    encodingType: Camera.EncodingType.JPEG,
+                    mediaType: Camera.MediaType.PICTURE,
+                })
+
+            },
+            getPhoto: function (img) {
+                let self = this;
+                self.get_img_data(img).then(
+                    f => {
+                        self.$$('#img_pr' + (self.data_comments[0].attachments.length - 1)).show();
+                        window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory + "img/", function (dir) {
+                            f.moveTo(dir, f.name, function (entry) {
+                                self.data_comments[0].attachments[ self.data_comments[0].attachments.length - 1].url = entry.toURL();
+                                self.$$('#img_pr' + (self.data_comments[0].attachments.length - 1)).hide();
+                            }, function (error) {
+                                self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
+                                self.attachments.splice( self.data_comments[0].attachments.length - 1, 1);
+                            });
+                        });
+                    },
+                    error => {
+                        self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
+                    }
+                );
+            },
+            get_img_data: function (url) {
+                let self = this;
+                return new Promise(function (resolve, reject) {
+                    window.resolveLocalFileSystemURL(url, function (f) {
+                        f.file(function (file) {
+                                let img_data = {
+                                    "caption": file.name,
+                                    "file": {
+                                        'name': file.name,
+                                        "size": file.size,
+                                        "type": file.type
+                                    },
+                                    "url": url
+                                };
+                                (self.data_comments.length > 0) ?
+                                    self.data_comments[0].attachments.push(img_data)
+                                    : self.data_comments.push(
+                                        {
+                                            'id': self.getOfflineID(this.comment.id),
+                                            'text': '',
+                                            'user_info': self.$root.auth_info.user_info,
+                                            'create_date': self.GetCurrentDate(),
+                                            'attachments': [img_data]
+                                        }
+                                    );
+                                console.log(self.data_comments);
+                                // self.attachment.push(img_data);
+                                resolve(f);
+                            },
+                            function (error) {
+                                reject(error);
+                            });
+                    })
+                });
+
+            },
+            getOfflineID(current) {
+                let lastId = 0;
+                (current != undefined) ?
+                    lastId = current.id :
+                    ++lastId;
+                return lastId;
+            },
+            GetCurrentDate() {
+                return new Date();
+            },
         }
 
     }
@@ -57,6 +139,10 @@
     opacity: 0;
 
 }
+.blue_cls{
+    color:#2196F3;
+}
+
 
 
 </style>

@@ -182,7 +182,7 @@
 
             upload(mode) {
                 let source = (mode) ? Camera.PictureSourceType.CAMERA : Camera.PictureSourceType.SAVEDPHOTOALBUM;
-                navigator.camera.getPicture(this.getPhoto, this.getPhotoFail, {
+                navigator.Camera.getPicture(this.getPhoto, this.getPhotoFail, {
                     quality: 30,
                     destinationType: Camera.DestinationType.FILE_URI,
                     sourceType: source,
