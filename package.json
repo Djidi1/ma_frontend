@@ -74,7 +74,8 @@
             "cordova-android-support-gradle-release": {
                 "ANDROID_SUPPORT_VERSION": "27.+"
             },
-            "cordova-plugin-media-capture": {}
+            "cordova-plugin-media-capture": {},
+            "cordova-plugin-camera": {}
         },
         "platforms": [
             "browser",
