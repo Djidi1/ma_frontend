@@ -5,36 +5,11 @@
         <f7-navbar back-link="Back" sliding  >
             <f7-nav-center sliding> {{audit.title || $root.localization.AuditPage.audit+' № '+audit.id}}</f7-nav-center>
             <f7-nav-right v-if="!uploaded">
-                <f7-link @click="open_modal()" ><div style="font-size:24px"><pencil ></pencil></div></f7-link>
+                <f7-link @click="open_edit()" ><div style="font-size:24px"><pencil ></pencil></div></f7-link>
                 <f7-link @click="remove_audit"> <div style="font-size:24px"><trash></trash></div></f7-link>
             </f7-nav-right>
         </f7-navbar>
         <div class="blck_info">
-
-            <!--<f7-card>-->
-            <!--<f7-card-header>-->
-            <!--<div class="obj_info audit_obj">-->
-            <!--<div class="row  no-gutter">-->
-            <!--<div class="col-70">-->
-            <!--&lt;!&ndash;<div class="col-100">{{this.$root.localization.AuditPage.name}}:</div>&ndash;&gt;-->
-            <!--<div class="col-100">{{audit.title}}</div>-->
-            <!--&lt;!&ndash;<div class="col-100">Id: {{audit.id}}</div>&ndash;&gt;-->
-            <!--<div class="col-100">{{data_format}}</div>-->
-            <!--&lt;!&ndash;<div class="col-100"><f7-link no-link-class :href="'/object/'+this.audit.object_id+'/'">{{this.$root.objects[this.array_index_save].title}}</f7-link></div>&ndash;&gt;-->
-            <!--</div>-->
-            <!--<div class="col-30 status" :style="this.block_height">-->
-            <!--<table>-->
-            <!--<tr>-->
-            <!--<td> <i :class="status" aria-hidden="true"></i></td>-->
-            <!--</tr>-->
-            <!--</table>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</f7-card-header>-->
-
-            <!--</f7-card>-->
-
 
             <f7-list media-list v-if="hasCheck_list"  style="margin-bottom: 0!important;"  >
                     <f7-list-item class="deff"  group-title :title="this.$root.localization.AuditPage.check_list">
@@ -66,38 +41,7 @@
 
 
 
-
-                <!--<f7-list accordion class="acrd_custom text_main">-->
-                    <!--<f7-list-item  accordion-item :title="this.$root.localization.AuditPage.comments_audit" >-->
-                        <!--&lt;!&ndash;<f7-accordion-content>&ndash;&gt;-->
-                            <!--<transition appear mode="out-in" name="slide-fade">-->
-                                <!--<single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id" :audit_comment="true"></single-comment>-->
-                                <!--<f7-block inner v-if="!hasComment"><text_area :data_set="this.audit.comments" :audit_comment="true"></text_area></f7-block>-->
-                            <!--</transition>-->
-                            <!--&lt;!&ndash;<transition-group appear mode="out-in" name="slide-fade" >&ndash;&gt;-->
-                            <!--&lt;!&ndash;<single-comment  v-for="(comment,id) in this.audit.comments" :key="id" :single_comment="comment" @remove="remove_comment" :read="uploaded" :id="id"></single-comment>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</transition-group>&ndash;&gt;-->
-
-                            <!--&lt;!&ndash;<f7-block inner><text_area :data_set="this.audit.comments"></text_area></f7-block>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</f7-accordion-content>&ndash;&gt;-->
-                    <!--</f7-list-item>-->
-                <!--</f7-list>-->
-
-
-
-            <!--<f7-card v-if="!uploaded">-->
-                <!--<f7-block style="padding-bottom:10px;">-->
-                    <!--<f7-grid>-->
-                        <!--<f7-col width="100">-->
-                            <!--<f7-button fill @click="send_results()"><div style="font-size:30px"><send></send></div></f7-button>-->
-                        <!--</f7-col>-->
-                    <!--</f7-grid>-->
-                <!--</f7-block>-->
-
-            <!--</f7-card>-->
-
         </div>
-        <popup_audit_edit :audit="this.audit"></popup_audit_edit>
         <f7-toolbar bottom :no-shadow="true" v-if="!uploaded">
             <f7-link></f7-link>
             <f7-link class="toolbar_custome_link" @click="send_results()"> <div style="font-size:30px"><send></send></div></f7-link>
@@ -107,7 +51,7 @@
 </template>
 
 <script>
-    import Popup_audit_edit from "src/assets/vue/Components/popup_edit_audit";
+    import Popup_audit_edit from "src/assets/vue/pages/popup_edit_audit";
     import SingleComment from "src/assets/vue/Components/single-comment";
     import  pencil from "vue-material-design-icons/pencil.vue"
     import  trash from "vue-material-design-icons/delete.vue"
@@ -269,8 +213,8 @@
 
               return result
             },
-            open_modal(){
-                this.$f7.popup($$('#popup_add_audit_'+this.audit.id));
+            open_edit(){
+                this.$f7.views.main.router.load({url:'/edit_audit/'+this.array_index+'/'+this.id});
             }
 
         }

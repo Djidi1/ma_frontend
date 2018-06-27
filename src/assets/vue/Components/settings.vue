@@ -15,10 +15,13 @@
                     <f7-label floating>{{this.$root.localization.lang.name}}</f7-label>
                     <f7-input type="text" v-model="user_name"/>
                 </f7-list-item>
-                <!--<f7-list-item>-->
-                    <!--<f7-label floating>{{this.$root.localization.lang.tel}}</f7-label>-->
-                    <!--<f7-input type="text" disabled />-->
-                <!--</f7-list-item>-->
+            </f7-list>
+            <!--server_change-->
+            <f7-list form class="user_settings">
+                <f7-list-item>
+                    <f7-label floating>{{this.$root.localization.lang.server}}</f7-label>
+                    <f7-input type="text" v-model="server"/>
+                </f7-list-item>
             </f7-list>
 
 
@@ -55,10 +58,10 @@
         data:function(){
             return{
                 user_name:this.$root.auth_info.name,
-                curentLang:this.$root.settings
+                curentLang:this.$root.settings,
+                server:this.$root.be_server
             }
         },
-
 
         methods:{
             curLang:function(val){
@@ -95,10 +98,11 @@
                 }
             },
             submitSetting:function(){
-                if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings){
+                if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings||this.server!=this.$root.be_server){
                    //this.$set(this.$root.auth_info,'name',this.user_name);
                     this.$root.auth_info={name:this.user_name,email:this.$root.auth_info.email,token:this.$root.auth_info.token,auth:true,user_info:this.$root.auth_info.user_info};
                     this.$root.settings=this.curentLang;
+                    this.$root.be_server=this.server;
                 }
             },
             cancelSetting:function(){

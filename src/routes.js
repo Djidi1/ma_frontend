@@ -26,5 +26,9 @@ export default [
     {
       path:'/check/:audit_id/:check_id',
       component:require('./assets/vue/pages/check.vue')
+    },
+    {
+        path:'/edit_audit/:object_index/:audit_id/',
+        component:require('./assets/vue/pages/popup_edit_audit.vue')
     }
 ]

@@ -57,47 +57,34 @@ Vue.use(underscore);
 
 //Components
 import List from './assets/vue/Components/list_audit.vue'
-
 Vue.component('list', List);
+
 import Object_list from './assets/vue/Components/object_list.vue'
-
 Vue.component('list_object', Object_list);
+
 import check_item from './assets/vue/Components/chek_item.vue'
-
 Vue.component('check_item', check_item);
+
 import textarea from './assets/vue/Components/textarea_comment.vue'
-
 Vue.component('text_area', textarea);
+
 import comment from './assets/vue/Components/comment.vue'
-
 Vue.component('comment', comment);
+
 import attachment from './assets/vue/Components/attachment.vue'
-
 Vue.component('attachment', attachment);
+
 import single_comment from './assets/vue/Components/single-comment.vue'
-
 Vue.component('single_comment', single_comment);
+
 import check_box from './assets/vue/Components/check_box_item.vue'
-
 Vue.component('check_box_item', check_box);
-import audit_add from './assets/vue/Components/add_audit_form.vue'
 
-Vue.component('audit_add', audit_add);
-import popover_obj from './assets/vue/Components/popover_obj.vue'
 
-Vue.component('popover_obj', popover_obj);
-import curr_objects from './assets/vue/Components/exist_objects_list.vue'
-
-Vue.component('curr_objects', curr_objects);
 import popup_new_object from './assets/vue/Components/popup_new_object.vue'
-
 Vue.component('popup_new_object', popup_new_object);
-import popup_edit_object from './assets/vue/Components/popup_object_edit.vue'
 
-Vue.component('popup_edit_object', popup_edit_object);
-import popup_audit_edit from './assets/vue/Components/popup_edit_audit.vue'
 
-Vue.component('popup_audit_edit', popup_audit_edit);
 
 // const be_server = "http://localhost:3000";
 
@@ -128,7 +115,7 @@ new Vue({
         localization: {},
         check_list: {},
         settings: {},
-        be_server: "https://server.mobit365.com:7443"
+        be_server: ""
     },
 //наблюдаем за массивами, в случае изменения обновляем содержимое localstorage
     watch: {
@@ -144,6 +131,9 @@ new Vue({
         },
         check_list: function (val) {
             this.$ls.set('check_list', val);
+        },
+        be_server:function(val){
+            this.$ls.set('be_server',val);
         }
     },
     //При создании App устанавлива язык из локал сторейджа, если, Если язык не установлен(локалсторейдж пуст) устанавливаем русский по умолчанию.
@@ -153,6 +143,11 @@ new Vue({
         this.settings = this.$ls.get('settings', 'ru');
         this.$ls.on('settings', function (val) {
             _this.settings = val;
+        });
+        //Настройки сервера и подключения
+        this.be_server = this.$ls.get('be_server', 'https://server.mobit365.com:7443');
+        this.$ls.on('be_server', function (val) {
+            _this.be_server = val;
         });
         //Вызов метода установки языка.
         this.lang_select(this.settings);
@@ -172,6 +167,7 @@ new Vue({
         this.$ls.on('objects', function (val) {
             _this.list = val;
         });
+
         //Статичный-чек лист. Необходим для выбора чек листа при редактирование/создание новго аудита.
         this.check_list = this.$ls.get('check_list', '');
         this.$ls.on('check_list', function (val) {
@@ -193,18 +189,10 @@ new Vue({
                 return false;
             } else {
                 if (element.find('.modal-in').length > 0) {
-                    if (element.find('.modal-in').length > 1) {
-                        $$('.popover').forEach(function () {
-                            if ($$(this).hasClass('modal-in')) {
-                                self.$f7.closeModal($$(this));
-                                return false
-                            }
-                        });
-                    } else {
                         self.$f7.closeModal();
                         return false;
-                    }
                 } else {
+                    console.log(this.$f7.getCurrentView().activePage.name);
                     if ((this.$f7.getCurrentView().activePage.name === "audits_main") || (this.$f7.getCurrentView().activePage.name === "objects_main")) {
                         // this.$f7.confirm("",this.$root.localization.modal.modalTextConfExit, function () {
                         navigator.app.clearHistory();

@@ -1,7 +1,7 @@
 <template>
     <!--Создание новго объкта с аудитами и чек листами-->
     <f7-popup id="popup_add" >
-        <f7-view id="popup-view">
+        <f7-view id="popup-view-object">
             <f7-pages navbar-through>
             <f7-page>
                 <f7-navbar back-link="Back" sliding @back-click.stop="closePopUp(true)" >
@@ -24,7 +24,7 @@
 
                             <select  :name="this.$root.localization.pop_up.select_ex" @change="selected_object_done">
                                 <optgroup v-for="(group) in sorted_array" :key="group.group_id" :label="group[0].group_title">
-                                    <option  v-for="(obj) in group" :key="obj.id" :value="obj.id" selected >{{obj.title}}  </option>
+                                    <option  v-for="(obj) in group" :key="obj.id" :value="obj.id" selected >{{group[0].group_title}}. {{obj.title}} </option>
                                 </optgroup>
                             </select>
                             <div slot="after">{{text_for_after}}</div>
@@ -127,9 +127,7 @@
                 this.selected_object=item;
                 // if (!this.have_something) this.correct_css();
                 // this.have_something = true;
-                if (this.audits.length === 0) {
                     this.add_audit();
-                }
             },
             error_search(){
               console.log("Ошибка поиска");
@@ -184,7 +182,7 @@
             },
             add_audit(){
               let new_audit={
-                  "id":"Offline_audit_"+this.getlastid_audit(),
+                  "id":this.getlastid_audit(),
                   "title":'',
                   "date_add":this.GetCurrentDate(),
                   "created_at":this.GetCurrentDate(),
@@ -209,17 +207,12 @@
               return this.$root.objects.length-1;
             },
             getlastid_audit(){
-                return this.audits.length;
+                return (this.selected_object.audits.length*(-1));
             },
             submit(){
                     if((Object.keys(this.selected_object).length > 0)){
                         this.selected_object.audits.push(this.audits[0]);
-
-
-
-                        // this.$set(this.selected_object,"audits",this.audits);
-                        //
-                        // this.$ls.set('objects',this.$root.objects);
+                         this.$ls.set('objects',this.$root.objects);
                     }
                     this.closePopUp();
 

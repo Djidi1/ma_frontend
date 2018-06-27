@@ -4,7 +4,6 @@
             <f7-list media-list  class=" searchbar-found " id="list_of_objects">
                 <f7-list-group v-if="objects.audits.length>0" v-for="(objects,index) in this.$root.objects" :key="index">
                     <f7-list-item
-
                             group-title>
                         {{objects.group_title}}<br>
                         {{objects.title||"---"}}
@@ -12,34 +11,27 @@
                     <f7-list-item v-for="(acrd,acrd_index) in array_few(objects)" :key="acrd_index"
                                   :link="'/audit/'+index+'/'+acrd_index"
                                   :id="'id_'+acrd.id"
-                                  :title="$root.localization.AuditPage.audit+' № '+acrd.id"
+                                  :title="$root.localization.AuditPage.audit+' № '+acrd.id+'<div>'+objects.group_title+' '+objects.title+'</div>'"
                                   :subtitle="data_formta(acrd.created_at)"
                                   :text="check_list_names(acrd)"
                                   swipeout>
                         <!--:media="realStatus(acrd)"-->
                         <f7-swipeout-actions v-if="!acrd.upload">
                             <f7-swipeout-button @click="send_data(acrd,acrd.id)"><div style="font-size:35px"><send></send></div></f7-swipeout-button>
-                            <f7-swipeout-button @click="edit_data(acrd.id)"><div style="font-size:35px"><pencil></pencil></div></f7-swipeout-button>
+                            <f7-swipeout-button @click="edit_data(acrd.id, index)"><div style="font-size:35px"><pencil></pencil></div></f7-swipeout-button>
                             <f7-swipeout-button @click="delete_data(index,acrd.id,acrd_index)"><div style="font-size:35px"><trash></trash></div></f7-swipeout-button>
                         </f7-swipeout-actions>
                         <div slot="media">
                             <div style="text-align: center">
-                                <!--<div v-if="(acrd.upload)? false:true" style="color:#2196F3; font-size:45px;">-->
-                                    <!--<alert_box ></alert_box>-->
-                                <!--</div>-->
-                                <!--b51313-->
                                 <div v-if="(!acrd.upload)" >
                                     <div v-if="(check_audit_status(acrd))" class="new_audit_icon "><new_audit_icon></new_audit_icon> </div>
                                     <i v-else class="icon cloud_no_sink cloud"> </i>
-                                    <!--<close_box ></close_box>-->
                                 </div>
                                 <div  v-else >
                                     <i class="icon could_ok cloud"> </i>
                                 </div>
                             </div>
-                            <!--<div class="item-title-row" style="font-size:0.6em; width:80px; padding-right:5px; margin-bottom:5px; transform:translateY(-7px)">{{data_formta(acrd.created_at)}}</div>-->
                         </div>
-                        <popup_audit_edit :audit="acrd"></popup_audit_edit>
                     </f7-list-item>
 
                 </f7-list-group>
@@ -198,10 +190,11 @@
                          : self.$f7.alert(self.$root.localization.pop_up.no_check_list,self.$root.localization.pop_up.warning);
                 this.$f7.swipeoutClose($$('#id_' + index));
             },
-            edit_data(index) {
+            edit_data(audit_id,obj_id) {
                 let $$ = Dom7;
-                this.$f7.swipeoutClose($$('#id_' + index));
-                this.$f7.popup($$('#popup_add_audit_' + index));
+                this.$f7.swipeoutClose($$('#id_' + audit_id));
+                this.$f7.views.main.router.load({url:'/edit_audit/'+obj_id+'/'+audit_id});
+                // this.$f7.popup($$('#popup_add_audit_' + index));
             },
             delete_data(obj, id, acrd_index) {
                 let $$ = Dom7;

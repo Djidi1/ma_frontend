@@ -521,6 +521,13 @@
 	font-size:40px;
 	line-height:48px;
 }
+.no_check_list{
+	color: #dddddd !important;
+	width:52px;
+	height:48px;
+	font-size:40px;
+	line-height:48px;
+}
 .item_audit .item-media{
 	padding-top: 2px !important;
 	padding-bottom: 2px !important;
@@ -593,12 +600,24 @@
 .smart-select-page .list-block{
 	margin-top: 0 !important;
 }
+.smart-select-page .list-block .item-title div{
+	font-size:1px;
+	visibility:hidden;
+	opacity:0;
+
+}
 .smart-select-page .searchbar{
 	transition:all .4s;
+	box-shadow: unset;
 }
 .smart-select-page .navbar.navbar-hidden+.searchbar{
 	-webkit-transition-duration: .4s;
 	transition-duration: .4s;
 	-webkit-transform: translate3d(0,-116%,0);
 	transform: translate3d(0,-116%,0)
+}
+.item-title div{
+	font-size:1px;
+	visibility:hidden;
+	opacity:0;
 }
