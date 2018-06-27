@@ -43,7 +43,6 @@
                 });
 
             },
-
             //методы для обработки фото
             upload(mode) {
                 let source = (mode) ? Camera.PictureSourceType.CAMERA : Camera.PictureSourceType.SAVEDPHOTOALBUM;
@@ -54,7 +53,6 @@
                     encodingType: Camera.EncodingType.JPEG,
                     mediaType: Camera.MediaType.PICTURE,
                 })
-
             },
             getPhoto: function (img) {
                 let self = this;
@@ -67,7 +65,7 @@
                                 self.$$('#img_pr' + (self.data_comments[0].attachments.length - 1)).hide();
                             }, function (error) {
                                 self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
-                                self.attachments.splice( self.data_comments[0].attachments.length - 1, 1);
+                                self.data_comments[0].attachments.splice( self.data_comments[0].attachments.length - 1, 1);
                             });
                         });
                     },
@@ -94,7 +92,7 @@
                                     self.data_comments[0].attachments.push(img_data)
                                     : self.data_comments.push(
                                         {
-                                            'id': self.getOfflineID(this.comment.id),
+                                            'id': -1,
                                             'text': '',
                                             'user_info': self.$root.auth_info.user_info,
                                             'create_date': self.GetCurrentDate(),
@@ -102,7 +100,6 @@
                                         }
                                     );
                                 console.log(self.data_comments);
-                                // self.attachment.push(img_data);
                                 resolve(f);
                             },
                             function (error) {
@@ -111,13 +108,6 @@
                     })
                 });
 
-            },
-            getOfflineID(current) {
-                let lastId = 0;
-                (current != undefined) ?
-                    lastId = current.id :
-                    ++lastId;
-                return lastId;
             },
             GetCurrentDate() {
                 return new Date();

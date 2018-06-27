@@ -81,7 +81,7 @@ import check_box from './assets/vue/Components/check_box_item.vue'
 Vue.component('check_box_item', check_box);
 
 
-import popup_new_object from './assets/vue/Components/popup_new_object.vue'
+import popup_new_object from './assets/vue/pages/popup_new_object.vue'
 Vue.component('popup_new_object', popup_new_object);
 
 
@@ -188,10 +188,10 @@ new Vue({
                 (this.$f7.getCurrentView().activePage.name === "settings") ? this.$f7.views[0].back() : this.$f7.closePanel();
                 return false;
             } else {
-                if (element.find('.modal-in').length > 0) {
-                        self.$f7.closeModal();
-                        return false;
-                } else {
+                // if (element.find('.modal-in').length > 0) {
+                //         self.$f7.closeModal();
+                //         return false;
+                // } else {
                     console.log(this.$f7.getCurrentView().activePage.name);
                     if ((this.$f7.getCurrentView().activePage.name === "audits_main") || (this.$f7.getCurrentView().activePage.name === "objects_main")) {
                         // this.$f7.confirm("",this.$root.localization.modal.modalTextConfExit, function () {
@@ -201,7 +201,7 @@ new Vue({
                     } else {
                         this.$f7.mainView.back();
                     }
-                }
+                // }
             }
         },
 

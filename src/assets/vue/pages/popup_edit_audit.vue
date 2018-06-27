@@ -4,7 +4,7 @@
         <!--<f7-view id="pop_up_audit_view">-->
             <!--<f7-pages navbar-through>-->
                 <f7-page>
-                    <f7-navbar back-link="Back" sliding  >
+                    <f7-navbar back-link="Back" sliding  @back-click.stop="close_edit()">
                         <f7-nav-center sliding> {{title}} </f7-nav-center>
                         <f7-nav-right>
                             <f7-grid class="crud_header edit_menu">
@@ -17,7 +17,7 @@
 
                     <f7-list media-list>
                         <f7-list-item
-                                :title="$root.localization.AuditPage.audit+' № '+audit_current.id"
+                                :title="$root.localization.AuditPage.audit+' № '+this.audit_id"
                                 :subtitle="data_formta(audit_current.created_at)"
                                 :text="check_list_names(audit_current)">
                             <div slot="media">
@@ -72,13 +72,22 @@
                 title:this.$root.localization.pop_up.edit,
                 audit_current:{},
                 current:'',
-                check_list_new:[]
+                check_list_new:[],
+                check_list_old:[]
             }
         },
         created(){
+            let self=this;
             this.audit_current=this.$_.findWhere(this.$root.objects[this.object_index].audits,{id:Number(this.audit_id)})
+            this.audit_current.check_list.forEach(function(chk_old){
+                self.check_list_old.push(chk_old);
+            });
         },
         methods:{
+            close_edit(){
+                this.audit_current.check_list=this.check_list_old;
+                this.$f7.mainView.back();
+            },
             current_selected(item){
                 let result='';
                 this.audit_current.check_list.forEach(function(check){

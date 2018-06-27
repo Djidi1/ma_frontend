@@ -191,55 +191,55 @@
                 })
 
             },
-            getPhoto: function (img) {
-                let self = this;
-                self.get_img_data(img).then(
-                    f => {
-                        self.$$('#img_pr' + (self.attachment.length - 1)).show();
-                        window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory + "img/", function (dir) {
-                            f.moveTo(dir, f.name, function (entry) {
-                                self.attachment[self.attachment.length - 1].url = entry.toURL();
-                                self.$$('#img_pr' + (self.attachment.length - 1)).hide();
-                            }, function (error) {
-                                self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
-                                self.attachment.splice(self.attachment.length - 1, 1);
-                            });
-                        });
-                    },
-                    error => {
-                        self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
-                    }
-                );
-            },
-            get_img_data(url) {
-                let self = this;
-                return new Promise(function (resolve, reject) {
-                    window.resolveLocalFileSystemURL(url, function (f) {
-                        f.file(function (file) {
-                                let img_data = {
-                                    "caption": file.name,
-                                    "file": {
-                                        'name': file.name,
-                                        "size": file.size,
-                                        "type": file.type
-                                    },
-                                    "url": url
-                                };
-                                self.attachment.push(img_data);
-                                resolve(f);
-                            },
-                            function (error) {
-                                reject(error);
-                            });
-                    })
-                });
-            },
-
-
-            getPhotoFail(message) {
-                this.$f7.alert('error:' + message, this.$root.localization.pop_up.warning);
-            },
-
+            // getPhoto: function (img) {
+            //     let self = this;
+            //     self.get_img_data(img).then(
+            //         f => {
+            //             self.$$('#img_pr' + (self.attachment.length - 1)).show();
+            //             window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory + "img/", function (dir) {
+            //                 f.moveTo(dir, f.name, function (entry) {
+            //                     self.attachment[self.attachment.length - 1].url = entry.toURL();
+            //                     self.$$('#img_pr' + (self.attachment.length - 1)).hide();
+            //                 }, function (error) {
+            //                     self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
+            //                     self.attachment.splice(self.attachment.length - 1, 1);
+            //                 });
+            //             });
+            //         },
+            //         error => {
+            //             self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
+            //         }
+            //     );
+            // },
+            // get_img_data(url) {
+            //     let self = this;
+            //     return new Promise(function (resolve, reject) {
+            //         window.resolveLocalFileSystemURL(url, function (f) {
+            //             f.file(function (file) {
+            //                     let img_data = {
+            //                         "caption": file.name,
+            //                         "file": {
+            //                             'name': file.name,
+            //                             "size": file.size,
+            //                             "type": file.type
+            //                         },
+            //                         "url": url
+            //                     };
+            //                     self.attachment.push(img_data);
+            //                     resolve(f);
+            //                 },
+            //                 function (error) {
+            //                     reject(error);
+            //                 });
+            //         })
+            //     });
+            // },
+            //
+            //
+            // getPhotoFail(message) {
+            //     this.$f7.alert('error:' + message, this.$root.localization.pop_up.warning);
+            // },
+            //
 
             //Css костыль
             correct_css() {

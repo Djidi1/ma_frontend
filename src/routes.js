@@ -30,5 +30,9 @@ export default [
     {
         path:'/edit_audit/:object_index/:audit_id/',
         component:require('./assets/vue/pages/popup_edit_audit.vue')
+    },
+    {
+        path:'/add_audit/',
+        component:require('./assets/vue/pages/popup_new_object.vue')
     }
 ]

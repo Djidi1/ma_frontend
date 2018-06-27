@@ -3,8 +3,8 @@
     <f7-page name="audit">
         <!-- Navbar -->
         <f7-navbar back-link="Back" sliding  >
-            <f7-nav-center sliding> {{audit.title || $root.localization.AuditPage.audit+' № '+audit.id}}</f7-nav-center>
-            <f7-nav-right v-if="!uploaded">
+            <f7-nav-center sliding> {{$root.localization.AuditPage.audit+' № '+audit.id}}</f7-nav-center>
+            <f7-nav-right v-if="!this.audit.upload">
                 <f7-link @click="open_edit()" ><div style="font-size:24px"><pencil ></pencil></div></f7-link>
                 <f7-link @click="remove_audit"> <div style="font-size:24px"><trash></trash></div></f7-link>
             </f7-nav-right>
@@ -44,7 +44,11 @@
         </div>
         <f7-toolbar bottom :no-shadow="true" v-if="!uploaded">
             <f7-link></f7-link>
-            <f7-link class="toolbar_custome_link" @click="send_results()"> <div style="font-size:30px"><send></send></div></f7-link>
+            <f7-link class="toolbar_custome_link" @click="send_results()"><div style="font-size:18px; transform:translateY(-2%)">
+                {{this.$root.localization.AuditPage.audit_send_btn}}&nbsp&nbsp
+            </div>
+                <div style="font-size:30px"><send></send></div>
+            </f7-link>
             <f7-link></f7-link>
         </f7-toolbar>
     </f7-page>
@@ -97,13 +101,6 @@
             this.audit=this.$root.objects[this.array_index].audits[this.id];
         },
         computed:{
-            //Статсу аудита.
-            status(){
-                let self=this;
-                let result;
-                result=(self.audit.upload)?self.upload_st_low(self.audit):"";
-                return result;
-            },
             //Проверка есть ли чек листы.
             hasCheck_list(){
                 return (this.audit.check_list.length>0);
@@ -120,8 +117,9 @@
             },
             //Проверка загружен ли аудита на сервер.
             uploaded(){
-                return this.audit.upload;
+                return (this.audit.upload)?true:this.all_cheked();
             },
+
             //Кол-во комментариве к аудиту.
             comment_audit_count(){
                 return (this.audit.comments.length>0)?"<i class='fa fa-commenting-o' aria-hidden='true'></i> "+this.audit.comments.length:"<i class='fa fa-commenting-o' aria-hidden='true'></i>";
@@ -131,6 +129,14 @@
             }
         },
         methods:{
+            all_cheked(){
+                let self=this;
+                let result=false;
+                this.audit.check_list.forEach(function(chk){
+                    result=self.new_str(chk);
+                });
+                return result;
+            },
             //Отправка данных по аудиту
             send_results(){
                ( this.audit.check_list.length>0)?
@@ -155,17 +161,6 @@
                 });
             },
 
-            //Метод возвращает иконку статуса.
-            upload_st_low(str){
-                let result=true;
-                let self=this;
-                str.check_list.forEach(function(itm){
-                    itm.requirement.forEach(function(req){
-                        result=(req.status===1)?result:false;
-                    });
-                });
-                return (result)?"fa fa-check fa-3x audit_good":"fa fa-times fa-3x audit_wrong";
-            },
             //Удалить аудит.
             remove_audit(){
                 let self=this;
@@ -195,26 +190,22 @@
             //Выбираем какую иконку статуса возвращать для чек листа.
             upload_st(str){
                 let result=true;
-                let new_str=true;
-                let self=this;
+                // let new_str=false;
                 str.requirement.forEach(function(req){
-                    new_str=(req.status===0)?new_str:false;
+                    // new_str=(req.status===0)?true:new_str;
                     result=(req.status===1)?result:false;
                 });
-
-                return (new_str)?false:(result)?true:false;
+                return (result)?true:false;
             },
             new_str(str){
-
-                let result=true;
+                let result=false;
                 str.requirement.forEach(function(req){
-                    result=(req.status===0)?result:false;
+                    result=(req.status===0)?true:result;
                 });
-
               return result
             },
             open_edit(){
-                this.$f7.views.main.router.load({url:'/edit_audit/'+this.array_index+'/'+this.id});
+                this.$f7.views.main.router.load({url:'/edit_audit/'+this.array_index_save+'/'+this.audit.id});
             }
 
         }

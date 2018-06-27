@@ -1,8 +1,8 @@
 <template>
     <!--Создание новго объкта с аудитами и чек листами-->
-    <f7-popup id="popup_add" >
-        <f7-view id="popup-view-object">
-            <f7-pages navbar-through>
+    <!--<f7-popup id="popup_add" >-->
+        <!--<f7-view id="popup-view-object">-->
+            <!--<f7-pages navbar-through>-->
             <f7-page>
                 <f7-navbar back-link="Back" sliding @back-click.stop="closePopUp(true)" >
                     <f7-nav-center sliding> {{this.title}}</f7-nav-center>
@@ -71,9 +71,9 @@
                     </transition>
                 </div>
             </f7-page>
-            </f7-pages>
-        </f7-view>
-    </f7-popup>
+            <!--</f7-pages>-->
+        <!--</f7-view>-->
+    <!--</f7-popup>-->
 </template>
 
 <script>
@@ -83,14 +83,8 @@
     export default {
         name: "popup_new_object",
         components:{
-
             check
         },
-        props:{
-            mode:{type:Boolean,default:false},
-            id:{type:String,default:''}
-        },
-
         data:function(){
           return{
               title:'',
@@ -123,7 +117,7 @@
             closePopUp(mode){
                 (!this.edit)? this.clear_data():'';
                 (mode)? this.$root.objects=this.$ls.get('objects'):'';
-                this.$f7.closeModal();
+                this.$f7.mainView.back();
             },
             GetCurrentDate(){
                 return new Date();

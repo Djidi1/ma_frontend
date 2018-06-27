@@ -91,8 +91,7 @@
         },
         methods: {
             open_modal_popup() {
-                let $$ = Dom7;
-                this.$f7.popup($$('#popup_add'));
+                this.$f7.views.main.router.load({url:'/add_audit/'});
             }
         }
     }
