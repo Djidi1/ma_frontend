@@ -12,6 +12,7 @@
                 </div>
                 <div class="header_img">{{attach.caption}}</div>
                 <div class="footter_img">{{get_size(attach.file.size)}}</div>
+
             </div>
             <div class="remove_button_block" v-show="edit_mode">
                 <div class="remove_button" @click="remove_attach(index)"><i class="fa fa-times" aria-hidden="true"></i></div>
@@ -82,7 +83,9 @@
     .attach_fade-enter-active,.attach_fade-leave-active{
         transition:  all .3s cubic-bezier(.65, 0.05, 0.36, 1.0);
     }
-
+    .attach_block{
+        margin-top:10px;
+    }
     .attach_fade-enter,.attach_fade-leave-to{
         opacity: 0;
 

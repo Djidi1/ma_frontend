@@ -38,24 +38,11 @@
 
 
 
-            <!--<f7-card v-if="!uploaded"  class="bottom_group_btn">-->
-                <!--<f7-block inner >-->
-                    <!--<f7-grid>-->
-                        <!--<f7-col width="50">-->
-                            <!--<f7-button @click="abort_check_list()" class="abort_button" color="grey"> <div><restore></restore></div></f7-button>-->
-                        <!--</f7-col>-->
-                        <!--<f7-col width="50">-->
-                            <!--<f7-button fill @click="check_list_status()">{{this.$root.localization.AuditPage.check_list_btn_ok}}</f7-button>-->
-                        <!--</f7-col>-->
-                    <!--</f7-grid>-->
-                <!--</f7-block>-->
-
-            <!--</f7-card>-->
-
         </div>
         <f7-toolbar bottom :no-shadow="true" v-if="!uploaded">
             <f7-link class="toolbar_custome_link" @click="abort_check_list()"><div style="font-size:30px"><restore></restore></div></f7-link>
-            <f7-link class="toolbar_custome_link" @click="check_list_status()"><div style="font-size:30px"><send></send></div></f7-link>
+            <f7-link class="toolbar_custome_link" @click="check_all_check_list()"><div style="font-size:30px"><check_all></check_all></div></f7-link>
+            <f7-link class="toolbar_custome_link" @click="check_list_status()"><div style="font-size:30px"><close_all></close_all></div></f7-link>
         </f7-toolbar>
 
     </f7-page>
@@ -63,15 +50,17 @@
 
 <script>
     import  trash from "vue-material-design-icons/delete.vue"
-    import  send from "vue-material-design-icons/content-save-all.vue"
+    import  close_all from "vue-material-design-icons/close.vue"
     import  restore from "vue-material-design-icons/backup-restore.vue"
+    import  check_all from "vue-material-design-icons/check-all.vue"
 
 
     export default {
         components:{
             trash,
-            send,
-            restore
+            close_all,
+            restore,
+            check_all
 
         },
         name: "check",
@@ -112,11 +101,13 @@
             }
         },
         methods:{
-            onSearch(searchbar, query, previousQuery){
-                console.log(searchbar);
-                console.log(query);
-                console.log(previousQuery);
+            check_all_check_list(){
+                let self=this;
+                self.check.requirement.forEach(function(req,j){
+                    req.status=1;
+                    self.$ls.set('objects',self.$root.objects);
 
+                });
             },
             upload_st(str){
                 let result=true;
@@ -139,12 +130,13 @@
 
             },
             check_list_status(){
-
                 let self=this;
-                self.check.requirement.forEach(function(req){
-                    req.status=(req.disabled)?req.status:req.status;
+                self.check.requirement.forEach(function(req,j){
+                    req.status=-1;
+                    self.$ls.set('objects',self.$root.objects);
+
                 });
-                this.$f7.views.main.back()
+
             },
             remove_check(){
                 let self=this;

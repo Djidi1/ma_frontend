@@ -99,10 +99,13 @@
     "select_object":"Выбрать",
     "empty_input_obj":"Введите название объекта",
     "empty_input_address":"Введите адрес объекта",
-    "select_ex":"Выберите объект",
-    "select_pop_over": "Выбрать объект",
+    "select_ex":"Выберите группу",
+    "select_pop_over": "Выберите объект",
     "no_check_list":"Отсутствует информация о чек-листа. ",
-    "no_check_list_text":"Необходима синхранизация."
+    "no_check_list_text":"Необходима синхранизация.",
+    "no_objects":"В данной группе пока нет объектов",
+    "no_group_selected":"Группа не выбрана",
+    "no_objet_selected":"Объект не выбран"
 
   }
 }

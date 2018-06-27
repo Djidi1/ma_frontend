@@ -16,27 +16,47 @@
                 </f7-navbar>
 
                 <div class="blck_info popup_card">
+
+
                     <f7-list form>
                         <f7-list-item smart-select :title="this.$root.localization.pop_up.select_ex" :smart-select-back-on-select="true"
                                       :smart-select-searchbar="true"
                                       :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
                                       class="no-padding">
-
-                            <select  :name="this.$root.localization.pop_up.select_ex" @change="selected_object_done">
-                                <optgroup v-for="(group) in sorted_array" :key="group.group_id" :label="group[0].group_title">
-                                    <option  v-for="(obj) in group" :key="obj.id" :value="obj.id" selected >{{group[0].group_title}}. {{obj.title}} </option>
-                                </optgroup>
+                            <select  :name="this.$root.localization.pop_up.select_ex" @change="selected_group_done">
+                                <option :value="null" selected> {{this.$root.localization.pop_up.no_group_selected}}</option>
+                                    <option  v-for="group in sorted_array" :key="group[0].group_id" :value="group[0].group_id"  >{{group[0].group_title}} </option>
                             </select>
                             <div slot="after">{{text_for_after}}</div>
                         </f7-list-item>
                     </f7-list>
 
-                    <!--<audit_add v-if=sended(items) v-for="(items,index) in this.audits" :key="index" :audits="items" :id="index"  :type="true" :trash_btn="false" @remove_audit="remove_audit(index)"></audit_add>-->
+
+
+
+                    <transition appear mode="out-in" name="slide-app">
+                        <f7-list form  v-if="this.sorted_array_objects.length>0">
+                            <f7-list-item smart-select :title="this.$root.localization.pop_up.select_pop_over" :smart-select-back-on-select="true" v-if="this.sorted_array_objects.length>0"
+                                          :smart-select-searchbar="true"
+                                          :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
+                                          class="no-padding">
+                                <select  :name="this.$root.localization.pop_up.select_pop_over" @change="selected_object_done">
+                                    <option :value="null" selected>{{this.$root.localization.pop_up.no_objet_selected}} </option>
+                                    <option  v-for="(obj) in this.sorted_array_objects" :key="obj.id" :value="obj.id"  >{{obj.title}} </option>
+                                </select>
+                                <div slot="after"></div>
+                            </f7-list-item>
+                        </f7-list>
+                    </transition>
+
+
+
                     <transition appear mode="out-in" name="slide-app">
                         <f7-list form v-if="Object.keys(selected_object).length > 0">
                             <f7-list-item v-if="this.$root.check_list.length===0" :title="this.$root.localization.pop_up.no_check_list">
                                 <div slot="root" style="padding:8px 16px;">{{this.$root.localization.pop_up.no_check_list_text}}</div>
                             </f7-list-item>
+
                             <f7-list-item  smart-select :title="this.$root.localization.pop_up.add_check" :smart-select-back-on-select="true" v-else
                                           :smart-select-searchbar="true"
                                           :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
@@ -47,19 +67,9 @@
                                 <div slot="after">{{text_for_after}}</div>
                             </f7-list-item>
                         </f7-list>
-                        <!--<f7-card class="btn_pop_up_main" v-if="this.have_something">-->
-                            <!--<f7-card class="btn_pop_up_card">-->
-                                <!--<f7-card-header class="btn_pop_up_card">-->
-                                    <!--<f7-grid class="btn_complete">-->
-                                        <!--<f7-col width="50"><f7-button  class="abort_button" @click="closePopUp(true)" > {{this.$root.localization.pop_up.cancel}}</f7-button></f7-col>-->
-                                        <!--<f7-col width="50"><f7-button fill @click="submit()" >{{this.$root.localization.pop_up.save}}</f7-button></f7-col>-->
-                                    <!--</f7-grid>-->
-                                <!--</f7-card-header>-->
-                            <!--</f7-card>-->
-                        <!--</f7-card>-->
+
                     </transition>
                 </div>
-                <!--<curr_objects v-if="hasObject" :list="this.select_list"  :current="this.selected_object" @selected_object_done="selected_object_done"></curr_objects>-->
             </f7-page>
             </f7-pages>
         </f7-view>
@@ -85,6 +95,7 @@
           return{
               title:'',
               sorted_array:{},
+              sorted_array_objects:[],
               check_list_arr:[],
               selected_object:{},
               current:0,
@@ -117,6 +128,11 @@
             GetCurrentDate(){
                 return new Date();
             },
+            selected_group_done(item){
+              let self=this;
+              this.sorted_array_objects=(self.$_.filter(self.$root.objects,{group_id:Number(item.target.value)}))
+              if (this.sorted_array_objects.length===0)this.error_search() ;
+            },
             selected_object_done(item){
                 let self=this;
                 let result_search={}
@@ -125,12 +141,10 @@
             },
             show_selected(item){
                 this.selected_object=item;
-                // if (!this.have_something) this.correct_css();
-                // this.have_something = true;
                     this.add_audit();
             },
             error_search(){
-              console.log("Ошибка поиска");
+              this.selected_object={};
             },
             check_select_done(item){
                 this.audits[0].check_list=[];
@@ -222,7 +236,13 @@
               // this.secod_correct_css();
               this.selected_object={};
               this.current=0;
-              // this.sorted_array={'2':[1,2,3]};
+               this.sorted_array_objects=[];
+              let opt=($$('select')[0]);
+              $$(opt).val('');
+              $$(".smart-select .item-after").html("Нет группы");
+              let opt_obj=($$('select')[1]);
+              $$(opt_obj).val('');
+              $$(".smart-select .item-after").html("");
               this.audits=[];
               this.have_something=false;
               this.audit_was_add=false;
