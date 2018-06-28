@@ -1,7 +1,12 @@
 <template>
     <!--Страница авторизации-->
         <f7-page >
+            <div class="settings_arrow">
+                <f7-link open-panel="left" icon-f7="arrow_left"> {{this.$root.localization.LeftMenu.Settings}}</f7-link>
+            </div>
         <div id="login-form" class="login_form_stl">
+
+
             <!-- Login Screen -->
             <f7-card id="center_body">
 
@@ -99,4 +104,15 @@
         margin-left: 0 !important;
         margin-right: 0 !important;
     }
+    .settings_arrow{
+        position:absolute;
+        z-index:1000;
+        top:15px;
+        left:15px;
+        font-size:20px;
+    }
+    .settings_arrow a{
+        color:#fff;
+    }
+
 </style>

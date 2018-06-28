@@ -23,7 +23,7 @@
                                       :smart-select-searchbar="true"
                                       :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
                                       class="no-padding">
-                            <select  :name="this.$root.localization.pop_up.select_ex" @change="selected_group_done">
+                            <select  :name="this.$root.localization.pop_up.select_ex" @change="selected_group_done" >
                                 <option :value="null" selected> {{this.$root.localization.pop_up.no_group_selected}}</option>
                                     <option  v-for="group in sorted_array" :key="group[0].group_id" :value="group[0].group_id"  >{{group[0].group_title}} </option>
                             </select>
@@ -60,9 +60,10 @@
                             <f7-list-item  smart-select :title="this.$root.localization.pop_up.add_check" :smart-select-back-on-select="true" v-else
                                           :smart-select-searchbar="true"
                                           :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
-                                          class="no-padding">
+                                          class="no-padding"
+                                          @click="custome_smart_page">
                                 <select  :name="this.$root.localization.pop_up.add_check"  multiple="multiple" @change="check_select_done" >
-                                        <option v-for="(check_item,check_ind) in check_list_arr" :key="check_ind" :value="check_ind"> {{check_item.title}}</option>
+                                        <option v-for="(check_item,check_ind) in check_list_arr" :key="check_ind" :value="check_item.id"> {{check_item.title}}</option>
                                 </select>
                                 <div slot="after">{{text_for_after}}</div>
                             </f7-list-item>
@@ -88,6 +89,7 @@
         data:function(){
           return{
               title:'',
+              old_check_list:[],
               sorted_array:{},
               sorted_array_objects:[],
               check_list_arr:[],
@@ -148,13 +150,15 @@
                     self.audits[0].check_list.push(self.add_check_list_to($$(opt).val()))
               });
 
+
             },
             add_check_list_to(key){
                 let self=this;
+                let check=this.$_.findWhere(this.$root.check_list,{id:Number(key)});
                 let check_list_new={
-                    "id": self.$root.check_list[key].id,
-                    "title":self.$root.check_list[key].title,
-                    "created_at":self.$root.check_list[key].created_at,
+                    "id": check.id,
+                    "title":check.title,
+                    "created_at":check.created_at,
                     "requirement":[],
                     "audit_id":self.audits[0].id
                 };
@@ -243,6 +247,68 @@
 
 
             },
+            custome_smart_page(){
+                let self=this;
+                self.old_check_list=self.audits[0].check_list;
+                $$(document).on('pageBeforeInit','[data-page*="smart-select"]',function(e){
+                    let page=e.detail.page;
+                    // self.checkbox_view(page);
+                    $$(page.container).find('.navbar-inner').append(self.get_html_button_done());
+                    ($$(page.container).find('a.done').on('click',function(e){
+
+                        self.select_check_list_done(page.container);
+                    }));
+                    $$(page.container).find('.left').css('width','56px');
+                    $$(page.container).find('.left a').css('display','none');
+                    // $$(page.container).find('.left a').on('click',function(e){
+                    //     self.cancel_check_list_change($$(page.container));
+                    // });
+                })
+            },
+            select_check_list_done(page){
+                $$(page.container).find('a.done').off('click');
+                $$(page.container).find('a.back').off('click');
+                $$(document).off('pageBeforeInit','[data-page*="smart-select"]');
+            },
+            cancel_check_list_change(page){
+                let self=this;
+                // self.clean_check(page);
+                self.audits[0].check_list=self.old_check_list;
+                $$(page.container).find('a.back').off('click');
+                $$(page.container).find('a.done').off('click');
+                $$(document).off('pageBeforeInit','[data-page*="smart-select"]');
+            },
+            // clean_check(page){
+            //     let self=this;
+            //     let select=$$('select')[2];
+            //     $$(select).find('option').each(function() {
+            //         this.selected = (self.old_check_list.length > 0)?this.selected:false;
+            //     });
+            //
+            //     self.old_check_list.forEach(function(item){
+            //             $$(select).find('option').each(function() {
+            //                 this.selected=(item.id===Number(this.value));
+            //             })
+            //     });
+            //     console.log($$(select));
+            // },
+            get_html_button_done(){
+                return '<div class="right">' +
+                    '<div class="row crud_header edit_menu">' +
+                    '<div class="col-30">' +
+                    '</div><div class="col-50">' +
+                    '<a class="link done back" href="#"><div style="font-size:30px">' +
+                    '<span role="img" aria-label="Check icon" class="material-design-icon check-icon">' +
+                    '<svg width="30" height="30" viewBox="0 0 24 24" class="material-design-icon_svg" fill="#fff">' +
+                    '<title>Check icon</title> <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path>' +
+                    '</svg> ' +
+                    '</span>' +
+                    '</div></a>' +
+                    '</div>' +
+                    '<div class="col-10"></div>' +
+                    '</div>' +
+                    '</div>'
+            }
             // remove_audit(index){
             //   this.audits.splice(index,1);
             // },

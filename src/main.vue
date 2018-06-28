@@ -37,12 +37,23 @@
 					<f7-page>
 						<div class="dop_login-form">
 							<f7-card class="center_body" >
-								<f7-link class="dop_link_login" @click="close_left_panel()">
-									<div>Mobile Audit</div>
+								<div class="dop_link_login">
 									<div class="log_left"></div>
-                                </f7-link>
-							</f7-card>
+									<f7-list form class="user_settings login_screan_settings">
+										<f7-list-item>
+											<f7-label floating>{{this.$root.localization.lang.server}}</f7-label>
+											<f7-input type="text" v-model="server"/>
+										</f7-list-item>
+									</f7-list>
+									<!--RadioGroup-->
+									<f7-block-title>{{this.$root.localization.lang.lang_block}}</f7-block-title>
+									<f7-list form>
+										<f7-list-item @change="change_l('ru')" radio name="lang_radio" value="ru" :title="this.$root.localization.lang.rus" :checked="curLang('ru')"></f7-list-item>
+										<f7-list-item @change="change_l('en')" radio name="lang_radio" value="en" :title="this.$root.localization.lang.en" :checked="curLang('en')"></f7-list-item>
+									</f7-list>
 
+								</div>
+							</f7-card>
 						</div>
 					</f7-page>
 				</f7-pages>
@@ -81,6 +92,12 @@
                 setting_icon,
                 exit_icon
 
+		},
+		data:function(){
+            return {
+                server:this.$root.be_server,
+                curentLang:this.$root.settings,
+			}
 		},
 		//перед тем как отрисуется станица.
         beforeMount:function(){
@@ -126,10 +143,44 @@
 			},
             close_left_panel(){
                 this.$f7.closePanel();
-			}
+			},
+            change_l:function(val){
+                //Таймер прикручен для вида, чтоб сразу резко все не скакало.
+                let self=this;
+                this.curentLang=val;
+                switch (val){
+                    case "ru":
+                        this.$f7.showPreloader(self.$root.localization.modal.preloader);
+                        setTimeout(function(){
+                            self.$root.lang_select(val);
+                            self.$f7.hidePreloader();
+                        },500)
+                        break;
+                    case "en":
+                        this.$f7.showPreloader(self.$root.localization.modal.preloader);
+                        setTimeout(function(){
+                            self.$root.lang_select(val);
+                            self.$f7.hidePreloader();
+                        },500)
+                        break;
+                }
+            },
+            curLang:function(val){
+                let result;
+                switch (val){
+                    case "ru":
+                        result=(this.curentLang==="ru")?true:false;
+                        break;
+                    case "en":
+                        result= (this.curentLang==="en")?true:false;
+                        break;
+                }
+                return result;
+            },
 
 
 		},
+
 
 	}
 </script>

@@ -3,7 +3,7 @@
     <div class="comment_text_zone" id="edit">
         <f7-list form>
             <f7-list-item>
-                <!--<f7-label floating>{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>-->
+                <f7-label floating v-if="this.$f7.getCurrentView().activePage.name==='audits_main'">{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>
                 <f7-input type="textarea" v-model="text" @change="send_comments"></f7-input>
             </f7-list-item>
 
@@ -36,7 +36,6 @@
 
     export default {
         components:{
-
             camera,
             image_multiply
         },
@@ -66,7 +65,6 @@
             }
         },
         created: function () {
-
             if (this.data_set.length>0) {
                 this.current_comment = this.data_set;
                 this.text = this.current_comment[0].text;

@@ -38,7 +38,8 @@
                         <f7-list-item  smart-select :title="this.$root.localization.pop_up.add_check" :smart-select-back-on-select="true"
                                        :smart-select-searchbar="true"
                                        :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
-                                       class="no-padding">
+                                       class="no-padding"
+                                        @click="custome_smart_page">
                             <select  :name="this.$root.localization.pop_up.add_check"  multiple="multiple" @change="check_select_done" >
                                 <option v-for="(check_item,check_ind) in this.$root.check_list" :key="check_ind" :value="check_ind" :selected="current_selected(check_item)"> {{check_item.title}}</option>
                             </select>
@@ -172,6 +173,44 @@
 
                 return result.substring(0,result.length-6)
             },
+            custome_smart_page(){
+                let self=this;
+                $$(document).on('pageBeforeInit','[data-page*="smart-select"]',function(e){
+                    let page=e.detail.page;
+                    // self.checkbox_view(page);
+                    $$(page.container).find('.navbar-inner').append(self.get_html_button_done());
+                    ($$(page.container).find('a.done').on('click',function(e){
+
+                        self.select_check_list_done(page.container);
+                    }));
+                    $$(page.container).find('.left').css('width','56px');
+                    $$(page.container).find('.left a').css('display','none');
+                    // $$(page.container).find('.left a').on('click',function(e){
+                    //     self.cancel_check_list_change($$(page.container));
+                    // });
+                })
+            },
+            select_check_list_done(page){
+                $$(page.container).find('a.done').off('click');
+                $$(document).off('pageBeforeInit','[data-page*="smart-select"]');
+            },
+            get_html_button_done(){
+                return '<div class="right">' +
+                    '<div class="row crud_header edit_menu">' +
+                    '<div class="col-30">' +
+                    '</div><div class="col-50">' +
+                    '<a class="link done back" href="#"><div style="font-size:30px">' +
+                    '<span role="img" aria-label="Check icon" class="material-design-icon check-icon">' +
+                    '<svg width="30" height="30" viewBox="0 0 24 24" class="material-design-icon_svg" fill="#fff">' +
+                    '<title>Check icon</title> <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path>' +
+                    '</svg> ' +
+                    '</span>' +
+                    '</div></a>' +
+                    '</div>' +
+                    '<div class="col-10"></div>' +
+                    '</div>' +
+                    '</div>'
+            }
 
 
         }

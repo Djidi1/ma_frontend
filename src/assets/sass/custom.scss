@@ -15,6 +15,26 @@
 		content: '';
 	}
 }
+.login_screan_settings .item-content{
+	padding:0;
+}
+.login_screan_settings .item-inner{
+	padding:0;
+}
+.login_screan_settings .item-title{
+	font-size: 20px !important;
+	
+}
+.login_screan_settings+ .content-block-title{
+	font-size: 20px !important;
+	font-weight:bold;
+	color:#6d6d6d;
+	-webkit-transform: translateX(-20%);
+	-moz-transform: translateX(-20%);
+	-ms-transform: translateX(-20%);
+	-o-transform: translateX(-20%);
+	transform: translateX(-20%);
+}
 .dop_login-form{
 	width: 100%;
 	height: 100%;
@@ -28,7 +48,7 @@
 
 
 	&:before {
-		height: 30%;
+
 		display: inline-block;
 		vertical-align: middle;
 		content: '';
@@ -46,6 +66,7 @@
 .dop_link_login{
 	display: block;
 	color:#6d6d6d;
+	padding:0 15px;
 }
 .check_list_items{
 	margin-top:0!important;
@@ -61,7 +82,7 @@
 	box-shadow: unset;
 }
 .log_left{
-	background: url("../../static/ma_logo.png") center no-repeat;
+	background: url("../../static/nansen_mobit-365_logo.svg") center no-repeat;
 	background-size: contain;
 	width:100%;
 	height: 150px;
@@ -597,6 +618,7 @@
 	padding-left: 0 !important;
 
 }
+
 .smart-select-page .list-block{
 	margin-top: 0 !important;
 }
@@ -620,4 +642,7 @@
 	font-size:1px;
 	visibility:hidden;
 	opacity:0;
+}
+.navbar.navbar-hidden~.page-content .list-group-title{
+	top:0!important;
 }

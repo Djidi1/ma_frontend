@@ -23,21 +23,21 @@
     <allow-navigation data-href="http://*/*" href="*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon density="land-ldpi" src="src/static/nansen_mobit-365_logo_W.svg" />
-        <splash density="land-hdpi" src="src/static/nansen_mobit-365_logo.svg" />
-        <splash density="land-ldpi" src="src/static/nansen_mobit-365_logo.svg" />
-        <splash density="land-mdpi" src="src/static/nansen_mobit-365_logo.svg" />
-        <splash density="land-xhdpi" src="src/static/nansen_mobit-365_logo.svg" />
-        <splash density="port-hdpi" src="src/static/nansen_mobit-365_logo.svg" />
-        <splash density="port-ldpi" src="src/static/nansen_mobit-365_logo.svg" />
-        <splash density="port-mdpi" src="src/static/nansen_mobit-365_logo.svg" />
-        <splash density="port-xhdpi" src="src/static/nansen_mobit-365_logo.svg" />
+        <icon density="land-ldpi" src="src/static/nansen_mobit-365_logo_W.png" />
+        <splash density="land-hdpi" src="src/static/nansen_mobit-365_logo.png" />
+        <splash density="land-ldpi" src="src/static/nansen_mobit-365_logo.png" />
+        <splash density="land-mdpi" src="src/static/nansen_mobit-365_logo.png" />
+        <splash density="land-xhdpi" src="src/static/nansen_mobit-365_logo.png" />
+        <splash density="port-hdpi" src="src/static/nansen_mobit-365_logo.png" />
+        <splash density="port-ldpi" src="src/static/nansen_mobit-365_logo.png" />
+        <splash density="port-mdpi" src="src/static/nansen_mobit-365_logo.png" />
+        <splash density="port-xhdpi" src="src/static/nansen_mobit-365_logo.png" />
         <preference name="SplashScreenDelay" value="4000" />
         <preference name="SplashMaintainAspectRatio" value="true" />
         <preference name="AutoHideSplashScreen" value="true" />
     </platform>
     <platform name="browser">
-        <icon src="src/static/nansen_mobit-365_logo_W.svg" />
+        <icon src="src/static/nansen_mobit-365_logo_W.png" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />

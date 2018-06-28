@@ -56,6 +56,7 @@
             },
             getPhoto: function (img) {
                 let self = this;
+                (self.data_comments.length > 0) ?self.create_new_comment:'';
                 self.get_img_data(img).then(
                     f => {
                         self.$$('#img_pr' + (self.data_comments[0].attachments.length - 1)).show();
@@ -88,17 +89,7 @@
                                     },
                                     "url": url
                                 };
-                                (self.data_comments.length > 0) ?
-                                    self.data_comments[0].attachments.push(img_data)
-                                    : self.data_comments.push(
-                                        {
-                                            'id': -1,
-                                            'text': '',
-                                            'user_info': self.$root.auth_info.user_info,
-                                            'create_date': self.GetCurrentDate(),
-                                            'attachments': [img_data]
-                                        }
-                                    );
+                                self.data_comments[0].attachments.push(img_data);
                                 console.log(self.data_comments);
                                 resolve(f);
                             },
@@ -108,6 +99,13 @@
                     })
                 });
 
+            },
+            create_new_comment(){
+                this.data_comments[0].id=-1;
+                this.data_comments[0].text='';
+                this.data_comments[0].user_info=this.$root.auth_info.user_info;
+                this.data_comments[0].create_date=this.GetCurrentDate;
+                this.data_comments[0].attachments=[];
             },
             GetCurrentDate() {
                 return new Date();
