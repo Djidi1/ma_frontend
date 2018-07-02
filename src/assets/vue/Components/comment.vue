@@ -45,6 +45,7 @@
             },
             //методы для обработки фото
             upload(mode) {
+                if (this.data_comments.length === 0) this.create_new_comment();
                 let source = (mode) ? Camera.PictureSourceType.CAMERA : Camera.PictureSourceType.SAVEDPHOTOALBUM;
                 navigator.camera.getPicture(this.getPhoto, this.getPhotoFail, {
                     quality: 30,
@@ -56,7 +57,6 @@
             },
             getPhoto: function (img) {
                 let self = this;
-                (self.data_comments.length > 0) ?self.create_new_comment:'';
                 self.get_img_data(img).then(
                     f => {
                         self.$$('#img_pr' + (self.data_comments[0].attachments.length - 1)).show();
@@ -64,9 +64,12 @@
                             f.moveTo(dir, f.name, function (entry) {
                                 self.data_comments[0].attachments[ self.data_comments[0].attachments.length - 1].url = entry.toURL();
                                 self.$$('#img_pr' + (self.data_comments[0].attachments.length - 1)).hide();
+                                this.$ls.set('objects', this.$root.objects);
+                                console.log(self.data_comments);
                             }, function (error) {
                                 self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
                                 self.data_comments[0].attachments.splice( self.data_comments[0].attachments.length - 1, 1);
+                                this.$ls.set('objects', this.$root.objects);
                             });
                         });
                     },
@@ -74,6 +77,7 @@
                         self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
                     }
                 );
+
             },
             get_img_data: function (url) {
                 let self = this;
@@ -101,11 +105,18 @@
 
             },
             create_new_comment(){
-                this.data_comments[0].id=-1;
-                this.data_comments[0].text='';
-                this.data_comments[0].user_info=this.$root.auth_info.user_info;
-                this.data_comments[0].create_date=this.GetCurrentDate;
-                this.data_comments[0].attachments=[];
+                let object_com={
+                    "id":-1,
+                    "text":'',
+                    "user_info":this.$root.auth_info.user_info,
+                    "create_date":this.GetCurrentDate,
+                    "attachments":[]
+                };
+
+                this.data_comments.push(object_com);
+
+
+
             },
             GetCurrentDate() {
                 return new Date();

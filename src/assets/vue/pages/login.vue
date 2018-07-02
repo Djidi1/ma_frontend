@@ -110,6 +110,7 @@
         top:15px;
         left:15px;
         font-size:20px;
+        /*text-shadow: 5px 4px 4px rgba(0, 0, 0, 0.5);*/
     }
     .settings_arrow a{
         color:#fff;

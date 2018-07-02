@@ -32,7 +32,7 @@
 
 
                 <f7-list-item class="new_text_comm" >
-                    <text_area :data_set="this.audit.comments" :audit_comment="true"></text_area>
+                    <text_area :data_set="this.audit.comments" :is_audit="true"></text_area>
                 </f7-list-item>
             </f7-list>
             <f7-list v-else>

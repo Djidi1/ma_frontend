@@ -39,9 +39,10 @@
 							<f7-card class="center_body" >
 								<div class="dop_link_login">
 									<div class="log_left"></div>
+									<f7-block-title>{{this.$root.localization.lang.server}}</f7-block-title>
 									<f7-list form class="user_settings login_screan_settings">
 										<f7-list-item>
-											<f7-label floating>{{this.$root.localization.lang.server}}</f7-label>
+											<!--<f7-label floating>{{this.$root.localization.lang.server}}</f7-label>-->
 											<f7-input type="text" v-model="server"/>
 										</f7-list-item>
 									</f7-list>

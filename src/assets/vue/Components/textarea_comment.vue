@@ -3,7 +3,7 @@
     <div class="comment_text_zone" id="edit">
         <f7-list form>
             <f7-list-item>
-                <f7-label floating v-if="this.$f7.getCurrentView().activePage.name==='audits_main'">{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>
+                <f7-label floating v-if="is_audit">{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>
                 <f7-input type="textarea" v-model="text" @change="send_comments"></f7-input>
             </f7-list-item>
 
@@ -46,8 +46,8 @@
                     return []
                 }
             },
-            type: {type: Boolean, default: false},
-            audit_comment: {type: Boolean, default: false},
+            is_audit: {type: Boolean, default: false},
+
             comment: {
                 type: Object, default: function () {
                     return {}
@@ -135,8 +135,8 @@
             send_comments() {
                     if ((this.text!='') || (this.attachment.length>0))
                 {
-                    if (this.current_comment){
 
+                    if (this.current_comment.length===0){
                     this.current_comment.push(
                         {
                             'id':'',

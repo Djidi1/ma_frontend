@@ -22,18 +22,13 @@
 	padding:0;
 }
 .login_screan_settings .item-title{
-	font-size: 20px !important;
+
 	
 }
-.login_screan_settings+ .content-block-title{
-	font-size: 20px !important;
+.dop_login-form .content-block-title{
+	font-size: 18px !important;
 	font-weight:bold;
 	color:#6d6d6d;
-	-webkit-transform: translateX(-20%);
-	-moz-transform: translateX(-20%);
-	-ms-transform: translateX(-20%);
-	-o-transform: translateX(-20%);
-	transform: translateX(-20%);
 }
 .dop_login-form{
 	width: 100%;
@@ -66,7 +61,6 @@
 .dop_link_login{
 	display: block;
 	color:#6d6d6d;
-	padding:0 15px;
 }
 .check_list_items{
 	margin-top:0!important;
@@ -82,7 +76,7 @@
 	box-shadow: unset;
 }
 .log_left{
-	background: url("../../static/nansen_mobit-365_logo.svg") center no-repeat;
+	background: url("../../static/nansen_mobit-365_logo.png") center no-repeat;
 	background-size: contain;
 	width:100%;
 	height: 150px;
