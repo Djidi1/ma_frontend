@@ -4,7 +4,7 @@
         <f7-list form>
             <f7-list-item>
                 <f7-label floating v-if="is_audit">{{this.$root.localization.AuditPage.comment_placeholder}}</f7-label>
-                <f7-input type="textarea" v-model="text" @change="send_comments"></f7-input>
+                <f7-input type="textarea" v-model="text" @change="send_comments" :disabled="this.read"></f7-input>
             </f7-list-item>
 
             <attachment @removeAttach="this.removeAttachment" :attachment="attachment" :edit_mode="true" v-if="comment_for_audit"></attachment>
@@ -51,9 +51,10 @@
             comment: {
                 type: Object, default: function () {
                     return {}
-                }
-            },
+                },
 
+            },
+            read:{type:Boolean,default:false}
 
         },
         data: function () {

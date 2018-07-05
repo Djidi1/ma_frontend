@@ -18,7 +18,7 @@
 
                 <div slot="root" v-if="(uploaded_with(item)?showComment(item):false)">
                         <transition  mode="out-in" name="comment-show">
-                            <comment :data_comments="item.comments"></comment>
+                            <comment :data_comments="item.comments" :read="read"></comment>
                             <!--<f7-block class="comment_acrd"  >-->
                                 <!--<f7-list  class="acrd_custom">-->
                                     <!--<f7-list-item  class="inner_check_connetent"  :title="$root.localization.AuditPage.comments_title">-->
@@ -71,15 +71,12 @@
 
         },
 
-        computed:{
 
-        },
         methods: {
 
 
             showComment(item){
-
-                return (item.status===0)?false:(item.status===1)?false:true;
+                return (Number(item.status)===0)?false:(Number(item.status)===1)?false:true;
             },
             class_result(item){
                 return this.check_cls(item);
@@ -103,7 +100,8 @@
                 this.$ls.set('objects',this.$root.objects);
             },
             check_cls(item){
-                return (item.disabled)?"status_disbl":(item.status===0)?"":(item.status===1)?"status_sucs":"status_false";
+
+                return (item.disabled)?"status_disbl":(Number(item.status)===0)?"":(Number(item.status)===1)?"status_sucs":"status_false";
             },
 
 

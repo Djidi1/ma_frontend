@@ -26,9 +26,13 @@
 	
 }
 .dop_login-form .content-block-title{
-	font-size: 18px !important;
-	font-weight:bold;
-	color:#6d6d6d;
+	font-size: 16px !important;
+
+	color:rgba(0,0,0,.65);
+}
+.dop_login-form .content-block{
+	margin-top:32px;
+	padding:0;
 }
 .dop_login-form{
 	width: 100%;
@@ -66,12 +70,11 @@
 	margin-top:0!important;
 	transition: all 0.5s;
 }
+.dop_login-form .user_settings{
+	margin-top: 25px !important;
+}
 .center_body{
-	height:180px;
-	text-align: center;
-	font-size:20px;
-	font-weight: 600;
-	color:#fff;
+
 	border:0;
 	box-shadow: unset;
 }
@@ -639,4 +642,8 @@
 }
 .navbar.navbar-hidden~.page-content .list-group-title{
 	top:0!important;
+}
+.check_list_items .item-title{
+	white-space: unset!important;
+	padding:10px 0;
 }

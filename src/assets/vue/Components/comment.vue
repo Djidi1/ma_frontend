@@ -9,7 +9,7 @@
                     <div @click="upload(true)" style="font-size:30px; display:inline-block; transition:all .3s; padding:0 10px; transform:translateY(-5px)"  > <camera_icon></camera_icon></div>
                 </div>
                 <div slot="root">
-                    <f7-block inner><text_area  :data_set="this.data_comments" :audit_comment="false"></text_area></f7-block>
+                    <f7-block inner><text_area  :data_set="this.data_comments" :read="read"></text_area></f7-block>
                 </div>
             </f7-list-item>
         </f7-list>
@@ -34,6 +34,11 @@
            data_comments:{type: Array,default:function(){return[]}},
             read:{type:Boolean,default:false}
         },
+        data: function () {
+            return {
+               comments:this.data_comments
+            }
+        },
         methods:{
             remove_comment(id){
                 let self=this;
@@ -45,7 +50,8 @@
             },
             //методы для обработки фото
             upload(mode) {
-                if (this.data_comments.length === 0) this.create_new_comment();
+                console.log(1);
+                if (this.comments.length === 0) this.create_new_comment();
                 let source = (mode) ? Camera.PictureSourceType.CAMERA : Camera.PictureSourceType.SAVEDPHOTOALBUM;
                 navigator.camera.getPicture(this.getPhoto, this.getPhotoFail, {
                     quality: 30,
@@ -57,18 +63,20 @@
             },
             getPhoto: function (img) {
                 let self = this;
+                console.log("getPhoto")
                 self.get_img_data(img).then(
                     f => {
-                        self.$$('#img_pr' + (self.data_comments[0].attachments.length - 1)).show();
+                        self.$$('#img_pr' + (self.comments[0].attachments.length - 1)).show();
                         window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory + "img/", function (dir) {
                             f.moveTo(dir, f.name, function (entry) {
-                                self.data_comments[0].attachments[ self.data_comments[0].attachments.length - 1].url = entry.toURL();
-                                self.$$('#img_pr' + (self.data_comments[0].attachments.length - 1)).hide();
+                                self.comments[0].attachments[ self.comments[0].attachments.length - 1].url = entry.toURL();
+                                self.$$('#img_pr' + (self.comments[0].attachments.length - 1)).hide();
                                 this.$ls.set('objects', this.$root.objects);
-                                console.log(self.data_comments);
+                                console.log('end');
+                                console.log(self.comments);
                             }, function (error) {
                                 self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
-                                self.data_comments[0].attachments.splice( self.data_comments[0].attachments.length - 1, 1);
+                                self.comments[0].attachments.splice( self.comments[0].attachments.length - 1, 1);
                                 this.$ls.set('objects', this.$root.objects);
                             });
                         });
@@ -80,6 +88,7 @@
 
             },
             get_img_data: function (url) {
+                console.log('get_img_data');
                 let self = this;
                 return new Promise(function (resolve, reject) {
                     window.resolveLocalFileSystemURL(url, function (f) {
@@ -93,8 +102,9 @@
                                     },
                                     "url": url
                                 };
-                                self.data_comments[0].attachments.push(img_data);
-                                console.log(self.data_comments);
+                                self.comments[0].attachments.push(img_data);
+                                console.log('push_to_com')
+                                console.log(self.comments);
                                 resolve(f);
                             },
                             function (error) {
@@ -109,11 +119,11 @@
                     "id":-1,
                     "text":'',
                     "user_info":this.$root.auth_info.user_info,
-                    "create_date":this.GetCurrentDate,
+                    "create_date":this.GetCurrentDate(),
                     "attachments":[]
                 };
-
-                this.data_comments.push(object_com);
+                console.log('createNew');
+                this.comments.push(object_com);
 
 
 

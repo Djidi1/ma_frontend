@@ -108,7 +108,7 @@
             cancelSetting:function(){
                 let self=this;
                 let duration=0;
-                if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings){
+                if  (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings||this.server!=this.$root.be_server){
                     this.change_l(this.$root.settings);
                     duration=600;
                 }

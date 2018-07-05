@@ -32,7 +32,7 @@
 
 
                 <f7-list-item class="new_text_comm" >
-                    <text_area :data_set="this.audit.comments" :is_audit="true"></text_area>
+                    <text_area :data_set="this.audit.comments" :is_audit="true" :read="this.audit.upload"></text_area>
                 </f7-list-item>
             </f7-list>
             <f7-list v-else>
@@ -192,16 +192,18 @@
                 // let new_str=false;
                 str.requirement.forEach(function(req){
                     // new_str=(req.status===0)?true:new_str;
-                    result=(req.status===1)?result:false;
+                    result=(Number(req.status)===1)?result:false;
                 });
                 return (result)?true:false;
             },
             new_str(str){
+
                 let result=false;
                 str.requirement.forEach(function(req){
-                    result=(req.status===0)?true:result;
+                    result=(Number(req.status)===0)?true:result;
                 });
               return result
+
             },
             open_edit(){
                 this.$f7.views.main.router.load({url:'/edit_audit/'+this.array_index_save+'/'+this.audit.id});

@@ -24,9 +24,6 @@
             button_cls(){
                 return (this.button_type)?"sucsess_status":"false_status";
             },
-            icon_cls(){
-                return (this.button_type)?"fa fa-thumbs-up":"fa fa-thumbs-down";
-            },
             checked_status(){
                 return (this.item_status===0)?false:(this.item_status===1)?(this.button_type)?true:false:(!this.button_type)?true:false;
             }

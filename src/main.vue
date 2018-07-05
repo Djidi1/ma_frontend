@@ -37,23 +37,40 @@
 					<f7-page>
 						<div class="dop_login-form">
 							<f7-card class="center_body" >
-								<div class="dop_link_login">
-									<div class="log_left"></div>
-									<f7-block-title>{{this.$root.localization.lang.server}}</f7-block-title>
-									<f7-list form class="user_settings login_screan_settings">
-										<f7-list-item>
-											<!--<f7-label floating>{{this.$root.localization.lang.server}}</f7-label>-->
-											<f7-input type="text" v-model="server"/>
-										</f7-list-item>
-									</f7-list>
-									<!--RadioGroup-->
-									<f7-block-title>{{this.$root.localization.lang.lang_block}}</f7-block-title>
-									<f7-list form>
-										<f7-list-item @change="change_l('ru')" radio name="lang_radio" value="ru" :title="this.$root.localization.lang.rus" :checked="curLang('ru')"></f7-list-item>
-										<f7-list-item @change="change_l('en')" radio name="lang_radio" value="en" :title="this.$root.localization.lang.en" :checked="curLang('en')"></f7-list-item>
-									</f7-list>
+								<f7-navbar  sliding class="settings" >
+									<f7-nav-left back-link="Back" sliding @back-click.stop="cancelSetting()"></f7-nav-left>
+									<f7-nav-center sliding >{{this.$root.localization.SettingPage}}</f7-nav-center>
+								</f7-navbar>
 
-								</div>
+								<!--server_change-->
+								<f7-list form class="user_settings">
+									<f7-list-item>
+										<f7-label floating>{{this.$root.localization.lang.server}}</f7-label>
+										<f7-input type="text" v-model="server"/>
+									</f7-list-item>
+								</f7-list>
+
+
+								<!--RadioGroup-->
+								<f7-block-title>{{this.$root.localization.lang.lang_block}}</f7-block-title>
+								<f7-list form>
+									<f7-list-item @change="change_l('ru')" radio name="lang_radio" value="ru" :title="this.$root.localization.lang.rus" :checked="curLang('ru')"></f7-list-item>
+									<f7-list-item @change="change_l('en')" radio name="lang_radio" value="en" :title="this.$root.localization.lang.en" :checked="curLang('en')"></f7-list-item>
+								</f7-list>
+
+
+								<!--Buttons-->
+								<f7-block >
+									<div class="row">
+										<div class="col-50">
+											<f7-button @click="cancelSetting" class="abort_button" > {{this.$root.localization.lang.abort}}</f7-button>
+										</div>
+										<div class="col-50">
+											<f7-button fill back @click="submitSetting"> {{this.$root.localization.lang.save}}</f7-button>
+										</div>
+									</div>
+								</f7-block>
+
 							</f7-card>
 						</div>
 					</f7-page>
@@ -98,6 +115,7 @@
             return {
                 server:this.$root.be_server,
                 curentLang:this.$root.settings,
+
 			}
 		},
 		//перед тем как отрисуется станица.
@@ -145,6 +163,18 @@
             close_left_panel(){
                 this.$f7.closePanel();
 			},
+            curLang:function(val){
+                let result;
+                switch (val){
+                    case "ru":
+                        result=(this.curentLang==="ru")?true:false;
+                        break;
+                    case "en":
+                        result= (this.curentLang==="en")?true:false;
+                        break;
+                }
+                return result;
+            },
             change_l:function(val){
                 //Таймер прикручен для вида, чтоб сразу резко все не скакало.
                 let self=this;
@@ -166,17 +196,23 @@
                         break;
                 }
             },
-            curLang:function(val){
-                let result;
-                switch (val){
-                    case "ru":
-                        result=(this.curentLang==="ru")?true:false;
-                        break;
-                    case "en":
-                        result= (this.curentLang==="en")?true:false;
-                        break;
+            submitSetting:function(){
+                if (this.curentLang!=this.$root.settings||this.server!=this.$root.be_server){
+                    //this.$set(this.$root.auth_info,'name',this.user_name);
+                    // this.$root.auth_info={name:this.user_name,email:this.$root.auth_info.email,token:this.$root.auth_info.token,auth:true,user_info:this.$root.auth_info.user_info};
+                    this.$root.settings=this.curentLang;
+                    this.$root.be_server=this.server;
                 }
-                return result;
+                this.$f7.closePanel();
+            },
+            cancelSetting:function(){
+                let self=this;
+                let duration=0;
+                if (this.curentLang!=this.$root.settings||this.server!=this.$root.be_server){
+                    this.change_l(this.$root.settings);
+
+                }
+                self.$f7.closePanel();
             },
 
 
@@ -185,3 +221,10 @@
 
 	}
 </script>
+<style>
+	.settings {
+		background-color: transparent;
+		color: #222222;
+		border-bottom: 1px solid #f7f7f7;
+	}
+</style>
