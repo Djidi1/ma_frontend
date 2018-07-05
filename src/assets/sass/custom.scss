@@ -644,6 +644,18 @@
 	top:0!important;
 }
 .check_list_items .item-title{
-	white-space: unset!important;
-	padding:10px 0;
+  -webkit-transition: .3s;
+  -moz-transition:  .3s;
+  -ms-transition:  .3s;
+  -o-transition:  .3s;
+  transition:  .3s;
+
+}
+.show_title  {
+  white-space: unset!important;
+  padding: 10px 0;
+}
+.show_title .item-title {
+  white-space: unset!important;
+  padding: 10px 0;
 }

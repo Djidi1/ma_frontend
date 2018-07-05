@@ -7,7 +7,7 @@
                 <f7-input type="textarea" v-model="text" @change="send_comments" :disabled="this.read"></f7-input>
             </f7-list-item>
 
-            <attachment @removeAttach="this.removeAttachment" :attachment="attachment" :edit_mode="true" v-if="comment_for_audit"></attachment>
+            <attachment @removeAttach="this.removeAttachment" :attachment="this.attachment" :edit_mode="true" v-if="comment_for_audit" @delete_comm="delete_attr"></attachment>
             <!--<f7-block>-->
                 <!--<div class="row ">-->
                     <!--<div class="col-50 attachment_button">-->
@@ -54,7 +54,10 @@
                 },
 
             },
-            read:{type:Boolean,default:false}
+            read:{type:Boolean,default:false},
+            attachments:{type:Array,default:function(){
+                    return [];
+                }}
 
         },
         data: function () {
@@ -62,14 +65,13 @@
                 data_comm: '',
                 current_comment: '',
                 text: '',
-                attachment: [],
+                attachment: this.attachments
             }
         },
         created: function () {
             if (this.data_set.length>0) {
                 this.current_comment = this.data_set;
                 this.text = this.current_comment[0].text;
-                this.attachment = this.current_comment[0].attachments;
 
             }else{
                 this.current_comment=this.data_set;
@@ -106,8 +108,6 @@
             }
         },
         methods: {
-
-
             //Костыль для отображения класов которые не цепляются если вызывать форму на редактирование
             check_style_class(el) {
                 let element = $$(el);
@@ -162,12 +162,12 @@
 
 
             },
-            clear_input() {
-                this.text = '';
-                this.attachment = [];
-                this.$$(this.$el).find('.item-inner').removeClass('not-empty-state');
-                this.$$(this.$el).find('.item-inner').find('.item-input').removeClass('not-empty-state');
-            },
+            // clear_input() {
+            //     this.text = '';
+            //     this.attachment = [];
+            //     this.$$(this.$el).find('.item-inner').removeClass('not-empty-state');
+            //     this.$$(this.$el).find('.item-inner').find('.item-input').removeClass('not-empty-state');
+            // },
             removeAttachment(id) {
                 this.attachment.splice(id, 1);
             },
@@ -189,6 +189,12 @@
                     mediaType: Camera.MediaType.PICTURE,
                 })
 
+            },
+            delete_attr(id){
+                this.current_comment[0].attachments.splice(id,1);
+                if (this.text==='')
+                    this.current_comment.splice(0,this.current_comment.length);
+                this.$ls.set('objects', this.$root.objects);
             },
             // getPhoto: function (img) {
             //     let self = this;

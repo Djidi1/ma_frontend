@@ -4,12 +4,12 @@
         <f7-list  class="acrd_custom">
             <f7-list-item  class="inner_check_connetent"  :title="$root.localization.AuditPage.comments_title">
                 <div slot="after">
-                    <div style="font-size:25px; display:inline-block; transition:all .3s; padding:0 10px; transform:translateY(-7px)" :class="(data_comments.length>0)?'blue_cls':''"  > <comment_icon></comment_icon> </div>
+                    <div style="font-size:25px; display:inline-block; transition:all .3s; padding:0 10px; transform:translateY(-7px)" :class="(data_comments.length>0)?'blue_cls':''"> <comment_icon></comment_icon> </div>
                     <div @click="upload(false)" style="font-size:30px; display:inline-block; transition:all .3s; padding:0 10px; transform:translateY(-5px)" > <image_multiply></image_multiply></div>
                     <div @click="upload(true)" style="font-size:30px; display:inline-block; transition:all .3s; padding:0 10px; transform:translateY(-5px)"  > <camera_icon></camera_icon></div>
                 </div>
                 <div slot="root">
-                    <f7-block inner><text_area  :data_set="this.data_comments" :read="read"></text_area></f7-block>
+                    <f7-block inner><text_area  :data_set="this.comments" :attachments="attachments" :read="read"></text_area></f7-block>
                 </div>
             </f7-list-item>
         </f7-list>
@@ -36,8 +36,12 @@
         },
         data: function () {
             return {
-               comments:this.data_comments
+               comments:this.data_comments,
+                attachments:[]
             }
+        },
+        created:function(){
+            this.attachments=(this.data_comments.length>0)?this.data_comments[0].attachments:[];
         },
         methods:{
             remove_comment(id){
@@ -50,7 +54,6 @@
             },
             //методы для обработки фото
             upload(mode) {
-                console.log(1);
                 if (this.comments.length === 0) this.create_new_comment();
                 let source = (mode) ? Camera.PictureSourceType.CAMERA : Camera.PictureSourceType.SAVEDPHOTOALBUM;
                 navigator.camera.getPicture(this.getPhoto, this.getPhotoFail, {
@@ -63,7 +66,6 @@
             },
             getPhoto: function (img) {
                 let self = this;
-                console.log("getPhoto")
                 self.get_img_data(img).then(
                     f => {
                         self.$$('#img_pr' + (self.comments[0].attachments.length - 1)).show();
@@ -102,9 +104,8 @@
                                     },
                                     "url": url
                                 };
-                                self.comments[0].attachments.push(img_data);
-                                console.log('push_to_com')
-                                console.log(self.comments);
+                                self.attachments.push(img_data);
+                                self.comments[0].attachments=self.attachments;
                                 resolve(f);
                             },
                             function (error) {
@@ -122,9 +123,7 @@
                     "create_date":this.GetCurrentDate(),
                     "attachments":[]
                 };
-                console.log('createNew');
                 this.comments.push(object_com);
-
 
 
             },

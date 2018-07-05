@@ -2,7 +2,7 @@
     <!--Элементы списа чеклиста с требованием-->
     <div>
         <f7-list form class="check_list_items searchbar-found" id="search-list">
-            <f7-list-item v-for="(item,item_id) in data_item" :key="item_id" :id="item.id"  :title="item.title"  swipeout   @swipeout:closed="change_btn(item)" :class="class_result(item)" >
+            <f7-list-item v-for="(item,item_id) in data_item" :key="item_id" :id="item.id"  :title="item.title"  swipeout @click="show_all_text"   @swipeout:closed="change_btn(item)" :class="class_result(item)" >
                 <f7-grid no-gutter class="item_grid" slot="inner">
                     <transition appear mode="out-in" name="slide-fade">
                         <check_box_item :button_type="true" :item_status="Number(item.status)" :item="item" @change_status="change_item_status" :read="read" v-show="!item.disabled"></check_box_item>
@@ -104,9 +104,14 @@
                 return (item.disabled)?"status_disbl":(Number(item.status)===0)?"":(Number(item.status)===1)?"status_sucs":"status_false";
             },
 
+            show_all_text(event){
+                if($$(event.target).parent().hasClass('item-inner')){
+                    $$(event.target).toggleClass('show_title');
+                }else{
+                    $$(event.target).find('.item-title').toggleClass('show_title');
+                }
 
-
-
+            },
             getPhotoFail(message) {
                 this.$f7.alert('error:' + message, this.$root.localization.pop_up.warning);
             },

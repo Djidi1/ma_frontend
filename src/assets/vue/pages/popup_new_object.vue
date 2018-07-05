@@ -106,7 +106,7 @@
         },
         created(){
 
-            this.title=(!this.mode)?this.$root.localization.pop_up.edit:this.$root.localization.pop_up.new;
+            this.title=this.$root.localization.pop_up.new;
             this.select_list=(this.$root.objects.length>0)?this.$root.objects:'';
         },
         mounted(){

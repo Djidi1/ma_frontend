@@ -56,6 +56,7 @@
             },
             remove_attach(id){
                 this.attachment.splice(id,1);
+                this.$emit('delete_comm',id)
             },
             resize(){
                 this.$emit('resize_attach');
