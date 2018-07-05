@@ -71,13 +71,13 @@
                             f.moveTo(dir, f.name, function (entry) {
                                 self.comments[0].attachments[ self.comments[0].attachments.length - 1].url = entry.toURL();
                                 self.$$('#img_pr' + (self.comments[0].attachments.length - 1)).hide();
-                                this.$ls.set('objects', this.$root.objects);
+                                self.$ls.set('objects', self.$root.objects);
                                 console.log('end');
                                 console.log(self.comments);
                             }, function (error) {
                                 self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
                                 self.comments[0].attachments.splice( self.comments[0].attachments.length - 1, 1);
-                                this.$ls.set('objects', this.$root.objects);
+                                self.$ls.set('objects', self.$root.objects);
                             });
                         });
                     },
