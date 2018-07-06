@@ -97,7 +97,9 @@
         },
         created:function(){
             //Берем нужный аудит при помощи идентификаторов которые пришли через пропсы.
-            this.audit=this.$root.objects[this.array_index].audits[this.id];
+
+            this.audit=(this.$_.findWhere(this.$root.objects[this.array_index].audits, {id:Number(this.id)}));
+            // =this.$root.objects[this.array_index].audits[this.id];
         },
         computed:{
             //Проверка есть ли чек листы.

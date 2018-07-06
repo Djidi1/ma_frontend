@@ -9,7 +9,7 @@
                         {{objects.title||"---"}}
                     </f7-list-item>
                     <f7-list-item v-for="(acrd,acrd_index) in array_few(objects)" :key="acrd_index"
-                                  :link="'/audit/'+index+'/'+acrd_index"
+                                  :link="'/audit/'+index+'/'+acrd.id"
                                   :id="'id_'+acrd.id"
                                   :title="$root.localization.AuditPage.audit+' № '+acrd.id+'<div>'+objects.group_title+' '+objects.title+'</div>'"
                                   :subtitle="data_formta(acrd.created_at)"
@@ -192,16 +192,20 @@
             },
             edit_data(audit_id,obj_id) {
                 let $$ = Dom7;
+
                 this.$f7.swipeoutClose($$('#id_' + audit_id));
                 this.$f7.views.main.router.load({url:'/edit_audit/'+obj_id+'/'+audit_id});
                 // this.$f7.popup($$('#popup_add_audit_' + index));
             },
             delete_data(obj, id, acrd_index) {
                 let $$ = Dom7;
+
                 let self = this;
+
                 this.$f7.confirm("", this.$root.localization.modal.modalTextConf, function () {
                     self.$f7.swipeoutClose($$('#id_' + id));
-                    self.$root.objects[obj].audits.splice(acrd_index, 1);
+
+                    self.$root.objects[obj].audits.reverse().splice(acrd_index, 1);
                     self.$ls.set('objects', self.$root.objects);
                 });
             }
