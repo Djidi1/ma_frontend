@@ -300,6 +300,7 @@ new Vue({
         sort_data(result_sort) {
             let self = this;
             return new Promise(function (resolve) {
+
                 result_sort.obj.forEach(function (itm) {
                     self.sort_audit_date(itm);
                 });
@@ -399,7 +400,8 @@ new Vue({
                                 "comments": [],
                                 "object_id": object.id,
                                 "check_list_id": audit.checklist_id,
-                                "upload": false
+                                "upload": false,
+                                "downloaded":true
                             };
                             result.audits.push(audit_result);
                         }

@@ -1,15 +1,15 @@
 <template>
     <!--Лист с объектами и аудитаи-->
-    <div class="blck_info">
+    <div class="blck_info audit_list_item">
             <f7-list media-list  class=" searchbar-found " id="list_of_objects">
-                <f7-list-group v-if="objects.audits.length>0" v-for="(objects,index) in this.$root.objects" :key="index">
+                <f7-list-group v-if="objects.audits.length>0" v-for="(objects,index) in sort_obj()" :key="index">
                     <f7-list-item
                             group-title>
                         {{objects.group_title}}<br>
                         {{objects.title||"---"}}
                     </f7-list-item>
                     <f7-list-item v-for="(acrd,acrd_index) in array_few(objects)" :key="acrd_index"
-                                  :link="'/audit/'+index+'/'+acrd.id"
+                                  :link="'/audit/'+objects.id+'/'+acrd.id"
                                   :id="'id_'+acrd.id"
                                   :title="$root.localization.AuditPage.audit+' № '+acrd.id+'<div>'+objects.group_title+' '+objects.title+'</div>'"
                                   :subtitle="data_formta(acrd.created_at)"
@@ -18,14 +18,17 @@
                         <!--:media="realStatus(acrd)"-->
                         <f7-swipeout-actions v-if="!acrd.upload">
                             <f7-swipeout-button @click="send_data(acrd,acrd.id)"><div style="font-size:35px"><send></send></div></f7-swipeout-button>
-                            <f7-swipeout-button @click="edit_data(acrd.id, index)"><div style="font-size:35px"><pencil></pencil></div></f7-swipeout-button>
-                            <f7-swipeout-button @click="delete_data(index,acrd.id,acrd_index)"><div style="font-size:35px"><trash></trash></div></f7-swipeout-button>
+                            <f7-swipeout-button @click="edit_data(acrd.id, objects.id)"><div style="font-size:35px"><pencil></pencil></div></f7-swipeout-button>
+                            <f7-swipeout-button v-if="!acrd.downloaded" @click="delete_data(objects.id,acrd.id,acrd_index)"><div style="font-size:35px"><trash></trash></div></f7-swipeout-button>
                         </f7-swipeout-actions>
                         <div slot="media">
                             <div style="text-align: center">
                                 <div v-if="(!acrd.upload)" >
                                     <div v-if="(check_audit_status(acrd))" class="new_audit_icon "><new_audit_icon></new_audit_icon> </div>
-                                    <i v-else class="icon cloud_no_sink cloud"> </i>
+                                    <div v-else>
+                                        <i v-if="allCheck(acrd)"  class="icon cloud_no_sink cloud"> </i>
+                                        <i v-else  class="icon cloud_error cloud"> </i>
+                                    </div>
                                 </div>
                                 <div  v-else >
                                     <i class="icon could_ok cloud"> </i>
@@ -33,11 +36,7 @@
                             </div>
                         </div>
                     </f7-list-item>
-
                 </f7-list-group>
-
-
-
             </f7-list>
 
 
@@ -119,14 +118,22 @@
             }
         },
         methods: {
-            //Статус для аудита. Графииский символ с боку от ссылки на аудит.
-            // realStatus(str) {
-            //     let self = this;
-            //     let result;
-            //     result = (str.upload) ? self.upload_st(str) : self.stat(str);
-            //     return result;
-            // },
+            sort_obj() {
+                return this.$_.sortBy(this.prep_arr(),function(r){
+                    return new Date(r.audits[r.audits.length-1].created_at);
+                }).reverse();
+            },
+            prep_arr(){
+               return this.$_.filter(this.$root.objects,function(o){
+                    return o.audits.length>0;
+                });
+            },
+            sort_audit_date(arr) {
+                arr.audits.sort(function (a, b) {
+                    return new Date(b.created_at) - new Date(a.created_at);
+                });
 
+            },
             //Получение статуса аудита если он загружен.
             check_audit_status(str){
                 let self = this;
@@ -136,16 +143,14 @@
             },
             upload_st(str) {
                 let result = true;
-                let self = this;
                 str.check_list.forEach(function (itm) {
                     itm.requirement.forEach(function (req) {
                         if (!req.disabled) {
-
-                            result = (req.status != 0) ? result : false;
+                            result = (req.status != 0) ? false : result;
                         }
                     });
                 });
-                return (result) ? false : true;
+                return (result) ? true : false;
             },
             //Если не загружен всегда считается новым.
             stat(str) {
@@ -166,7 +171,8 @@
             },
 
             array_few(obj) {
-                return this.$_.sortBy(obj.audits,"created_at").reverse();
+                //return obj.audits;
+                 return this.$_.sortBy(obj.audits,"created_at").reverse();
             },
             hasAudits(id) {
                 return (this.$root.objects[id].audits.length > 0);
@@ -192,22 +198,30 @@
             },
             edit_data(audit_id,obj_id) {
                 let $$ = Dom7;
-
                 this.$f7.swipeoutClose($$('#id_' + audit_id));
                 this.$f7.views.main.router.load({url:'/edit_audit/'+obj_id+'/'+audit_id});
                 // this.$f7.popup($$('#popup_add_audit_' + index));
             },
             delete_data(obj, id, acrd_index) {
                 let $$ = Dom7;
-
                 let self = this;
-
                 this.$f7.confirm("", this.$root.localization.modal.modalTextConf, function () {
                     self.$f7.swipeoutClose($$('#id_' + id));
-
-                    self.$root.objects[obj].audits.reverse().splice(acrd_index, 1);
+                    let object=self.$_.findWhere(  self.$root.objects,{id:Number(obj)});
+                    object.audits.reverse().splice(acrd_index, 1);
                     self.$ls.set('objects', self.$root.objects);
                 });
+            },
+            allCheck(item){
+                let result=false;
+                item.check_list.forEach(function (itm) {
+                    itm.requirement.forEach(function (req) {
+                        if (!req.disabled) {
+                            result = (req.status != 0) ? result : true;
+                        }
+                    });
+                });
+                return (result) ? false : true;
             }
 
         }

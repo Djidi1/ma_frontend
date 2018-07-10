@@ -97,8 +97,8 @@
         },
         created:function(){
             //Берем нужный аудит при помощи идентификаторов которые пришли через пропсы.
-
-            this.audit=(this.$_.findWhere(this.$root.objects[this.array_index].audits, {id:Number(this.id)}));
+            let cur_obj=this.$_.findWhere(this.$root.objects,{id:Number(this.array_index)});
+            this.audit=(this.$_.findWhere(cur_obj.audits, {id:Number(this.id)}));
             // =this.$root.objects[this.array_index].audits[this.id];
         },
         computed:{

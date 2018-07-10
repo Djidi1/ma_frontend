@@ -79,7 +79,8 @@
         },
         created(){
             let self=this;
-            this.audit_current=this.$_.findWhere(this.$root.objects[this.object_index].audits,{id:Number(this.audit_id)})
+            let obj=this.$_.findWhere(this.$root.objects,{id:Number(this.object_index)});
+            this.audit_current=this.$_.findWhere(obj.audits,{id:Number(this.audit_id)});
             this.audit_current.check_list.forEach(function(chk_old){
                 self.check_list_old.push(chk_old);
             });
@@ -134,6 +135,8 @@
                         self.audit_current.check_list.push(itm);;
                     });
                     this.$ls.set('objects',this.$root.objects);
+                    console.log(this.$f7.mainView);
+                // this.$f7.mainView.reloadContent();
                  this.$f7.mainView.back();
             },
 

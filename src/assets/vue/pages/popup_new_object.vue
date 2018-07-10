@@ -119,7 +119,8 @@
             closePopUp(mode){
                 (!this.edit)? this.clear_data():'';
                 (mode)? this.$root.objects=this.$ls.get('objects'):'';
-                this.$f7.mainView.back();
+                // this.$f7.views.main.router.load({url:'/page/'});
+                 this.$f7.mainView.back();
             },
             GetCurrentDate(){
                 return new Date();
@@ -162,12 +163,13 @@
                     "requirement":[],
                     "audit_id":self.audits[0].id
                 };
-                self.$root.check_list[key].requirement.forEach(function(req){
+
+                check.requirement.forEach(function(req){
                     let new_req={
                         "id":req.id,
                         "title":req.title,
                         "status":0,
-                        "checklist_id": self.$root.check_list[key].id,
+                        "checklist_id":check.id,
                         "warning_level":req.warning_level,
                         "created_at":req.created_at,
                         "comments":[],
@@ -201,7 +203,8 @@
                   "comments":[],
                   "check_list":[],
                   "object_id":(Object.keys(this.selected_object).length!=0)?this.selected_object.id:'Offline_'+this.getlastid(),
-                  "upload":false
+                  "upload":false,
+                  "downloaded":false
               };
               this.audits.push(new_audit);
               this.audit_was_add=true;

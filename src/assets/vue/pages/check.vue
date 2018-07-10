@@ -42,7 +42,6 @@
         <f7-toolbar bottom :no-shadow="true" v-if="!uploaded">
             <f7-link class="toolbar_custome_link" @click="abort_check_list()"><div style="font-size:30px"><restore></restore></div></f7-link>
             <f7-link class="toolbar_custome_link" @click="check_all_check_list()"><div style="font-size:30px"><check_all></check_all></div></f7-link>
-            <f7-link class="toolbar_custome_link" @click="check_list_status()"><div style="font-size:30px"><close_all></close_all></div></f7-link>
         </f7-toolbar>
 
     </f7-page>
@@ -52,7 +51,7 @@
     import  trash from "vue-material-design-icons/delete.vue"
     import  close_all from "vue-material-design-icons/close.vue"
     import  restore from "vue-material-design-icons/backup-restore.vue"
-    import  check_all from "vue-material-design-icons/check-all.vue"
+    import  check_all from "vue-material-design-icons/check.vue"
 
 
     export default {
@@ -102,12 +101,7 @@
         },
         methods:{
             check_all_check_list(){
-                let self=this;
-                self.check.requirement.forEach(function(req,j){
-                    req.status=1;
-                    self.$ls.set('objects',self.$root.objects);
-
-                });
+                this.$f7.mainView.back();
             },
             upload_st(str){
                 let result=true;
