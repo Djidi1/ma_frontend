@@ -281,20 +281,6 @@
                 $$(page.container).find('a.done').off('click');
                 $$(document).off('pageBeforeInit','[data-page*="smart-select"]');
             },
-            // clean_check(page){
-            //     let self=this;
-            //     let select=$$('select')[2];
-            //     $$(select).find('option').each(function() {
-            //         this.selected = (self.old_check_list.length > 0)?this.selected:false;
-            //     });
-            //
-            //     self.old_check_list.forEach(function(item){
-            //             $$(select).find('option').each(function() {
-            //                 this.selected=(item.id===Number(this.value));
-            //             })
-            //     });
-            //     console.log($$(select));
-            // },
             get_html_button_done(){
                 return '<div class="right">' +
                     '<div class="row crud_header edit_menu">' +
@@ -312,29 +298,6 @@
                     '</div>' +
                     '</div>'
             }
-            // remove_audit(index){
-            //   this.audits.splice(index,1);
-            // },
-
-           //CSS Доработка
-           //  correct_css(){
-           //      let element=$$(this.$el).find('.correct_css_name').find('.item-inner');
-           //      if(this.current != null && element.length > 0)this.add_cls(element,'not-empty-state');
-           //      element=$$(this.$el).find('.correct_css_adr').find('.item-inner');
-           //      if(this.addres_obj != null && element.length > 0)this.add_cls(element,'not-empty-state');
-           //  },
-           //  secod_correct_css(){
-           //      let element=$$(this.$el).find('.correct_css');
-           //      let el=(element.find('.item-input'));
-           //      el.forEach(function(item){
-           //          $$(item).removeClass('not-empty-state')
-           //      })
-           //  },
-           //  add_cls(obj,cls){
-           //     obj.attr('class').split(' ').forEach(function(item){
-           //         (item!=cls)?obj.addClass(cls):obj.removeClass(cls);
-           //     });
-           //  },
         }
     }
 </script>

@@ -15,7 +15,7 @@
                         </f7-nav-right>
                     </f7-navbar>
 
-                    <f7-list media-list>
+                    <f7-list media-list class="edit_audit_page">
                         <f7-list-item
                                 :title="$root.localization.AuditPage.audit+' № '+this.audit_id"
                                 :subtitle="data_formta(audit_current.created_at)"
@@ -24,7 +24,10 @@
                                 <div style="text-align: center">
                                     <div v-if="(this.audit_current.check_list.length>0)" >
                                         <div v-if="(check_audit_status(this.audit_current))" class="new_audit_icon "><new_audit_icon></new_audit_icon> </div>
-                                        <i v-else class="icon cloud_no_sink cloud"> </i>
+                                        <div v-else>
+                                            <i v-if="allCheck(this.audit_current)"  class="icon cloud_no_sink cloud"> </i>
+                                            <i v-else  class="icon cloud_error cloud"> </i>
+                                        </div>
                                     </div>
                                     <div  v-else >
                                         <div class="no_check_list"> <no_check_list></no_check_list></div>
@@ -41,7 +44,7 @@
                                        class="no-padding"
                                         @click="custome_smart_page">
                             <select  :name="this.$root.localization.pop_up.add_check"  multiple="multiple" @change="check_select_done" >
-                                <option v-for="(check_item,check_ind) in this.$root.check_list" :key="check_ind" :value="check_ind" :selected="current_selected(check_item)"> {{check_item.title}}</option>
+                                <option v-for="(check_item,check_ind) in this.$root.check_list" :key="check_ind" :value="check_item.id" :selected="current_selected(check_item)"> {{check_item.title}}</option>
                             </select>
                             <div slot="after"></div>
                         </f7-list-item>
@@ -98,28 +101,37 @@
               return result
             },
             check_select_done(item){
-             this.audit_current.check_list=[];
                 let self=this;
                 let arr = Array.from(item.target.selectedOptions);
                 arr.forEach(function(opt){
-                    self.audit_current.check_list.push(self.add_check_list_to($$(opt).val()))
+                    let check=self.$_.findWhere(self.$root.check_list,{id:Number($$(opt).val())});
+                    if(self.$_.findWhere(self.audit_current.check_list,{id:Number(check.id)})===undefined) {
+                        self.audit_current.check_list.push(self.add_check_list_to($$(opt).val()));
+                    }
                 });
+                this.audit_current.check_list.forEach(function(check,i){
+                    if(self.$_.findWhere(arr,{_value:Number(check.id)})===undefined){
+                        self.audit_current.check_list.splice(i,1);
+                    }
+                });
+
             },
             add_check_list_to(key){
                 let self=this;
+                let check=this.$_.findWhere(this.$root.check_list,{id:Number(key)});
                 let check_list_new={
-                    "id": self.$root.check_list[key].id,
-                    "title":self.$root.check_list[key].title,
-                    "created_at":self.$root.check_list[key].created_at,
+                    "id": check.id,
+                    "title":check.title,
+                    "created_at":check.created_at,
                     "requirement":[],
                     "audit_id":self.audit_current.id
                 };
-                self.$root.check_list[key].requirement.forEach(function(req){
+                check.requirement.forEach(function(req){
                     let new_req={
                         "id":req.id,
                         "title":req.title,
                         "status":0,
-                        "checklist_id": self.$root.check_list[key].id,
+                        "checklist_id": check.id,
                         "warning_level":req.warning_level,
                         "created_at":req.created_at,
                         "comments":[],
@@ -131,29 +143,27 @@
             },
             submit(){
                 let self=this;
-                    this.check_list_new.forEach(function(itm){
-                        self.audit_current.check_list.push(itm);;
-                    });
-                    this.$ls.set('objects',this.$root.objects);
-                    console.log(this.$f7.mainView);
-                // this.$f7.mainView.reloadContent();
-                 this.$f7.mainView.back();
+                this.$ls.set('objects',this.$root.objects);
+                this.$f7.mainView.back();
             },
 
             check_audit_status(str){
-                let self = this;
-                let result;
-                result = self.upload_st(str);
-                return result;
-            },
-            upload_st(str) {
                 let result = true;
-                let self = this;
                 str.check_list.forEach(function (itm) {
                     itm.requirement.forEach(function (req) {
                         if (!req.disabled) {
-
-                            result = (req.status != 0) ? result : false;
+                            result = (req.status != 0) ? false : result;
+                        }
+                    });
+                });
+                return (result) ? true : false;
+            },
+            allCheck(item){
+                let result=false;
+                item.check_list.forEach(function (itm) {
+                    itm.requirement.forEach(function (req) {
+                        if (!req.disabled) {
+                            result = (req.status != 0) ? result : true;
                         }
                     });
                 });

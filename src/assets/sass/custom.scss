@@ -659,7 +659,17 @@
   white-space: unset!important;
   padding: 10px 0;
 }
-.audit_list_item .item-text{
+.audit_list_item .item-text,
+.edit_audit_page .item-text{
 	max-height:unset;
 	display:block;
+}
+.icons_check-audit_page span{
+	justify-content: center;
+	align-items: center;
+	-webkit-transform: translateX(5px);
+	-moz-transform: translateX(5px);
+	-ms-transform: translateX(5px);
+	-o-transform: translateX(5px);
+	transform: translateX(5px);
 }

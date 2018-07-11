@@ -106,7 +106,6 @@
             upload_st(str){
                 let result=true;
                 let new_str=true;
-                let self=this;
                 str.requirement.forEach(function(req){
                     new_str=(req.status===0)?new_str:false;
                     result=(req.status===1)?result:false;

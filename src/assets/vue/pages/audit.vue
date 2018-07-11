@@ -16,15 +16,16 @@
                     </f7-list-item>
                     <f7-list-item  class="item_audit" v-for="(check,id) in this.audit.check_list" :key="id" :title="check.title" :link="'/check/'+audit.id+'/'+check.id">
                         <div slot="media" style="padding-top:2px;padding-bottom:2px">
-                            <div style="font-size:30px;">
-                                <div v-if="new_str(check)" style="color:#DAA520;">
-                                    <alert_box ></alert_box>
+                            <div class="icons_check-audit_page">
+                                <div v-if="!uploaded">
+                                    <div v-if="(upload_st(check))" class="new_audit_icon "><new_audit_icon></new_audit_icon> </div>
+                                    <div v-else>
+                                        <i v-if="allCheck(check)"  class="icon cloud_no_sink cloud"> </i>
+                                        <i v-else  class="icon cloud_error cloud"> </i>
+                                    </div>
                                 </div>
-                                <div v-if="(new_str(check))?false:!upload_st(check)" style="color:#b51313;" >
-                                    <close_box ></close_box>
-                                </div>
-                                <div  v-if="upload_st(check)" style="color:#019341; ">
-                                    <ready_box ></ready_box>
+                                <div v-else>
+                                    <i class="icon could_ok cloud"></i>
                                 </div>
                             </div>
                         </div>
@@ -57,10 +58,8 @@
     import Popup_audit_edit from "src/assets/vue/pages/popup_edit_audit";
     import SingleComment from "src/assets/vue/Components/single-comment";
     import  pencil from "vue-material-design-icons/pencil.vue"
-    import  trash from "vue-material-design-icons/delete.vue"
     import  alert_box from "vue-material-design-icons/alert-circle-outline.vue"
-    import  close_box from "vue-material-design-icons/close.vue"
-    import  ready_box from "vue-material-design-icons/check.vue"
+    import  new_audit_icon from "vue-material-design-icons/alert-circle-outline.vue"
     import  send from "vue-material-design-icons/send.vue"
     let $$=Dom7;
     export default {
@@ -68,10 +67,8 @@
             SingleComment,
             send,
             pencil,
-            trash,
             alert_box,
-            close_box,
-            ready_box
+            new_audit_icon
         },
         name: "audit",
         props: {
@@ -106,28 +103,11 @@
             hasCheck_list(){
                 return (this.audit.check_list.length>0);
             },
-            //Форматирование даты.
-            data_format(){
-                let data=new Date(this.audit.created_at);
-                let curSec=('0'+data.getSeconds()).substr(-2);
-                let curMin=('0'+data.getMinutes()).substr(-2);
-                let curDay=('0'+data.getDate()).substr(-2);
-                let curMounth=('0'+(data.getMonth()+1));
-                let date_for_text=curDay+"/"+curMounth+"/"+data.getFullYear()+" "+data.getHours()+":"+curMin+":"+curSec;
-                return date_for_text;
-            },
+
             //Проверка загружен ли аудита на сервер.
             uploaded(){
-                return (this.audit.upload)?true:this.all_cheked();
+                return this.audit.upload;
             },
-
-            //Кол-во комментариве к аудиту.
-            comment_audit_count(){
-                return (this.audit.comments.length>0)?"<i class='fa fa-commenting-o' aria-hidden='true'></i> "+this.audit.comments.length:"<i class='fa fa-commenting-o' aria-hidden='true'></i>";
-            },
-            hasComment(){
-                return (this.audit.comments.length>0);
-            }
         },
         methods:{
             all_cheked(){
@@ -161,16 +141,6 @@
                     self.$ls.set('objects',self.$root.objects);
                 });
             },
-
-            //Удалить аудит.
-            remove_audit(){
-                let self=this;
-                this.$f7.confirm("",this.$root.localization.modal.modalTextConf, function () {
-                    self.$root.objects[self.array_index].audits.splice(self.id,1);
-                    self.$ls.set('objects',self.$root.objects);
-                    self.$f7.views.main.back();
-                })
-            },
             //Получить дату создания.
             GetCurrentDate(){
                 let data=new Date(this.audit.date_add);
@@ -189,24 +159,33 @@
                 return result;
             },
             //Выбираем какую иконку статуса возвращать для чек листа.
-            upload_st(str){
-                let result=true;
-                // let new_str=false;
-                str.requirement.forEach(function(req){
-                    // new_str=(req.status===0)?true:new_str;
-                    result=(Number(req.status)===1)?result:false;
-                });
-                return (result)?true:false;
-            },
             new_str(str){
-
                 let result=false;
                 str.requirement.forEach(function(req){
                     result=(Number(req.status)===0)?true:result;
                 });
               return result
-
             },
+            upload_st(str) {
+                let result = true;
+                    str.requirement.forEach(function (req) {
+                        if (!req.disabled) {
+                            result = (req.status != 0) ? false : result;
+                        }
+                    });
+                return (result) ? true : false;
+            },
+            allCheck(item){
+                let result=false;
+                 item.requirement.forEach(function (req) {
+                        if (!req.disabled) {
+                            result = (req.status != 0) ? result : true;
+                        }
+                    });
+                return (result) ? false : true;
+            },
+
+
             open_edit(){
                 this.$f7.views.main.router.load({url:'/edit_audit/'+this.array_index_save+'/'+this.audit.id});
             }

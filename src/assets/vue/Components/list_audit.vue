@@ -38,63 +38,6 @@
                     </f7-list-item>
                 </f7-list-group>
             </f7-list>
-
-
-
-
-
-
-
-
-
-
-
-
-        <!--<f7-card v-for="(item,index) in this.$root.objects" :key="index" v-if="hasAudits(index)">-->
-            <!--<f7-card-header>-->
-                <!--<div class="obj_info">-->
-                    <!--<div class="row  no-gutter">-->
-                        <!--<div class="col-70"> {{item.title}}</div>-->
-                        <!--<div class="col-70  dop_info">{{item.address}}</div>-->
-                        <!--<div class="col-30 dop_info count_info">{{countFrom(item)}}</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</f7-card-header>-->
-            <!--<f7-card-content>-->
-                <!--<f7-list media-list class="no-link-icon">-->
-                    <!--<f7-list-item v-for="(acrd,acrd_index) in array_few(item)" :key="acrd_index"-->
-                                  <!--:link="'/audit/'+index+'/'+acrd_index"-->
-                                  <!--:id="'id_'+acrd.id"-->
-                                  <!--:title="acrd.title || $root.localization.AuditPage.audit"-->
-                                  <!--:subtitle="data_formta(acrd.created_at)"-->
-                                  <!--:text="check_list_names(acrd)"-->
-
-
-                                  <!--swipeout>-->
-                        <!--&lt;!&ndash;:media="realStatus(acrd)"&ndash;&gt;-->
-                        <!--<f7-swipeout-actions v-if="!acrd.upload">-->
-                            <!--<f7-swipeout-button @click="send_data(acrd,acrd.id)"><i class="fa fa-paper-plane swipe_btn" aria-hidden="true"></i></f7-swipeout-button>-->
-                            <!--<f7-swipeout-button @click="edit_data(acrd.id)"><i class="fa fa-pencil swipe_btn" aria-hidden="true"></i></f7-swipeout-button>-->
-                            <!--<f7-swipeout-button @click="delete_data(index,acrd.id,acrd_index)"><i class="fa fa-trash-o swipe_btn" aria-hidden="true"></i></f7-swipeout-button>-->
-                        <!--</f7-swipeout-actions>-->
-                        <!--<div slot="content">-->
-                            <!--<div style="padding-right:25px;">-->
-                                <!--<div v-if="(acrd.upload)? false:true" style="color:#2196F3; font-size:45px;">-->
-                                    <!--<alert_box ></alert_box>-->
-                                <!--</div>-->
-                                <!--<div v-if="(acrd.upload) ? !upload_st(acrd) : false" style="color:#b51313; font-size:45px;">-->
-                                    <!--<close_box ></close_box>-->
-                                <!--</div>-->
-                                <!--<div  v-if="(acrd.upload) ? upload_st(acrd) : false" style="color:#019341; font-size:45px;">-->
-                                    <!--<ready_box ></ready_box>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<popup_audit_edit :audit="acrd"></popup_audit_edit>-->
-                    <!--</f7-list-item>-->
-                <!--</f7-list>-->
-            <!--</f7-card-content>-->
-        <!--</f7-card>-->
     </div>
 </template>
 
@@ -152,11 +95,6 @@
                 });
                 return (result) ? true : false;
             },
-            //Если не загружен всегда считается новым.
-            stat(str) {
-                return "fa fa-circle fa-1x audit_new"
-            },
-
             check_list_names(itm){
                 let result=""
                 itm.check_list.forEach(function(name){
@@ -165,17 +103,9 @@
 
                return result.substring(0,result.length-6)
             },
-            countFrom(item) {
-                let all = item.audits.length;
-                return (all > 5) ? "5 " + this.$root.localization.AuditPage_count + " " + all : '';
-            },
-
             array_few(obj) {
                 //return obj.audits;
                  return this.$_.sortBy(obj.audits,"created_at").reverse();
-            },
-            hasAudits(id) {
-                return (this.$root.objects[id].audits.length > 0);
             },
             //Ковертируем дату в удобный вид.
             data_formta(data) {
