@@ -231,9 +231,7 @@ new Vue({
             //синхронизация готовых аудитов с сервером
             this.synch_data(completed_audits).then(ready=>{
                 this.$root.getData_from_server().then(result => {
-                    console.log(result.obj);
                     self.return_uncompleted(in_progress_audits,result.obj).then(complete=>{
-                        console.log('last_stage');
                         self.$root.objects = result.obj;
                         self.down_att(result.res);
                         done();
@@ -430,6 +428,7 @@ new Vue({
         get_audits() {
             let self = this;
             let audits = [];
+            console.log( 'Bearer ' + self.auth_info.token);
             return new Promise(function (resolve) {
                 self.$http.post(self.be_server + '/api/get-audits', {}, {headers: {'Authorization': 'Bearer ' + self.auth_info.token}}).then(
                     response => {
@@ -758,7 +757,7 @@ new Vue({
                 let requs = {
                     "audit": {
                         "check_list": self.get_req(audit),//массив чек листов
-                        "id": 0,
+                        "id": Number(0),
                         "object_id": audit.object_id,
                         "date_add": self.GetCurrentDate(audit),//Текущая дата.
                         "title": audit.title,
@@ -778,7 +777,7 @@ new Vue({
             let result = [];
             audit.check_list.forEach(function (item) {
                 let check_obj = {
-                    "audit_id": audit.id,
+                    "audit_id": 0,
                     "id": item.id,
                     "title": item.title,
                     "requirement": []
@@ -864,7 +863,6 @@ new Vue({
                             self.$http.post(self.be_server + '/api/put-audits', data, {headers: {'Authorization': 'Bearer ' + self.auth_info.token}}).then(
                                 response => {
                                     //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
-                                    console.log(response);
                                     self.$set(audit, "id", Number(response.body));
                                     self.$set(audit, "upload", true);
                                     self.$ls.set('objects', self.$root.objects);

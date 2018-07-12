@@ -233,8 +233,6 @@
 
             },
             clear_data(){
-              // this.correct_css();
-              // this.secod_correct_css();
               this.selected_object={};
               this.current=0;
                this.sorted_array_objects=[];
