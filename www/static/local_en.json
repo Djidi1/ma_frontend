@@ -64,7 +64,8 @@
     "tel":"Phone number/disabled",
     "user_block": "Info",
     "lang_block": "Language",
-    "server":"Server"
+    "server":"Server",
+    "port":"Port"
   },
   "modal":{
     "modalOk":"Submit",

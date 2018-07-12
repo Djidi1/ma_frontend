@@ -44,12 +44,10 @@
 
         </div>
         <f7-toolbar bottom :no-shadow="true" v-if="!uploaded">
-            <f7-link></f7-link>
-            <f7-link class="toolbar_custome_link" @click="send_results()"><div style="font-size:18px; transform:translateY(-2%)">
+            <f7-link class="toolbar_custome_link solo" @click="send_results()"><div style="font-size:18px; transform:translateY(-2%)">
                 {{this.$root.localization.AuditPage.audit_send_btn}}&nbsp&nbsp </div>
                 <div style="font-size:30px"><send></send></div>
             </f7-link>
-            <f7-link></f7-link>
         </f7-toolbar>
     </f7-page>
 </template>
@@ -122,7 +120,7 @@
             send_results(){
                ( this.audit.check_list.length>0)?
                    (this.$root.check_audit_positions(this.audit))?
-                    this.$root.send_to_serv_audit(this.audit)
+                    this.$root.ready_to_send(this.audit)
                        :this.$f7.alert(this.$root.localization.AuditPage.check_not_complete, this.$root.localization.pop_up.warning)
                         : this.$f7.alert(this.$root.localization.pop_up.no_check_list,this.$root.localization.pop_up.warning);
 

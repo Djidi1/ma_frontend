@@ -104,8 +104,16 @@
                return result.substring(0,result.length-6)
             },
             array_few(obj) {
-                //return obj.audits;
+                this.complete_aud(this.$_.sortBy(obj.audits,"created_at").reverse());
                  return this.$_.sortBy(obj.audits,"created_at").reverse();
+            },
+            //устанавливаем флаг выполнения аудита
+            complete_aud(arr){
+                let self=this;
+               arr.forEach(function(items){
+                   items.completed=(items.upload)?true:(self.upload_st(items))?false:self.allCheck(items);
+               });
+                self.$ls.set('objects', self.$root.objects);
             },
             //Ковертируем дату в удобный вид.
             data_formta(data) {

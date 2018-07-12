@@ -64,7 +64,8 @@
     "tel":"Телефон/Пока выключен",
     "user_block": "Инфо",
     "lang_block": "Язык",
-    "server":"Сервер"
+    "server":"Сервер",
+    "port":"Порт"
   },
   "modal":{
     "modalOk":"Ок",

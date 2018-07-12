@@ -17,7 +17,6 @@
 									<audit_icon></audit_icon>
 								</div>
 							</f7-list-item>
-							<!--<f7-list-item link="/object/" :title="this.$root.localization.LeftMenu.Object" link-view="#main-view" link-close-panel media="<i class='fa fa-building-o' aria-hidden='true'></i>"></f7-list-item>-->
 							<f7-list-item link="/settings/" :title="this.$root.localization.LeftMenu.Settings" >
 								<div slot="media" class="setting_ii">
 									<setting_icon></setting_icon>
@@ -43,10 +42,15 @@
 								</f7-navbar>
 
 								<!--server_change-->
+								<!--server_change-->
 								<f7-list form class="user_settings">
 									<f7-list-item>
 										<f7-label floating>{{this.$root.localization.lang.server}}</f7-label>
 										<f7-input type="text" v-model="server"/>
+									</f7-list-item>
+									<f7-list-item>
+										<f7-label floating>{{this.$root.localization.lang.port}}</f7-label>
+										<f7-input type="text" v-model="port"/>
 									</f7-list-item>
 								</f7-list>
 
@@ -113,7 +117,8 @@
 		},
 		data:function(){
             return {
-                server:this.$root.be_server,
+                server:this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0],
+                port:this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1],
                 curentLang:this.$root.settings,
 
 			}
@@ -197,9 +202,9 @@
                 }
             },
             submitSetting:function(){
-                if (this.curentLang!=this.$root.settings||this.server!=this.$root.be_server){
-                    //this.$set(this.$root.auth_info,'name',this.user_name);
-                    // this.$root.auth_info={name:this.user_name,email:this.$root.auth_info.email,token:this.$root.auth_info.token,auth:true,user_info:this.$root.auth_info.user_info};
+                if (this.curentLang!=this.$root.settings||
+                    this.server!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0]
+                    ||this.port!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1]){
                     this.$root.settings=this.curentLang;
                     this.$root.be_server=this.server;
                 }
@@ -207,8 +212,9 @@
             },
             cancelSetting:function(){
                 let self=this;
-                let duration=0;
-                if (this.curentLang!=this.$root.settings||this.server!=this.$root.be_server){
+                if (this.curentLang!=this.$root.settings||
+                    this.server!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0]
+                    ||this.port!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1]){
                     this.change_l(this.$root.settings);
 
                 }

@@ -22,7 +22,12 @@
                     <f7-label floating>{{this.$root.localization.lang.server}}</f7-label>
                     <f7-input type="text" v-model="server"/>
                 </f7-list-item>
+                <f7-list-item>
+                    <f7-label floating>{{this.$root.localization.lang.port}}</f7-label>
+                    <f7-input type="text" v-model="port"/>
+                </f7-list-item>
             </f7-list>
+
 
 
             <!--RadioGroup-->
@@ -59,7 +64,8 @@
             return{
                 user_name:this.$root.auth_info.name,
                 curentLang:this.$root.settings,
-                server:this.$root.be_server
+                server:this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0],
+                port:this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1]
             }
         },
 
@@ -98,17 +104,22 @@
                 }
             },
             submitSetting:function(){
-                if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings||this.server!=this.$root.be_server){
+                if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings
+                    ||this.server!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0]
+                    ||this.port!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1]){
                    //this.$set(this.$root.auth_info,'name',this.user_name);
                     this.$root.auth_info={name:this.user_name,email:this.$root.auth_info.email,token:this.$root.auth_info.token,auth:true,user_info:this.$root.auth_info.user_info};
                     this.$root.settings=this.curentLang;
-                    this.$root.be_server=this.server;
+                    this.$root.be_server="https://"+this.server+":"+this.port;
                 }
             },
             cancelSetting:function(){
                 let self=this;
                 let duration=0;
-                if  (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings||this.server!=this.$root.be_server){
+                if  (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings||
+                    this.server!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0]
+                    ||this.port!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1])
+                    {
                     this.change_l(this.$root.settings);
                     duration=600;
                 }

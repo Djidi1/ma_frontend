@@ -18,7 +18,6 @@ import Framework7Theme from 'framework7/dist/css/framework7.material.min.css'
 import Framework7ThemeColors from 'framework7/dist/css/framework7.material.colors.min.css'
 
 
-
 // Import App Custom Styles
 import AppStyles from './assets/sass/main.scss'
 import AppStylesCustom from './assets/sass/custom.scss'
@@ -108,7 +107,6 @@ new Vue({
     components: {
         app: App
     },
-
     data: {
         objects: [],
         auth_info: {},
@@ -122,7 +120,6 @@ new Vue({
         auth_info: function (val) {
             this.$ls.set('auth_info', val);
         },
-
         settings: function (val) {
             this.$ls.set('settings', val);
         },
@@ -135,6 +132,7 @@ new Vue({
         be_server:function(val){
             this.$ls.set('be_server',val);
         }
+
     },
     //При создании App устанавлива язык из локал сторейджа, если, Если язык не установлен(локалсторейдж пуст) устанавливаем русский по умолчанию.
     created() {
@@ -188,16 +186,11 @@ new Vue({
                 (this.$f7.getCurrentView().activePage.name === "settings") ? this.$f7.views[0].back() : this.$f7.closePanel();
                 return false;
             } else {
-                // if (element.find('.modal-in').length > 0) {
-                //         self.$f7.closeModal();
-                //         return false;
-                // } else {
+
                     console.log(this.$f7.getCurrentView().activePage.name);
                     if ((this.$f7.getCurrentView().activePage.name === "audits_main") || (this.$f7.getCurrentView().activePage.name === "objects_main")) {
-                        // this.$f7.confirm("",this.$root.localization.modal.modalTextConfExit, function () {
                         navigator.app.clearHistory();
                         navigator.app.exitApp();
-                        // });
                     } else {
                         this.$f7.mainView.back();
                     }
@@ -222,10 +215,6 @@ new Vue({
             }
             (this.$f7 !== undefined) ? this.changeModalLang() : "";
         },
-        // //Функция обновления локал сторейджа. Сейчас неактивна.
-        // update_ls: function () {
-        //     this.$ls.set('objects', this.objects);
-        // },
         //Изменения языка для кнопок модальных окон. Пришлось делать отдельно, т.к. это тметод можно вызывать только полсе загрузки $f7.
         changeModalLang: function () {
             this.$f7.params.modalButtonOk = this.localization.modal.modalOk;
@@ -234,12 +223,101 @@ new Vue({
         //Метод обновления данных с сервера при пулестраницы вниз.
         onRefresh(event, done) {
             let self = this;
-            //Вызов метода получения данных с сервера
-            this.$root.getData_from_server().then(result => {
-                self.$root.objects = result.obj;
-                self.down_att(result.res);
-                done()
+
+            //Сохраняем в памяти телефона все незаконченные аудиты
+            let in_progress_audits=(this.get_uncompleted_audits());
+            //Получаем список аудитов которые закончены и ожидают отправки
+            let completed_audits=this.get_completed_audits();
+            //синхронизация готовых аудитов с сервером
+            this.synch_data(completed_audits).then(ready=>{
+                this.$root.getData_from_server().then(result => {
+                    console.log(result.obj);
+                    self.return_uncompleted(in_progress_audits,result.obj).then(complete=>{
+                        console.log('last_stage');
+                        self.$root.objects = result.obj;
+                        self.down_att(result.res);
+                        done();
+                    });
+
+                })
+            });
+        },
+        //Получаем все незаконченные аудиты
+        get_uncompleted_audits(){
+          let self=this;
+          let result=[];
+            this.$root.objects.forEach(function(obj){
+                let uncpl=self.$_.filter(obj.audits,{completed:false});
+                if (uncpl.length>0){
+                    uncpl.forEach(function(unc_itm){
+                        result.push(unc_itm);
+                    });
+                }
+            });
+            return result;
+        },
+        //Получаем все законченные аудиты
+        get_completed_audits(){
+            let self=this;
+            let result=[];
+            this.$root.objects.forEach(function(obj){
+                let uncpl=self.$_.filter(obj.audits,{completed:true});
+                if (uncpl.length>0){
+                    uncpl.forEach(function(unc_itm){
+                       if (!unc_itm.upload) result.push(unc_itm);
+                    });
+                }
+            });
+            return result;
+        },
+
+        //Синхронизация данных
+        synch_data(arr){
+            let self=this;
+            let ready;
+            let promises=[]
+            return new Promise(function(resolve){
+                if (arr.length>0) {
+                        self.create_synch_promises(arr).then(promises=>{
+                            console.log(promises);
+                            Promise.all(promises).then(values=>{
+                                resolve(ready="ready");
+                             })
+                        });
+
+                }else{
+                    resolve(ready);
+                }
             })
+        },
+        //Создаем массив промисов для послеовательной загрузки на сервер
+        create_synch_promises(arr){
+            let self=this;
+            let promises = [];
+            return new Promise(function (resolve) {
+                 arr.forEach(function(itm){
+                     promises.push(self.send_to_serv_audit(itm));
+                 });
+                 resolve(promises);
+            })
+        },
+        //Добавляем в массив те аудиты которые не были завершены на момент синхронизации.
+        return_uncompleted(arr,result_arr){
+            let self=this;
+            let complete;
+            return new Promise(function(resolve){
+                arr.forEach(function(itm){
+                    let obj=self.$_.findWhere(result_arr,{id:Number(itm.object_id)});
+                    let aud=self.$_.findWhere(obj.audits,{id:itm.id});
+                    if (aud!=undefined){
+                        aud.check_list=itm.check_list;
+                        aud.comments=itm.comments;
+                    }else{
+                        obj.audits.push(itm);
+                    }
+                });
+                resolve(complete);
+            });
         },
         //Метод получения данных от сервера.
         getData_from_server() {
@@ -259,11 +337,13 @@ new Vue({
                     .then(objects => {
                         objects_arr = objects;
                         //Вызов метода по получению аудитов.
+
                         return self.get_audits();
                     })
                     .then(
                         audits => {
                             audits_arr = audits;
+                            console.log(audits_arr);
                             //Вызов метода по получению результатов по аудитам.
                             return self.get_results();
                         }
@@ -376,6 +456,7 @@ new Vue({
         },
         //Метод создания итогового массива объектов. Все полученные ранее данные компануются в один массив.
         create_object_list(objects, audits) {
+            let self=this;
             let object_arr = [];
             return new Promise(function (resolve) {
                 objects.forEach(function (object) {
@@ -389,23 +470,22 @@ new Vue({
                         "group_id":(!object.audit_object_group)?"":object.audit_object_group.id,
                         "group_title":(!object.audit_object_group)?"Нет группы":object.audit_object_group.title
                     };
-                    audits.forEach(function (audit) {
-                        if (object.id === audit.object_id) {
-                            let audit_result = {
-                                "id": audit.id,
-                                "title": audit.title,
-                                "date_add": audit.date_add,
-                                "created_at": audit.created_at,
-                                "check_list": [],
-                                "comments": [],
-                                "object_id": object.id,
-                                "check_list_id": audit.checklist_id,
-                                "upload": false,
-                                "downloaded":true
-                            };
-                            result.audits.push(audit_result);
-                        }
-                    });
+                    (self.$_.filter(audits,{object_id:Number(object.id)}).forEach(function(audit){
+                        let audit_result = {
+                            "id": audit.id,
+                            "title": audit.title,
+                            "date_add": audit.date_add,
+                            "created_at": audit.created_at,
+                            "check_list": [],
+                            "comments": [],
+                            "object_id": object.id,
+                            "check_list_id": audit.checklist_id,
+                            "upload": false,
+                            "downloaded":true,
+                            "completed":false
+                        };
+                        result.audits.push(audit_result);
+                    }));
                     object_arr.push(result);
                 });
                 resolve(object_arr);
@@ -655,13 +735,25 @@ new Vue({
             });
             return result;
         },
+        //Вопрос перед отправкой
+        ready_to_send(audit){
+            let self=this;
+            this.$f7.confirm(this.$root.localization.modal.modalConfirmSend, this.$root.localization.modal.modalTextConf, function () {
+                //Вызов модального подтвержедния действия.
+                self.$f7.showPreloader(self.$root.localization.modal.preloader);
+                self. send_to_serv_audit(audit).then(ready=>{
+                    self.$f7.hidePreloader();
+                });
+            });
+        },
+
+
 
         //Отправка данных на сервер
         send_to_serv_audit(audit) {
             let self = this;
-            //Вызов модального подтвержедния действия.
-            this.$f7.confirm(this.$root.localization.modal.modalConfirmSend, this.$root.localization.modal.modalTextConf, function () {
-                self.$f7.showPreloader(self.$root.localization.modal.preloader);
+            let ready;
+            return new Promise(function(resolve){
                 //Формирование массива на отправку.
                 let requs = {
                     "audit": {
@@ -674,7 +766,9 @@ new Vue({
                     },
                 };
                 //Метод отправки на сервер.
-                self.send_data_to_sev(requs, audit);
+                self.send_data_to_sev(requs, audit).then(result=>{
+                    resolve(ready);
+                });
             });
         },
 
@@ -762,20 +856,26 @@ new Vue({
         //Отправка даных на сервер.
         send_data_to_sev(data, audit) {
             let self = this;
-            self.create_promises(data).then(
-                promises => {
-                    Promise.all(promises).then(values => {
-                        this.$http.post(self.be_server + '/api/put-audits', data, {headers: {'Authorization': 'Bearer ' + this.auth_info.token}}).then(
-                            response => {
-                                //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
-                                self.$f7.hidePreloader();
-                                self.$set(audit, "id", response.body);
-                                self.$set(audit, "upload", true);
-                                self.$ls.set('objects', self.$root.objects);
-                            });
-                    });
-                }
-            )
+            let result;
+            return new Promise(function(resolve,error){
+                self.create_promises(data).then(
+                    promises => {
+                        Promise.all(promises).then(values => {
+                            self.$http.post(self.be_server + '/api/put-audits', data, {headers: {'Authorization': 'Bearer ' + self.auth_info.token}}).then(
+                                response => {
+                                    //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
+                                    console.log(response);
+                                    self.$set(audit, "id", Number(response.body));
+                                    self.$set(audit, "upload", true);
+                                    self.$ls.set('objects', self.$root.objects);
+                                    resolve(result);
+                                });
+                        });
+                    }
+                )
+            });
+
+
         },
 
         create_promises: function (data) {
