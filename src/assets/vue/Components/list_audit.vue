@@ -62,14 +62,25 @@
         },
         methods: {
             sort_obj() {
-                return this.$_.sortBy(this.prep_arr(),function(r){
+                this.complete_aud(this.$root.objects);
+                let date_sort_arr = this.$_.sortBy(this.prep_arr(),function(r){
                     return new Date(r.audits[r.audits.length-1].created_at);
                 }).reverse();
+                return this.$_.sortBy(date_sort_arr,"completed");
+
             },
             prep_arr(){
-               return this.$_.filter(this.$root.objects,function(o){
-                    return o.audits.length>0;
+                let self=this;
+               let array= this.$_.filter(this.$root.objects,function(o){
+                   return o.audits.length>0 && self.check_completed(o);
+               });
+               return array;
+            },
+            check_completed(obj){
+                let array=this.$_.filter(obj.audits,function(o){
+                    return (o.completed)?((new Date()-new Date(o.created_at)>172800000))?'':o:o;
                 });
+                return (array.length>0);
             },
             sort_audit_date(arr) {
                 arr.audits.sort(function (a, b) {
@@ -104,15 +115,23 @@
                return result.substring(0,result.length-6)
             },
             array_few(obj) {
-                this.complete_aud(this.$_.sortBy(obj.audits,"created_at").reverse());
-                 return this.$_.sortBy(obj.audits,"created_at").reverse();
+                 let clear_arr=this.$_.filter(obj.audits,function(o){
+                    return (o.completed)?((new Date()-new Date(o.created_at)>172800000))?'':o:o;
+                 });
+                 return this.$_.sortBy(this.$_.sortBy(clear_arr,"created_at").reverse(),"completed");
             },
             //устанавливаем флаг выполнения аудита
             complete_aud(arr){
                 let self=this;
-               arr.forEach(function(items){
-                   items.completed=(items.upload)?true:(self.upload_st(items))?false:self.allCheck(items);
-               });
+                let compl;
+                arr.forEach(function(obj){
+                    compl=true;
+                    obj.audits.forEach(function(items){
+                        items.completed=(items.upload)?true:(self.upload_st(items))?false:self.allCheck(items);
+                        compl=(items.completed)?compl:false;
+                    });
+                    obj.completed=compl;
+                });
                 self.$ls.set('objects', self.$root.objects);
             },
             //Ковертируем дату в удобный вид.
@@ -122,7 +141,7 @@
                 let curMin = ('0' + data.getMinutes()).substr(-2);
                 let curDay = ('0' + data.getDate()).substr(-2);
                 let curMounth = ('0' + (data.getMonth() + 1));
-                return curDay + "." + curMounth + "." + data.getFullYear() + " " + data.getHours() + ":" + curMin/* + ":" + curSec*/;
+                return curDay + "." + curMounth + "." + data.getFullYear();
             },
             send_data(item, index) {
                 let $$ = Dom7;

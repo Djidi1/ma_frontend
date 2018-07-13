@@ -37,18 +37,46 @@
                         </f7-list-item>
                     </f7-list>
 
-                    <f7-list form>
-                        <f7-list-item  smart-select :title="this.$root.localization.pop_up.add_check" :smart-select-back-on-select="true"
+
+
+
+                        <f7-list form>
+                            <f7-list-item v-if="this.$root.check_list.length===0" :title="this.$root.localization.pop_up.no_check_list">
+                                <div slot="root" style="padding:8px 16px;">{{this.$root.localization.pop_up.no_check_list}}</div>
+                            </f7-list-item>
+                            <f7-list-item  smart-select :title="this.$root.localization.pop_up.check_list_group" :smart-select-back-on-select="true" v-else
+                                           :smart-select-searchbar="true"
+                                           :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
+                                           class="no-padding no-white_spacing"
+                            >
+                                <select  :name="this.$root.localization.pop_up.add_check"  @change="check_group_select_done" >
+                                    <option :value="null" selected>{{this.$root.localization.pop_up.no_check_cat_selected}} </option>
+                                    <option v-for="(check_gruop_item,check_ind) in check_list_groups" :key="check_ind" :value="check_gruop_item[0].cl_category.id"> {{check_gruop_item[0].cl_category.title}}</option>
+                                </select>
+                                <div slot="after">{{}}</div>
+                            </f7-list-item>
+                        </f7-list>
+
+
+
+
+                    <transition appear mode="out-in" name="slide-app">
+                    <f7-list form v-if="check_list_arr.length>0">
+                        <f7-list-item v-if="this.$root.check_list.length===0" :title="this.$root.localization.pop_up.no_check_list">
+                            <div slot="root" style="padding:8px 16px;">{{this.$root.localization.pop_up.no_check_list}}</div>
+                        </f7-list-item>
+                        <f7-list-item  v-else smart-select :title="this.$root.localization.pop_up.add_check" :smart-select-back-on-select="true"
                                        :smart-select-searchbar="true"
                                        :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
                                        class="no-padding"
                                         @click="custome_smart_page">
                             <select  :name="this.$root.localization.pop_up.add_check"  multiple="multiple" @change="check_select_done" >
-                                <option v-for="(check_item,check_ind) in this.$root.check_list" :key="check_ind" :value="check_item.id" :selected="current_selected(check_item)"> {{check_item.title}}</option>
+                                <option v-for="(check_item,check_ind) in check_list_arr" :key="check_ind" :value="check_item.id" :selected="current_selected(check_item)"> {{check_item.title}}</option>
                             </select>
                             <div slot="after"></div>
                         </f7-list-item>
                     </f7-list>
+                    </transition>
                 </f7-page>
 </template>
 
@@ -77,13 +105,16 @@
                 audit_current:{},
                 current:'',
                 check_list_new:[],
-                check_list_old:[]
+                check_list_old:[],
+                check_list_groups:[],
+                check_list_arr:[]
             }
         },
         created(){
             let self=this;
             let obj=this.$_.findWhere(this.$root.objects,{id:Number(this.object_index)});
             this.audit_current=this.$_.findWhere(obj.audits,{id:Number(this.audit_id)});
+            this.check_list_groups=this.$_.groupBy(this.$root.check_list,"cl_category_id");
             this.audit_current.check_list.forEach(function(chk_old){
                 self.check_list_old.push(chk_old);
             });
@@ -100,6 +131,11 @@
                 });
               return result
             },
+            check_group_select_done(item){
+                this.check_list_arr=(item.target.value!=null)?this.$_.filter(this.$root.check_list,function(c){
+                    return c.cl_category_id===Number(item.target.value);
+                }):[];
+            },
             check_select_done(item){
                 let self=this;
                 let arr = Array.from(item.target.selectedOptions);
@@ -114,7 +150,6 @@
                         self.audit_current.check_list.splice(i,1);
                     }
                 });
-
             },
             add_check_list_to(key){
                 let self=this;

@@ -102,11 +102,13 @@
     "empty_input_address":"Введите адрес объекта",
     "select_ex":"Выберите группу",
     "select_pop_over": "Выберите объект",
+    "check_list_group":"Выбирете категорию чек-листов",
     "no_check_list":"Отсутствует информация о чек-листа. ",
     "no_check_list_text":"Необходима синхранизация.",
     "no_objects":"В данной группе пока нет объектов",
     "no_group_selected":"Группа не выбрана",
-    "no_objet_selected":"Объект не выбран"
+    "no_objet_selected":"Объект не выбран",
+    "no_check_cat_selected":"Категория не выбрана"
 
   }
 }

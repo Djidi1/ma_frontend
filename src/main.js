@@ -187,7 +187,7 @@ new Vue({
                 return false;
             } else {
 
-                    console.log(this.$f7.getCurrentView().activePage.name);
+
                     if ((this.$f7.getCurrentView().activePage.name === "audits_main") || (this.$f7.getCurrentView().activePage.name === "objects_main")) {
                         navigator.app.clearHistory();
                         navigator.app.exitApp();
@@ -277,7 +277,6 @@ new Vue({
             return new Promise(function(resolve){
                 if (arr.length>0) {
                         self.create_synch_promises(arr).then(promises=>{
-                            console.log(promises);
                             Promise.all(promises).then(values=>{
                                 resolve(ready="ready");
                              })
@@ -341,7 +340,6 @@ new Vue({
                     .then(
                         audits => {
                             audits_arr = audits;
-                            console.log(audits_arr);
                             //Вызов метода по получению результатов по аудитам.
                             return self.get_results();
                         }
@@ -353,6 +351,7 @@ new Vue({
                     }
                 ).then(
                     object_arr => {
+                        console.log(object_arr);
                         result = object_arr;
                         //Вызов метода по установке результатов аудитов в итоговый массив объектов.
                         return self.getresults(result, result_audit, self.check_list)
@@ -428,7 +427,6 @@ new Vue({
         get_audits() {
             let self = this;
             let audits = [];
-            console.log( 'Bearer ' + self.auth_info.token);
             return new Promise(function (resolve) {
                 self.$http.post(self.be_server + '/api/get-audits', {}, {headers: {'Authorization': 'Bearer ' + self.auth_info.token}}).then(
                     response => {
@@ -474,7 +472,7 @@ new Vue({
                             "id": audit.id,
                             "title": audit.title,
                             "date_add": audit.date_add,
-                            "created_at": audit.created_at,
+                            "created_at": audit.date,
                             "check_list": [],
                             "comments": [],
                             "object_id": object.id,

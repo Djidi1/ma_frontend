@@ -50,9 +50,30 @@
                     </transition>
 
 
-
                     <transition appear mode="out-in" name="slide-app">
                         <f7-list form v-if="Object.keys(selected_object).length > 0">
+                            <f7-list-item v-if="this.$root.check_list.length===0" :title="this.$root.localization.pop_up.no_check_list">
+                                <div slot="root" style="padding:8px 16px;">{{this.$root.localization.pop_up.no_check_list}}</div>
+                            </f7-list-item>
+                            <f7-list-item  smart-select :title="this.$root.localization.pop_up.check_list_group" :smart-select-back-on-select="true" v-else
+                                           :smart-select-searchbar="true"
+                                           :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
+                                           class="no-padding no-white_spacing"
+                                           >
+                                <select  :name="this.$root.localization.pop_up.add_check"  @change="check_group_select_done" >
+                                    <option :value="null" selected>{{this.$root.localization.pop_up.no_check_cat_selected}} </option>
+                                    <option v-for="(check_gruop_item,check_ind) in check_list_groups" :key="check_ind" :value="check_gruop_item[0].cl_category.id"> {{check_gruop_item[0].cl_category.title}}</option>
+                                </select>
+                                <div slot="after">{{text_for_after}}</div>
+                            </f7-list-item>
+                        </f7-list>
+                    </transition>
+
+
+
+
+                    <transition appear mode="out-in" name="slide-app">
+                        <f7-list form v-if="check_list_arr.length > 0">
                             <f7-list-item v-if="this.$root.check_list.length===0" :title="this.$root.localization.pop_up.no_check_list">
                                 <div slot="root" style="padding:8px 16px;">{{this.$root.localization.pop_up.no_check_list_text}}</div>
                             </f7-list-item>
@@ -101,18 +122,18 @@
               audit_was_add:false,
               object_selected:false,
               text_for_after:'',
-              check_list_selected:[]
+              check_list_selected:[],
+              check_list_groups:{}
           }
         },
         created(){
-
             this.title=this.$root.localization.pop_up.new;
             this.select_list=(this.$root.objects.length>0)?this.$root.objects:'';
         },
         mounted(){
             this.$nextTick(function(){
                 this.sorted_array=this.$_.groupBy(this.$root.objects,'group_id');
-                this.check_list_arr=this.$root.check_list;
+                this.check_list_groups=this.$_.groupBy(this.$root.check_list,"cl_category_id");
             });
         },
         methods:{
@@ -142,6 +163,11 @@
             },
             error_search(){
               this.selected_object={};
+            },
+            check_group_select_done(item){
+                this.check_list_arr=(item.target.value!=null)?this.$_.filter(this.$root.check_list,function(c){
+                    return c.cl_category_id===Number(item.target.value);
+                }):[];
             },
             check_select_done(item){
                 this.audits[0].check_list=[];
@@ -185,14 +211,6 @@
                    result.push(item);
                 });
                 return result;
-            },
-            get_audits_root(id){
-                let self=this;
-                let result=[];
-                this.$root.objects.forEach(function(item){
-                    result=(item.id.toString()===id)?item.audits:result;
-                });
-                return result
             },
             add_audit(){
               let new_audit={

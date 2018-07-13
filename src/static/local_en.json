@@ -101,11 +101,13 @@
     "empty_input_obj":"Enter the name of the object",
     "empty_input_address":"Enter the address of the object",
     "select_ex":"Select Group",
+    "check_list_group":"Select check-list category",
     "select_pop_over": "Selecte Object",
     "no_check_list":"No check-lists!",
     "no_check_list_text":"Synchronization required.",
     "no_group_selected":"No group selected",
-    "no_objet_selected":"No object selected"
+    "no_objet_selected":"No object selected",
+    "no_check_cat_selected":"No category selected"
   }
 }
 
