@@ -775,7 +775,7 @@ new Vue({
             let result = [];
             audit.check_list.forEach(function (item) {
                 let check_obj = {
-                    "audit_id": 0,
+                    "audit_id": audit.id > 0 ? audit.id : 0,
                     "id": item.id,
                     "title": item.title,
                     "requirement": []
