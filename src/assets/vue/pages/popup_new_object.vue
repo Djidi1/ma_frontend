@@ -222,7 +222,9 @@
                   "check_list":[],
                   "object_id":(Object.keys(this.selected_object).length!=0)?this.selected_object.id:'Offline_'+this.getlastid(),
                   "upload":false,
-                  "downloaded":false
+                  "downloaded":false,
+                  "completed":false,
+                  "error":false
               };
               this.audits.push(new_audit);
               this.audit_was_add=true;

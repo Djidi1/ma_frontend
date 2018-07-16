@@ -24,7 +24,7 @@
   "AuditPage_main":"List of audits",
   "AuditPage_count":"from",
   "ObjectPage_main":"Objects",
-  "AuditPage_nothing":"There are no 'Audits'.Use synchronization to get information.",
+  "AuditPage_nothing":"There are no 'Audits'.",
   "ObjectPage_nothing":"There are no 'Objects'.Use synchronization to get information.",
   "ObjectPage":{
     "name":"Name",

@@ -21,11 +21,16 @@
                                     <div v-if="(upload_st(check))" class="new_audit_icon "><new_audit_icon></new_audit_icon> </div>
                                     <div v-else>
                                         <i v-if="allCheck(check)"  class="icon cloud_no_sink cloud"> </i>
-                                        <i v-else  class="icon cloud_error cloud"> </i>
-                                    </div>
+                                        <div v-else class="new_audit_icon "><new_audit_icon></new_audit_icon> </div>
                                 </div>
-                                <div v-else>
-                                    <i class="icon could_ok cloud"></i>
+                                </div>
+                                <div  v-else >
+                                    <div v-if="!audit.error">
+                                        <i class="icon could_ok cloud"> </i>
+                                    </div>
+                                    <div v-else>
+                                        <i class="icon cloud_error cloud"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>

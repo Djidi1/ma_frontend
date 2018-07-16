@@ -16,17 +16,17 @@
                     <f7-input type="text" v-model="user_name"/>
                 </f7-list-item>
             </f7-list>
-            <!--server_change-->
-            <f7-list form class="user_settings">
-                <f7-list-item>
-                    <f7-label floating>{{this.$root.localization.lang.server}}</f7-label>
-                    <f7-input type="text" v-model="server"/>
-                </f7-list-item>
-                <f7-list-item>
-                    <f7-label floating>{{this.$root.localization.lang.port}}</f7-label>
-                    <f7-input type="text" v-model="port"/>
-                </f7-list-item>
-            </f7-list>
+            <!--&lt;!&ndash;server_change&ndash;&gt;-->
+            <!--<f7-list form class="user_settings">-->
+                <!--<f7-list-item>-->
+                    <!--<f7-label floating>{{this.$root.localization.lang.server}}</f7-label>-->
+                    <!--<f7-input type="text" v-model="server"/>-->
+                <!--</f7-list-item>-->
+                <!--<f7-list-item>-->
+                    <!--<f7-label floating>{{this.$root.localization.lang.port}}</f7-label>-->
+                    <!--<f7-input type="text" v-model="port"/>-->
+                <!--</f7-list-item>-->
+            <!--</f7-list>-->
 
 
 
@@ -64,8 +64,8 @@
             return{
                 user_name:this.$root.auth_info.name,
                 curentLang:this.$root.settings,
-                server:this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0],
-                port:this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1]
+                // server:this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0],
+                // port:this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1]
             }
         },
 
@@ -105,8 +105,9 @@
             },
             submitSetting:function(){
                 if (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings
-                    ||this.server!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0]
-                    ||this.port!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1]){
+                    // ||this.server!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0]
+                    // ||this.port!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1]
+                ){
                    //this.$set(this.$root.auth_info,'name',this.user_name);
                     this.$root.auth_info={name:this.user_name,email:this.$root.auth_info.email,token:this.$root.auth_info.token,auth:true,user_info:this.$root.auth_info.user_info};
                     this.$root.settings=this.curentLang;
@@ -116,9 +117,10 @@
             cancelSetting:function(){
                 let self=this;
                 let duration=0;
-                if  (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings||
-                    this.server!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0]
-                    ||this.port!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1])
+                if  (this.user_name!=this.$root.auth_info.name||this.curentLang!=this.$root.settings
+                    // ||this.server!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0]
+                    // ||this.port!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1]
+                    )
                     {
                     this.change_l(this.$root.settings);
                     duration=600;

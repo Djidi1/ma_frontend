@@ -23,11 +23,16 @@
                             <div slot="media">
                                 <div style="text-align: center">
                                     <div v-if="(this.audit_current.check_list.length>0)" >
-                                        <div v-if="(check_audit_status(this.audit_current))" class="new_audit_icon "><new_audit_icon></new_audit_icon> </div>
-                                        <div v-else>
-                                            <i v-if="allCheck(this.audit_current)"  class="icon cloud_no_sink cloud"> </i>
-                                            <i v-else  class="icon cloud_error cloud"> </i>
+                                        <div v-if="!this.audit_current.error">
+                                            <div v-if="(check_audit_status(this.audit_current))" class="new_audit_icon "><new_audit_icon></new_audit_icon> </div>
+                                            <div v-else>
+                                                <i v-if="allCheck(this.audit_current)"  class="icon cloud_no_sink cloud"> </i>
+                                                <div v-else class="new_audit_icon "><new_audit_icon></new_audit_icon> </div>
+                                            </div>
                                         </div>
+                                       <div v-else>
+                                           <i class="icon cloud_error cloud"></i>
+                                       </div>
                                     </div>
                                     <div  v-else >
                                         <div class="no_check_list"> <no_check_list></no_check_list></div>

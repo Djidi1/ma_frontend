@@ -1,7 +1,12 @@
 <template>
     <!--Лист с объектами и аудитаи-->
     <div class="blck_info audit_list_item">
-            <f7-list media-list  class=" searchbar-found " id="list_of_objects">
+            <div v-if="!hasSomething">
+                <f7-block inner class="nothing">
+                    {{this.$root.localization.AuditPage_nothing}}
+                </f7-block>
+            </div>
+            <f7-list media-list  class=" searchbar-found " id="list_of_objects" v-else>
                 <f7-list-group v-if="objects.audits.length>0" v-for="(objects,index) in sort_obj()" :key="index">
                     <f7-list-item
                             group-title>
@@ -27,11 +32,16 @@
                                     <div v-if="(check_audit_status(acrd))" class="new_audit_icon "><new_audit_icon></new_audit_icon> </div>
                                     <div v-else>
                                         <i v-if="allCheck(acrd)"  class="icon cloud_no_sink cloud"> </i>
-                                        <i v-else  class="icon cloud_error cloud"> </i>
+                                        <div v-else class="new_audit_icon "><new_audit_icon></new_audit_icon> </div>
                                     </div>
                                 </div>
                                 <div  v-else >
-                                    <i class="icon could_ok cloud"> </i>
+                                    <div v-if="!acrd.error">
+                                        <i class="icon could_ok cloud"> </i>
+                                    </div>
+                                    <div v-else>
+                                        <i class="icon cloud_error cloud"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -58,6 +68,12 @@
         data: function () {
             return {
                 data_storage: this.$root.objects
+            }
+        },
+        computed:{
+            hasSomething(){
+                let result=this.sort_obj();
+                return result.length>0;
             }
         },
         methods: {

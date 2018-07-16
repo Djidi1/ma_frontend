@@ -351,7 +351,6 @@ new Vue({
                     }
                 ).then(
                     object_arr => {
-                        console.log(object_arr);
                         result = object_arr;
                         //Вызов метода по установке результатов аудитов в итоговый массив объектов.
                         return self.getresults(result, result_audit, self.check_list)
@@ -479,7 +478,8 @@ new Vue({
                             "check_list_id": audit.checklist_id,
                             "upload": false,
                             "downloaded":true,
-                            "completed":false
+                            "completed":false,
+                            "error":false
                         };
                         result.audits.push(audit_result);
                     }));
@@ -727,7 +727,9 @@ new Vue({
             let result=true;
             audit.check_list.forEach(function(position){
                 position.requirement.forEach(function(req){
-                    result=(req.status===0)?false:result;
+                    if (!req.disabled) {
+                        result = (req.status === 0) ? false : result;
+                    }
                 });
             });
             return result;

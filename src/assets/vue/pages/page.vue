@@ -18,7 +18,6 @@
                         searchList="#list_of_objects"
                         searchIn=".item-title,.item-text"
                         :hideGroups="false"
-
                         :placeholder="this.$root.localization.SearchBar.title"
                         :clear-button="true">
                 </f7-searchbar>
@@ -32,11 +31,11 @@
         <f7-list class="searchbar-not-found check_list_items">
             <f7-list-item :title="this.$root.localization.SearchBar.nothing"></f7-list-item>
         </f7-list>
-        <div v-if="!hasSomething">
-            <f7-block inner class="nothing">
-                {{this.$root.localization.AuditPage_nothing}}
-            </f7-block>
-        </div>
+        <!--<div v-if="!hasSomething">-->
+            <!--<f7-block inner class="nothing">-->
+                <!--{{this.$root.localization.AuditPage_nothing}}-->
+            <!--</f7-block>-->
+        <!--</div>-->
         <!--<f7-fab color="blue" class="fab_bottom" @click="">-->
             <!--&lt;!&ndash;@click="popup_open=true"&ndash;&gt;-->
             <!--<f7-icon icon="icon-plus"></f7-icon>-->
@@ -82,12 +81,11 @@
         },
         computed: {
             //Проверка есть ли объекты с аудитами.
-            hasSomething() {
-
-                let result = true;
-                result = (this.$root.objects.length > 0) ? result : false;
-                return result
-            }
+            // hasSomething() {
+            //     let result = true;
+            //     result = (this.$root.objects.length > 0) ? result : false;
+            //     return result
+            // }
         },
         methods: {
             open_modal_popup() {
