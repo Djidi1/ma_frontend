@@ -6,11 +6,12 @@
     "PasswordPlaceholder": "Пароль",
     "SubmitButton": "Войти",
     "FogetButton": "Забыли пароль?",
-    "Empty_input_login":"Введите Email!",
+    "Empty_input_login":"Введите Логин!",
     "Empty_input_password":"Введите пароль!",
     "warning":"Внимание!",
     "autherror":"Ошибка авторизации"
   },
+  "no_connection":"Отсутствует соединение с интернетом",
   "SearchBar":{
     "title":"Поиск",
     "nothing":"Ничего не найдено"

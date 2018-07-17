@@ -3,9 +3,13 @@
     <f7-page name="audit">
         <!-- Navbar -->
         <f7-navbar back-link="Back" sliding  >
-            <f7-nav-center sliding> {{$root.localization.AuditPage.audit+' № '+audit.id}}</f7-nav-center>
-            <f7-nav-right v-if="!this.audit.upload">
-                <f7-link @click="open_edit()" ><div style="font-size:24px"><pencil ></pencil></div></f7-link>
+            <f7-nav-center sliding>
+             {{$root.localization.AuditPage.audit+' № '+audit.id}}</f7-nav-center>
+            <f7-nav-right >
+                <div v-if="!this.$root.online" style="margin-right:10px; font-size:24px">
+                    <network></network>
+                </div>
+                <f7-link v-if="!this.audit.upload" @click="open_edit()" ><div style="font-size:24px"><pencil ></pencil></div></f7-link>
                 <!--<f7-link @click="remove_audit"> <div style="font-size:24px"><trash></trash></div></f7-link>-->
             </f7-nav-right>
         </f7-navbar>
@@ -48,12 +52,14 @@
 
 
         </div>
-        <f7-toolbar bottom :no-shadow="true" v-if="!uploaded">
+
+        <f7-toolbar bottom :no-shadow="true" v-if="!uploaded && this.$root.online" >
             <f7-link class="toolbar_custome_link solo" @click="send_results()"><div style="font-size:18px; transform:translateY(-2%)">
                 {{this.$root.localization.AuditPage.audit_send_btn}}&nbsp&nbsp </div>
                 <div style="font-size:30px"><send></send></div>
             </f7-link>
         </f7-toolbar>
+
     </f7-page>
 </template>
 
@@ -64,6 +70,7 @@
     import  alert_box from "vue-material-design-icons/alert-circle-outline.vue"
     import  new_audit_icon from "vue-material-design-icons/alert-circle-outline.vue"
     import  send from "vue-material-design-icons/send.vue"
+    import  network from "vue-material-design-icons/network-strength-off-outline.vue"
     let $$=Dom7;
     export default {
         components: {Popup_audit_edit,
@@ -71,7 +78,8 @@
             send,
             pencil,
             alert_box,
-            new_audit_icon
+            new_audit_icon,
+            network
         },
         name: "audit",
         props: {

@@ -54,7 +54,6 @@
             },
             //методы для обработки фото
             upload(mode) {
-                if (this.comments.length === 0) this.create_new_comment();
                 let source = (mode) ? Camera.PictureSourceType.CAMERA : Camera.PictureSourceType.SAVEDPHOTOALBUM;
                 navigator.camera.getPicture(this.getPhoto, this.getPhotoFail, {
                     quality: 30,
@@ -66,19 +65,24 @@
             },
             getPhoto: function (img) {
                 let self = this;
+                if (this.comments.length === 0) this.create_new_comment();
                 self.get_img_data(img).then(
                     f => {
-                        self.$$('#img_pr' + (self.comments[0].attachments.length - 1)).show();
-                        window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory + "img/", function (dir) {
+                        console.log('get_here');
+                        console.log(f);
+                        window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory , function (dir) {
                             f.moveTo(dir, f.name, function (entry) {
+                                console.log('entry: '+entry);
+                                console.log('entry_URL: '+entry.toURL());
                                 self.comments[0].attachments[ self.comments[0].attachments.length - 1].url = entry.toURL();
-                                self.$$('#img_pr' + (self.comments[0].attachments.length - 1)).hide();
+                                self.attachments[self.attachments.length-1].url=entry.toURL();
+                                console.log(self.attachments);
                                 self.$ls.set('objects', self.$root.objects);
-                                console.log('end');
-                                console.log(self.comments);
                             }, function (error) {
-                                self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
+                                console.log('erorr_.last');
+                                self.$f7.alert(error.code, self.$root.localization.pop_up.warning);
                                 self.comments[0].attachments.splice( self.comments[0].attachments.length - 1, 1);
+                                self.attachments.splice( self.attachments.length - 1, 1);
                                 self.$ls.set('objects', self.$root.objects);
                             });
                         });
@@ -90,8 +94,12 @@
 
             },
             get_img_data: function (url) {
-                console.log('get_img_data');
                 let self = this;
+                if (url.substring(0,21)=="content://com.android") {
+                    url=url.split("%3A");
+                    url="content://media/external/images/media/"+url[1];
+                    console.log(url);
+                }
                 return new Promise(function (resolve, reject) {
                     window.resolveLocalFileSystemURL(url, function (f) {
                         f.file(function (file) {
@@ -109,6 +117,7 @@
                                 resolve(f);
                             },
                             function (error) {
+                            console.log('pfff');
                                 reject(error);
                             });
                     })
@@ -124,8 +133,6 @@
                     "attachments":[]
                 };
                 this.comments.push(object_com);
-
-
             },
             GetCurrentDate() {
                 return new Date();

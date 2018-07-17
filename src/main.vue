@@ -88,11 +88,11 @@
 				<!-- Pages -->
 				<f7-pages  navbar-through>
 
+
 				</f7-pages>
 			</f7-view>
 		</f7-views>
-		<!--Popup view-->
-		<!--<popup_new_object :mode="true"></popup_new_object>-->
+
 
 	</div>
 </template>
@@ -233,4 +233,5 @@
 		color: #222222;
 		border-bottom: 1px solid #f7f7f7;
 	}
+
 </style>
