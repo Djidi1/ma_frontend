@@ -2,9 +2,9 @@
 <widget id="dir_vue.com" version="1.5.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <hook src="hooks/hookers.js" type="before_prepare" />
     <hook src="hooks/beforedep.js" type="before_deploy" />
-    <name>Mobit365</name>
+    <name>Mobit</name>
     <description>
-        Mobit365 project!
+        Mobit project!
     </description>
     <icon src="src/static/nansen_mobit-365_logo_W.png" />
     <author email="dev@cordova.apache.org" href="http://cordova.io">
