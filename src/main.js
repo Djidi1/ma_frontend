@@ -28,6 +28,7 @@ import f7icons from 'framework7-icons/css/framework7-icons.css'
 import "vue-material-design-icons/styles.css"
 
 
+
 //Vue-localstorage
 import VueLocalStorage from 'vue-ls'
 
@@ -52,6 +53,10 @@ Vue.use(VueResource);
 //Underscore.js
 import underscore from 'vue-underscore'
 Vue.use(underscore);
+
+//offline
+import VueOffline from 'vue-offline'
+Vue.use(VueOffline);
 
 
 //Components
@@ -113,7 +118,9 @@ new Vue({
         localization: {},
         check_list: {},
         settings: {},
-        be_server: ""
+        be_server: "",
+        online:true,
+        show_online_msg:false
     },
 //наблюдаем за массивами, в случае изменения обновляем содержимое localstorage
     watch: {
@@ -147,6 +154,22 @@ new Vue({
         this.$ls.on('be_server', function (val) {
             _this.be_server = val;
         });
+        document.addEventListener('offline',function(){
+            _this.online=false;
+        },false);
+        document.addEventListener('online',function(){
+            _this.online=true;
+        },false);
+        // // Обработчик события перехода в online
+        // this.$on('online',function(){
+        //     console.log('go_online');
+        //     this.online=true;
+        // });
+        // // Обработчик события перехода в offline
+        // this.$on('offline',function(){
+        //     console.log('go_offline');
+        //    this.online=false;
+        // });
         //Вызов метода установки языка.
         this.lang_select(this.settings);
     },
@@ -222,23 +245,30 @@ new Vue({
         },
         //Метод обновления данных с сервера при пулестраницы вниз.
         onRefresh(event, done) {
-            let self = this;
+            if (this.online){
+                let self = this;
+                //Сохраняем в памяти телефона все незаконченные аудиты
+                let in_progress_audits=(this.get_uncompleted_audits());
+                //Получаем список аудитов которые закончены и ожидают отправки
+                let completed_audits=this.get_completed_audits();
+                //синхронизация готовых аудитов с сервером
+                this.synch_data(completed_audits).then(ready=>{
+                    this.$root.getData_from_server().then(result => {
+                        self.return_uncompleted(in_progress_audits,result.obj).then(complete=>{
+                            self.$root.objects = result.obj;
+                            self.down_att(result.res);
+                            done();
+                        });
 
-            //Сохраняем в памяти телефона все незаконченные аудиты
-            let in_progress_audits=(this.get_uncompleted_audits());
-            //Получаем список аудитов которые закончены и ожидают отправки
-            let completed_audits=this.get_completed_audits();
-            //синхронизация готовых аудитов с сервером
-            this.synch_data(completed_audits).then(ready=>{
-                this.$root.getData_from_server().then(result => {
-                    self.return_uncompleted(in_progress_audits,result.obj).then(complete=>{
-                        self.$root.objects = result.obj;
-                        self.down_att(result.res);
-                        done();
-                    });
+                    })
+                });
+            }else{
+                this.$f7.alert(this.localization.no_connection,this.localization.pop_up.warning,function(){
+                    done();
+                });
 
-                })
-            });
+            }
+
         },
         //Получаем все незаконченные аудиты
         get_uncompleted_audits(){
@@ -304,15 +334,19 @@ new Vue({
             let complete;
             return new Promise(function(resolve){
                 arr.forEach(function(itm){
+
                     let obj=self.$_.findWhere(result_arr,{id:Number(itm.object_id)});
-                    let aud=self.$_.findWhere(obj.audits,{id:itm.id});
+                    if (obj!=undefined){
+                    let aud=self.$_.findWhere(obj.audits,{id:Number(itm.id)});
                     if (aud!=undefined){
                         aud.check_list=itm.check_list;
                         aud.comments=itm.comments;
                     }else{
                         obj.audits.push(itm);
+                        }
                     }
                 });
+
                 resolve(complete);
             });
         },
@@ -864,6 +898,12 @@ new Vue({
                                 response => {
                                     //В случае успеха устанавливаем для отправленного аудита, айдишник и флаг upload в true.
                                     self.$set(audit, "id", Number(response.body));
+                                    self.$set(audit, "upload", true);
+                                    self.$ls.set('objects', self.$root.objects);
+                                    resolve(result);
+                                },
+                                fail=>{
+                                    self.$set(audit, "error", true);
                                     self.$set(audit, "upload", true);
                                     self.$ls.set('objects', self.$root.objects);
                                     resolve(result);

@@ -4,12 +4,12 @@
         <transition-group name="attach_fade" v-on:after-leave="resize" v-on:enter="resize">
         <div class="attach_block" v-for="(attach,index) in attachment" :key="attach.file.name">
             <div class="attach" :id="'img_'+index"  :style="attachImg(attach,index)" @click="photolook(attachment,index)">
-                <div :id="'img_pr'+index" class="load_progress">
-                  <div class="porgress_block">
-                    <f7-preloader color="blue" size="40"></f7-preloader>
-                      <!--<i class="fa fa-spin fa-circle-o-notch fa-4x" aria-hidden="true"></i>-->
-                  </div>
-                </div>
+                <!--<div :id="'img_pr'+index" class="load_progress">-->
+                  <!--<div class="porgress_block">-->
+                    <!--<f7-preloader color="blue" size="40"></f7-preloader>-->
+                      <!--&lt;!&ndash;<i class="fa fa-spin fa-circle-o-notch fa-4x" aria-hidden="true"></i>&ndash;&gt;-->
+                  <!--</div>-->
+                <!--</div>-->
                 <div class="header_img">{{attach.caption}}</div>
                 <div class="footter_img">{{get_size(attach.file.size)}}</div>
 
@@ -78,7 +78,7 @@
         background-position: center;
         background-repeat: no-repeat;
         background-image: none;
-        margin:0 20px 0 10px;
+        margin:0 25px 0 10px;
         position: relative;
     }
     .attach_fade-enter-active,.attach_fade-leave-active{

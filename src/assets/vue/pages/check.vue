@@ -2,10 +2,12 @@
     <!--Страница чек-листа-->
     <f7-page with-subnavbar>
         <f7-navbar back-link="Back" sliding  >
-            <f7-nav-center sliding> {{check.title}}</f7-nav-center>
-            <!--<f7-nav-right v-if="!uploaded">-->
-                <!--<f7-link @click="remove_check"><div style="font-size:24px"><trash></trash></div></f7-link>-->
-            <!--</f7-nav-right>-->
+            <f7-nav-center sliding>  {{check.title}} </f7-nav-center>
+            <f7-nav-right v-if="!uploaded">
+                <div v-if="!this.$root.online" style="margin-right:10px; font-size:24px">
+                    <network></network>
+                </div>
+            </f7-nav-right>
             <f7-subnavbar sliding class="custom_sub">
                 <f7-searchbar
                         :init="true"
@@ -52,6 +54,7 @@
     import  close_all from "vue-material-design-icons/close.vue"
     import  restore from "vue-material-design-icons/backup-restore.vue"
     import  check_all from "vue-material-design-icons/check.vue"
+    import  network from "vue-material-design-icons/network-strength-off-outline.vue"
 
 
     export default {
@@ -59,7 +62,8 @@
             trash,
             close_all,
             restore,
-            check_all
+            check_all,
+            network
 
         },
         name: "check",

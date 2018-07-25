@@ -5,7 +5,9 @@
             <!--<f7-pages navbar-through>-->
                 <f7-page>
                     <f7-navbar back-link="Back" sliding  @back-click.stop="close_edit()">
-                        <f7-nav-center sliding> {{title}} </f7-nav-center>
+                        <f7-nav-center sliding>  <div v-if="!this.$root.online" style="display:inline-block; margin-right:2px">
+                            <network></network>
+                        </div>{{title}} </f7-nav-center>
                         <f7-nav-right>
                             <f7-grid class="crud_header edit_menu">
                                 <f7-col width="30" ></f7-col>

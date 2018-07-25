@@ -256,11 +256,14 @@
 }
 .remove_button{
 	position:absolute;
-	font-size:22px;
-	top: -90px;
-	left:75px;
+	font-size:30px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	top: -100px;
+	left:70px;
 	color:#ddd;
-	width:18px;
+	padding:5px;
 	text-align: center;
 	opacity: 1!important;
 }
@@ -678,4 +681,23 @@
 }
 .no-white_spacing .item-title{
 	white-space: unset;
+}
+.onlinebar{
+	box-sizing: border-box;
+	min-height: 48px;
+	color:#fff;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background: rgba(0,0,0,.6);
+	padding:10px 15px;
+	z-index:1050;
+  -webkit-transition: .5s;
+  -moz-transition: .5s;
+  -ms-transition: .5s;
+  -o-transition: .5s;
+  transition: .5s;
+}
+.to_top{
+  bottom: 48px;
 }

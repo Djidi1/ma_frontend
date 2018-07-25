@@ -6,7 +6,7 @@
     "PasswordPlaceholder": "Password",
     "SubmitButton": "Enter",
     "FogetButton": "Foget password?",
-    "Empty_input_login":"Need Email!",
+    "Empty_input_login":"Enter Login!",
     "Empty_input_password":"Need password!",
     "warning":"Warning!",
     "autherror":"Authorisation Error"
