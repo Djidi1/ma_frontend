@@ -833,6 +833,7 @@ new Vue({
                         "id": req.id,
                         "status": self.get_current_status_to_send(req),
                         "comments": self.get_comments(req),
+                        'responsible':req.responsible
                     };
                     check_obj.requirement.push(req_obj);
                 });
