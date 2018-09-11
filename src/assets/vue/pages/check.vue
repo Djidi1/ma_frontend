@@ -1,6 +1,6 @@
 <template>
     <!--Страница чек-листа-->
-    <f7-page with-subnavbar>
+    <f7-page with-subnavbar id="scroll-id">
         <f7-navbar back-link="Back" sliding  >
             <f7-nav-center sliding>  {{check.title}} </f7-nav-center>
             <f7-nav-right v-if="!uploaded">
@@ -24,12 +24,6 @@
         <div class="searchbar-overlay"></div>
         <div class="blck_info">
         <f7-card>
-            <!--<f7-card-header>-->
-                <!--<f7-grid style="width:100%; min-height:34px">-->
-                    <!--<f7-col width="70" style="line-height: 34px">{{this.$root.localization.AuditPage.check_list_position}}</f7-col>-->
-                    <!--<f7-col width="30" style="text-align: center"><i :class="status" aria-hidden='true'></i> </f7-col>-->
-                <!--</f7-grid>-->
-            <!--</f7-card-header>-->
             <f7-card-content class="check_content">
                 <check_item  :data_item="check.requirement" :read="uploaded"></check_item>
                 <f7-list class="searchbar-not-found check_list_items">
@@ -82,6 +76,14 @@
                 })()
             }
         },
+        // mounted(){
+        //     let self=this;
+        //     this.$nextTick(function () {
+        //     $$('#scroll-id .page-content').scroll(
+        //             // self.addItems()
+        //         )
+        //     })
+        // },
         created(){
             let self=this;
             this.$root.objects.forEach(function(obj){
@@ -101,7 +103,7 @@
                 let result;
                 result=self.upload_st(self.check);
                 return result;
-            }
+            },
         },
         methods:{
             check_all_check_list(){

@@ -2,7 +2,7 @@
   "authr":"Авторизуйтесь",
   "LoginScreen": {
     "LoginHeader": "Вход",
-    "LoginPlaceholder": "Логин",
+    "LoginPlaceholder": "Email",
     "PasswordPlaceholder": "Пароль",
     "SubmitButton": "Войти",
     "FogetButton": "Забыли пароль?",
@@ -11,6 +11,10 @@
     "warning":"Внимание!",
     "autherror":"Ошибка авторизации"
   },
+  "respons_title":"Выберите ответственного",
+  "respons_empty":"Список ответственных пуст",
+  "response_blank":"Нет ответственного",
+  "responsibl":"Ответственный :",
   "no_connection":"Отсутствует соединение с интернетом",
   "SearchBar":{
     "title":"Поиск",
@@ -103,7 +107,7 @@
     "empty_input_address":"Введите адрес объекта",
     "select_ex":"Выберите группу",
     "select_pop_over": "Выберите объект",
-    "check_list_group":"Выбирете категорию чек-листов",
+    "check_list_group":"Выберите категорию чек-листов",
     "no_check_list":"Отсутствует информация о чек-листа. ",
     "no_check_list_text":"Необходима синхранизация.",
     "no_objects":"В данной группе пока нет объектов",

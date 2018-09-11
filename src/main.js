@@ -118,9 +118,13 @@ new Vue({
         localization: {},
         check_list: {},
         settings: {},
-        be_server: "",
+        be_server:'',
+        protocol:'https://',
+        server:'',
+        port:'',
         online:true,
-        show_online_msg:false
+        show_online_msg:false,
+        responsible:[]
     },
 //наблюдаем за массивами, в случае изменения обновляем содержимое localstorage
     watch: {
@@ -133,13 +137,15 @@ new Vue({
         objects: function (val) {
             this.$ls.set('objects', val);
         },
-        check_list: function (val) {
-            this.$ls.set('check_list', val);
+        be_server: function (val) {
+            this.$ls.set('be_server', val);
         },
-        be_server:function(val){
-            this.$ls.set('be_server',val);
+        responsible:function(val){
+            this.$ls.set('responsible',val);
+        },
+        check_list:function(val){
+            this.$ls.set('check_list',val);
         }
-
     },
     //При создании App устанавлива язык из локал сторейджа, если, Если язык не установлен(локалсторейдж пуст) устанавливаем русский по умолчанию.
     created() {
@@ -150,10 +156,10 @@ new Vue({
             _this.settings = val;
         });
         //Настройки сервера и подключения
-        this.be_server = this.$ls.get('be_server', 'https://server.mobit365.com:7443');
-        this.$ls.on('be_server', function (val) {
+        this.be_server = this.$ls.get('be_server',"https://server.mobit365.com");
+         this.$ls.on('be_server', function (val) {
             _this.be_server = val;
-        });
+         });
         document.addEventListener('offline',function(){
             _this.online=false;
         },false);
@@ -193,6 +199,11 @@ new Vue({
         this.check_list = this.$ls.get('check_list', '');
         this.$ls.on('check_list', function (val) {
             _this.check_list = val;
+        });
+        //Список ответстенных
+        this.responsible = this.$ls.get('responsible', '');
+        this.$ls.on('responsible', function (val) {
+            _this.responsible = val;
         });
         document.addEventListener("backbutton", function (e) {
             e.preventDefault();
@@ -363,6 +374,7 @@ new Vue({
                 self.get_check_list().then(
                     ready => {
                         //В случае успешного выполнения, вызов метода по получению списка объектов.
+                       self.get_Responsible();
                         return self.get_objects();
                     })
                     .then(objects => {
@@ -947,6 +959,22 @@ new Vue({
                     });
                 });
             });
+        },
+        get_Responsible(){
+            let self=this;
+            let result=[];
+            this.$http.post(this.be_server + '/api/get-users', {}, {headers: {'Authorization': 'Bearer ' + this.auth_info.token}}).then(
+                response => {
+                    response.body.users.forEach(function(user){
+                        result.push({
+                            id:user.id,
+                            name:user.name
+                        })
+                    });
+                    self.responsible=result;
+
+                }
+            );
         }
 
 

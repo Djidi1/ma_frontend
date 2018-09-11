@@ -2,7 +2,7 @@
   "authr":"First, Log in",
   "LoginScreen": {
     "LoginHeader": "Login IN",
-    "LoginPlaceholder": "Login",
+    "LoginPlaceholder": "Email",
     "PasswordPlaceholder": "Password",
     "SubmitButton": "Enter",
     "FogetButton": "Foget password?",

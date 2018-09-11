@@ -48,10 +48,10 @@
 										<f7-label floating>{{this.$root.localization.lang.server}}</f7-label>
 										<f7-input type="text" v-model="server"/>
 									</f7-list-item>
-									<f7-list-item>
-										<f7-label floating>{{this.$root.localization.lang.port}}</f7-label>
-										<f7-input type="text" v-model="port"/>
-									</f7-list-item>
+									<!--<f7-list-item>-->
+										<!--<f7-label floating>{{this.$root.localization.lang.port}}</f7-label>-->
+										<!--<f7-input type="text" v-model="port"/>-->
+									<!--</f7-list-item>-->
 								</f7-list>
 
 
@@ -184,6 +184,7 @@
                 //Таймер прикручен для вида, чтоб сразу резко все не скакало.
                 let self=this;
                 this.curentLang=val;
+                this.server=this.$root.be_server.split('//')[1];
                 switch (val){
                     case "ru":
                         this.$f7.showPreloader(self.$root.localization.modal.preloader);
@@ -203,20 +204,20 @@
             },
             submitSetting:function(){
                 if (this.curentLang!=this.$root.settings||
-                    this.server!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0]
-                    ||this.port!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1]){
+                    this.$root.server!="https://"+this.server){
                     this.$root.settings=this.curentLang;
-                    this.$root.be_server=this.server;
+                    this.$root.server=this.server;
+                    // let tmpPort=(this.port!=='')?":"+this.port.split(':')[0]:'';
+                    // this.$root.port=this.port;
+                    this.$root.be_server="https://"+this.server;
                 }
                 this.$f7.closePanel();
             },
             cancelSetting:function(){
                 let self=this;
                 if (this.curentLang!=this.$root.settings||
-                    this.server!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[0]
-                    ||this.port!=this.$root.be_server.split('/')[this.$root.be_server.split('/').length-1].split(':')[1]){
+                    this.$root.server!="https://"+this.server){
                     this.change_l(this.$root.settings);
-
                 }
                 self.$f7.closePanel();
             },

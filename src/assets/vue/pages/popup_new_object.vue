@@ -53,7 +53,7 @@
                     <transition appear mode="out-in" name="slide-app">
                         <f7-list form v-if="Object.keys(selected_object).length > 0">
                             <f7-list-item v-if="this.$root.check_list.length===0" :title="this.$root.localization.pop_up.no_check_list">
-                                <div slot="root" style="padding:8px 16px;">{{this.$root.localization.pop_up.no_check_list}}</div>
+                                <!--<div slot="root" style="padding:8px 16px;">{{this.$root.localization.pop_up.no_check_list}}</div>-->
                             </f7-list-item>
                             <f7-list-item  smart-select :title="this.$root.localization.pop_up.check_list_group" :smart-select-back-on-select="true" v-else
                                            :smart-select-searchbar="true"
@@ -75,7 +75,7 @@
                     <transition appear mode="out-in" name="slide-app">
                         <f7-list form v-if="check_list_arr.length > 0">
                             <f7-list-item v-if="this.$root.check_list.length===0" :title="this.$root.localization.pop_up.no_check_list">
-                                <div slot="root" style="padding:8px 16px;">{{this.$root.localization.pop_up.no_check_list_text}}</div>
+                                <!--<div slot="root" style="padding:8px 16px;">{{this.$root.localization.pop_up.no_check_list_text}}</div>-->
                             </f7-list-item>
 
                             <f7-list-item  smart-select :title="this.$root.localization.pop_up.add_check" :smart-select-back-on-select="true" v-else
@@ -148,7 +148,7 @@
             },
             selected_group_done(item){
               let self=this;
-              this.sorted_array_objects=(self.$_.filter(self.$root.objects,{group_id:Number(item.target.value)}))
+              this.sorted_array_objects=(self.$_.filter(self.$root.objects,{group_id:Number(item.target.value)}));
               if (this.sorted_array_objects.length===0)this.error_search() ;
             },
             selected_object_done(item){

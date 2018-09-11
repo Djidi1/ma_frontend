@@ -8,10 +8,12 @@
                         <i class="icon icon-form-checkbox"></i>
                     </div>
                 </label>
+
         </f7-col>
 </template>
 
 <script>
+    let $$=Dom7;
     export default {
         name: "check_box_item",
         props:{
@@ -30,9 +32,15 @@
         },
         methods:{
             checkbox_change(val){
-                val = (this.button_type)?1:-1;
+                 val = (this.button_type)?1:-1;
                 this.$emit('change_status',val,this.item)
-            }
+            },
+            selected_object_done(item){
+               this.item.responsible=Number(item.target.value);
+               let  val = (this.button_type)?1:-1;
+                this.$emit('change_status',val,this.item)
+            },
+
         }
     }
 </script>

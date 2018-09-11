@@ -33,15 +33,6 @@
 
         <div class="searchbar-overlay"></div>
         <list></list>
-        <!--<transition appear mode="out-in" name="slide-app">-->
-        <!--<div class="onlinebar" v-if="this.$root.online">-->
-            <!--<div class="row" v-if="this.$root.show_online_msg">-->
-                <!--<div class="col-100" style="line-height: 38px; text-align: center" >-->
-                    <!--{{this.$root.localization.go_online}}-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--</transition>-->
         <f7-list class="searchbar-not-found check_list_items">
             <f7-list-item :title="this.$root.localization.SearchBar.nothing"></f7-list-item>
         </f7-list>
