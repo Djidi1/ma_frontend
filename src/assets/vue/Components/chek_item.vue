@@ -33,7 +33,7 @@
                           :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
                           class="no-padding"
                             >
-                <select  :name="this.$root.localization.pop_up.select_pop_over" @change="selected_object_done">
+                <select  :name="this.$root.localization.pop_up.select_pop_over" @change="selected_object_done" v-model="tes_model">
                     <option :value="null" selected>{{this.$root.localization.response_blank}} </option>
                     <option  v-for="(obj) in this.$root.responsible" :key="obj.id" :value="obj.id"  >{{obj.name}} </option>
                 </select>
@@ -58,7 +58,8 @@
         name: "chek_item",
         data:function(){
             return {
-                current_check:0
+                current_check:0,
+                tes_model:''
             }
         },
         props:{
@@ -119,12 +120,14 @@
             selected_object_done(item){
                 this.check.responsible=Number(item.target.value);
                 this.check.status=-1;
+                this.tes_model=null;
                 this.$set(item,'checked_at',this.GetCurrentDate());
                 this.$ls.set('objects',this.$root.objects);
             },
             get_resp_name(id){
                 return this.$_.findWhere(this.$root.responsible,{id:id}).name
-            }
+            },
+
         }
     }
 </script>

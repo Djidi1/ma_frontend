@@ -18,7 +18,7 @@
                         <div slot="media" size="24px"  style="font-size:24px; padding-left:5px">
                             <user_ac></user_ac>
                         </div>
-                        <f7-input name="username"  type="text"v-model="form_login.login"  ></f7-input>
+                        <f7-input name="username"  type="email" v-model="form_login.login"  ></f7-input>
                     </f7-list-item>
                     <f7-list-item>
                         <f7-label floating>{{this.$root.localization.LoginScreen.PasswordPlaceholder}}</f7-label>

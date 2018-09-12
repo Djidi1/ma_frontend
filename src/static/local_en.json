@@ -11,6 +11,10 @@
     "warning":"Warning!",
     "autherror":"Authorisation Error"
   },
+  "respons_title":"Choose the responsible",
+  "respons_empty":"Responsible list is empty",
+  "response_blank":"No responsible",
+  "responsibl":"Responsible :",
   "SearchBar":{
   "title":"Search",
   "nothing":"Nothing found"
