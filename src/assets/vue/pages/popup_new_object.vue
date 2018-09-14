@@ -198,6 +198,7 @@
                         "checklist_id":check.id,
                         "warning_level":req.warning_level,
                         "created_at":req.created_at,
+                        "responsible":0,
                         "comments":[],
                         "disabled":false
                     };

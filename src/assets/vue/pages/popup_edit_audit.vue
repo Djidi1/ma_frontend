@@ -177,6 +177,7 @@
                         "warning_level":req.warning_level,
                         "created_at":req.created_at,
                         "comments":[],
+                        "responsible":0,
                         "disabled":false
                     };
                     check_list_new.requirement.push(new_req);

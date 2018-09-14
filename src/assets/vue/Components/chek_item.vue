@@ -8,20 +8,34 @@
                         <check_box_item :button_type="true" :item_status="Number(item.status)" :item="item" @change_status="change_item_status" :read="read" v-show="!item.disabled"></check_box_item>
                     </transition>
                     <transition appear mode="out-in" name="slide-fade">
-                        <check_box_item :button_type="false"  :item_status="Number(item.status)" :item="item" @change_status="change_item_status_with_res" :read="read"  v-show="!item.disabled"></check_box_item>
+                        <check_box_item :button_type="false"  :item_status="Number(item.status)" :item="item" @change_status="change_item_status" :read="read"  v-show="!item.disabled"></check_box_item>
                     </transition>
                     <f7-swipeout-actions v-if="!read">
                         <f7-swipeout-button overswipe close v-if="!item.disabled"><div style="font-size:34px"> <cancel></cancel> </div></f7-swipeout-button>
                         <f7-swipeout-button overswipe close v-else><div style="font-size:34px"> <check></check> </div></f7-swipeout-button>
                     </f7-swipeout-actions>
                 </f7-grid>
-                <div slot="root" v-if="(uploaded_with(item)?showComment(item):false)">
+                <div slot="root" v-if="showComment(item)">
                     <transition  mode="out-in" name="comment-show">
-                        <div style="padding:16px 16px">{{$root.localization.responsibl}} {{get_resp_name(item.responsible)}}</div>
+                        <div v-if="(read)?item.responsible!==0:true">
+                            <div style="padding:6px 0"  v-if="item.responsible!==0">
+                                <f7-button  :text="$root.localization.responsibl + ' '+ get_resp_name(item.responsible)" class="btn_resp"  color="black" style="position: relative" @click="open_smart_select(item)" :disabled="read">
+                                </f7-button>
+                            </div>
+                            <div style="padding:6px 0"  v-else>
+                                <f7-button  :text="$root.localization.respons_title"  color="black" style="position: relative" @click="open_smart_select(item)" :disabled="read">
+                                    <div style="position: absolute; left:26px; top:0; color:#757575; font-size:24px">
+                                        <acount_aler></acount_aler>
+                                    </div>
+                                </f7-button>
+                            </div>
+                        </div>
                     </transition>
+                    <div v-if="(uploaded_with(item)?true:false)">
                     <transition  mode="out-in" name="comment-show">
                         <comment :data_comments="item.comments" :read="read"></comment>
                     </transition>
+                    </div>
                 </div>
             </f7-list-item>
         </f7-list>
@@ -48,12 +62,14 @@
     import Check_box_item from "src/assets/vue/Components/check_box_item";
     import  cancel from "vue-material-design-icons/cancel.vue"
     import  check from "vue-material-design-icons/check.vue"
+    import  acount_aler from "vue-material-design-icons/account-alert.vue"
     var $$ = Dom7;
     export default {
         components: {
             Check_box_item,
             cancel,
             check,
+            acount_aler
         },
         name: "chek_item",
         data:function(){
@@ -104,29 +120,24 @@
             getPhotoFail(message) {
                 this.$f7.alert('error:' + message, this.$root.localization.pop_up.warning);
             },
-            change_item_status_with_res(val,item){
+            open_smart_select(item){
                 let self=this;
-                if (val===item.status){
-                    item.status=0;
-                    item.responsible=undefined;
-                    this.$set(item,'checked_at',self.GetCurrentDate());
-                    this.$ls.set('objects',this.$root.objects);
-                }else{
-                    this.current_check=item.id;
+                    this.current_check=item;
                     this.$f7.smartSelectOpen('#secret_smart_select .smart-select');
-                    this.check=item;
-                }
+
             },
             selected_object_done(item){
-                this.check.responsible=Number(item.target.value);
-                this.check.status=-1;
-                this.tes_model=null;
-                this.$set(item,'checked_at',this.GetCurrentDate());
+                this.current_check.responsible=Number(item.target.value);
+                this.current_check.status=-1;
+                this.tes_model=item.target.value;
+                this.$set(this.current_check,'checked_at',this.GetCurrentDate());
                 this.$ls.set('objects',this.$root.objects);
             },
             get_resp_name(id){
-                return this.$_.findWhere(this.$root.responsible,{id:id}).name
+
+                return (id)?this.$_.findWhere(this.$root.responsible,{id:id}).name:undefined;
             },
+
 
         }
     }
