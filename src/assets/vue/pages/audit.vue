@@ -41,8 +41,8 @@
                     </f7-list-item>
 
 
-                <f7-list-item class="new_text_comm" >
-                    <text_area :data_set="this.audit.comments" :is_audit="true" :read="this.audit.upload"></text_area>
+                <f7-list-item class="new_text_comm">
+                    <text_area :data_set="[{text: this.audit.title}]" :is_audit="true" :read="this.audit.upload"></text_area>
                 </f7-list-item>
             </f7-list>
             <f7-list v-else>
