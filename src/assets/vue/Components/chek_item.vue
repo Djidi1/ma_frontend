@@ -47,9 +47,25 @@
                           :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
                           class="no-padding"
                             >
-                <select  :name="this.$root.localization.pop_up.select_pop_over" @change="selected_object_done" v-model="tes_model">
-                    <option :value="null" selected>{{this.$root.localization.response_blank}} </option>
-                    <option  v-for="(obj) in this.$root.responsible" :key="obj.id" :value="obj.id"  >{{obj.name}} </option>
+                <select
+                        :name="this.$root.localization.pop_up.select_pop_over"
+                        @change="selected_object_done"
+                        v-model="tes_model"
+                        data-virtual-list="true"
+                >
+                    <option :value="null" selected>{{this.$root.localization.response_blank}}</option>
+                    <optgroup v-for="(dep) in departmentsItems" :key="dep.id" :label="dep.title">
+                        <option
+                                v-for="(obj) in responsibleItems.filter(x => x.department_id === dep.id)"
+                                :key="obj.id"
+                                :value="obj.id">{{obj.name}} {{obj.position !== null ? (" - " + obj.position.title) : ''}}</option>
+                    </optgroup>
+                    <optgroup label="-">
+                        <option
+                                v-for="(obj) in responsibleItems.filter(x => x.department_id === null)"
+                                :key="obj.id"
+                                :value="obj.id">{{obj.name}} {{obj.position !== null ? (" - " + obj.position.title) : ''}}</option>
+                    </optgroup>
                 </select>
                 <div slot="after"></div>
             </f7-list-item>
@@ -81,6 +97,14 @@
         props:{
             data_item:{ type: Array, default: function(){return[]} },
             read:{type:Boolean,default:false},
+        },
+        computed:{
+            responsibleItems: function () {
+                return this.$root.responsible;
+            },
+            departmentsItems: function () {
+                return this.$root.departments;
+            }
         },
         methods: {
             showComment(item){
@@ -120,10 +144,9 @@
             getPhotoFail(message) {
                 this.$f7.alert('error:' + message, this.$root.localization.pop_up.warning);
             },
-            open_smart_select(item){
-                let self=this;
-                    this.current_check=item;
-                    this.$f7.smartSelectOpen('#secret_smart_select .smart-select');
+            open_smart_select(item) {
+                this.current_check = item;
+                this.$f7.smartSelectOpen('#secret_smart_select .smart-select');
 
             },
             selected_object_done(item){

@@ -104,7 +104,7 @@ new Vue({
         routes: Routes,
         scrollTopOnNavbarClick: true,
         hideNavbarOnPageScroll: true,
-        hideToolbarOnPageScroll:true,
+        hideToolbarOnPageScroll: true,
         swipePanel: 'left'
     },
 
@@ -118,13 +118,14 @@ new Vue({
         localization: {},
         check_list: {},
         settings: {},
-        be_server:'',
-        protocol:'https://',
-        server:'',
-        port:'',
-        online:true,
-        show_online_msg:false,
-        responsible:[]
+        be_server: '',
+        protocol: 'https://',
+        server: '',
+        port: '',
+        online: true,
+        show_online_msg: false,
+        responsible: [],
+        departments: []
     },
 //наблюдаем за массивами, в случае изменения обновляем содержимое localstorage
     watch: {
@@ -142,6 +143,9 @@ new Vue({
         },
         responsible:function(val){
             this.$ls.set('responsible',val);
+        },
+        departments:function(val){
+            this.$ls.set('departments',val);
         },
         check_list:function(val){
             this.$ls.set('check_list',val);
@@ -204,6 +208,11 @@ new Vue({
         this.responsible = this.$ls.get('responsible', '');
         this.$ls.on('responsible', function (val) {
             _this.responsible = val;
+        });
+        //Список подразделений
+        this.departments = this.$ls.get('departments', '');
+        this.$ls.on('departments', function (val) {
+            _this.departments = val;
         });
         document.addEventListener("backbutton", function (e) {
             e.preventDefault();
@@ -374,7 +383,7 @@ new Vue({
                 self.get_check_list().then(
                     ready => {
                         //В случае успешного выполнения, вызов метода по получению списка объектов.
-                       self.get_Responsible();
+                        self.get_Responsible();
                         return self.get_objects();
                     })
                     .then(objects => {
@@ -963,17 +972,21 @@ new Vue({
             });
         },
         get_Responsible(){
-            let self=this;
-            let result=[];
+            let self = this;
+            let result = [];
             this.$http.post(this.be_server + '/api/get-users', {}, {headers: {'Authorization': 'Bearer ' + this.auth_info.token}}).then(
                 response => {
-                    response.body.users.forEach(function(user){
+                    response.body.users.forEach(function (user) {
                         result.push({
-                            id:user.id,
-                            name:user.name
+                            id: user.id,
+                            name: user.name,
+                            position: user.position,
+                            department: user.department,
+                            department_id: user.department_id
                         })
                     });
-                    self.responsible=result;
+                    self.responsible = result;
+                    self.departments = response.body.departments;
 
                 }
             );
