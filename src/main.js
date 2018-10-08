@@ -905,7 +905,7 @@ new Vue({
             let curSec = ('0' + data.getSeconds()).substr(-2);
             let curMin = ('0' + data.getMinutes()).substr(-2);
             let curDay = ('0' + data.getDate()).substr(-2);
-            let curMounth = ('0' + (data.getMonth() + 1));
+            let curMounth = ('0' + (data.getMonth() + 1)).substr(-2);
             return curDay + "-" + curMounth + "-" + data.getFullYear() + " " + data.getHours() + ":" + curMin + ":" + curSec;
         },
 
