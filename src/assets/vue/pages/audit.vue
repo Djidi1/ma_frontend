@@ -42,7 +42,13 @@
 
 
                 <f7-list-item class="new_text_comm">
-                    <text_area :data_set="[{text: this.audit.title}]" :is_audit="true" :read="this.audit.upload"></text_area>
+                    <text_area
+                            :data_set="[{text: this.audit.title}]"
+                            :is_audit="true"
+                            :read="this.audit.upload"
+                            :id="id"
+                            :array_index="array_index"
+                    ></text_area>
                 </f7-list-item>
             </f7-list>
             <f7-list v-else>

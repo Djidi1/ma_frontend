@@ -111,7 +111,7 @@
                    //this.$set(this.$root.auth_info,'name',this.user_name);
                     this.$root.auth_info={name:this.user_name,email:this.$root.auth_info.email,token:this.$root.auth_info.token,auth:true,user_info:this.$root.auth_info.user_info};
                     this.$root.settings=this.curentLang;
-                    this.$root.be_server="https://"+this.server+":"+this.port;
+                    // this.$root.be_server="https://"+this.server+":"+this.port;
                 }
             },
             cancelSetting:function(){

@@ -7,40 +7,26 @@
                 <f7-input type="textarea" v-model="text" @change="send_comments" :disabled="this.read"></f7-input>
             </f7-list-item>
 
-            <attachment @removeAttach="this.removeAttachment" :attachment="this.attachment" :edit_mode="true" v-if="comment_for_audit" @delete_comm="delete_attr"></attachment>
-            <!--<f7-block>-->
-                <!--<div class="row ">-->
-                    <!--<div class="col-50 attachment_button">-->
-                        <!--<div class="comment-photupload comment-photos" @click="upload(true)" v-if="comment_for_audit" >-->
-                            <!--<camera></camera>-->
-                        <!--</div>-->
-                        <!--<div class="comment-photupload comment-photos" @click="upload(false)" v-if="comment_for_audit">-->
-                            <!--<image_multiply></image_multiply>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash;<div class="col-50" v-if="comment_for_audit">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<f7-button fill @click="send_comments"> {{this.$root.localization.AuditPage.comment_button}}</f7-button>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--</div>-->
-            <!--</f7-block>-->
-
+            <attachment @removeAttach="this.removeAttachment" :attachment="this.attachment" :edit_mode="true"
+                        v-if="comment_for_audit" @delete_comm="delete_attr"></attachment>
         </f7-list>
     </div>
 </template>
 
 <script>
-
-    var $$ = Dom7;
-    import  camera from "vue-material-design-icons/camera.vue"
-    import  image_multiply from "vue-material-design-icons/image-plus.vue"
+    let $$ = Dom7;
+    import camera from "vue-material-design-icons/camera.vue"
+    import image_multiply from "vue-material-design-icons/image-plus.vue"
 
     export default {
-        components:{
+        components: {
             camera,
             image_multiply
         },
         name: "textarea_comment",
         props: {
+            id: {type: String},
+            array_index: {type: String},
             data_set: {
                 type: Array, default: function () {
                     return []
@@ -54,11 +40,12 @@
                 },
 
             },
-            read:{type:Boolean,default:false},
-            attachments:{type:Array,default:function(){
+            read: {type: Boolean, default: false},
+            attachments: {
+                type: Array, default: function () {
                     return [];
-                }}
-
+                }
+            }
         },
         data: function () {
             return {
@@ -69,27 +56,14 @@
             }
         },
         created: function () {
-            if (this.data_set.length>0) {
+            if (this.data_set.length > 0) {
                 this.current_comment = this.data_set;
                 this.text = this.current_comment[0].text;
 
-            }else{
-                this.current_comment=this.data_set;
-                // this.current_comment.push(
-                //     {
-                //         'id':'',
-                //         'text':'',
-                //         'user_info':'',
-                //         'create_date':'',
-                //         'attachments':[]
-                //     }
-                // );
-
-
+            } else {
+                this.current_comment = this.data_set;
             }
-
         },
-
         mounted: function () {
             this.$nextTick(function () {
                 this.check_style_class(this.$el);
@@ -100,9 +74,6 @@
             })
         },
         computed: {
-            hasAttach() {
-                return (this.attachment.length > 0);
-            },
             comment_for_audit() {
                 return !(this.audit_comment);
             }
@@ -129,56 +100,21 @@
             add_cls_to_form(form, cls) {
                 form.addClass(cls);
             },
-
             GetCurrentDate() {
                 return new Date();
             },
             send_comments() {
-                    if ((this.text!='') || (this.attachment.length>0))
-                {
-
-                    if (this.current_comment.length===0){
-                    this.current_comment.push(
-                        {
-                            'id':'',
-                            'text':'',
-                            'user_info':'',
-                            'create_date':'',
-                            'attachments':[]
-                        }
-                    );
-                }
-                    this.current_comment[0].id = this.getOfflineID(this.comment.id);
-                    this.current_comment[0].create_date = this.GetCurrentDate();
-                    this.current_comment[0].user_info = this.$root.auth_info.user_info;
-                    this.current_comment[0].text = this.text;
-                    this.current_comment[0].attachments = this.attachment;
-                }else{
-                        this.current_comment.splice(0,this.current_comment.length);
-                }
-                    //this.clear_input();
-                    this.$ls.set('objects', this.$root.objects);
-                    this.$emit('edit_done')
-
-
+                //Берем нужный аудит при помощи идентификаторов которые пришли через пропсы.
+                // Обновляем комментарий в аудите
+                let cur_obj = this.$_.findWhere(this.$root.objects, {id: Number(this.array_index)});
+                this.audit = (this.$_.findWhere(cur_obj.audits, {id: Number(this.id)}));
+                this.audit.title = this.text;
+                this.$ls.set('objects', this.$root.objects);
+                this.$emit('edit_done')
             },
-            // clear_input() {
-            //     this.text = '';
-            //     this.attachment = [];
-            //     this.$$(this.$el).find('.item-inner').removeClass('not-empty-state');
-            //     this.$$(this.$el).find('.item-inner').find('.item-input').removeClass('not-empty-state');
-            // },
             removeAttachment(id) {
                 this.attachment.splice(id, 1);
             },
-            getOfflineID(current) {
-                let lastId = 0;
-                (current != undefined) ?
-                    lastId = current.id :
-                    ++lastId;
-                return lastId;
-            },
-
             upload(mode) {
                 let source = (mode) ? Camera.PictureSourceType.CAMERA : Camera.PictureSourceType.SAVEDPHOTOALBUM;
                 navigator.Camera.getPicture(this.getPhoto, this.getPhotoFail, {
@@ -190,69 +126,17 @@
                 })
 
             },
-            delete_attr(id){
-                this.current_comment[0].attachments.splice(id,1);
-                if (this.text==='')
-                    this.current_comment.splice(0,this.current_comment.length);
+            delete_attr(id) {
+                this.current_comment[0].attachments.splice(id, 1);
+                if (this.text === '')
+                    this.current_comment.splice(0, this.current_comment.length);
                 this.$ls.set('objects', this.$root.objects);
             },
-            // getPhoto: function (img) {
-            //     let self = this;
-            //     self.get_img_data(img).then(
-            //         f => {
-            //             self.$$('#img_pr' + (self.attachment.length - 1)).show();
-            //             window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory + "img/", function (dir) {
-            //                 f.moveTo(dir, f.name, function (entry) {
-            //                     self.attachment[self.attachment.length - 1].url = entry.toURL();
-            //                     self.$$('#img_pr' + (self.attachment.length - 1)).hide();
-            //                 }, function (error) {
-            //                     self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
-            //                     self.attachment.splice(self.attachment.length - 1, 1);
-            //                 });
-            //             });
-            //         },
-            //         error => {
-            //             self.$f7.alert(error.code, this.$root.localization.pop_up.warning);
-            //         }
-            //     );
-            // },
-            // get_img_data(url) {
-            //     let self = this;
-            //     return new Promise(function (resolve, reject) {
-            //         window.resolveLocalFileSystemURL(url, function (f) {
-            //             f.file(function (file) {
-            //                     let img_data = {
-            //                         "caption": file.name,
-            //                         "file": {
-            //                             'name': file.name,
-            //                             "size": file.size,
-            //                             "type": file.type
-            //                         },
-            //                         "url": url
-            //                     };
-            //                     self.attachment.push(img_data);
-            //                     resolve(f);
-            //                 },
-            //                 function (error) {
-            //                     reject(error);
-            //                 });
-            //         })
-            //     });
-            // },
-            //
-            //
-            // getPhotoFail(message) {
-            //     this.$f7.alert('error:' + message, this.$root.localization.pop_up.warning);
-            // },
-            //
 
             //Css костыль
             correct_css() {
                 let element = $$(this.$el).find('textarea');
                 let el = (element.parent().parent());
-                el.attr('class').split(' ').forEach(function (item) {
-                    let need_cls = (item != 'not-empty-state') ? true : false;
-                });
                 this.add_cls(el, 'not-empty-state');
             },
             add_cls(obj, cls) {
@@ -282,7 +166,7 @@
     }
 
     .comment-photos {
-        transform:translateY(-6px);
+        transform: translateY(-6px);
         font-size: 36px;
         line-height: 36px;
         text-align: center;

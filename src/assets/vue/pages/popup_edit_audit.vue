@@ -3,7 +3,7 @@
     <!--<f7-popup :id="'popup_add_audit_'+audit.id">-->
         <!--<f7-view id="pop_up_audit_view">-->
             <!--<f7-pages navbar-through>-->
-                <f7-page>
+                <f7-page class="edit_audit_page">
                     <f7-navbar back-link="Back" sliding  @back-click.stop="close_edit()">
                         <f7-nav-center sliding>  <div v-if="!this.$root.online" style="display:inline-block; margin-right:2px">
                             <network></network>
@@ -45,44 +45,67 @@
                     </f7-list>
 
 
-
-
-                        <f7-list form>
-                            <f7-list-item v-if="this.$root.check_list.length===0" :title="this.$root.localization.pop_up.no_check_list">
-                                <div slot="root" style="padding:8px 16px;">{{this.$root.localization.pop_up.no_check_list}}</div>
-                            </f7-list-item>
-                            <f7-list-item  smart-select :title="this.$root.localization.pop_up.check_list_group" :smart-select-back-on-select="true" v-else
-                                           :smart-select-searchbar="true"
-                                           :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
-                                           class="no-padding no-white_spacing"
-                            >
-                                <select  :name="this.$root.localization.pop_up.add_check"  @change="check_group_select_done" >
-                                    <option :value="null" selected>{{this.$root.localization.pop_up.no_check_cat_selected}} </option>
-                                    <option v-for="(check_gruop_item,check_ind) in check_list_groups" :key="check_ind" :value="check_gruop_item[0].cl_category.id"> {{check_gruop_item[0].cl_category.title}}</option>
-                                </select>
-                                <div slot="after">{{}}</div>
-                            </f7-list-item>
-                        </f7-list>
-
-
-
-
-                    <transition appear mode="out-in" name="slide-app">
-                    <f7-list form v-if="check_list_arr.length>0">
-                        <f7-list-item v-if="this.$root.check_list.length===0" :title="this.$root.localization.pop_up.no_check_list">
-                            <div slot="root" style="padding:8px 16px;">{{this.$root.localization.pop_up.no_check_list}}</div>
+                    <f7-list form>
+                        <f7-list-item v-if="this.$root.check_list.length===0"
+                                      :title="this.$root.localization.pop_up.no_check_list">
+                            <div slot="root" style="padding:8px 16px;">
+                                {{this.$root.localization.pop_up.no_check_list}}
+                            </div>
                         </f7-list-item>
-                        <f7-list-item  v-else smart-select :title="this.$root.localization.pop_up.add_check" :smart-select-back-on-select="true"
-                                       :smart-select-searchbar="true"
-                                       :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
-                                       class="no-padding"
-                                        @click="custome_smart_page">
-                            <select  :name="this.$root.localization.pop_up.add_check"  multiple="multiple" @change="check_select_done" >
-                                <option v-for="(check_item,check_ind) in check_list_arr" :key="check_ind" :value="check_item.id" :selected="current_selected(check_item)"> {{check_item.title}}</option>
+                        <f7-list-item
+                                v-else
+                                smart-select
+                                :smart-select-back-on-select="true"
+                                :smart-select-searchbar="true"
+                                :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
+                        >
+                            <div class="item-title no-padding no-white_spacing">
+                                {{this.$root.localization.pop_up.check_list_group}}
+                            </div>
+                            <select
+                                    :name="this.$root.localization.pop_up.add_check"
+                                    @change="check_group_select_done"
+                            >
+                                <option :value="null" selected>
+                                    {{this.$root.localization.pop_up.no_check_cat_selected}}
+                                </option>
+                                <option v-for="(check_gruop_item,check_ind) in check_list_groups" :key="check_ind"
+                                        :value="check_gruop_item[0].cl_category.id">
+                                    {{check_gruop_item[0].cl_category.title}}
+                                </option>
+                                <div slot="after"></div>
                             </select>
-                            <div slot="after"></div>
                         </f7-list-item>
                     </f7-list>
+
+                    <transition appear mode="out-in" name="slide-app">
+                        <f7-list form v-if="check_list_arr.length>0">
+                            <f7-list-item v-if="this.$root.check_list.length===0"
+                                          :title="this.$root.localization.pop_up.no_check_list">
+                                <div slot="root" style="padding:8px 16px;">
+                                    {{this.$root.localization.pop_up.no_check_list}}
+                                </div>
+                            </f7-list-item>
+                            <f7-list-item v-else
+                                          smart-select
+                                          :smart-select-back-on-select="true"
+                                          :smart-select-searchbar="true"
+                                          :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
+                                          @click="custome_smart_page"
+                            >
+                                <div class="item-title no-padding no-white_spacing">
+                                    {{this.$root.localization.pop_up.add_check}}
+                                </div>
+                                <select :name="this.$root.localization.pop_up.add_check" multiple="multiple"
+                                        @change="check_select_done">
+                                    <option v-for="(check_item,check_ind) in check_list_arr" :key="check_ind"
+                                            :value="check_item.id" :selected="current_selected(check_item)">
+                                        {{check_item.title}}
+                                    </option>
+                                </select>
+                                <div slot="after"></div>
+                            </f7-list-item>
+                        </f7-list>
                     </transition>
                 </f7-page>
 </template>
@@ -152,8 +175,9 @@
                         self.audit_current.check_list.push(self.add_check_list_to($$(opt).val()));
                     }
                 });
+                let deletedCheckLists = self.$_.difference(Array.from(item.target.options), Array.from(item.target.selectedOptions));
                 this.audit_current.check_list.forEach(function(check,i){
-                    if(self.$_.findWhere(arr,{_value:Number(check.id)})===undefined){
+                    if(self.$_.findWhere(deletedCheckLists,{_value:Number(check.id)}) !== undefined){
                         self.audit_current.check_list.splice(i,1);
                     }
                 });
@@ -273,6 +297,15 @@
     }
 </script>
 
+<style>
+    .edit_audit_page .item-inner {
+        display: block !important;
+    }
+    .edit_audit_page .item-after {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+</style>
 <style scoped>
     .add_check_btn{
         margin-top:10px;
