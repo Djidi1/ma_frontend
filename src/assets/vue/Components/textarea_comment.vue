@@ -106,11 +106,42 @@
             send_comments() {
                 //Берем нужный аудит при помощи идентификаторов которые пришли через пропсы.
                 // Обновляем комментарий в аудите
-                let cur_obj = this.$_.findWhere(this.$root.objects, {id: Number(this.array_index)});
-                this.audit = (this.$_.findWhere(cur_obj.audits, {id: Number(this.id)}));
-                this.audit.title = this.text;
+                if (this.array_index > 0) {
+                    let cur_obj = this.$_.findWhere(this.$root.objects, {id: Number(this.array_index)});
+                    this.audit = (this.$_.findWhere(cur_obj.audits, {id: Number(this.id)}));
+                    this.audit.title = this.text;
+                }else{
+                    // Обновляем комментарий в чеклисте
+                    if ((this.text !== '') || (this.attachment.length>0)) {
+                        if (this.current_comment.length===0){
+                            this.current_comment.push(
+                                {
+                                    'id':'',
+                                    'text':'',
+                                    'user_info':'',
+                                    'create_date':'',
+                                    'attachments':[]
+                                }
+                            );
+                        }
+                        this.current_comment[0].id = this.getOfflineID(this.comment.id);
+                        this.current_comment[0].create_date = this.GetCurrentDate();
+                        this.current_comment[0].user_info = this.$root.auth_info.user_info;
+                        this.current_comment[0].text = this.text;
+                        this.current_comment[0].attachments = this.attachment;
+                    }else{
+                        this.current_comment.splice(0,this.current_comment.length);
+                    }
+                }
                 this.$ls.set('objects', this.$root.objects);
                 this.$emit('edit_done')
+            },
+            getOfflineID(current) {
+                let lastId = 0;
+                (current !== undefined) ?
+                    lastId = current.id :
+                    ++lastId;
+                return lastId;
             },
             removeAttachment(id) {
                 this.attachment.splice(id, 1);
