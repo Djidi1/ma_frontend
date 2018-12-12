@@ -49,11 +49,12 @@
                             >
                 <select
                         :name="this.$root.localization.pop_up.select_pop_over"
+                        id="resp"
                         @change="selected_object_done"
                         v-model="tes_model"
                         data-virtual-list="true"
                 >
-                    <option :value="null" selected>{{this.$root.localization.response_blank}}</option>
+                    <option :value="null">{{this.$root.localization.response_blank}}</option>
                     <optgroup v-for="(dep) in departmentsItems" :key="dep.id" :label="dep.title">
                         <option
                                 v-for="(obj) in responsibleItems.filter(x => x.department_id === dep.id)"
@@ -146,7 +147,8 @@
             },
             open_smart_select(item) {
                 this.current_check = item;
-                this.$f7.smartSelectOpen('#secret_smart_select .smart-select');
+                $$('#resp').val(item.responsible); 
+                this.$f7.smartSelectOpen('#secret_smart_select .smart-select');      
 
             },
             selected_object_done(item){
