@@ -46,8 +46,8 @@
                             :data_set="[{text: this.audit.title}]"
                             :is_audit="true"
                             :read="this.audit.upload"
-                            :id="id"
-                            :array_index="array_index"
+                            :id="id_save"
+                            :array_index="array_index_save"
                     ></text_area>
                 </f7-list-item>
             </f7-list>
@@ -98,7 +98,8 @@
                 acordianId:0,
                 block_height:'',
                 popup_open:false,
-                array_index_save:this.array_index
+                array_index_save:this.array_index,
+                id_save:this.id
             }
         },
         mounted:function(){
