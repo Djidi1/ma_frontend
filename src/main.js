@@ -354,21 +354,18 @@ new Vue({
             let complete;
             return new Promise(function(resolve){
                 arr.forEach(function(itm){
-
                     let obj=self.$_.findWhere(result_arr,{id:Number(itm.object_id)});
                     if (obj!=undefined){
-                    let aud=self.$_.findWhere(obj.audits,{id:Number(itm.id)});
-                    if (aud!=undefined){
-                        aud.check_list=itm.check_list;
-                        aud.comments=itm.comments;
-                    }else{
-                        obj.audits.push(itm);
+                        let aud=self.$_.findWhere(obj.audits,{id:Number(itm.id)});
+                        if (aud === undefined && itm.id === 0){                            
+                            obj.audits.push(itm);
                         }
                     }
                 });
 
                 resolve(complete);
             });
+                      
         },
         //Метод получения данных от сервера.
         getData_from_server() {
