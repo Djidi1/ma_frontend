@@ -21,7 +21,7 @@
                                   :text="check_list_names(acrd)"
                                   swipeout>
                         <!--:media="realStatus(acrd)"-->
-                        <f7-swipeout-actions v-if="!acrd.upload">
+                        <f7-swipeout-actions v-if="!acrd.upload && !$root.sendingInProcess">
                             <f7-swipeout-button @click="send_data(acrd,acrd.id)" v-if="!acrd.uploaded && $root.online"><div style="font-size:35px"><send></send></div></f7-swipeout-button>
                             <f7-swipeout-button @click="edit_data(acrd.id, objects.id)"><div style="font-size:35px"><pencil></pencil></div></f7-swipeout-button>
                             <f7-swipeout-button v-if="!acrd.downloaded" @click="delete_data(objects.id,acrd.id,acrd_index)"><div style="font-size:35px"><trash></trash></div></f7-swipeout-button>
@@ -161,12 +161,18 @@
             },
             send_data(item, index) {
                 let $$ = Dom7;
-                let self=this;
-                (item.check_list.length > 0) ?
-                    (self.$root.check_audit_positions(item))?
-                         self.$root.send_to_serv_audit(item)
-                        :self.$f7.alert(self.$root.localization.AuditPage.check_not_complete, self.$root.localization.pop_up.warning)
-                         : self.$f7.alert(self.$root.localization.pop_up.no_check_list,self.$root.localization.pop_up.warning);
+                let self=this;                
+                if (item.check_list.length > 0) {
+                    if (self.$root.check_audit_positions(item)){
+                        self.$root.sendingInProcess = true;
+                        self.$root.send_to_serv_audit(item);
+                    } else {
+                        self.$f7.alert(self.$root.localization.AuditPage.check_not_complete, self.$root.localization.pop_up.warning);
+                    }
+                } else {
+                    self.$f7.alert(self.$root.localization.pop_up.no_check_list,self.$root.localization.pop_up.warning);
+                }
+
                 this.$f7.swipeoutClose($$('#id_' + index));
             },
             edit_data(audit_id,obj_id) {

@@ -125,7 +125,8 @@ new Vue({
         online: true,
         show_online_msg: false,
         responsible: [],
-        departments: []
+        departments: [],
+        sendingInProcess: false
     },
 //наблюдаем за массивами, в случае изменения обновляем содержимое localstorage
     watch: {
@@ -920,12 +921,14 @@ new Vue({
                                     self.$set(audit, "id", Number(response.body));
                                     self.$set(audit, "upload", true);
                                     self.$ls.set('objects', self.$root.objects);
+                                    self.sendingInProcess = false;
                                     resolve(result);
                                 },
                                 fail=>{
                                     self.$set(audit, "error", true);
                                     self.$set(audit, "upload", true);
                                     self.$ls.set('objects', self.$root.objects);
+                                    self.sendingInProcess = false;
                                     resolve(result);
                                 });
                         });
