@@ -220,6 +220,8 @@ new Vue({
             _this.go_back();
         }, false);
 
+        this.onRefresh();
+
     },
     methods: {
         go_back() {
