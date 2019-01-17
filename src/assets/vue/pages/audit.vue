@@ -18,7 +18,7 @@
             <f7-list media-list v-if="hasCheck_list"  style="margin-bottom: 0!important;"  >
                     <f7-list-item class="deff"  group-title :title="this.$root.localization.AuditPage.check_list">
                     </f7-list-item>
-                    <f7-list-item  class="item_audit" v-for="(check,id) in this.audit.check_list" :key="id" :title="check.title" :link="'/check/'+audit.id+'/'+check.id">
+                    <f7-list-item  class="item_audit" v-for="(check,id) in this.audit.check_list" :key="id" :title="check.title" :link="'/check/'+audit.id+'/'+check.id+'/'+array_index_save">
                         <div slot="media" style="padding-top:2px;padding-bottom:2px">
                             <div class="icons_check-audit_page">
                                 <div v-if="!uploaded">
