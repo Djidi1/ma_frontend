@@ -275,7 +275,7 @@
                 $$(document).on('pageBeforeInit','[data-page*="smart-select"]',function(e){
                     let page=e.detail.page;
                     // self.checkbox_view(page);
-                    $$(page.container).find('.navbar-inner').append(self.get_html_button_done());
+                    if ($$('a.done').length === 0) $$(page.container).find('.navbar-inner').append(self.get_html_button_done());
                     ($$(page.container).find('a.done').on('click',function(e){
 
                         self.select_check_list_done(page.container);
