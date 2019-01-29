@@ -153,11 +153,16 @@
             //Ковертируем дату в удобный вид.
             data_formta(data) {
                 data = new Date(data);
-                // let curSec = ('0' + data.getSeconds()).substr(-2);
-                let curMin = ('0' + data.getMinutes()).substr(-2);
-                let curDay = ('0' + data.getDate()).substr(-2);
-                let curMounth = ('0' + (data.getMonth() + 1));
-                return curDay + "." + curMounth + "." + data.getFullYear();
+                let dd = data.getDate();
+                let mm = data.getMonth() + 1; //January is 0!
+                let yyyy = data.getFullYear();
+                if (dd < 10) {
+                    dd = '0' + dd;
+                } 
+                if (mm < 10) {
+                    mm = '0' + mm;
+                } 
+                return dd + '.' + mm + '.' + yyyy;
             },
             send_data(item, index) {
                 let $$ = Dom7;
