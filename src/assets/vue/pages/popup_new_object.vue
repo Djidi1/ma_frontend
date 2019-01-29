@@ -81,9 +81,9 @@
                             <f7-list-item  smart-select :title="this.$root.localization.pop_up.add_check" :smart-select-back-on-select="true" v-else
                                           :smart-select-searchbar="true"
                                           :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
-                                          class="no-padding"
+                                          class="no-padding" id="sm-lists"
                                           @click="custome_smart_page">
-                                <select  :name="this.$root.localization.pop_up.add_check"  multiple="multiple" @change="check_select_done" >
+                                <select  :name="this.$root.localization.pop_up.add_check" id="ch-lists" multiple="multiple" @change="check_select_done" >
                                         <option v-for="(check_item,check_ind) in check_list_arr" :key="check_ind" :value="check_item.id"> {{check_item.title}}</option>
                                 </select>
                                 <div slot="after">{{text_for_after}}</div>
@@ -165,6 +165,7 @@
               this.selected_object={};
             },
             check_group_select_done(item){
+                $$("#sm-lists .item-after").html("");
                 this.check_list_arr=(item.target.value!=null)?this.$_.filter(this.$root.check_list,function(c){
                     return c.cl_category_id===Number(item.target.value);
                 }):[];
@@ -271,7 +272,10 @@
             },
             custome_smart_page(){
                 let self=this;
-                self.old_check_list=self.audits[0].check_list;
+                self.old_check_list = self.audits[0].check_list;
+                let curr_check_state = self.audits[0].check_list.map((val) => val.id.toString());
+                if (JSON.stringify(curr_check_state) != JSON.stringify($$('#ch-lists').val()))
+                $$('#ch-lists').val(curr_check_state);
                 $$(document).on('pageBeforeInit','[data-page*="smart-select"]',function(e){
                     let page=e.detail.page;
                     // self.checkbox_view(page);
@@ -281,7 +285,7 @@
                         self.select_check_list_done(page.container);
                     }));
                     $$(page.container).find('.left').css('width','56px');
-                    $$(page.container).find('.left a').css('display','none');
+                    $$(page.container).find('.left a').css('display','none');                    
                     // $$(page.container).find('.left a').on('click',function(e){
                     //     self.cancel_check_list_change($$(page.container));
                     // });
