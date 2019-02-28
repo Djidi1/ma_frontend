@@ -514,6 +514,7 @@ new Vue({
                     let result = {};
                     result = {
                         "id": object.id,
+                        "archive": object.archive,
                         "title": object.title,
                         "created_at": object.created_at,
                         "audits": [],

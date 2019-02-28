@@ -22,7 +22,7 @@
                         <f7-list-item smart-select :title="this.$root.localization.pop_up.select_ex" :smart-select-back-on-select="true"
                                       :smart-select-searchbar="true"
                                       :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
-                                      class="no-padding">
+                                      class="no-padding" id="sm-ogroups">
                             <select  :name="this.$root.localization.pop_up.select_ex" @change="selected_group_done" >
                                 <option :value="null" selected> {{this.$root.localization.pop_up.no_group_selected}}</option>
                                     <option  v-for="group in sorted_array" :key="group[0].group_id" :value="group[0].group_id"  >{{group[0].group_title}} </option>
@@ -39,7 +39,7 @@
                             <f7-list-item smart-select :title="this.$root.localization.pop_up.select_pop_over" :smart-select-back-on-select="true" v-if="this.sorted_array_objects.length>0"
                                           :smart-select-searchbar="true"
                                           :smart-select-searchbar-placeholder="this.$root.localization.SearchBar.title"
-                                          class="no-padding">
+                                          class="no-padding" id="sm-obj">
                                 <select  :name="this.$root.localization.pop_up.select_pop_over" @change="selected_object_done">
                                     <option :value="null" selected>{{this.$root.localization.pop_up.no_objet_selected}} </option>
                                     <option  v-for="(obj) in this.sorted_array_objects" :key="obj.id" :value="obj.id"  >{{obj.title}} </option>
@@ -73,7 +73,7 @@
 
 
                     <transition appear mode="out-in" name="slide-app">
-                        <f7-list form v-if="check_list_arr.length > 0">
+                        <f7-list form v-if="(check_list_arr.length > 0) && (Object.keys(selected_object).length > 0)">
                             <f7-list-item v-if="this.$root.check_list.length===0" :title="this.$root.localization.pop_up.no_check_list">
                                 <!--<div slot="root" style="padding:8px 16px;">{{this.$root.localization.pop_up.no_check_list_text}}</div>-->
                             </f7-list-item>
@@ -147,9 +147,20 @@
                 return new Date();
             },
             selected_group_done(item){
-              let self=this;
-              this.sorted_array_objects=(self.$_.filter(self.$root.objects,{group_id:Number(item.target.value)}));
-              if (this.sorted_array_objects.length===0)this.error_search() ;
+              let self = this;
+              $$("#sm-obj .item-after").html("");
+              this.selected_object=Object.assign({});
+              this.sorted_array_objects = (self.$_.filter(self.$root.objects, {
+                  group_id: Number(item.target.value)
+              })).filter(v => {
+                  if (v.archive == null) return true;
+                    else {
+                        let arch = new Date(v.archive);
+                        let now = new Date();
+                        return (now < arch || v.arch === null);
+                    }                  
+              });
+              if (this.sorted_array_objects.length === 0) this.error_search();
             },
             selected_object_done(item){
                 let self=this;
@@ -158,7 +169,7 @@
                 (!result_search)?this.error_search():this.show_selected(result_search);
             },
             show_selected(item){
-                this.selected_object=item;
+                this.selected_object=this.selected_object=Object.assign({}, item);
                     this.add_audit();
             },
             error_search(){
