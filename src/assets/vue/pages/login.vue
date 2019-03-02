@@ -90,7 +90,11 @@
                        this.$f7.views.main.router.load({url: '/page/'});
                    }, response => {
                        self.$f7.hidePreloader();
-                       self.$f7.alert(self.$root.localization.LoginScreen.autherror, self.$root.localization.LoginScreen.warning);
+                       if (response.status === 401 && response.body.error === 'Unauthorised') {
+                           self.$f7.alert(self.$root.localization.LoginScreen.incorrectpassword, self.$root.localization.LoginScreen.warning);
+                       } else {
+                           self.$f7.alert(self.$root.localization.LoginScreen.autherror, self.$root.localization.LoginScreen.warning);
+                       }
                    });
 
             }

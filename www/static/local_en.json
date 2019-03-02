@@ -9,7 +9,8 @@
     "Empty_input_login":"Enter Login!",
     "Empty_input_password":"Need password!",
     "warning":"Warning!",
-    "autherror":"Authorisation Error"
+    "autherror":"Authorisation Error",
+    "incorrectpassword":"Incorrect login / password"
   },
   "respons_title":"Choose the responsible",
   "respons_empty":"Responsible list is empty",

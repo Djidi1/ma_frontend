@@ -9,7 +9,8 @@
     "Empty_input_login":"Введите Логин!",
     "Empty_input_password":"Введите пароль!",
     "warning":"Внимание!",
-    "autherror":"Ошибка авторизации"
+    "autherror":"Ошибка авторизации",
+    "incorrectpassword":"Неверный логин или пароль"
   },
   "respons_title":"Выберите ответственного",
   "respons_empty":"Список ответственных пуст",
