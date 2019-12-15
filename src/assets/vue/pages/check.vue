@@ -90,10 +90,10 @@
             this.$root.objects.forEach(function(obj){
                 obj.audits.forEach(function(audit){
                     if ((Number(audit.id)===Number(self.audit_id)|| audit.id===self.audit_id) && Number(obj.id) === Number(self.obj_id)){
-                    self.uploaded=audit.upload;
-                    audit.check_list.forEach(function(ch){
-                        self.check=(ch.id===Number(self.check_id))?ch:self.check;
-                    })
+                        self.uploaded=audit.upload;
+                        audit.check_list.forEach(function(ch){
+                            self.check=(ch.id===Number(self.check_id))?ch:self.check;
+                        })
                     }
                 })
             })
