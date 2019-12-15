@@ -992,7 +992,7 @@ new Vue({
                 },
                 fail => {
                   self.$set(audit, "error", true);
-                  self.$set(audit, "upload", true);
+                  self.$set(audit, "upload", false);
                   self.$ls.set("objects", self.$root.objects);
                   self.sendingInProcess = false;
                   resolve(result);
